@@ -1,5 +1,1 @@
-/*
- * Public API Surface of inugami-ng
- */
-
-// export * from './lib/inugami-ng.service';
+export * from './config/inugami-config';

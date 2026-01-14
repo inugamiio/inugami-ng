@@ -10,13 +10,13 @@
     "inugami-ng": {
       "projectType": "library",
       "root": "projects/inugami-ng",
-      "sourceRoot": "projects/inugami-ng/src",
+      "sourceRoot": "projects/inugami-ng",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "options": {
-            "outputPath": "dist/inugami-ng"
+            "project": "projects/inugami-ng/ng-package.json"
           },
           "configurations": {
             "production": {
