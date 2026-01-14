@@ -7,8 +7,7 @@ import {SiteLink} from '../../models/website-model';
   templateUrl: './icons.view.html',
   styleUrls: ['./icons.view.scss'],
   imports: [
-    InuIcon,
-    InuCite
+    InuIcon
   ]
 })
 export class IconsView implements OnInit {

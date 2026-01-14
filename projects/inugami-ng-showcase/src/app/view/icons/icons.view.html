@@ -3,9 +3,15 @@
     <h1>Inugami-NG : Icons</h1>
   </header>
 
-  <div>
+  <div class="icons">
     @for (icon of icons();track icon;) {
-      {{icon}}
+      <article>
+        <header>
+          <inu-icon [icon]="icon" [size]="3"></inu-icon>
+          <h3>{{icon}}</h3>
+        </header>
+      </article>
+
     }
   </div>
 </section>
