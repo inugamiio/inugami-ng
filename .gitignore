@@ -42,3 +42,4 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 /inugami-ng.iml
+/projects/dist/

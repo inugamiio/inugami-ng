@@ -1,6 +1,13 @@
 {
   "name": "inugami-ng",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "description": "Inugami project angular library",
+  "keywords": ["inugami",  "angular", "components"],
+  "homepage": "https://inugami.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://https://github.com/inugamiio/inugami-ng.git"
+  },
   "scripts": {
     "ng": "ng",
     "build": "ng build",
