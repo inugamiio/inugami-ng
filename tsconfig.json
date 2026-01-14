@@ -6,9 +6,8 @@
     "strict": true,
     "noImplicitOverride": true,
     "paths": {
-      "inugami-ng": [
-        "./dist/inugami-ng"
-      ]
+      "inugami-ng": ["./projects/inugami-ng/src/public-api.ts"],
+      "inugami-ng/components/*": ["./projects/inugami-ng/src/lib/components/*/public-api.ts"]
     },
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
