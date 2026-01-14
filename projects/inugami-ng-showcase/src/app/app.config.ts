@@ -1,10 +1,9 @@
-import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import {ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners} from '@angular/core';
+import {provideRouter, withInMemoryScrolling} from '@angular/router';
 
-import { routes } from './app.routes';
-import { provideHighlightJsConfig } from 'ngx-highlight-js';
-import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
-import { INUGAMI_DEFAULT_ICONS, InugamiIconsUtils } from 'inugami-icons';
+import {routes} from './app.routes';
+import {NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule} from 'ngx-google-analytics';
+import {INUGAMI_DEFAULT_ICONS, InugamiIconsUtils} from 'inugami-icons';
 
 const GOOGLE_ANALYICS = 'G-1683HZCMDJ';
 

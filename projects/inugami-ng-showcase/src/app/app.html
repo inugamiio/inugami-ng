@@ -20,43 +20,7 @@
 
           <div class="collapse navbar-collapse nav-ontop" id="navbarTogglerTop">
   <ul class="navbar-nav me-auto mb-2 mb-lg-0 ontop">
-    @for (link of links();track link.path;) {
-      
 
-      <li class="nav-item">
-        @if (link.external) {
-          <a  target="_blank"
-              [href]="link.path">{{link.title}}</a>
-        }
-        @else{
-          <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">{{link.title}}</a>
-          @if (link.children) {
-          <div class="sublink">
-          @for (childSection of link.children;track childSection.title;) {
-              <li>
-                @if (childSection.title) {
-                  <span>{{childSection.title}}</span>
-                }
-                <ul>
-                  @for (child of childSection.links;track child.path;) {
-                    <li>
-                      @if (child.external) {
-                        <a  target="_blank"
-                            [href]="link.path">{{child.title}}</a>
-                      }
-                      @else{
-                        <a [routerLink]="[child.path]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">{{child.title}}</a>
-                      }
-                    </li>
-                  }
-                </ul>
-              </li>
-          }
-          </div>
-        }
-        }
-      </li>
-    }  
   </ul>
 </div>
     </div>
@@ -68,42 +32,6 @@
 
 <div class="collapse navbar-collapse" id="navbarToggler">
   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    @for (link of links();track link.path;) {
-      
 
-      <li class="nav-item">
-        @if (link.external) {
-          <a  target="_blank"
-              [href]="link.path">{{link.title}}</a>
-        }
-        @else{
-          <a [routerLink]="link.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">{{link.title}}</a>
-          @if (link.children) {
-          <div class="sublink">
-          @for (childSection of link.children;track childSection.title;) {
-              <li>
-                @if (childSection.title) {
-                  <span>{{childSection.title}}</span>
-                }
-                <ul>
-                  @for (child of childSection.links;track child.path;) {
-                    <li>
-                      @if (child.external) {
-                        <a  target="_blank"
-                            [href]="link.path">{{child.title}}</a>
-                      }
-                      @else{
-                        <a [routerLink]="[child.path]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">{{child.title}}</a>
-                      }
-                    </li>
-                  }
-                </ul>
-              </li>
-          }
-          </div>
-        }
-        }
-      </li>
-    }  
   </ul>
 </div>
