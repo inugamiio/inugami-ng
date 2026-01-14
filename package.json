@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start": "ng serve --port 4300"
   },
   "prettier": {
     "printWidth": 100,
@@ -29,8 +29,13 @@
     "@angular/forms": "^21.0.0",
     "@angular/platform-browser": "^21.0.0",
     "@angular/router": "^21.0.0",
+    "bootstrap": "5.3.8",
+    "jquery":"3.6.3",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "highlight.js":"11.11.1",
+    "ngx-google-analytics":"14.0.1",
+    "inugami-icons":"0.0.8"
   },
   "devDependencies": {
     "@angular/build": "^21.0.5",

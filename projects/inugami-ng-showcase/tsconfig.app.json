@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json", // On hérite des règles globales
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "src/main.ts" // On déclare explicitement le point d'entrée
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
