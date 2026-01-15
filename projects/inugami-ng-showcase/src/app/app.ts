@@ -5,7 +5,7 @@ import {GaActionEnum, GoogleAnalyticsService} from 'ngx-google-analytics';
 import {filter} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {SiteLink} from './models/website-model';
+import {InuSiteLink} from 'inugami-ng/models';
 import {InugamiNgAsideComponent} from './components/inugami-ng-aside/inugami-ng-aside.component';
 
 @Component({
@@ -28,7 +28,7 @@ export class App implements OnInit{
   private router = inject(Router);
   private scroller = inject(ViewportScroller);
   protected readonly title = signal('inugami-ng-showcase');
-  protected links: WritableSignal<SiteLink[]> = signal<SiteLink[]>([
+  protected links: WritableSignal<InuSiteLink[]> = signal<InuSiteLink[]>([
     {
       title: 'Inugami Framework',
       path: 'https://inugami.io/inugami/framework',

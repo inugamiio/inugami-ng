@@ -1,7 +1,5 @@
 import {Component, OnInit, signal, WritableSignal} from '@angular/core';
-import {IconDefinition, InugamiIconsUtils, InuIcon} from 'inugami-icons';
-import {InuCite} from 'inugami-ng/components/inu-cite';
-import {SiteLink} from '../../models/website-model';
+import { InugamiIconsUtils, InuIcon} from 'inugami-icons';
 
 @Component({
   templateUrl: './icons.view.html',

@@ -5,7 +5,7 @@
     "types": []
   },
   "files": [
-    "src/main.ts" // On déclare explicitement le point d'entrée
+    "src/main.ts"
   ],
   "include": [
     "src/**/*.d.ts"
