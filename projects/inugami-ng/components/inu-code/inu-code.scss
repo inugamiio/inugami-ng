@@ -1,0 +1,22 @@
+.inu-code{
+  fieldset{
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border:0.1rem solid #dddddd;
+    border-left: 0.2rem solid #dddddd;
+
+    &:hover{
+      border-left: 0.2rem solid var(--neutral);
+    }
+    legend{
+      font-size: 120%;
+      background-color:#f1f3f5;
+      padding-left: 1rem;
+    }
+    .source-code{
+      margin-left: 1rem;
+    }
+  }
+}

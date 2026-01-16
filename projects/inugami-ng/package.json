@@ -11,10 +11,15 @@
   },
   "peerDependencies": {
     "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0"
+    "@angular/core": "^21.0.0",
+    "highlight.js": "^11.11.1",
+    "ngx-highlight-js": "^11.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "assets": [
+    "./styles/**/*.scss"
+  ]
 }

@@ -1,0 +1,17 @@
+<div class="inu-code">
+  <fieldset>
+    @if(_title()){
+      <legend>{{_title()}}</legend>
+    }
+
+    @if(sourceCode()){
+      <div class="source-code">
+<pre [inuHighlight]="sourceCode()" lang="java" >
+</pre>
+      </div>
+    }
+
+  </fieldset>
+
+
+</div>

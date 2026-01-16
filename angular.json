@@ -51,6 +51,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "baseHref": "/showcase/",
             "outputPath": "dist/inugami-ng-showcase",
             "browser": "projects/inugami-ng-showcase/src/main.ts",
             "tsConfig": "projects/inugami-ng-showcase/tsconfig.app.json",
@@ -63,6 +64,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/highlight.js/styles/github.min.css",
+              "projects/inugami-ng/styles/inu-default-style.scss",
               "projects/inugami-ng-showcase/src/styles.scss"
             ],
             "scripts": [
@@ -89,7 +92,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/"
             }
           },
           "defaultConfiguration": "production"

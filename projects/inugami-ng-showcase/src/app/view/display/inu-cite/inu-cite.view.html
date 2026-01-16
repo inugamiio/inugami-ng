@@ -1,0 +1,77 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-cite</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>A dedicated component for your documentation</h2>
+      </header>
+      <inu-cite level="success" title="Simple success citation">
+        The inu-cite component enables you to add citations to your applications by leveraging the semantic HTML5
+        <code>cite</code> tag. It is particularly useful for building documentation-based applications
+      </inu-cite>
+    </article>
+
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Supported status levels</h2>
+      </header>
+
+      <p>
+        The inu-cite component supports several severity levels:
+      </p>
+      <ul>
+        <li>info</li>
+        <li>success</li>
+        <li>danger</li>
+        <li>warning</li>
+      </ul>
+
+      @for (level of levels();track level;) {
+        <inu-cite [level]="level" [title]="''+level+' citation'">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed malesuada dolor ac arcu pulvinar,
+          quis feugiat massa dapibus. Nullam vel pretium diam. Proin lacinia ac velit sit amet tristique
+        </inu-cite>
+      }
+
+    </article>
+
+    <!--================================================================================================================
+   =
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Title template</h2>
+      </header>
+
+      <p>
+        The inu-cite component supports several severity levels:
+      </p>
+
+
+      <inu-cite level="info">
+        <ng-template name="title">
+          <p>
+            For larger titles, you can define a custom template.
+          </p>
+        </ng-template>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed malesuada dolor ac arcu pulvinar,
+        quis feugiat massa dapibus. Nullam vel pretium diam. Proin lacinia ac velit sit amet tristique
+      </inu-cite>
+    </article>
+
+
+  </main>
+
+
+</section>

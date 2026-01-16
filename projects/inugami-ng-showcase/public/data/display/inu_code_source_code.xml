@@ -1,0 +1,25 @@
+<xml>
+
+
+    <src name="asserts_usage" type="java" title="Asserts method usage">
+        <![CDATA[
+@UtilityClass
+public class Asserts {
+    //...
+    public static <T> T wrapErrorForSupplierWithException(final ActionWithException action, final ErrorCode errorCode) {
+        return wrapErrorForSupplierWithException(action, errorCode, null);
+    }
+}
+
+public class UserService{
+    // ...
+
+    public void getUserById(final String id) {
+        final UserDTO user = Asserts.wrapErrorForSupplierWithException(()-> userDao.getElementById(id),
+                                                                        UserError.READ_USER_NOT_FOUND);
+    }
+}
+]]>
+    </src>
+
+</xml>
