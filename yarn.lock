@@ -2814,7 +2814,7 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
-highlight.js@11.11.1:
+highlight.js@^11.11.1:
   version "11.11.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.11.1.tgz#fca06fa0e5aeecf6c4d437239135fabc15213585"
   integrity sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==
@@ -3422,6 +3422,13 @@ ngx-google-analytics@14.0.1:
   integrity sha512-PfOtnshSyq15EKevKlFW9IRgH+dTtPG4Q9HJYksuRNYDzjce0eqK3Bf6hz0tAZdyqbzTCyx5g+NgWBfpqQfb2w==
   dependencies:
     tslib "^2.4.0"
+
+ngx-highlight-js@^11.0.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/ngx-highlight-js/-/ngx-highlight-js-11.1.0.tgz#9dcd809894e9a88c0a0e5e683475a444b4e15bdf"
+  integrity sha512-/EKyHnB9VLGUmnchL/i1EzmY/J0fG7e4acmLlVbodCc8dxc5Qk1LP1NsIqZRja0hTWoKdZ75fuIDXuhzPGQmXw==
+  dependencies:
+    tslib "^2.0.0"
 
 node-addon-api@^6.1.0:
   version "6.1.0"

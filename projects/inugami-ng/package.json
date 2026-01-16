@@ -1,12 +1,25 @@
 {
   "name": "inugami-ng",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "license": "GPL-3.0-only",
+  "description": "Inugami project angular library",
+  "keywords": ["inugami",  "angular", "components"],
+  "homepage": "https://inugami.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://https://github.com/inugamiio/inugami-ng.git"
+  },
   "peerDependencies": {
     "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0"
+    "@angular/core": "^21.0.0",
+    "highlight.js": "^11.11.1",
+    "ngx-highlight-js": "^11.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "assets": [
+    "./styles/**/*.scss"
+  ]
 }

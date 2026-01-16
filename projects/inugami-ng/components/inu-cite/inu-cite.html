@@ -1,14 +1,21 @@
 
-<cite class="success">
+<cite [class]="styleClass()">
   <header>
     <span>
       @if(icon()){
-        <inu-icon [icon]="icon()"></inu-icon>
+        <inu-icon [icon]="icon()" [size]="2.5"></inu-icon>
       }
     </span>
-
-    <div>
+    <div class="title">
+      @if(titleTemplate()){
+        <ng-container *ngTemplateOutlet="titleTemplate()"></ng-container>
+      } @else if (title()){
+        {{title()}}
+      }
     </div>
   </header>
-  <ng-content />
+  <div class="content">
+    <ng-content />
+  </div>
+
 </cite>

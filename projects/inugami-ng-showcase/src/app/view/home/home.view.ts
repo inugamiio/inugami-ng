@@ -6,8 +6,6 @@ import {InuCite} from 'inugami-ng/components/inu-cite';
   templateUrl: './home.view.html',
   styleUrls: ['./home.view.scss'],
   imports: [
-    InuIcon,
-    InuCite
   ]
 })
 export class HomeView {
