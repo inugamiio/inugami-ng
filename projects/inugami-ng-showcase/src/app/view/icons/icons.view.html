@@ -3,15 +3,80 @@
     <h1>Inugami-NG : Icons</h1>
   </header>
 
-  <div class="icons">
-    @for (icon of icons();track icon;) {
-      <article>
-        <header>
-          <inu-icon [icon]="icon" [size]="3"></inu-icon>
-          <h3>{{icon}}</h3>
-        </header>
-      </article>
+  <article>
+    <header>
+      <h2>Bring Your Applications to Life with Icons</h2>
+    </header>
+    <p>
+      Icons are an essential part of any application. The human brain is designed to identify
+      shapes and colors; a simple icon is far more recognizable than a long block of text.
+    </p>
+    <p>
+      Inugami provides a comprehensive icon set. Following the core Inugami philosophy,
+      this system can be extended while maintaining a consistent workflow.
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="inu-icon-usage"></inu-code>
+  </article>
 
-    }
-  </div>
+  <article>
+    <header>
+      <h2>Dependency</h2>
+    </header>
+
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="inu-icon-dependency"></inu-code>
+
+    <p>
+      While inugami-icons comes with a built-in set, you have full control over which icons are available in your
+      application. You can use the default set, modify it, or extend it with your own custom icons.
+  </p>
+    <p>
+      To enable icons, you must register the desired set in your main configuration file (usually <code>app.config.ts</code>):
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="inu-icon-config"></inu-code>
+
+    <p>
+      The InugamiIconsUtils utility class is not only used to register an icon set but also serves as a central
+      registry to retrieve a specific icon or list all icons currently defined in your application.
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="InugamiIconsUtils"></inu-code>
+
+    <p>
+      When registering icons, the <code>InugamiIconsUtils</code> utility class expects to receive a list of
+      <code>IconDefinition</code> objects.
+      You can override an icon by redefining it with the same name.
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="IconDefinition"></inu-code>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="icon-set"></inu-code>
+
+    <inu-cite level="success" title="Use Inkscape Directly for Your Icons">
+      <p>
+        Icons can be defined directly in SVG format (using Inkscape, for example) by isolating them into distinct layers.
+        Using a Node.js script, you can then generate the icon set definition—this is exactly how the Inugami icon set
+        is built.
+      </p>
+      <p>
+        The icon source code provides a perfect example:
+        <a href="https://github.com/inugamiio/inugami-icons" target="_blank">https://github.com/inugamiio/inugami-icons</a>
+      </p>
+    </inu-cite>
+
+  </article>
+
+  <article>
+    <header>
+      <h2>Default icons</h2>
+    </header>
+    <div class="icons">
+      @for (icon of icons();track icon;) {
+        <article>
+          <header>
+            <inu-icon [icon]="icon" [size]="3"></inu-icon>
+            <h3>{{icon}}</h3>
+          </header>
+        </article>
+
+      }
+    </div>
+  </article>
+
 </section>
