@@ -89,11 +89,15 @@ export class InuCode {
       const sourceCodeValue = values[0];
       this.sourceCode.set(sourceCodeValue.content!);
 
-      if (sourceCodeValue.title) {
+      if(this.title()){
+        this._title.set(this.title()!);
+      }else if (sourceCodeValue.title) {
         this._title.set(sourceCodeValue.title);
       }
 
-      if (sourceCodeValue.type) {
+      if(this.type()){
+        this._type.set(this.type()!);
+      }else if (sourceCodeValue.type) {
         this._type.set(sourceCodeValue.type);
       }
     }
