@@ -5,7 +5,7 @@ import {GaActionEnum, GoogleAnalyticsService} from 'ngx-google-analytics';
 import {filter} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {InuSiteLink} from 'inugami-ng/models';
+import {InuSiteLink, TARGET_PARENT, TARGET_SELF} from 'inugami-ng/models';
 import {InugamiNgAsideComponent} from './components/inugami-ng-aside/inugami-ng-aside.component';
 
 @Component({
@@ -32,17 +32,20 @@ export class App implements OnInit{
     {
       title: 'Inugami Framework',
       path: 'https://inugami.io/inugami/framework',
-      external: true
+      external: true,
+      target:TARGET_PARENT
     },
     {
       title: 'Inugami Dashboard',
       path: 'https://inugami.io/inugami/dashboard',
-      external: true
+      external: true,
+      target:TARGET_PARENT
     },
     {
       title: 'inugami-project-analysis-maven-plugin',
       path: 'https://inugami.io/maven/inugami_project_analysis_maven_plugin',
-      external: true
+      external: true,
+      target:TARGET_PARENT
     },
     {
       title: 'Inugami NG showcase',
