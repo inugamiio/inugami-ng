@@ -1,8 +1,7 @@
 import {Component, effect, input, signal, WritableSignal} from '@angular/core';
 import {Example, OpenApiComponentSchema, OpenApiPathEndpointResponse} from '../../open-api.model';
 import {InuIcon} from 'inugami-icons';
-import {InuCode} from '../../../inu-code/inu-code';
-import {InternalSourceCode} from '../../../inu-code/code.model';
+import {InuCode,InternalSourceCode} from 'inugami-ng/components/inu-code';
 import {InuOpenApiExtension} from '../inu-open-api-extension/inu-open-api-extension';
 
 @Component({

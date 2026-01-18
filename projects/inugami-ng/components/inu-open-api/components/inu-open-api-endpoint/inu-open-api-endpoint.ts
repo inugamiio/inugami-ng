@@ -6,8 +6,7 @@ import {
   OpenApiPathEndpointResponse
 } from '../../open-api.model';
 import {InuOpenApiParameters} from '../inu-open-api-parameters/inu-open-api-parameters';
-import {InuCode} from '../../../inu-code/inu-code';
-import {InternalSourceCode, SourceCode} from '../../../inu-code/code.model';
+import {InuCode,InternalSourceCode} from 'inugami-ng/components/inu-code';
 import {InuOpenApiResponse} from '../inu-open-api-response/inu-open-api-response';
 import {InuIcon} from 'inugami-icons';
 

@@ -1,19 +1,7 @@
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  OnInit,
-  signal,
-  TemplateRef,
-  viewChildren,
-  WritableSignal
-} from '@angular/core';
-import {InuIcon} from 'inugami-icons';
-import {InugamiTemplateDirective, InuTemplateRegistryService} from 'inugami-ng/directives';
-import {NgTemplateOutlet} from '@angular/common';
-import {OpenApiPathEndpoint, OpenApiPathEndpointParameter} from '../../open-api.model';
-import {InuCode} from '../../../inu-code/inu-code';
+import {Component, input} from '@angular/core';
+import {OpenApiPathEndpointParameter} from '../../open-api.model';
+import {InuCode} from 'inugami-ng/components/inu-code';
+
 const SPACE : string = ' ';
 
 @Component({
