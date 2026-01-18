@@ -14,40 +14,45 @@
               </div>
 
               <span class="button open" [class.displayStatus]="getExampleDisplayStatus(index)">
-                <inu-icon [icon]="getExampleDisplayStatus(index)?'chevron_up':'chevron_down'" [size]="1"></inu-icon>
+                @if(example.description || example.externalValue || example.extensions || getExamplesSource(index)?.content){
+                  <inu-icon [icon]="getExampleDisplayStatus(index)?'chevron_up':'chevron_down'" [size]="1"></inu-icon>
+                }
               </span>
             </div>
-            <div  class="response-example-content" [class.display]="getExampleDisplayStatus(index)">
+            @if(example.description || example.externalValue || example.extensions || getExamplesSource(index)?.content){
+              <div  class="response-example-content" [class.display]="getExampleDisplayStatus(index)">
 
-              @if(example.description || example.externalValue || example.extensions){
-                <dl class="example-content">
-                  @if(example.description){
-                    <dt>Description</dt>
-                    <dd>{{example.description}}</dd>
-                  }
-                  @if(example.externalValue){
-                    <dt>External value</dt>
-                    <dd>{{example.externalValue}}</dd>
-                  }
-
-                  @if(example.extensions){
-                    @for (extension of example.extensions; track extension.name) {
-                      <dt>{{extension.name}}</dt>
-                      <dd><inu-open-api-extension [data]="extension"></inu-open-api-extension></dd>
+                @if(example.description || example.externalValue || example.extensions){
+                  <dl class="example-content">
+                    @if(example.description){
+                      <dt>Description</dt>
+                      <dd>{{example.description}}</dd>
                     }
-                  }
-                </dl>
-              }
+                    @if(example.externalValue){
+                      <dt>External value</dt>
+                      <dd>{{example.externalValue}}</dd>
+                    }
 
-              @if(getExamplesSource(index)){
-                @if(getExamplesSource(index)?.content && getExamplesSource(index)?.content !=''){
-                  <inu-code [source]="getExamplesSource(index)?.content"
-                            [type]="getExamplesSource(index)?.type"
-                            [title]="getExamplesSource(index)?.title"></inu-code>
+                    @if(example.extensions){
+                      @for (extension of example.extensions; track extension.name) {
+                        <dt>{{extension.name}}</dt>
+                        <dd><inu-open-api-extension [data]="extension"></inu-open-api-extension></dd>
+                      }
+                    }
+                  </dl>
                 }
-              }
 
-            </div>
+                @if(getExamplesSource(index)?.content){
+                  @if(getExamplesSource(index)?.content && getExamplesSource(index)?.content !=''){
+                    <inu-code [source]="getExamplesSource(index)?.content"
+                              [type]="getExamplesSource(index)?.type"
+                              [title]="getExamplesSource(index)?.title"></inu-code>
+                  }
+                }
+
+              </div>
+            }
+
 
           </div>
         }

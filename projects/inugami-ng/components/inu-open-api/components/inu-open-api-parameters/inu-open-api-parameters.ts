@@ -37,7 +37,7 @@ export class InuOpenApiParameters{
   // GETTERS
   //==================================================================================================================
   getRowClass(index:number, first:boolean, odd:boolean, styleclass?:string):string{
-    const result :string[]= [`index-${index}`];
+    const result :string[]= [`flex-table-body-row index-${index}`];
     if(first){
       result.push('first');
     }

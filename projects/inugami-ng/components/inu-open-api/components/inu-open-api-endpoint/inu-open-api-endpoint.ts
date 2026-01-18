@@ -6,7 +6,7 @@ import {
   OpenApiPathEndpointResponse
 } from '../../open-api.model';
 import {InuOpenApiParameters} from '../inu-open-api-parameters/inu-open-api-parameters';
-import {InuCode,InternalSourceCode} from 'inugami-ng/components/inu-code';
+import {InuCode, InternalSourceCode} from 'inugami-ng/components/inu-code';
 import {InuOpenApiResponse} from '../inu-open-api-response/inu-open-api-response';
 import {InuIcon} from 'inugami-icons';
 
@@ -198,7 +198,7 @@ export class InuOpenApiEndpoint {
   }
 
   getRowClass(index: number, first: boolean, odd: boolean, styleclass?: string): string {
-    const result: string[] = [`index-${index}`];
+    const result: string[] = [`flex-table-body-row index-${index}`];
     if (first) {
       result.push('first');
     }
@@ -210,5 +210,22 @@ export class InuOpenApiEndpoint {
       result.push(styleclass);
     }
     return result.join(SPACE);
+  }
+
+  computeStatusStyleClass(status?:string): string {
+    const result = ['inu-endpoint-response-status'];
+
+    const httpStatus = this.convertToNumber(status);
+    if(httpStatus<400){
+      result.push('success');
+    }
+    else if(httpStatus<500){
+      result.push('warning');
+    }
+    else{
+      result.push('error');
+    }
+
+    return result.join(SPACE)
   }
 }

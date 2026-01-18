@@ -77,26 +77,20 @@
 
             <div class="content">
 
-              <table class="response-table">
-                <tbody>
-                <tr>
-                  <th class="inu-endpoint-response-status">Status</th>
-                  <th>Description</th>
-                </tr>
-                </tbody>
-                <tbody>
+              <div class="response-table">
+                <div class="response-table-body">
                   @for (response of data()?.responses; track response.status; let index = $index; let isFirst = $first; let isOdd = $odd) {
-                    <tr [class]="getRowClass(index,isFirst, isOdd)">
-                      <td class="http-code">
-                        <span class="http-code">{{ response.status }}</span>
-                      </td>
-                      <td class="description-content">
+                    <div [class]="getRowClass(index,isFirst, isOdd)">
+                      <div [class]="computeStatusStyleClass(response.status)">
+                        {{ response.status }}
+                      </div>
+                      <div class="description-content">
                         <inu-open-api-response [data]="response" [schemas]="schemas()"></inu-open-api-response>
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   }
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
           </fieldset>
         }
