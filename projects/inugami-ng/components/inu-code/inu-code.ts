@@ -46,8 +46,11 @@ export class InuCode {
   }
 
   init(): void {
-    console.log('AAA')
     const url = this.url();
+    if(this.title()){
+      this._title.set(this.title()!);
+    }
+
     if (url) {
       this.loadFormUrl(url);
     } else {
@@ -84,16 +87,23 @@ export class InuCode {
 
 
   initSourceCode(data: SourceCode[]) {
+
     const values = data.filter(i => this.tag() === i.name);
     if (values.length > 0) {
       const sourceCodeValue = values[0];
       this.sourceCode.set(sourceCodeValue.content!);
 
-      if (sourceCodeValue.title) {
+      const currentTitle = this.title();
+
+      if(this.title()){
+        this._title.set(this.title()!);
+      }else if (sourceCodeValue.title) {
         this._title.set(sourceCodeValue.title);
       }
 
-      if (sourceCodeValue.type) {
+      if(this.type()){
+        this._type.set(this.type()!);
+      }else if (sourceCodeValue.type) {
         this._type.set(sourceCodeValue.type);
       }
     }
@@ -104,7 +114,6 @@ export class InuCode {
   // PARSE
   //==================================================================================================================
   parseData(response: string, url: string): SourceCode[] {
-    console.log('response',response)
     const parser = new DOMParser();
     const node = parser.parseFromString(response, "text/xml");
     const sources = node.getElementsByTagName("src");

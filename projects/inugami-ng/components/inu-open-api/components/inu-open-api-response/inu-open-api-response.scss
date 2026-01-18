@@ -1,0 +1,29 @@
+/*
+ */
+.inu-open-api-response{
+  display: flex;
+  flex-direction: column;
+
+  .response-examples{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .response-example{
+
+      padding: 1rem;
+      border-top: 0.05rem solid var(--neutral) ;
+      &.first{
+        border-top: none;
+      }
+      .response-example-header{
+        display: flex;
+        flex-direction: row;
+        .response-example-header-labels{
+          flex: 1;
+        }
+      }
+    }
+  }
+
+}

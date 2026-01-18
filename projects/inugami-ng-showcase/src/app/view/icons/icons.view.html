@@ -3,15 +3,198 @@
     <h1>Inugami-NG : Icons</h1>
   </header>
 
-  <div class="icons">
-    @for (icon of icons();track icon;) {
-      <article>
-        <header>
-          <inu-icon [icon]="icon" [size]="3"></inu-icon>
-          <h3>{{icon}}</h3>
-        </header>
-      </article>
+  <article>
+    <header>
+      <h2>Bring Your Applications to Life with Icons</h2>
+    </header>
+    <p>
+      Icons are an essential part of any application. The human brain is designed to identify
+      shapes and colors; a simple icon is far more recognizable than a long block of text.
+    </p>
+    <p>
+      Inugami provides a comprehensive icon set. Following the core Inugami philosophy,
+      this system can be extended while maintaining a consistent workflow.
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="inu-icon-usage"></inu-code>
+  </article>
 
-    }
-  </div>
+  <article>
+    <header>
+      <h2>Dependency</h2>
+    </header>
+
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="inu-icon-dependency"></inu-code>
+
+    <p>
+      While inugami-icons comes with a built-in set, you have full control over which icons are available in your
+      application. You can use the default set, modify it, or extend it with your own custom icons.
+    </p>
+    <p>
+      To enable icons, you must register the desired set in your main configuration file (usually
+      <code>app.config.ts</code>):
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="inu-icon-config"></inu-code>
+
+    <p>
+      The InugamiIconsUtils utility class is not only used to register an icon set but also serves as a central
+      registry to retrieve a specific icon or list all icons currently defined in your application.
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="InugamiIconsUtils"></inu-code>
+
+    <p>
+      When registering icons, the <code>InugamiIconsUtils</code> utility class expects to receive a list of
+      <code>IconDefinition</code> objects.
+      You can override an icon by redefining it with the same name.
+    </p>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="IconDefinition"></inu-code>
+    <inu-code url="data/display/inu_icon_source_code.xml" tag="icon-set"></inu-code>
+
+    <inu-cite level="success" title="Use Inkscape Directly for Your Icons">
+      <p>
+        Icons can be defined directly in SVG format (using Inkscape, for example) by isolating them into distinct
+        layers.
+        Using a Node.js script, you can then generate the icon set definition—this is exactly how the Inugami icon set
+        is built.
+      </p>
+      <p>
+        The icon source code provides a perfect example:
+        <a href="https://github.com/inugamiio/inugami-icons"
+           target="_blank">https://github.com/inugamiio/inugami-icons</a>
+      </p>
+    </inu-cite>
+
+  </article>
+
+  <article>
+    <header>
+      <h2>Default icons</h2>
+    </header>
+    <div class="icons">
+      @for (icon of icons(); track icon; ) {
+        <article>
+          <header>
+            <inu-icon [icon]="icon" [size]="3"></inu-icon>
+            <h3>{{ icon }}</h3>
+          </header>
+        </article>
+
+      }
+    </div>
+  </article>
+
+
+  <article>
+    <header>
+      <h2>Best Practices for Icon Design (Inkscape)</h2>
+    </header>
+
+    <p>
+      To ensure your icons are processed correctly by the Inugami build script, please follow these guidelines when
+      working in Inkscape.
+    </p>
+
+    <ol>
+      <li>
+        <strong>Document Setup</strong>
+        <dl>
+          <dt>Grid System</dt>
+          <dd>Use a fixed-size document (e.g., 24x24 px).</dd>
+
+          <dt>ViewBox</dt>
+          <dd>Ensure your main drawing area matches the viewBox defined in the build script (default is 0 0 24 24).</dd>
+
+          <dt>Units</dt>
+          <dd>Always use pixels (px) as the primary unit to avoid scaling issues.</dd>
+        </dl>
+      </li>
+
+      <li>
+        <strong>Layer Organization</strong>
+        <dl>
+          <dt>Naming</dt>
+          <dd>The script uses the Layer Label (inkscape:label) as the icon's unique ID.</dd>
+
+          <dt>Layer as Icon</dt>
+          <dd>Each icon must be isolated in its own top-level layer.</dd>
+
+
+          <dt>Exclusion</dt>
+          <dd>To prevent a layer from being exported, prefix its name with an underscore (e.g., _background or
+            _draft).
+          </dd>
+
+        </dl>
+      </li>
+
+      <li>
+        <strong>Paths and Geometry</strong>
+        <dl>
+          <dt>Convert to Path</dt>
+          <dd>Ensure all shapes (circles, rectangles, text) are converted to paths (Ctrl+Shift+C).</dd>
+
+          <dt>Simplicity</dt>
+          <dd>Use Path > Union to combine overlapping shapes into a single path when possible. This reduces file size
+            and improves rendering performance.
+          </dd>
+
+          <dt>Grouping</dt>
+          <dd>Avoid unnecessary nested groups within a layer unless strictly required for multi-color icons.</dd>
+        </dl>
+      </li>
+
+      <li>
+        <strong>Handling Colors</strong>
+        <dl>
+          <dt>Monochrome Icons</dt>
+          <dd>For standard UI icons, use a solid black fill. The script will allow the application to override the color
+            via CSS.
+          </dd>
+
+          <dt>Multi-color Icons (Brands/Flags)</dt>
+          <dd>You can use specific colors. The script is configured to preserve styles for complex assets like the
+            Inugami logo or national flags.
+          </dd>
+
+          <dt>Cleaning</dt>
+          <dd>Avoid using "Filters" or "Blurs" as they often rely on complex SVG definitions that may not render
+            consistently across all browsers.
+          </dd>
+
+        </dl>
+      </li>
+
+      <li>
+        <strong>Alignment</strong>
+        <dl>
+          <dt>Centering</dt>
+          <dd>Always center your artwork within the 24x24 frame.</dd>
+
+          <dt>Safe Zone</dt>
+          <dd>
+            <p>
+              To maintain a perfect visual balance across the entire set, we recommend setting up Guides (marge/safe
+              zone) within Inkscape
+            </p>
+            <ul>
+              <li>Safe Zone (22x22px) : Place guides at 1px from each edge. Your main icon shapes should stay within this area to avoid being cut off or appearing too close to other UI elements.</li>
+              <li>Action Zone (20x20px)</li>
+              <li>For denser icons, try to keep the "heavy" part of the design within 2px margins.</li>
+              <li>Optical Centering: Use a horizontal and vertical guide at 12px to ensure your icon is optically centered, which is sometimes different from geometric centering.</li>
+            </ul>
+          </dd>
+
+
+        </dl>
+      </li>
+    </ol>
+
+    <inu-cite level="success" title="Pro Tip">
+      <p>
+        In Inkscape, you can create these guides once and lock them, or save your 24x24 setup as a Template for all future Inugami icons.
+      </p>
+    </inu-cite>
+
+
+  </article>
+
 </section>

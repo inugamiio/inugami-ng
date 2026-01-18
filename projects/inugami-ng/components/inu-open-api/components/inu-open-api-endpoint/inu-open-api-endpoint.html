@@ -1,0 +1,107 @@
+@if (data()) {
+  <article [class]="styleClass()">
+    <header>
+      <h2 (click)="toggleDisplay()">
+        <span class="inu-endpoint-verb">{{ data()?.verb }}</span>
+        <span class="inu-endpoint-url">{{ data()?.url }}</span>
+      </h2>
+      <span class="button open" (click)="toggleDisplay()">
+        <inu-icon [icon]="display() == 'inu-open-api-endpoint-content-display show'?'chevron_up':'chevron_down'" [size]="1"></inu-icon>
+      </span>
+    </header>
+
+    <div class="inu-open-api-endpoint-content">
+      <div [class]="display()">
+        <!--==============================================================================================================
+         = INFORMATION
+        ===============================================================================================================-->
+        @if (parameters()) {
+          <fieldset class="information">
+            <label>Information</label>
+            <div class="content">
+              <inu-open-api-parameters [data]="parameters()"></inu-open-api-parameters>
+            </div>
+          </fieldset>
+        }
+
+        <!--==============================================================================================================
+         = HEADERS
+        ===============================================================================================================-->
+        @if (headers()) {
+          <fieldset class="headers">
+            <label>Headers</label>
+            <div class="content">
+              <inu-open-api-parameters [data]="headers()"></inu-open-api-parameters>
+            </div>
+          </fieldset>
+        }
+
+        <!--==============================================================================================================
+         = OPTION
+        ===============================================================================================================-->
+        @if (options()) {
+          <fieldset class="options">
+            <label>Options</label>
+            <div class="content">
+              <inu-open-api-parameters [data]="options()"></inu-open-api-parameters>
+            </div>
+          </fieldset>
+        }
+
+        <!--==============================================================================================================
+         = REQUEST
+        ===============================================================================================================-->
+        @if (data()?.requestBody) {
+          <fieldset class="request">
+            <label>Request</label>
+            <div class="content">
+              <div class="description">{{ data()?.requestBody?.description! }}</div>
+              <div class="content-type">{{ data()?.requestBody?.contentType! }}</div>
+
+              @if (request()) {
+                <div class="schema">
+                  <inu-code [source]="request()?.content" [type]="request()?.type"
+                            [title]="request()?.title"></inu-code>
+                </div>
+              }
+            </div>
+          </fieldset>
+        }
+        <!--==============================================================================================================
+        = RESPONSE
+        ===============================================================================================================-->
+
+        @if (data()?.responses) {
+          <fieldset class="response">
+            <label>Response</label>
+
+            <div class="content">
+
+              <table class="response-table">
+                <tbody>
+                <tr>
+                  <th class="inu-endpoint-response-status">Status</th>
+                  <th>Description</th>
+                </tr>
+                </tbody>
+                <tbody>
+                  @for (response of data()?.responses; track response.status; let index = $index; let isFirst = $first; let isOdd = $odd) {
+                    <tr [class]="getRowClass(index,isFirst, isOdd)">
+                      <td class="http-code">
+                        <span class="http-code">{{ response.status }}</span>
+                      </td>
+                      <td class="description-content">
+                        <inu-open-api-response [data]="response" [schemas]="schemas()"></inu-open-api-response>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+        }
+      </div>
+    </div>
+  </article>
+}
+

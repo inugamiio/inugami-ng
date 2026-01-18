@@ -1,0 +1,67 @@
+<xml>
+  <src name="inu-cite-import" type="typescript" title="Import inu-cite">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuCite} from 'inugami-ng/components/inu-cite';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuCite
+  ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
+
+
+  <src name="inu-code-usage" type="html" title="inu-code usage">
+    <![CDATA[
+<inu-cite level="success" title="Simple success citation">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Sed eget libero quis tellus <strong>fermentum</strong> vehicula quis
+</inu-cite>
+]]>
+  </src>
+
+
+  <src name="inu-code-usage-with-template" type="html" title="inu-code usage with tempalte">
+    <![CDATA[
+<inu-cite level="info">
+  <ng-template name="title">
+    <p>
+      For larger titles, you can define a custom template.
+    </p>
+  </ng-template>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed malesuada dolor ac arcu pulvinar,
+    quis feugiat massa dapibus. Nullam vel pretium diam. Proin lacinia ac velit sit amet tristique
+  </p>
+</inu-cite>
+]]>
+  </src>
+
+  <src name="inu-cite-import-directive" type="typescript" title="Template name directive">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuCite} from 'inugami-ng/components/inu-cite';
+import {InugamiTemplateDirective} from 'inugami-ng/directives';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuCite,
+    InugamiTemplateDirective
+  ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
+</xml>

@@ -1,0 +1,78 @@
+<xml>
+  <src name="inu-icon-usage" type="xml" title="inu-icon usage">
+    <![CDATA[
+ <inu-icon icon="approval" [size]="3"></inu-icon>
+]]>
+  </src>
+
+  <src name="inu-icon-dependency" type="json" title="NPM dependency">
+    <![CDATA[
+ {
+  "name": "my-application",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "npm@11.6.2",
+  "dependencies": {
+    "@angular/common": "^21.0.0",
+    //...
+
+    "inugami-icons":"0.0.8"
+  }
+}
+]]>
+  </src>
+
+  <src name="inu-icon-config" type="typescript" title="Configure icons set">
+    <![CDATA[
+import { INUGAMI_DEFAULT_ICONS, InugamiIconsUtils } from 'inugami-icons';
+
+InugamiIconsUtils.register(INUGAMI_DEFAULT_ICONS);
+
+export const appConfig: ApplicationConfig = {
+  // ...
+};
+
+]]>
+  </src>
+
+
+  <src name="InugamiIconsUtils" type="typescript" title="InugamiIconsUtils">
+    <![CDATA[
+export class InugamiIconsUtils {
+    public static getIcon(name?: string|null): string | undefined { }
+    public static register(icons: IconDefinition[]) { }
+    public static getAllIcons(): string[] { }
+}
+]]>
+  </src>
+
+  <src name="IconDefinition" type="typescript" title="IconDefinition">
+    <![CDATA[
+ export interface IconDefinition{
+  name:string;
+  content:string;
+  }
+]]>
+  </src>
+
+  <src name="icon-set" type="typescript" title="Icons set">
+    <![CDATA[
+import { IconDefinition } from "./inugami-icons.model";
+
+export const INUGAMI_DEFAULT_ICONS :IconDefinition[] = [
+        {
+            'name':'approval',
+            'content' : '<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><g class="approval"><g transform="matrix(0.1295838,0,0,0.1295838,8.9142856,11.348572)" sodipodi:insensitive="true"><g><path d="m 23.8125,-87.577083 20.725695,15.875 25.576388,-3.527779 9.701389,24.253474 24.253478,9.701388 -3.52778,25.576389 15.875,20.7256948 -15.875,20.7256952 3.52778,25.576388 -24.253478,9.701389 -9.701389,24.253473 -25.576388,-3.527778 -20.725695,15.875 -20.7256955,-15.875 -25.5763885,3.527778 -9.701388,-24.253473 -24.253474,-9.701389 3.527779,-25.576388 -15.875,-20.7256952 15.875,-20.7256948 -3.527779,-25.576389 24.253474,-9.701388 9.701388,-24.253474 25.5763885,3.527779 z" fill="#8bc34a" style="stroke-width:1.59515"></path><path d="M 70.555555,-36.424305 10.583333,23.547917 -14.111112,-1.1465281 -26.458334,11.200696 10.583333,48.242362 82.902778,-24.077083 Z" fill="#ccff90" style="stroke-width:1.59515"></path></g></g></g></svg>'
+        }
+,
+        {
+            'name':'bug',
+            'content' : '<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"><g sodipodi:insensitive="true" class="bug"><path d="M 12,2.3999996 C 8.7407839,2.3999996 5.9999998,5.1916158 5.9999998,8.76 V 10.8 H 18 V 8.76 C 18,5.1916158 15.2592,2.3999996 12,2.3999996 Z M 5.9999998,15.240001 V 13.2 H 10.8 v 8.271681 C 8.0950879,20.885921 5.9999998,18.35984 5.9999998,15.240001 Z M 13.2,21.471681 C 15.90496,20.885921 18,18.35984 18,15.24 V 13.2 H 13.2 Z M 0.35156758,5.6484638 3.5999998,8.8969599 V 10.8 H -3.2404339e-7 v 2.4 H 3.5999998 v 1.90288 L 0.35137567,18.35152 2.0484318,20.04864 4.0440637,18.05296 C 5.161488,21.48624 8.2687522,24 12,24 c 3.7312,0 6.8384,-2.51376 7.95584,-5.94688 l 1.99552,1.99552 1.69712,-1.69712 -3.248479,-3.24848 V 13.2 H 24 V 10.8 H 20.400001 V 8.89712 l 3.24864,-3.2486562 -1.69712,-1.69704 L 19.956,5.94704 C 18.83856,2.5137598 15.7312,-5.3742943e-7 12,-5.3742943e-7 8.2687998,-5.3742943e-7 5.1615679,2.5136957 4.0441118,5.9469119 L 2.0486237,3.9514238 Z" fill-rule="evenodd"></path></g></svg>'
+        }
+        //...
+]
+]]>
+  </src>
+
+
+</xml>

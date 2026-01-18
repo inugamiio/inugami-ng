@@ -21,6 +21,49 @@
   --danger-light: #e5766c;
   --warning: #efad32;
   --warning-light: #e0b971;
+  --background: #ffffff;
+  --endpoint-font-color: #3b4151;
+  --endpoint-verb-font-color: #3b4151;
+  /** GET---------------------------------------*/
+  --endpoint-get-background: #d9d6fe;
+  --endpoint-get-background-darker: #3f5470;
+  --endpoint-get-detail-background: #f7f7ff;
+
+  /** HEAD-------------------------------------*/
+  --endpoint-head-background: #e7ddbd;
+  --endpoint-head-background-darker: #443f70;
+  --endpoint-head-detail-background: #f9fbff;
+
+  /** POST---------------------------------------*/
+  --endpoint-post-background: #bef0c6;
+  --endpoint-post-background-darker: #457040;
+  --endpoint-post-detail-background: #f2fcf4;
+
+  /** PUT----------------------------------------*/
+  --endpoint-put-background: #e1d2b5;
+  --endpoint-put-background-darker: #5f5033;
+  --endpoint-put-detail-background: #fcfff1;
+
+  /** PATCH-------------------------------------*/
+  --endpoint-patch-background: #92d0cd;
+  --endpoint-patch-background-darker: #21524e;
+  --endpoint-patch-detail-background: #dafffc;
+
+  /** DELETE-----------------------------------*/
+  --endpoint-delete-background: #fecdca;
+  --endpoint-delete-background-darker: #623F55;
+  --endpoint-delete-detail-background: #fff5f4;
+
+  /** OPTIONS*/
+  --endpoint-option-background: #ffd4e0;
+  --endpoint-option-background-darker: #372E34;
+  --endpoint-option-detail-background: #fff6f9;
+
+
+  /** TRACE-----------------------------------*/
+  --endpoint-trace-background: #c1ccda;
+  --endpoint-trace-background-darker: #e6ebf5;
+  --endpoint-trace-detail-background: #dbdfe7;
 }
 
 .inu-red{

@@ -10,12 +10,52 @@
     =================================================================================================================-->
     <article>
       <header>
-        <h2></h2>
+        <h2>Simplify Adding Code Examples to Your Angular Applications</h2>
+
+        <p>
+          Many documentation-driven applications require the inclusion of code examples. While various libraries handle syntax highlighting effectively, the challenges of writing and maintaining these examples remain unresolved.
+        </p>
+
+        <p>
+          The <code>inu-code</code> component takes a different approach. Instead of embedding examples directly into
+          your pages, it allows you to store them in a separate XML file. This method offers several advantages:
+        </p>
+
+        <dl>
+          <dt>Easier Maintenance</dt>
+          <dd>A single file contains all your examples. Since they are stored in <code>XML</code> format, they can even be easily automated.</dd>
+
+          <dt>Reduced Application Bundle Size</dt>
+          <dd>
+            Hardcoding resources directly into an Angular application increases its overall size. By moving these to
+            external files, you mechanically reduce the application's weight, leading to faster loading times.
+          </dd>
+        </dl>
+
+
       </header>
 
-      <inu-code url="data/display/inu_code_source_code.xml" tag="asserts_usage"></inu-code>
+      <inu-code url="data/display/inu_code_source_code.xml" tag="inu-code-import"></inu-code>
+      <inu-code url="data/display/inu_code_source_code.xml" tag="inu-code-usage" title="my-app.view.html"></inu-code>
+
+<inu-cite level="success" title="Optimized HTTP Requests">
+<p>
+  The example retrieval mechanism caches all fetched elements. If you use the same file for multiple examples, only a single HTTP request will be performed.
+</p>
+</inu-cite>
+
     </article>
 
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+      <inu-code url="data/display/inu_code_source_code.xml" tag="asserts_usage"></inu-code>
+
+      <inu-code url="data/display/inu_code_source_code.xml" tag="inu-code-usage"></inu-code>
+
+      <inu-code url="data/display/inu_code_source_code.xml" tag="inu-code-usage-external-file"></inu-code>
+    </article>
 
   </main>
 

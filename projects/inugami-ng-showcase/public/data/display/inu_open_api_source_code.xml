@@ -1,0 +1,25 @@
+<xml>
+  <src name="inu-open-api-import" type="typescript" title="Import inu-code">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuOpenApi} from 'inugami-ng/components/inu-open-api';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuOpenApi
+  ]
+})
+export class MyAppView {
+}
+]]>
+  </src>
+
+  <src name="usage" type="xml" title="Usage of inu-open-api">
+    <![CDATA[
+<inu-open-api url="data/display/inu_open_api_content.json"></inu-open-api>
+]]>
+  </src>
+
+</xml>

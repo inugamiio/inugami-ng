@@ -1,0 +1,66 @@
+<div class="inu-open-api-parameters">
+  @if (data()) {
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Exemples</th>
+      </tr>
+      </thead>
+      <tbody>
+
+        @for (parameter of data(); track parameter.name; let index = $index; let isFirst = $first; let isOdd = $odd) {
+          <tr [class]="getRowClass(index,isFirst, isOdd , (parameter.deprecated?'deprecated': ''))">
+            <td>
+              <span>{{parameter.name}}</span>
+              @if (parameter.required) {
+                <span class="required"><span class="label"></span></span>
+              } @else {
+                <span></span>
+              }
+            </td>
+            <td>{{parameter.schema?.type}}</td>
+            <td>{{parameter.description}}</td>
+            <td>
+              @if(parameter.example){
+                <div class="parameters-main-example">
+                  <inu-code [source]="parameter.example"></inu-code>
+                </div>
+              }
+
+              @if(parameter.examples && parameter.examples.length>0){
+                <div class="parameters-examples">
+                  @for (example of parameter.examples; track example.name; let paramIndex = $index; let firstExample = $first; let oddExample = $odd) {
+                    <div [class]="getRowClass(paramIndex,firstExample, oddExample ,'parameter-example')">
+                      <div  [class]="getParameterClass(paramIndex,'parameter-example-header')" (click)="toggleExample(paramIndex)">
+                        {{example.name}}
+                      </div>
+                      <dl [class]="getParameterClass(paramIndex,'example-content')">
+                        <dt>Summary</dt>
+                        <dd>{{example.summary}}</dd>
+
+                        <dt>External value</dt>
+                        <dd>{{example.externalValue}}</dd>
+
+                        <dt>Description</dt>
+                        <dd>{{example.description}}</dd>
+
+                        <dt>Value</dt>
+                        <dd><inu-code [source]="example.value"></inu-code></dd>
+
+                      </dl>
+                    </div>
+                  }
+                </div>
+              }
+
+            </td>
+          </tr>
+        }
+
+      </tbody>
+    </table>
+  }
+</div>

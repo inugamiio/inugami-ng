@@ -1,5 +1,21 @@
 <xml>
+  <src name="inu-code-import" type="typescript" title="Import inu-code">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuOpenApi} from 'inugami-ng/components/inu-code';
 
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuOpenApi
+  ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
 
     <src name="asserts_usage" type="java" title="Asserts method usage">
         <![CDATA[
@@ -21,5 +37,40 @@ public class UserService{
 }
 ]]>
     </src>
+
+  <src name="inu-code-usage" type="xml" title="inu-code usage">
+    <![CDATA[
+<inu-code url="data/display/inu_code_source_code.xml" tag="asserts_usage"></inu-code>
+]]>
+  </src>
+
+  <src name="inu-code-usage-external-file" type="xml" title="External example file">
+    <![CDATA[
+<xml>
+<!-- my example :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+<src name="asserts_usage" type="java" title="Asserts method usage">
+        <![CDATA[
+@UtilityClass
+public class Asserts {
+    //...
+    public static <T> T wrapErrorForSupplierWithException(final ActionWithException action, final ErrorCode errorCode) {
+        return wrapErrorForSupplierWithException(action, errorCode, null);
+    }
+}
+
+public class UserService{
+    // ...
+
+    public void getUserById(final String id) {
+        final UserDTO user = Asserts.wrapErrorForSupplierWithException(()-> userDao.getElementById(id),
+                                                                        UserError.READ_USER_NOT_FOUND);
+    }
+}
+]/]>
+  </src>
+
+</xml>
+]]>
+  </src>
 
 </xml>
