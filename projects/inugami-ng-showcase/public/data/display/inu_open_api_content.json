@@ -1,0 +1,1078 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/ws/user": {
+            "get": {
+                "tags": [
+                    "user-rest-controller"
+                ],
+                "operationId": "search",
+                "parameters": [
+                    {
+                        "name": "x-device-identifier",
+                        "in": "header",
+                        "description": "Unique device identifier",
+                        "example": "821c15b3-db80-4209-be71-7331df86d953"
+                    },
+                    {
+                        "name": "x-correlation-id",
+                        "in": "header",
+                        "description": "User session identifier",
+                        "example": "15b634d6-8ef1-48d0-96d2-ea27931527e9"
+                    },
+                    {
+                        "name": "x-conversation-id",
+                        "in": "header",
+                        "description": "Functionnal process identifier",
+                        "example": "register_new_user"
+                    },
+                    {
+                        "name": "x-b3-traceid",
+                        "in": "header",
+                        "description": "Request identifier between each internal applications",
+                        "example": "584eb91e-e10b-47c6-b14e-8dca1641a97a"
+                    },
+                    {
+                        "name": "x-authorization-token",
+                        "in": "header",
+                        "description": "User Jwt token"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Basic authorization"
+                    },
+                    {
+                        "name": "x-device-type",
+                        "in": "header",
+                        "description": "Device type (mobile phone, desktop, ...)"
+                    },
+                    {
+                        "name": "x-device-version",
+                        "in": "header",
+                        "description": "Device version (Android 16, Windows 11, ...)"
+                    },
+                    {
+                        "name": "x-front-version",
+                        "in": "header",
+                        "description": "Fronted application version"
+                    },
+                    {
+                        "name": "x-application",
+                        "in": "header",
+                        "description": "Fronted application name"
+                    },
+                    {
+                        "name": "searchRequest",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/UserDTOSearchRequestAPI"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Nominal": {
+                                        "description": "Nominal",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "audit": {
+                                                        "createdBy": "system",
+                                                        "createdDate": "2023-05-27T12:00:00",
+                                                        "lastModifiedBy": "user-1",
+                                                        "lastModifiedDate": "2023-06-01T12:00:00",
+                                                        "version": 1
+                                                    },
+                                                    "email": "john.smith@mock.org",
+                                                    "firstName": "John",
+                                                    "lastName": "Smith",
+                                                    "uid": "bb895294-efe7-484b-b670-14d004eaf461"
+                                                }
+                                            ],
+                                            "nbFoundItems": 1,
+                                            "next": false,
+                                            "page": 0,
+                                            "pageSize": 10,
+                                            "previous": false,
+                                            "totalPages": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user-rest-controller"
+                ],
+                "operationId": "updateForce",
+                "parameters": [
+                    {
+                        "name": "x-device-identifier",
+                        "in": "header",
+                        "description": "Unique device identifier",
+                        "example": "821c15b3-db80-4209-be71-7331df86d953"
+                    },
+                    {
+                        "name": "x-correlation-id",
+                        "in": "header",
+                        "description": "User session identifier",
+                        "example": "15b634d6-8ef1-48d0-96d2-ea27931527e9"
+                    },
+                    {
+                        "name": "x-conversation-id",
+                        "in": "header",
+                        "description": "Functionnal process identifier",
+                        "example": "register_new_user"
+                    },
+                    {
+                        "name": "x-b3-traceid",
+                        "in": "header",
+                        "description": "Request identifier between each internal applications",
+                        "example": "584eb91e-e10b-47c6-b14e-8dca1641a97a"
+                    },
+                    {
+                        "name": "x-authorization-token",
+                        "in": "header",
+                        "description": "User Jwt token"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Basic authorization"
+                    },
+                    {
+                        "name": "x-device-type",
+                        "in": "header",
+                        "description": "Device type (mobile phone, desktop, ...)"
+                    },
+                    {
+                        "name": "x-device-version",
+                        "in": "header",
+                        "description": "Device version (Android 16, Windows 11, ...)"
+                    },
+                    {
+                        "name": "x-front-version",
+                        "in": "header",
+                        "description": "Fronted application version"
+                    },
+                    {
+                        "name": "x-application",
+                        "in": "header",
+                        "description": "Fronted application name"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/UserAPI"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Nominal": {
+                                        "description": "Nominal",
+                                        "value": [
+                                            {
+                                                "audit": {
+                                                    "createdBy": "system",
+                                                    "createdDate": "2023-05-27T12:00:00",
+                                                    "lastModifiedBy": "user-1",
+                                                    "lastModifiedDate": "2023-06-01T12:00:00",
+                                                    "version": 1
+                                                },
+                                                "email": "john.smith@mock.org",
+                                                "firstName": "John",
+                                                "lastName": "Smith",
+                                                "uid": "bb895294-efe7-484b-b670-14d004eaf461"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-3_0  |  functional  |  USER        |  invalid data for user modification",
+                                            "USER-3_2  |  functional  |  USER        |  uid is required for user modification",
+                                            "USER-3_3  |  functional  |  USER        |  invalid firstname",
+                                            "USER-3_4  |  functional  |  USER        |  invalid lastname",
+                                            "USER-3_5  |  functional  |  USER        |  invalid email"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 400,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-3_0",
+                                                    "errorType": "functional",
+                                                    "message": "invalid data for user modification",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-3_1  |  functional  |  USER        |  users not found"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 404,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-3_1",
+                                                    "errorType": "functional",
+                                                    "message": "users not found",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 404
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "user-rest-controller"
+                ],
+                "operationId": "create",
+                "parameters": [
+                    {
+                        "name": "x-device-identifier",
+                        "in": "header",
+                        "description": "Unique device identifier",
+                        "example": "821c15b3-db80-4209-be71-7331df86d953"
+                    },
+                    {
+                        "name": "x-correlation-id",
+                        "in": "header",
+                        "description": "User session identifier",
+                        "example": "15b634d6-8ef1-48d0-96d2-ea27931527e9"
+                    },
+                    {
+                        "name": "x-conversation-id",
+                        "in": "header",
+                        "description": "Functionnal process identifier",
+                        "example": "register_new_user"
+                    },
+                    {
+                        "name": "x-b3-traceid",
+                        "in": "header",
+                        "description": "Request identifier between each internal applications",
+                        "example": "584eb91e-e10b-47c6-b14e-8dca1641a97a"
+                    },
+                    {
+                        "name": "x-authorization-token",
+                        "in": "header",
+                        "description": "User Jwt token"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Basic authorization"
+                    },
+                    {
+                        "name": "x-device-type",
+                        "in": "header",
+                        "description": "Device type (mobile phone, desktop, ...)"
+                    },
+                    {
+                        "name": "x-device-version",
+                        "in": "header",
+                        "description": "Device version (Android 16, Windows 11, ...)"
+                    },
+                    {
+                        "name": "x-front-version",
+                        "in": "header",
+                        "description": "Fronted application version"
+                    },
+                    {
+                        "name": "x-application",
+                        "in": "header",
+                        "description": "Fronted application name"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/UserAPI"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Nominal": {
+                                        "description": "Nominal",
+                                        "value": [
+                                            {
+                                                "audit": {
+                                                    "createdBy": "system",
+                                                    "createdDate": "2023-05-27T12:00:00",
+                                                    "lastModifiedBy": "user-1",
+                                                    "lastModifiedDate": "2023-06-01T12:00:00",
+                                                    "version": 1
+                                                },
+                                                "email": "john.smith@mock.org",
+                                                "firstName": "John",
+                                                "lastName": "Smith",
+                                                "uid": "bb895294-efe7-484b-b670-14d004eaf461"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-1_0  |  functional  |  USER        |  invalid data for user creation",
+                                            "USER-1_1  |  functional  |  USER        |  uid is forbidden for user creation",
+                                            "USER-1_2  |  functional  |  USER        |  invalid firstname",
+                                            "USER-1_3  |  functional  |  USER        |  invalid lastname",
+                                            "USER-1_4  |  functional  |  USER        |  invalid email"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 400,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-1_0",
+                                                    "errorType": "functional",
+                                                    "message": "invalid data for user creation",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user-rest-controller"
+                ],
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "x-device-identifier",
+                        "in": "header",
+                        "description": "Unique device identifier",
+                        "example": "821c15b3-db80-4209-be71-7331df86d953"
+                    },
+                    {
+                        "name": "x-correlation-id",
+                        "in": "header",
+                        "description": "User session identifier",
+                        "example": "15b634d6-8ef1-48d0-96d2-ea27931527e9"
+                    },
+                    {
+                        "name": "x-conversation-id",
+                        "in": "header",
+                        "description": "Functionnal process identifier",
+                        "example": "register_new_user"
+                    },
+                    {
+                        "name": "x-b3-traceid",
+                        "in": "header",
+                        "description": "Request identifier between each internal applications",
+                        "example": "584eb91e-e10b-47c6-b14e-8dca1641a97a"
+                    },
+                    {
+                        "name": "x-authorization-token",
+                        "in": "header",
+                        "description": "User Jwt token"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Basic authorization"
+                    },
+                    {
+                        "name": "x-device-type",
+                        "in": "header",
+                        "description": "Device type (mobile phone, desktop, ...)"
+                    },
+                    {
+                        "name": "x-device-version",
+                        "in": "header",
+                        "description": "Device version (Android 16, Windows 11, ...)"
+                    },
+                    {
+                        "name": "x-front-version",
+                        "in": "header",
+                        "description": "Fronted application version"
+                    },
+                    {
+                        "name": "x-application",
+                        "in": "header",
+                        "description": "Fronted application name"
+                    },
+                    {
+                        "name": "uid",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Nominal": {
+                                        "description": "Nominal"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-4_0  |  functional  |  USER        |  uid required to delete users"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 400,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-4_0",
+                                                    "errorType": "functional",
+                                                    "message": "uid required to delete users",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-4_1  |  functional  |  USER        |  users not found"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 404,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-4_1",
+                                                    "errorType": "functional",
+                                                    "message": "users not found",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 404
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "user-rest-controller"
+                ],
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "x-device-identifier",
+                        "in": "header",
+                        "description": "Unique device identifier",
+                        "example": "821c15b3-db80-4209-be71-7331df86d953"
+                    },
+                    {
+                        "name": "x-correlation-id",
+                        "in": "header",
+                        "description": "User session identifier",
+                        "example": "15b634d6-8ef1-48d0-96d2-ea27931527e9"
+                    },
+                    {
+                        "name": "x-conversation-id",
+                        "in": "header",
+                        "description": "Functionnal process identifier",
+                        "example": "register_new_user"
+                    },
+                    {
+                        "name": "x-b3-traceid",
+                        "in": "header",
+                        "description": "Request identifier between each internal applications",
+                        "example": "584eb91e-e10b-47c6-b14e-8dca1641a97a"
+                    },
+                    {
+                        "name": "x-authorization-token",
+                        "in": "header",
+                        "description": "User Jwt token"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Basic authorization"
+                    },
+                    {
+                        "name": "x-device-type",
+                        "in": "header",
+                        "description": "Device type (mobile phone, desktop, ...)"
+                    },
+                    {
+                        "name": "x-device-version",
+                        "in": "header",
+                        "description": "Device version (Android 16, Windows 11, ...)"
+                    },
+                    {
+                        "name": "x-front-version",
+                        "in": "header",
+                        "description": "Fronted application version"
+                    },
+                    {
+                        "name": "x-application",
+                        "in": "header",
+                        "description": "Fronted application name"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/UserAPI"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Nominal": {
+                                        "description": "Nominal",
+                                        "value": [
+                                            {
+                                                "audit": {
+                                                    "createdBy": "system",
+                                                    "createdDate": "2023-05-27T12:00:00",
+                                                    "lastModifiedBy": "user-1",
+                                                    "lastModifiedDate": "2023-06-01T12:00:00",
+                                                    "version": 1
+                                                },
+                                                "email": "john.smith@mock.org",
+                                                "firstName": "John",
+                                                "lastName": "Smith",
+                                                "uid": "bb895294-efe7-484b-b670-14d004eaf461"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-3_0  |  functional  |  USER        |  invalid data for user modification",
+                                            "USER-3_2  |  functional  |  USER        |  uid is required for user modification",
+                                            "USER-3_3  |  functional  |  USER        |  invalid firstname",
+                                            "USER-3_4  |  functional  |  USER        |  invalid lastname",
+                                            "USER-3_5  |  functional  |  USER        |  invalid email"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 400,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-3_0",
+                                                    "errorType": "functional",
+                                                    "message": "invalid data for user modification",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-3_1  |  functional  |  USER        |  users not found"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 404,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-3_1",
+                                                    "errorType": "functional",
+                                                    "message": "users not found",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 404
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ws/user/{uid}": {
+            "get": {
+                "tags": [
+                    "user-rest-controller"
+                ],
+                "operationId": "getById",
+                "parameters": [
+                    {
+                        "name": "x-device-identifier",
+                        "in": "header",
+                        "description": "Unique device identifier",
+                        "example": "821c15b3-db80-4209-be71-7331df86d953"
+                    },
+                    {
+                        "name": "x-correlation-id",
+                        "in": "header",
+                        "description": "User session identifier",
+                        "example": "15b634d6-8ef1-48d0-96d2-ea27931527e9"
+                    },
+                    {
+                        "name": "x-conversation-id",
+                        "in": "header",
+                        "description": "Functionnal process identifier",
+                        "example": "register_new_user"
+                    },
+                    {
+                        "name": "x-b3-traceid",
+                        "in": "header",
+                        "description": "Request identifier between each internal applications",
+                        "example": "584eb91e-e10b-47c6-b14e-8dca1641a97a"
+                    },
+                    {
+                        "name": "x-authorization-token",
+                        "in": "header",
+                        "description": "User Jwt token"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Basic authorization"
+                    },
+                    {
+                        "name": "x-device-type",
+                        "in": "header",
+                        "description": "Device type (mobile phone, desktop, ...)"
+                    },
+                    {
+                        "name": "x-device-version",
+                        "in": "header",
+                        "description": "Device version (Android 16, Windows 11, ...)"
+                    },
+                    {
+                        "name": "x-front-version",
+                        "in": "header",
+                        "description": "Fronted application version"
+                    },
+                    {
+                        "name": "x-application",
+                        "in": "header",
+                        "description": "Fronted application name"
+                    },
+                    {
+                        "name": "uid",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "full",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Nominal": {
+                                        "description": "Nominal",
+                                        "value": {
+                                            "audit": {
+                                                "createdBy": "system",
+                                                "createdDate": "2023-05-27T12:00:00",
+                                                "lastModifiedBy": "user-1",
+                                                "lastModifiedDate": "2023-06-01T12:00:00",
+                                                "version": 1
+                                            },
+                                            "email": "john.smith@mock.org",
+                                            "firstName": "John",
+                                            "lastName": "Smith",
+                                            "uid": "bb895294-efe7-484b-b670-14d004eaf461"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-2_0  |  functional  |  USER        |  uid required to find user"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 400,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-2_0",
+                                                    "errorType": "functional",
+                                                    "message": "uid required to find user",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 400
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Functional error on executing operation",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "Error codes": {
+                                        "description": "Error codes",
+                                        "value": [
+                                            "USER-2_1  |  functional  |  USER        |  user not found"
+                                        ]
+                                    },
+                                    "Response with error code": {
+                                        "description": "Response with error code",
+                                        "value": {
+                                            "details": {
+                                                "errorCode": {
+                                                    "statusCode": 404,
+                                                    "domain": "USER",
+                                                    "errorCode": "USER-2_1",
+                                                    "errorType": "functional",
+                                                    "message": "user not found",
+                                                    "exploitationError": false,
+                                                    "rollbackRequire": false,
+                                                    "retryable": false
+                                                }
+                                            },
+                                            "errors": [],
+                                            "parameters": [],
+                                            "status": 404
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuditDTO": {
+                "type": "object",
+                "properties": {
+                    "createdBy": {
+                        "type": "string"
+                    },
+                    "createdDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "lastModifiedBy": {
+                        "type": "string"
+                    },
+                    "lastModifiedDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "UserAPI": {
+                "type": "object",
+                "properties": {
+                    "uid": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "audit": {
+                        "$ref": "#/components/schemas/AuditDTO"
+                    }
+                }
+            },
+            "UserDTOSearchRequestAPI": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sortFields": {
+                        "type": "string"
+                    },
+                    "sortOrder": {
+                        "type": "string",
+                        "enum": [
+                            "ASC",
+                            "DESC"
+                        ]
+                    },
+                    "createdBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "createdDate": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    "lastModifiedBy": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "lastModifiedDate": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    "uid": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "firstName": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "lastName": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "email": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

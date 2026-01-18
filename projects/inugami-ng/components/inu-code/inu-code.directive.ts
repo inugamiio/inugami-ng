@@ -14,7 +14,6 @@ export class InuHighlightDirective {
 
   constructor() {
     effect(() => {
-      console.log('aaaaaaa')
       const codeValue = this.code() || '';
       const language = this.lang() || '';
       const nativeElement = this.el.nativeElement;

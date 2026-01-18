@@ -1,0 +1,18 @@
+/*
+
+ */
+.inu-open-api-parameters{
+  table{
+    width: 100%;
+    thead{
+      border-color: inherit;
+      border-style: solid;
+      border-width: 0;
+
+      th {
+        border-bottom: 0.15rem solid var(--neutral-dark);
+      }
+    }
+
+  }
+}

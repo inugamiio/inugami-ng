@@ -4,3 +4,9 @@ export interface SourceCode{
     type?:string;
     title?:string;
 }
+
+export interface InternalSourceCode{
+  content:string;
+  type?:string;
+  title?:string;
+}

@@ -30,4 +30,5 @@ export class IconsView implements OnInit {
     this.icons.set(allIcons);
 
   }
+
 }

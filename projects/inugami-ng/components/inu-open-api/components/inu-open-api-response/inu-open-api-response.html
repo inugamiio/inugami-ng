@@ -1,0 +1,60 @@
+@if(data()){
+  <div class="inu-open-api-response">
+    <div class="description">{{data()?.description}}</div>
+    <div class="content-type">{{data()?.contentType}}</div>
+
+    <div class="response-examples">
+      @if(data()?.examples){
+        @for (example of data()?.examples; track example.name; let index = $index; let isFirst = $first; let isOdd = $odd) {
+          <div class="response-example" [class]="computeExampleClass(example, isFirst, isOdd)">
+            <div class="response-example-header" (click)="toggleExample(index)">
+              <div class="response-example-header-labels" >
+                <span class="response-example-header-name" >{{example.name}}</span>
+                <span class="response-example-header-summary">{{example.summary}}</span>
+              </div>
+
+              <span class="button open" [class.displayStatus]="getExampleDisplayStatus(index)">
+                <inu-icon [icon]="getExampleDisplayStatus(index)?'chevron_up':'chevron_down'" [size]="1"></inu-icon>
+              </span>
+            </div>
+            <div  class="response-example-content" [class.display]="getExampleDisplayStatus(index)">
+
+              @if(example.description || example.externalValue || example.extensions){
+                <dl class="example-content">
+                  @if(example.description){
+                    <dt>Description</dt>
+                    <dd>{{example.description}}</dd>
+                  }
+                  @if(example.externalValue){
+                    <dt>External value</dt>
+                    <dd>{{example.externalValue}}</dd>
+                  }
+
+                  @if(example.extensions){
+                    @for (extension of example.extensions; track extension.name) {
+                      <dt>{{extension.name}}</dt>
+                      <dd><inu-open-api-extension [data]="extension"></inu-open-api-extension></dd>
+                    }
+                  }
+                </dl>
+              }
+
+              @if(getExamplesSource(index)){
+                @if(getExamplesSource(index)?.content && getExamplesSource(index)?.content !=''){
+                  <inu-code [source]="getExamplesSource(index)?.content"
+                            [type]="getExamplesSource(index)?.type"
+                            [title]="getExamplesSource(index)?.title"></inu-code>
+                }
+              }
+
+            </div>
+
+          </div>
+        }
+      }
+
+
+
+    </div>
+  </div>
+}

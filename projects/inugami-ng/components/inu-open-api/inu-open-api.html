@@ -1,0 +1,24 @@
+<div class="inu-open-api">
+  @if(_value()){
+
+    <section>
+      @if(_value()?.info){
+        <header>
+          <h2>{{_value()?.info?.title!}}</h2>
+          <h3>{{_value()?.info?.version!}}</h3>
+          <p>
+            {{_value()?.info?.description!}}
+          </p>
+        </header>
+      }
+
+      <div class="endpoints">
+        @if(_value()?.paths){
+          @for (endpoint of _value()?.paths;track endpoint.uri;) {
+            <inu-open-api-endpoint [data]="endpoint" [schemas]="_value()?.components?.schemas"></inu-open-api-endpoint>
+          }
+        }
+      </div>
+    </section>
+  }
+</div>

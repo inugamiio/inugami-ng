@@ -1,0 +1,20 @@
+<div class="inu-open-api-extension">
+  @if(data()){
+    <div class="inu-extension">
+      @if(keys()){
+        <dl class="inu-extension-content">
+          @for (key of keys(); track key; let index = $index; let isFirst = $first; let isOdd = $odd) {
+            <dt [class.first]="isFirst" [class.odd]="isOdd">{{key}}</dt>
+            <dd [class.first]="isFirst" [class.odd]="isOdd">
+              <inu-open-api-extension [data]="getChild(key)"></inu-open-api-extension>
+            </dd>
+          }
+        </dl>
+      }
+
+      @if(_type()== 'primitive'){
+        {{data()}}
+      }
+    </div>
+  }
+</div>

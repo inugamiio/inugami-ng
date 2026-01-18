@@ -2,13 +2,13 @@
   <src name="inu-code-import" type="typescript" title="Import inu-code">
     <![CDATA[
 import {Component} from '@angular/core';
-import {InuCode} from 'inugami-ng/components/inu-code';
+import {InuOpenApi} from 'inugami-ng/components/inu-code';
 
 @Component({
   templateUrl: './my-app.view.html',
   styleUrls: ['./my-app.view.scss'],
   imports: [
-    InuCode
+    InuOpenApi
   ]
 })
 export class MyAppView {
