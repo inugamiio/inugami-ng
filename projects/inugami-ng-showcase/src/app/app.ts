@@ -5,7 +5,7 @@ import {GaActionEnum, GoogleAnalyticsService} from 'ngx-google-analytics';
 import {filter} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {InuSiteLink, TARGET_PARENT, TARGET_SELF} from 'inugami-ng/models';
+import {InuSiteLink, TARGET_BLANK, TARGET_PARENT, TARGET_SELF} from 'inugami-ng/models';
 import {InugamiNgAsideComponent} from './components/inugami-ng-aside/inugami-ng-aside.component';
 
 @Component({
@@ -32,40 +32,48 @@ export class App implements OnInit{
     {
       title: 'Inugami Framework',
       path: 'https://inugami.io/inugami/framework',
-      external: true,
-      target:TARGET_PARENT
+      external: true
     },
     {
       title: 'Inugami Dashboard',
       path: 'https://inugami.io/inugami/dashboard',
-      external: true,
-      target:TARGET_PARENT
+      external: true
     },
     {
       title: 'inugami-project-analysis-maven-plugin',
       path: 'https://inugami.io/maven/inugami_project_analysis_maven_plugin',
-      external: true,
-      target:TARGET_PARENT
+      external: true
     },
     {
       title: 'Inugami NG showcase',
       path: '',
       gaEvent:'inugamiio_showcase',
-      gaCategory:'internal_link'
+      gaCategory:'internal_link',
+      target:TARGET_BLANK
     },
     {
       title: 'GitHub',
       path: 'https://github.com/inugamiio',
       external: true,
       gaEvent:'github_inugamiio',
-      gaCategory:'external_link'
+      gaCategory:'external_link',
+      target:TARGET_BLANK
     },
     {
       title: 'Maven central',
       path: 'https://central.sonatype.com/artifact/io.inugami/inugami/overview',
       external: true,
       gaEvent:'maven_central_inugamiio',
-      gaCategory:'external_link'
+      gaCategory:'external_link',
+      target:TARGET_BLANK
+    },
+    {
+      title: 'NPM',
+      path: 'https://www.npmjs.com/package/inugami-ng',
+      external: true,
+      gaEvent:'npm_inugaming',
+      gaCategory:'external_link',
+      target:TARGET_BLANK
     }
   ]);
 

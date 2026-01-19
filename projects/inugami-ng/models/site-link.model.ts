@@ -7,7 +7,7 @@ export interface InuSiteLink{
   icon?:string;
   styleClass?:string;
   external?:boolean;
-  target?:string,
+  target?:'_blank'|'_self'|'_parent',
   children?: InuSiteLinkChildren[];
   gaEvent?:string;
   gaCategory?:string;
