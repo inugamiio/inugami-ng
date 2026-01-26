@@ -2933,10 +2933,10 @@ injection-js@^2.4.0:
   dependencies:
     tslib "^2.0.0"
 
-inugami-icons@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.8.tgz#175a2f9818ce58e53c11c242b92387b21041daee"
-  integrity sha512-6SwPLsopLV3bX9ZG68OAolqNCxk71OmztNeAIaSMTGd2/WyEDQWty9bc3YokzACRxY0rjLa8CLEEmrUnPNyFog==
+inugami-icons@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.9.tgz#700ebb47e4b2d5245698fd25470da337653c68ae"
+  integrity sha512-/6/jzlWvTOkmlMB70PxKkpgofUx756AGjC1SDRRRNGELXbZwwMlrhREeKVaPHsDjQOis2/njAKFbumLauq4EBA==
   dependencies:
     tslib "^2.3.0"
 

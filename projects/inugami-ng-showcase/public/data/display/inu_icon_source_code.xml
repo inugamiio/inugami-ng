@@ -4,6 +4,11 @@
  <inu-icon icon="approval" [size]="3"></inu-icon>
 ]]>
   </src>
+  <src name="inu-icon-usage-with-default" type="xml" title="inu-icon usage with default icon">
+    <![CDATA[
+<inu-icon [icon]="status()" defaultIcon="approval" [size]="3"></inu-icon>
+]]>
+  </src>
 
   <src name="inu-icon-dependency" type="json" title="NPM dependency">
     <![CDATA[
