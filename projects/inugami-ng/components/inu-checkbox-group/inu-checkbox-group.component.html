@@ -1,0 +1,20 @@
+<div [class]="styleClass()">
+
+  <ul>
+    @if(values()){
+      @for (selectItem of values();track selectItem.value;) {
+        <li (click)="toggle(selectItem)" [class]="getItemClass(selectItem)">
+          <div class="inu-checkbox-group-icon">
+            @if(selectItem.selected){
+              <inu-icon icon="check" [size]="0.9" tabindex="0"></inu-icon>
+            }
+          </div>
+          <div class="inu-checkbox-group-label" >
+            <span>{{selectItem.title!}}</span>
+          </div>
+
+        </li>
+      }
+    }
+  </ul>
+</div>

@@ -12,6 +12,7 @@
         </header>
       }
 
+      <inu-open-api-filter></inu-open-api-filter>
       <div class="endpoints">
         @if(_value()?.paths){
           @for (endpoint of _value()?.paths;track endpoint.uri;) {
