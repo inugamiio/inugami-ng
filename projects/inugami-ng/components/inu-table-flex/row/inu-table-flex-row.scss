@@ -1,0 +1,8 @@
+.inu-table-flex-row{
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr 3fr 4fr;
+  border-bottom: 0.1rem solid var(--neutral-light);
+  &:hover{
+    background-color: var(--neutral-light-extra);
+  }
+}

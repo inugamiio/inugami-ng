@@ -1,16 +1,28 @@
 <div [class]="styleClass()">
 
+  <div  class="inu-checkbox-group-label-grp">
+    <div class="inu-checkbox-group-label">
+      @if (label()) {
+        {{ label() }}
+      }
+    </div>
+    @if (_required()) {
+      <div class="inu-checkbox-group-required">
+        <inu-icon icon="required" [size]="0.5"></inu-icon>
+      </div>
+    }
+  </div>
   <ul>
-    @if(values()){
-      @for (selectItem of values();track selectItem.value;) {
+    @if (_values()) {
+      @for (selectItem of _values(); track selectItem.value; ) {
         <li (click)="toggle(selectItem)" [class]="getItemClass(selectItem)">
           <div class="inu-checkbox-group-icon">
-            @if(selectItem.selected){
+            @if (selectItem.selected) {
               <inu-icon icon="check" [size]="0.9" tabindex="0"></inu-icon>
             }
           </div>
-          <div class="inu-checkbox-group-label" >
-            <span>{{selectItem.title!}}</span>
+          <div class="inu-checkbox-group-label">
+            <span>{{ selectItem.title! }}</span>
           </div>
 
         </li>

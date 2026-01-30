@@ -8,7 +8,6 @@ import {InuCite} from 'inugami-ng/components/inu-cite';
   imports: [
     InuIcon,
     InuCode,
-    InuCite,
     InuCite
   ]
 })

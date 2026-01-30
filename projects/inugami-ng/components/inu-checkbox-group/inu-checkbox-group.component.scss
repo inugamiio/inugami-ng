@@ -3,7 +3,26 @@
  */
 .inu-checkbox-group{
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
+  .inu-checkbox-group-label-grp{
+    display: flex;
+    .inu-checkbox-group-label{
+      font-weight: bold;
+    }
+    .inu-checkbox-group-required{
+      display: flex;
+      fill:var(--danger);
+      ::ng-deep{
+        span{
+          height: 1rem;
+          display: flex;
+          align-items: baseline;
+        }
+      }
+    }
+  }
 
   ul{
     display: flex;
@@ -38,6 +57,12 @@
         align-items:center;
         user-select:none;
       }
+    }
+  }
+
+  &.vertical{
+    ul{
+      flex-direction: column;
     }
   }
 }
