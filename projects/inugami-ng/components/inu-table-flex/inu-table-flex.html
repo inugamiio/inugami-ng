@@ -1,0 +1,9 @@
+<div [class]="_styleClass()">
+  <div class="inu-table-flex-thead" [style]="_style()">
+    <ng-content select="inu-table-flex-header"></ng-content>
+  </div>
+
+  <div class="inu-table-flex-tbody"  [style]="_style()">
+    <ng-content select="inu-table-flex-row"></ng-content>
+  </div>
+</div>

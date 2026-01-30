@@ -8,9 +8,11 @@ import {
 import {CacheServices} from "inugami-ng/services";
 import {map, Observable, shareReplay, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {OpenApi} from './open-api.model';
+import {OpenApi, OpenApiFilter} from './open-api.model';
 import {InuOpenApiServices} from './inu-open-api.service';
 import {InuOpenApiEndpoint} from './components/inu-open-api-endpoint/inu-open-api-endpoint';
+import {form} from '@angular/forms/signals';
+import {InuOpenApiFilter} from './components/inu-open-api-filter/inu-open-api-filter';
 
 
 
@@ -20,7 +22,8 @@ const CACHE_PREFIX = 'inu-open-api_';
   selector: 'inu-open-api',
   standalone: true,
   imports: [
-    InuOpenApiEndpoint
+    InuOpenApiEndpoint,
+    InuOpenApiFilter
   ],
   templateUrl: './inu-open-api.html',
   styleUrl: './inu-open-api.scss',

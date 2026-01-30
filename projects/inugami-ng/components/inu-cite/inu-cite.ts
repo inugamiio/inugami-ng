@@ -1,16 +1,6 @@
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  OnInit,
-  signal,
-  TemplateRef,
-  viewChildren,
-  WritableSignal
-} from '@angular/core';
+import {Component, computed, inject, input, OnInit, signal, WritableSignal} from '@angular/core';
 import {InuIcon} from 'inugami-icons';
-import {InugamiTemplateDirective, InuTemplateRegistryService} from 'inugami-ng/directives';
+import {InuTemplateRegistryService} from 'inugami-ng/directives';
 import {NgTemplateOutlet} from '@angular/common';
 
 @Component({

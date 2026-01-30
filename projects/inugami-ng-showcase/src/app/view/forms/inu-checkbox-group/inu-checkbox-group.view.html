@@ -1,0 +1,84 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-checkbox-group</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2></h2>
+      </header>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <inu-checkbox-group label="HTTP verb"
+                          [required]="true"
+                          [formField]="myForm.verb"
+                          [values]="verbs()"></inu-checkbox-group>
+
+      <inu-code [source]="data()" type="json"></inu-code>
+
+    </article>
+
+
+    <article>
+      <header>
+        <h2>Vertical example</h2>
+      </header>
+
+      <inu-checkbox-group label="HTTP verb"
+                          [formField]="myForm.verb"
+                          [values]="verbs()"
+                          [vertical]="true"></inu-checkbox-group>
+
+      <inu-code [source]="data()" type="json"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <inu-checkbox-group [formField]="myForm.verb" [values]="verbs()"></inu-checkbox-group>
+
+      <inu-code [source]="data()" type="json"></inu-code>
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>values</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItem{{genericT()}}[]</inu-table-flex-cell>
+          <inu-table-flex-cell>[]</inu-table-flex-cell>
+          <inu-table-flex-cell>the list of values used for the different checkboxes</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+      </inu-table-flex>
+    </article>
+  </main>
+
+
+</section>

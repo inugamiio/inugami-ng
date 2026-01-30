@@ -1,0 +1,151 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-table-flex</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Flex table</h2>
+        <p>
+          The <code>inu-table-flex</code> component provides a div-only <code>HTML</code> structure to achieve a
+          table-like layout using <strong>CSS Grid</strong>.
+        </p>
+      </header>
+
+
+      <inu-code url="data/display/inu_table_flex_source_code.xml" tag="import"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>values</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItem{{genericT()}}[]</inu-table-flex-cell>
+          <inu-table-flex-cell>[]</inu-table-flex-cell>
+          <inu-table-flex-cell>the list of values used for the different checkboxes</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+      </inu-table-flex>
+
+
+      <inu-code url="data/display/inu_table_flex_source_code.xml" tag="usage"></inu-code>
+
+    </article>
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+      <fieldset>
+        <legend>inu-table-flex</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-table-flex</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+      </fieldset>
+
+      <fieldset>
+        <legend>inu-table-flex-header</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>size</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>1fr</inu-table-flex-cell>
+            <inu-table-flex-cell>Column size</inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-table-flex-header</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+      </fieldset>
+
+      <fieldset>
+        <legend>inu-table-flex-row</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-table-flex-row</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+      </fieldset>
+
+      <fieldset>
+        <legend>inu-table-flex-cell</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-table-flex-row</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+      </fieldset>
+
+    </article>
+  </main>
+
+
+</section>
