@@ -1,0 +1,41 @@
+.inu-panel-tabs {
+  display: flex;
+  flex-direction: column;
+
+
+  .inu-panel-tabs-headers{
+    display: flex;
+    ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap:0.25rem;
+      width: 100%;
+      border-bottom: 1px solid var(--secondary);
+      li{
+        display: flex;
+        border: 1px solid var(--neutral-light);
+        &.display{
+          background-color: var(--secondary-light-extra);
+          border-bottom: 2px solid var(--secondary);
+        }
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  .inu-panel-tabs-content{
+    flex:1;
+  }
+  .tab-panel {
+
+  }
+
+  &.vertical{
+    flex-direction: row;
+  }
+}

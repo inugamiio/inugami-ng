@@ -65,4 +65,14 @@
       flex-direction: column;
     }
   }
+
+  &.disabled{
+    .inu-checkbox-group-icon{
+      border: 0.125px solid var(--neutral);
+      fill:var(--neutral);
+    }
+    .inu-checkbox-group-label{
+      color: var(--neutral);
+    }
+  }
 }

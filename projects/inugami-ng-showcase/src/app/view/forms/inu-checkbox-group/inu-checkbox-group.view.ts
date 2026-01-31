@@ -1,5 +1,6 @@
 import {Component, computed, signal} from '@angular/core';
 import {InuCode} from 'inugami-ng/components/inu-code';
+import {InuPanelTab, InuPanelTabs} from 'inugami-ng/components/inu-panel-tabs';
 import {
   InuTableFlex,
   InuTableFlexCell,
@@ -10,7 +11,7 @@ import {InuSelectItem} from 'inugami-ng/models';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
 import {InuCheckboxGroup} from "inugami-ng/components/inu-checkbox-group";
-import {form, FormField, required,} from '@angular/forms/signals';
+import {disabled, form, FormField, required,} from '@angular/forms/signals';
 
 
 interface MyFormModel {
@@ -29,6 +30,8 @@ interface MyFormModel {
     InuTableFlexHeader,
     InuTableFlexRow,
     InuTableFlexCell,
+    InuPanelTabs,
+    InuPanelTab,
     FormField
   ]
 })
@@ -40,6 +43,7 @@ export class InuCheckboxGroupView {
 
   myForm = form(this.formModel, (path) => {
     required(path.verb);
+    disabled(path.verb);
   });
 
   verbs = computed<InuSelectItem<string>[]>(() => [

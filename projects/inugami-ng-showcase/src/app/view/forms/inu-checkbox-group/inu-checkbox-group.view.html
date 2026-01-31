@@ -27,8 +27,24 @@
                           [formField]="myForm.verb"
                           [values]="verbs()"></inu-checkbox-group>
 
-      <inu-code [source]="data()" type="json"></inu-code>
 
+
+      <inu-panel-tabs>
+
+        <inu-panel-tab label="Example">
+          <inu-code [source]="data()" type="json"></inu-code>
+
+        </inu-panel-tab>
+
+        <inu-panel-tab  label="HTML">
+          HTML
+        </inu-panel-tab>
+
+        <inu-panel-tab  label="TypeScript">
+          TS
+        </inu-panel-tab>
+
+      </inu-panel-tabs>
     </article>
 
 

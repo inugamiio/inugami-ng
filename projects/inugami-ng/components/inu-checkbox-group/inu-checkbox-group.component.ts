@@ -1,14 +1,4 @@
-import {
-  booleanAttribute,
-  Component,
-  effect, Input,
-  input,
-  InputSignal,
-  model,
-  ModelSignal,
-  OnInit,
-  signal
-} from '@angular/core';
+import {Component, effect, Input, input, model, ModelSignal, OnInit, signal} from '@angular/core';
 import {InuSelectItem} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {InuIcon} from 'inugami-icons';
@@ -30,9 +20,10 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   // input
   readonly disabled = input(false);
   readonly label = input('');
-  readonly _required = input(false, { alias: 'required'});
+  readonly _required = input(false, {alias: 'required'});
   readonly values = input<InuSelectItem<T>[]>([]);
   readonly vertical = input(false);
+
   @Input() set requiredOld(v: boolean) {
     console.log('RECU VIA DECORATEUR :', v);
   }
@@ -53,7 +44,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
     effect(() => {
       this.initStyleClass();
       const required = this._required();
-      console.log('required',required)
+      console.log('required', required)
     });
   }
 
@@ -109,10 +100,13 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   }
 
 
-//==================================================================================================================
+  //==================================================================================================================
   // ACTIONS
   //==================================================================================================================
   protected toggle(value: InuSelectItem<T>) {
+    if(this.disabled()){
+      return;
+    }
     if (value.selected == undefined) {
       value.selected = true
     } else {
