@@ -1,6 +1,6 @@
 {
   "name": "inugami-ng",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "GPL-3.0-only",
   "description": "Inugami project angular library",
   "keywords": ["inugami",  "angular", "components"],
@@ -44,7 +44,7 @@
     "highlight.js": "^11.11.1",
     "ngx-highlight-js": "^11.0.0",
     "ngx-google-analytics":"14.0.1",
-    "inugami-icons":"0.0.8"
+    "inugami-icons":"0.0.10"
   },
   "devDependencies": {
     "@angular/build": "^21.0.5",

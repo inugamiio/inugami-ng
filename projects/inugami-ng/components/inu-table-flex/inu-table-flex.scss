@@ -1,0 +1,16 @@
+.inu-table-flex{
+  width: 100%;
+  display: grid;
+
+
+
+  .inu-table-flex-thead{
+    display: grid;
+
+    font-weight: bold;
+    padding: 0.25rem;
+    border-bottom: 0.15rem solid var(--neutral);
+
+  }
+
+}

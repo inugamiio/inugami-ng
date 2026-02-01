@@ -1,29 +1,29 @@
 <div class="inu-open-api-parameters">
   @if (data()) {
-    <table>
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Exemples</th>
-      </tr>
-      </thead>
-      <tbody>
+    <div class="inu-flex-table">
+      <div class="flex-table-header">
+        <div class="flex-table-header-th name">Name</div>
+        <div class="flex-table-header-th type">Type</div>
+        <div class="flex-table-header-th desc">Description</div>
+        <div class="flex-table-header-th examples">Examples</div>
+      </div>
+
+
+      <div class="flex-table-body">
 
         @for (parameter of data(); track parameter.name; let index = $index; let isFirst = $first; let isOdd = $odd) {
-          <tr [class]="getRowClass(index,isFirst, isOdd , (parameter.deprecated?'deprecated': ''))">
-            <td>
+          <div  [class]="getRowClass(index,isFirst, isOdd , (parameter.deprecated?'deprecated': ''))">
+            <div class="flex-table-body-cell">
               <span>{{parameter.name}}</span>
               @if (parameter.required) {
                 <span class="required"><span class="label"></span></span>
               } @else {
                 <span></span>
               }
-            </td>
-            <td>{{parameter.schema?.type}}</td>
-            <td>{{parameter.description}}</td>
-            <td>
+            </div>
+            <div  class="flex-table-body-cell">{{parameter.schema?.type}}</div>
+            <div  class="flex-table-body-cell">{{parameter.description}}</div>
+            <div  class="flex-table-body-cell">
               @if(parameter.example){
                 <div class="parameters-main-example">
                   <inu-code [source]="parameter.example"></inu-code>
@@ -56,11 +56,11 @@
                 </div>
               }
 
-            </td>
-          </tr>
+            </div>
+          </div>
         }
 
-      </tbody>
-    </table>
+      </div>
+    </div>
   }
 </div>

@@ -9,16 +9,21 @@
   --secondary-dark: #1b3c67;
   --secondary: #1f5294;
   --secondary-light: #2c73cf;
+  --secondary-light-extra: #d8e7ff;
   --neutral-light-extra: #eff3f7;
   --neutral-light: #cdd2d8;
   --neutral-dark: #5d6269;
   --neutral: #7a8088;
   --info: #1f5294;
   --info-light: #6094d7;
+  --success-dark: #0f621d;
   --success: #1f812f;
   --success-light: #4aa659;
   --danger: #da4134;
   --danger-light: #e5766c;
+  --danger-light-extra: #facecb;
+  --danger-light-extra-extra: #fdf3f3;
+  --warning-dark: #a8700f;
   --warning: #efad32;
   --warning-light: #e0b971;
   --background: #ffffff;
@@ -450,4 +455,36 @@ dl {
   display: flex;
   gap: 0.25rem;
   align-items: center;
+}
+
+
+.inu-flex-table{
+  width: 100%;
+  display: grid;
+  $grid-template: 1.5fr 0.8fr 3fr 4fr;
+
+  .flex-table-header{
+    display: grid;
+    grid-template-columns: $grid-template;
+    font-weight: bold;
+    padding: 0.25rem;
+    border-bottom: 0.15rem solid var(--neutral);
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .flex-table-body-row{
+    display: grid;
+    grid-template-columns: $grid-template;
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem;
+      gap: 1rem;
+      border-bottom: 1px solid var(--neutral-light);
+    }
+  }
+
+
 }

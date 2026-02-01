@@ -10,7 +10,7 @@
     gap: 2rem;
 
     .response-example{
-
+      width: 100%;
       padding: 1rem;
       border-top: 0.05rem solid var(--neutral) ;
       &.first{
@@ -23,7 +23,16 @@
           flex: 1;
         }
       }
+      inu-code{
+        width: 100%;
+      }
     }
   }
 
+  .response-example-content{
+    display: none;
+    &.display{
+      display: flex;
+    }
+  }
 }
