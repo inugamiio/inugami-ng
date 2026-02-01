@@ -1,0 +1,207 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-panel-tabs</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2></h2>
+        The <code>inu-panel-tabs</code> component features a multi-tab panel, where each individual tab is defined
+        by an <code>inu-panel-tab</code> component.
+      </header>
+
+      <inu-code url="data/display/inu_panel_tabs_source_code.xml" tag="import"></inu-code>
+
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <inu-panel-tabs activeTab="tab2">
+
+        <inu-panel-tab name="tab1" label="Tab 1" icon="image">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Quisque in mollis nunc, vitae aliquet turpis. Proin feugiat arcu
+            vitae quam vehicula venenatis. In pulvinar tincidunt felis, et dapibus
+            arcu laoreet ut.
+          </p>
+
+
+        </inu-panel-tab>
+        <inu-panel-tab name="tab2" label="Tab 2" icon="layer">
+          <p>
+            Suspendisse molestie neque lobortis mi dignissim luctus. Aenean massa tellus,
+            tempus aliquet tincidunt eu, semper eu eros. Praesent eu est non velit iaculis
+            scelerisque
+          </p>
+
+        </inu-panel-tab>
+
+        <inu-panel-tab  name="tab3" label="Tab 3" [valid]="false" icon="layout_grid">
+          <p>
+            Pellentesque fermentum pretium dui, a maximus neque blandit non. Aliquam sapien mi,
+            porttitor nec lectus et, consequat cursus ligula.
+          </p>
+        </inu-panel-tab>
+
+        <inu-panel-tab  name="tab4" label="Tab 4" [hasAccess]="false"  icon="package">
+          <p>
+            Vivamus gravida blandit ante, commodo sollicitudin quam imperdiet at. Sed posuere eleifend nisl
+            quis viverra. Fusce non erat nec eros euismod vulputate sed vel neque.
+          </p>
+        </inu-panel-tab>
+
+      </inu-panel-tabs>
+
+      <inu-code url="data/display/inu_panel_tabs_source_code.xml" tag="usage"></inu-code>
+    </article>
+
+    <article>
+      <header>
+        <h2>Example vertical</h2>
+      </header>
+
+      <inu-panel-tabs [vertical]="true">
+
+        <inu-panel-tab name="tab1" label="Tab 1" icon="image">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Quisque in mollis nunc, vitae aliquet turpis. Proin feugiat arcu
+            vitae quam vehicula venenatis. In pulvinar tincidunt felis, et dapibus
+            arcu laoreet ut.
+          </p>
+
+
+        </inu-panel-tab>
+        <inu-panel-tab name="tab2" label="Tab 2" icon="layer">
+          <p>
+            Suspendisse molestie neque lobortis mi dignissim luctus. Aenean massa tellus,
+            tempus aliquet tincidunt eu, semper eu eros. Praesent eu est non velit iaculis
+            scelerisque
+          </p>
+
+        </inu-panel-tab>
+
+        <inu-panel-tab  name="tab3" label="Tab 3" [valid]="false" icon="layout_grid">
+          <p>
+            Pellentesque fermentum pretium dui, a maximus neque blandit non. Aliquam sapien mi,
+            porttitor nec lectus et, consequat cursus ligula.
+          </p>
+        </inu-panel-tab>
+
+        <inu-panel-tab  name="tab4" label="Tab 4" [hasAccess]="false" icon="package">
+          <p>
+            Vivamus gravida blandit ante, commodo sollicitudin quam imperdiet at. Sed posuere eleifend nisl
+            quis viverra. Fusce non erat nec eros euismod vulputate sed vel neque.
+          </p>
+        </inu-panel-tab>
+
+      </inu-panel-tabs>
+    </article>
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+      <fieldset>
+        <legend>inu-panel-tabs</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>activeTab</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell>If the activeTab attribute is not defined, selection defaults to the first tab.</inu-table-flex-cell>
+          </inu-table-flex-row>
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-panel-tabs</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>vertical</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>false</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+        </inu-table-flex>
+      </fieldset>
+
+      <fieldset>
+        <legend>inu-panel-tab</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>icon</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>hasAccess</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>true</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>label</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>vertical</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>false</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>valid</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>true</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+        </inu-table-flex>
+      </fieldset>
+
+
+    </article>
+  </main>
+
+
+</section>

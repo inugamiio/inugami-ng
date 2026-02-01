@@ -6,6 +6,7 @@ import {InuCodeView} from './view/display/inu-code/inu-code.view';
 import {InuOpenApiView} from './view/display/inu-open-api/inu-open-api.view';
 import {InuCheckboxGroupView} from './view/forms/inu-checkbox-group/inu-checkbox-group.view';
 import {InuTableFlexView} from './view/table/inu-table-flex/inu-table-flex.view';
+import {InuPanelTabsView} from './view/display/inu-panel-tabs/inu-panel-tabs.view';
 
 
 export const routes: Routes = [
@@ -15,7 +16,8 @@ export const routes: Routes = [
     path: "display", children: [
       {path: "inu-cite", component: InuCiteView},
       {path: "inu-code", component: InuCodeView},
-      {path: "inu-open-api", component: InuOpenApiView}
+      {path: "inu-open-api", component: InuOpenApiView},
+      {path: "inu-panel-tabs", component: InuPanelTabsView}
     ]
   },
   {path: "forms", children:[

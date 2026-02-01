@@ -19,10 +19,13 @@ export class InuPanelTab {
   // ATTRIBUTES
   //==================================================================================================================
   icon = input<string>('');
+  hasAccess = input<boolean>(true);
   label = input<string>('');
+  name = input.required<string>();
   styleClass = input<string | undefined | null>('');
-  disabled = input<boolean>(false);
-    readonly templateRef = viewChild.required<TemplateRef<any>>('content');
+  valid = input<boolean>(true);
+  //
+  readonly templateRef = viewChild.required<TemplateRef<any>>('content');
   //
   display = signal<boolean>(false);
   _styleClass = signal<string>('');

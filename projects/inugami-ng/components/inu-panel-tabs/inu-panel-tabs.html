@@ -2,9 +2,12 @@
 
 
   <div class="inu-panel-tabs-headers">
-    <ul>
+    <ul [class.noValid]="!valid()">
       @for (tab of tabs(); track tab) {
-        <li [class.display]="tab.display()">
+        <li [class.display]="tab.display()"
+            [class.noAccess]="!tab.hasAccess()"
+            [class.noValid]="!tab.valid()"
+            (click)="openTab(tab)">
             <div class="inu-panel-tabs-headers-child">
               <div class="inu-panel-tabs-headers-child-tab">
                 <div class="inu-panel-tabs-headers-child-tab-icon">
@@ -22,7 +25,7 @@
   <div class="inu-panel-tabs-content">
     @for (tab of tabs(); track tab) {
       <div class="tab-panel">
-        @if(tab.display()){
+        @if(tab.display() && tab.hasAccess()){
           @if(tab.templateRef()){
             <ng-container [ngTemplateOutlet]="tab.templateRef()" />
           }
