@@ -1,0 +1,66 @@
+<xml>
+  <src name="import" type="typescript" title="Import inu-panel-tabs">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuCheckboxGroup} from "inugami-ng/components/inu-checkbox-group";
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuCheckboxGroup
+  ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
+
+  <src name="html" type="html" title="Usage inu-checkbox-group">
+    <![CDATA[
+<inu-checkbox-group label="HTTP verb"
+                          [required]="true"
+                          [formField]="myForm.verb"
+                          [values]="verbs()"></inu-checkbox-group>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="TypeScript">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuCheckboxGroup} from "inugami-ng/components/inu-checkbox-group";
+
+interface MyFormModel {
+  verb: string[];
+}
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuCheckboxGroup
+  ]
+})
+export class MyAppView {
+
+  formModel = signal<MyFormModel>({
+    verb: ['GET', 'PUT']
+  });
+
+  myForm = form(this.formModel, (path) => {
+    required(path.verb);
+    disabled(path.verb);
+  });
+
+  verbs = computed<InuSelectItem<string>[]>(() => [
+    {value: 'GET', title: 'GET', styleClass: 'verb-get'},
+    {value: 'POST', title: 'POST', styleClass: 'verb-post'},
+    {value: 'PUT', title: 'PUT', styleClass: 'verb-put'}
+  ]);
+}
+]]>
+  </src>
+
+
+</xml>

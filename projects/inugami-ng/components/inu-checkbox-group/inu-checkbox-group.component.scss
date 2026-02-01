@@ -1,0 +1,78 @@
+/*
+
+ */
+.inu-checkbox-group{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .inu-checkbox-group-label-grp{
+    display: flex;
+    .inu-checkbox-group-label{
+      font-weight: bold;
+    }
+    .inu-checkbox-group-required{
+      display: flex;
+      fill:var(--danger);
+      ::ng-deep{
+        span{
+          height: 1rem;
+          display: flex;
+          align-items: baseline;
+        }
+      }
+    }
+  }
+
+  ul{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 1rem;
+    li{
+      display: flex;
+      gap: 0.25rem;
+      align-items:center;
+
+      .inu-checkbox-group-icon{
+        user-select:none;
+        cursor: pointer;
+        border: 0.125px solid var(--text-color);
+        display: flex;
+        height: 1rem;
+        width: 1rem;
+        align-items:center;
+
+        ::ng-deep{
+          span{
+            display: flex;
+            align-items:center;
+          }
+        }
+
+      }
+      .inu-checkbox-group-label{
+        cursor: pointer;
+        display: flex;
+        align-items:center;
+        user-select:none;
+      }
+    }
+  }
+
+  &.vertical{
+    ul{
+      flex-direction: column;
+    }
+  }
+
+  &.disabled{
+    .inu-checkbox-group-icon{
+      border: 0.125px solid var(--neutral);
+      fill:var(--neutral);
+    }
+    .inu-checkbox-group-label{
+      color: var(--neutral);
+    }
+  }
+}

@@ -1,0 +1,63 @@
+<xml>
+  <src name="import" type="typescript" title="Import inu-panel-tabs">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuPanelTabs,
+    InuPanelTab
+  ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
+
+  <src name="usage" type="html" title="Usage inu-panel-tabs">
+    <![CDATA[
+<inu-panel-tabs activeTab="tab2">
+
+  <inu-panel-tab name="tab1" label="Tab 1" icon="image">
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Quisque in mollis nunc, vitae aliquet turpis. Proin feugiat arcu
+      vitae quam vehicula venenatis. In pulvinar tincidunt felis, et dapibus
+      arcu laoreet ut.
+    </p>
+
+
+  </inu-panel-tab>
+  <inu-panel-tab name="tab2" label="Tab 2" icon="layer">
+    <p>
+      Suspendisse molestie neque lobortis mi dignissim luctus. Aenean massa tellus,
+      tempus aliquet tincidunt eu, semper eu eros. Praesent eu est non velit iaculis
+      scelerisque
+    </p>
+
+  </inu-panel-tab>
+
+  <inu-panel-tab  name="tab3" label="Tab 3" [valid]="false" icon="layout_grid">
+    <p>
+      Pellentesque fermentum pretium dui, a maximus neque blandit non. Aliquam sapien mi,
+      porttitor nec lectus et, consequat cursus ligula.
+    </p>
+  </inu-panel-tab>
+
+  <inu-panel-tab  name="tab4" label="Tab 4" [hasAccess]="false"  icon="package">
+    <p>
+      Vivamus gravida blandit ante, commodo sollicitudin quam imperdiet at. Sed posuere eleifend nisl
+      quis viverra. Fusce non erat nec eros euismod vulputate sed vel neque.
+    </p>
+  </inu-panel-tab>
+
+</inu-panel-tabs>
+]]>
+  </src>
+
+
+</xml>
