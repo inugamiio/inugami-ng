@@ -37,14 +37,22 @@ interface MyFormModel {
 })
 export class InuCheckboxGroupView {
   data = signal<string>('');
+
   formModel = signal<MyFormModel>({
     verb: ['GET', 'PUT']
   });
 
   myForm = form(this.formModel, (path) => {
+  });
+
+  myFormRequired = form(this.formModel, (path) => {
     required(path.verb);
+  });
+
+  myFormDisabled = form(this.formModel, (path) => {
     disabled(path.verb);
   });
+
 
   verbs = computed<InuSelectItem<string>[]>(() => [
     {value: 'GET', title: 'GET', styleClass: 'verb-get'},

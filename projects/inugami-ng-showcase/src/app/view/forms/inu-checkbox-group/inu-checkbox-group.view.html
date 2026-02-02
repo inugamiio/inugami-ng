@@ -22,43 +22,98 @@
         <h2>Example</h2>
       </header>
 
-      <inu-checkbox-group label="HTTP verb"
-                          [required]="true"
-                          [formField]="myForm.verb"
-                          [values]="verbs()"></inu-checkbox-group>
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell">
+            <inu-checkbox-group label="HTTP verb"
+                                [required]="true"
+                                [formField]="myForm.verb"
+                                [values]="verbs()"></inu-checkbox-group>
+          </div>
+          <div class="form-cell m-width-50p m-height-10">
+            <inu-panel-tabs>
 
+              <inu-panel-tab name="example" label="Example">
+                <inu-code [source]="data()" type="json"></inu-code>
 
+              </inu-panel-tab>
 
-      <inu-panel-tabs>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="html"></inu-code>
+              </inu-panel-tab>
 
-        <inu-panel-tab name="example" label="Example">
-          <inu-code [source]="data()" type="json"></inu-code>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="ts"></inu-code>
+              </inu-panel-tab>
 
-        </inu-panel-tab>
-
-        <inu-panel-tab  name="html" label="HTML">
-          <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="html"></inu-code>
-        </inu-panel-tab>
-
-        <inu-panel-tab  name="ts" label="TypeScript">
-          <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="ts"></inu-code>
-        </inu-panel-tab>
-
-      </inu-panel-tabs>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
     </article>
-
 
     <article>
       <header>
         <h2>Vertical example</h2>
       </header>
 
-      <inu-checkbox-group label="HTTP verb"
-                          [formField]="myForm.verb"
-                          [values]="verbs()"
-                          [vertical]="true"></inu-checkbox-group>
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell">
+            <inu-checkbox-group label="HTTP verb"
+                                [formField]="myForm.verb"
+                                [values]="verbs()"
+                                [vertical]="true"></inu-checkbox-group>
+          </div>
+          <div class="form-cell m-width-50p m-height-10">
+            <inu-code [source]="data()" type="json"></inu-code>
+          </div>
+        </div>
+      </div>
 
-      <inu-code [source]="data()" type="json"></inu-code>
+    </article>
+
+
+    <article>
+      <header>
+        <h2>Required example</h2>
+      </header>
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell">
+            <inu-checkbox-group label="HTTP verb"
+                                [formField]="myFormRequired.verb"
+                                [values]="verbs()"
+                                [vertical]="true"></inu-checkbox-group>
+          </div>
+          <div class="form-cell m-width-50p m-height-10">
+            <inu-code [source]="data()" type="json"></inu-code>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+    <article>
+      <header>
+        <h2>Disabled example</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell">
+            <inu-checkbox-group label="HTTP verb"
+                                [formField]="myFormDisabled.verb"
+                                [values]="verbs()"
+                                [vertical]="true"></inu-checkbox-group>
+          </div>
+          <div class="form-cell m-width-50p m-height-10">
+            <inu-code [source]="data()" type="json"></inu-code>
+          </div>
+        </div>
+      </div>
+
+
     </article>
 
     <!--================================================================================================================
@@ -66,12 +121,9 @@
    =================================================================================================================-->
     <article>
       <header>
-        <h2>Example</h2>
+        <h2>Properties</h2>
       </header>
 
-      <inu-checkbox-group [formField]="myForm.verb" [values]="verbs()"></inu-checkbox-group>
-
-      <inu-code [source]="data()" type="json"></inu-code>
 
       <inu-table-flex>
         <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
@@ -81,7 +133,7 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>values</inu-table-flex-cell>
-          <inu-table-flex-cell>InuSelectItem{{genericT()}}[]</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItem{{ genericT() }}[]</inu-table-flex-cell>
           <inu-table-flex-cell>[]</inu-table-flex-cell>
           <inu-table-flex-cell>the list of values used for the different checkboxes</inu-table-flex-cell>
         </inu-table-flex-row>
