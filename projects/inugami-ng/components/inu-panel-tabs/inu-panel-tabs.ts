@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, contentChildren, effect, input, signal} from '@angular/core';
+import {AfterViewInit, Component, contentChildren, effect, input, output, signal} from '@angular/core';
 import {InuPanelTab} from './inu-panel-tab/inu-panel-tab.component';
 import {NgTemplateOutlet} from '@angular/common';
 import {InuIcon} from 'inugami-icons';
@@ -24,7 +24,7 @@ export class InuPanelTabs implements AfterViewInit {
   styleClass = input<string | undefined | null>('');
   readonly vertical = input(false);
   readonly childrenTabs = contentChildren(InuPanelTab);
-
+  changed = output<string>();
 
   //
   _styleClass = signal<string>('');
@@ -73,6 +73,7 @@ export class InuPanelTabs implements AfterViewInit {
       for (let child of children) {
         if (activeTab == child.name()) {
           child.display.set(true);
+          this.changed.emit(child.name());
           this.valid.set(child.valid());
           found = true;
         }
@@ -84,6 +85,7 @@ export class InuPanelTabs implements AfterViewInit {
       for (let child of children) {
         if (first) {
           child.display.set(true);
+          this.changed.emit(child.name());
           this.valid.set(child.valid());
           first = false;
         }
@@ -109,6 +111,7 @@ export class InuPanelTabs implements AfterViewInit {
       if (child.name() === panel.name()) {
         child.display.set(true);
         this.valid.set(child.valid());
+        this.changed.emit(child.name());
       } else {
         child.display.set(false);
       }
