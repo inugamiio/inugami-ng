@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
 import {
   InuTableFlex,
@@ -21,5 +21,5 @@ import {InuCode} from 'inugami-ng/components/inu-code';
   ]
 })
 export class InuPanelTabsView {
-
+  genericString = signal<string>('<string>')
 }

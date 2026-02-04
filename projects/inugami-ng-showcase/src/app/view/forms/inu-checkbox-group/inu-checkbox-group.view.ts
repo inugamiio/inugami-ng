@@ -37,14 +37,22 @@ interface MyFormModel {
 })
 export class InuCheckboxGroupView {
   data = signal<string>('');
+
   formModel = signal<MyFormModel>({
     verb: ['GET', 'PUT']
   });
 
   myForm = form(this.formModel, (path) => {
+  });
+
+  myFormRequired = form(this.formModel, (path) => {
     required(path.verb);
+  });
+
+  myFormDisabled = form(this.formModel, (path) => {
     disabled(path.verb);
   });
+
 
   verbs = computed<InuSelectItem<string>[]>(() => [
     {value: 'GET', title: 'GET', styleClass: 'verb-get'},
@@ -53,6 +61,7 @@ export class InuCheckboxGroupView {
   ]);
 
   genericT = signal<string>('<T>')
+  genericTList = signal<string>('<T>[]')
   //==================================================================================================================
   // INIT
   //==================================================================================================================
@@ -71,4 +80,5 @@ export class InuCheckboxGroupView {
   private onValueChanged(value: MyFormModel) {
     this.data.set(JSON.stringify(value, null, 4));
   }
+
 }

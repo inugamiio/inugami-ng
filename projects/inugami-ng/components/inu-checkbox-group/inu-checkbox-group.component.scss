@@ -6,6 +6,7 @@
   flex-direction: column;
   gap: 1rem;
 
+
   .inu-checkbox-group-label-grp{
     display: flex;
     .inu-checkbox-group-label{
@@ -74,5 +75,19 @@
     .inu-checkbox-group-label{
       color: var(--neutral);
     }
+  }
+
+  &.notValid{
+    .inu-checkbox-group-label-grp{
+      color: var(--danger);
+    }
+    li{
+      .inu-checkbox-group-icon{
+        border: 0.125px solid var(--danger) !important;
+      }
+    }
+
+
+
   }
 }
