@@ -61,6 +61,7 @@ export class InuCheckboxGroupView {
   ]);
 
   genericT = signal<string>('<T>')
+  genericTList = signal<string>('<T>[]')
   //==================================================================================================================
   // INIT
   //==================================================================================================================
@@ -79,4 +80,5 @@ export class InuCheckboxGroupView {
   private onValueChanged(value: MyFormModel) {
     this.data.set(JSON.stringify(value, null, 4));
   }
+
 }
