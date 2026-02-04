@@ -1,4 +1,4 @@
-import {Component, effect, Input, input, model, ModelSignal, OnInit, signal} from '@angular/core';
+import {Component, effect, input, model, ModelSignal, OnInit, output, signal} from '@angular/core';
 import {InuSelectItem} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {InuIcon} from 'inugami-icons';
@@ -23,7 +23,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   readonly _required = input(false, {alias: 'required'});
   readonly values = input<InuSelectItem<T>[]>([]);
   readonly vertical = input(false);
-
+  changed = output<T[]>();
 
   // FormValueControl
   value: ModelSignal<T[]> = model(<T[]>[]);
@@ -120,10 +120,9 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
       value.selected = !value.selected;
     }
 
+    const newSelectedValues: T[] = [];
     const currentValues = this._values();
     if (currentValues) {
-      const newSelectedValues: T[] = [];
-
       for (let selectItem of currentValues) {
         if (selectItem.selected) {
           newSelectedValues.push(selectItem.value);
@@ -133,6 +132,8 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
     }
 
     this.initStyleClass();
+
+    this.changed.emit(newSelectedValues);
   }
 
 
