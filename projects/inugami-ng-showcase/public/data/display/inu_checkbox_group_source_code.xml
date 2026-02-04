@@ -63,4 +63,58 @@ export class MyAppView {
   </src>
 
 
+  <src name="tsRequired" type="typescript" title="Define mandatory field">
+    <![CDATA[
+
+@Component({
+  // ...
+})
+export class MyAppView {
+  formModel = signal<MyFormModel>({ verb: [] });
+
+  myForm = form(this.formModel, (path) => {
+    required(path.verb);
+  });
+}
+]]>
+  </src>
+
+  <src name="tsDisabled" type="typescript" title="Define disabled field">
+    <![CDATA[
+
+@Component({
+  // ...
+})
+export class MyAppView {
+  formModel = signal<MyFormModel>({ verb: [] });
+
+  myForm = form(this.formModel, (path) => {
+    disabled(path.verb);
+  });
+}
+]]>
+  </src>
+
+
+  <src name="InuSelectItem" type="typescript" title="InuSelectItem">
+    <![CDATA[
+export interface InuSelectItem<T>{
+  title:string;
+  value:T;
+  styleClass?:string;
+  disabled?:boolean;
+  selected?:boolean;
+}
+]]>
+  </src>
+
+  <src name="htmlVertical" type="html" title="Vertical inu-checkbox-group">
+    <![CDATA[
+<inu-checkbox-group label="HTTP verb"
+                                [formField]="myForm.verb"
+                                [values]="verbs()"
+                                [vertical]="true"></inu-checkbox-group>
+]]>
+  </src>
+
 </xml>

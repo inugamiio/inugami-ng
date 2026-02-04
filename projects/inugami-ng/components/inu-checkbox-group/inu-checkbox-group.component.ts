@@ -24,9 +24,6 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   readonly values = input<InuSelectItem<T>[]>([]);
   readonly vertical = input(false);
 
-  @Input() set requiredOld(v: boolean) {
-    console.log('RECU VIA DECORATEUR :', v);
-  }
 
   // FormValueControl
   value: ModelSignal<T[]> = model(<T[]>[]);
@@ -43,18 +40,11 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   constructor() {
     effect(() => {
       this.initStyleClass();
-      const required = this._required();
-      console.log('required', required)
     });
   }
 
   ngOnInit(): void {
-
     this.initSelectItems();
-    setTimeout(() => {
-      console.log('Required après timeout:', this._required());
-    }, 100);
-
   }
 
   private initSelectItems() {
@@ -96,6 +86,23 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
       result.push('disabled');
     }
 
+    if (this._required()) {
+      const values = this._values();
+      let found = false;
+
+      if (values) {
+        for (let value of values) {
+          found = value.selected != undefined && value.selected;
+          if (found) {
+            break;
+          }
+        }
+      }
+      if(!found){
+        result.push('notValid');
+      }
+    }
+
     this.styleClass.set(result.join(' '));
   }
 
@@ -104,7 +111,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   // ACTIONS
   //==================================================================================================================
   protected toggle(value: InuSelectItem<T>) {
-    if(this.disabled()){
+    if (this.disabled()) {
       return;
     }
     if (value.selected == undefined) {
@@ -124,6 +131,8 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
       }
       this.value.set(newSelectedValues);
     }
+
+    this.initStyleClass();
   }
 
 

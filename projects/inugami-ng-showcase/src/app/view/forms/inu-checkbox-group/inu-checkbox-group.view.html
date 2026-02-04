@@ -10,9 +10,21 @@
     =================================================================================================================-->
     <article>
       <header>
-        <h2></h2>
+        <h2>Simplified checkbox usage</h2>
+        The <em>inu-checkbox-group</em> component is designed to simplify checkbox usage within <strong>Signal-based forms</strong>.
+
+        <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="import"></inu-code>
+
+        It leverages the <code>InuSelectItem{{genericT()}}</code> interface to provide a consistent and
+        <strong>type-safe</strong> way to manage selection lists.
+
+        <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="InuSelectItem"></inu-code>
+
       </header>
     </article>
+
+
+
 
     <!--================================================================================================================
     = EXAMPLE
@@ -30,20 +42,18 @@
                                 [formField]="myForm.verb"
                                 [values]="verbs()"></inu-checkbox-group>
           </div>
-          <div class="form-cell m-width-50p m-height-10">
+          <div class="form-cell m-width-50p m-height-15">
             <inu-panel-tabs>
-
-              <inu-panel-tab name="example" label="Example">
-                <inu-code [source]="data()" type="json"></inu-code>
-
-              </inu-panel-tab>
-
               <inu-panel-tab name="html" label="HTML">
                 <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="html"></inu-code>
               </inu-panel-tab>
 
               <inu-panel-tab name="ts" label="TypeScript">
                 <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="ts"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="example" label="Example">
+                <inu-code [source]="data()" type="json"></inu-code>
               </inu-panel-tab>
 
             </inu-panel-tabs>
@@ -65,8 +75,16 @@
                                 [values]="verbs()"
                                 [vertical]="true"></inu-checkbox-group>
           </div>
-          <div class="form-cell m-width-50p m-height-10">
-            <inu-code [source]="data()" type="json"></inu-code>
+          <div class="form-cell m-width-50p m-height-15">
+            <inu-panel-tabs activeTab="ts">
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="html"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="example" label="Example">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
           </div>
         </div>
       </div>
@@ -77,17 +95,31 @@
     <article>
       <header>
         <h2>Required example</h2>
+
       </header>
       <div class="form-container">
         <div class="form-row-col">
-          <div class="form-cell">
+          <div class="form-cell-col">
+            <p>
+              Mandatory field logic is handled directly by the Signal form. Therefore, there is no need to define a
+              <code>required</code> attribute on the component to enforce validation.
+            </p>
+
             <inu-checkbox-group label="HTTP verb"
                                 [formField]="myFormRequired.verb"
                                 [values]="verbs()"
                                 [vertical]="true"></inu-checkbox-group>
           </div>
-          <div class="form-cell m-width-50p m-height-10">
-            <inu-code [source]="data()" type="json"></inu-code>
+          <div class="form-cell m-width-50p m-height-15">
+            <inu-panel-tabs>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="tsRequired"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="example" label="Example">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
           </div>
         </div>
       </div>
@@ -101,14 +133,26 @@
 
       <div class="form-container">
         <div class="form-row-col">
-          <div class="form-cell">
+          <div class="form-cell-col">
+            <p>
+              Similarly to mandatory fields, disabled states are also defined via the Signal form.
+            </p>
+
             <inu-checkbox-group label="HTTP verb"
                                 [formField]="myFormDisabled.verb"
                                 [values]="verbs()"
                                 [vertical]="true"></inu-checkbox-group>
           </div>
-          <div class="form-cell m-width-50p m-height-10">
-            <inu-code [source]="data()" type="json"></inu-code>
+          <div class="form-cell m-width-50p m-height-15">
+            <inu-panel-tabs>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="tsDisabled"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="example" label="Example">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
           </div>
         </div>
       </div>
@@ -132,6 +176,20 @@
         <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
         <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
           <inu-table-flex-cell>values</inu-table-flex-cell>
           <inu-table-flex-cell>InuSelectItem{{ genericT() }}[]</inu-table-flex-cell>
           <inu-table-flex-cell>[]</inu-table-flex-cell>
@@ -139,11 +197,20 @@
         </inu-table-flex-row>
 
         <inu-table-flex-row>
-          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
           <inu-table-flex-cell>boolean</inu-table-flex-cell>
           <inu-table-flex-cell>false</inu-table-flex-cell>
           <inu-table-flex-cell></inu-table-flex-cell>
         </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>vertical</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Displays the component in a column layout.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+
       </inu-table-flex>
     </article>
   </main>

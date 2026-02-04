@@ -19,6 +19,7 @@
   --success-dark: #0f621d;
   --success: #1f812f;
   --success-light: #4aa659;
+  --danger-dark: #6e1008;
   --danger: #da4134;
   --danger-light: #e5766c;
   --danger-light-extra: #facecb;
@@ -512,6 +513,10 @@ dl {
   display: flex;
   flex-direction: row;
 }
+.form-cell-col{
+  display: flex;
+  flex-direction: column;
+}
 
 .m-width-10p{
   min-width: 10%;
@@ -577,6 +582,9 @@ dl {
 
 .m-height-10{
   min-height: 10rem;
+}
+.m-height-15{
+  min-height: 15rem;
 }
 .m-height-20{
   min-height: 20rem;
