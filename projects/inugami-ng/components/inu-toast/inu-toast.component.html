@@ -1,0 +1,12 @@
+<div class="inu-toast">
+
+
+  @if (messages()) {
+    <ul>
+      @for (message of messages(); track message; ) {
+        <li>{{ message.title }}</li>
+      }
+    </ul>
+
+  }
+</div>
