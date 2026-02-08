@@ -1,0 +1,139 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-button</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2></h2>
+
+      </header>
+
+      <inu-code url="data/display/inu_button_source_code.xml" tag="imports"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <ul class="actions">
+        <li>
+          <inu-button label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+        </li>
+      </ul>
+      <inu-code url="data/display/inu_button_source_code.xml" tag="usage"></inu-code>
+    </article>
+
+    <article>
+      <header>
+        <h2>Example as Link</h2>
+      </header>
+
+      <ul class="actions">
+        <li>
+          <inu-button [link]="true" label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button [link]="true"  icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button [link]="true"  icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button [link]="true"  icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button [link]="true"  icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+        </li>
+      </ul>
+      <inu-code url="data/display/inu_button_source_code.xml" tag="usageLink"></inu-code>
+
+    </article>
+
+
+
+   <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>label</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>icon</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>type</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell>The component natively supports the following types: secondary, primary, success, warn, danger, and error. For any other types, you must create the corresponding CSS styles</inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>link</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>false</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+
+
+
+
+
+    </article>
+  </main>
+
+
+</section>

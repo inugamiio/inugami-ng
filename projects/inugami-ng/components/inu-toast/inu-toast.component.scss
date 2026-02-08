@@ -1,0 +1,136 @@
+.inu-toast{
+  color: var(--text-color);
+  position:absolute;
+  bottom:2rem;
+  right: 1rem;
+
+  ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 1rem;
+
+    li{
+      display: flex;
+      article{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--neutral);
+        min-width: 15rem;
+        padding: 0.5rem;
+        background-color: var(--background-color);
+        border-radius: 0.5rem;
+        -webkit-box-shadow: 0px 0px 1rem 0px var(--shadow-color);
+        box-shadow: 0px 0px 1rem 0px var(--shadow-color);
+
+        transition:  border-color 250ms;
+        &:hover{
+          border-color: var(--text-color);
+        }
+        header{
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          h3{
+            flex:1;
+            margin: 0;
+            padding: 0;
+          }
+          .inu-toast-header-icon{
+            width: 1rem;
+          }
+          .inu-toast-header-close{
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 0.125rem solid var(--neutral);
+            display: flex;
+            border-radius: 1rem;
+            justify-content: center;
+            align-items: normal;
+            fill:var(--neutral);
+
+            transition: fill 250ms, border-color 250ms;
+            &:hover{
+              fill:var(--text-color);
+              border-color: var(--text-color);
+            }
+
+            inu-icon{
+              display: flex;
+              align-items: center;
+            }
+
+            ::ng-deep{
+
+
+
+              .inu-icon{
+                display: flex;
+                justify-content: center;
+                align-items: normal;
+                .inu-icon-content{
+                  display: flex;
+                  justify-content: center;
+                  align-items: normal;
+                }
+              }
+            }
+          }
+        }
+        .inu-toast-content{
+          display: flex;
+        }
+      }
+
+
+
+      &.success{
+        article{
+          border: 1px solid var(--success);
+          header{
+            h3{
+              color: var(--success-dark);
+            }
+          }
+        }
+      }
+      &.info{
+        article{
+          border: 1px solid var(--info);
+          header{
+            h3{
+              color: var(--info);
+            }
+          }
+        }
+      }
+      &.warn{
+        article{
+          border: 1px solid var(--warning-dark);
+          header{
+            h3{
+              color: var(--warning-dark);
+            }
+          }
+        }
+      }
+      &.error{
+        article{
+          border: 1px solid var(--danger);
+          header{
+            h3{
+              color: var(--danger-dark);
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+
+
+}

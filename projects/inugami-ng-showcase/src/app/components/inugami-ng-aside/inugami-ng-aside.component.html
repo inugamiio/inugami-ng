@@ -10,6 +10,20 @@
         </li>
 
       <!--==============================================================================================================
+      = ACTION
+      ===============================================================================================================-->
+      <li>
+        <span>Actions</span>
+        <ul>
+          <li>
+            <a  routerLink="/actions/inu-button"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }">inu-button</a>
+          </li>
+        </ul>
+      </li>
+
+      <!--==============================================================================================================
       = DISPLAY
       ===============================================================================================================-->
       <li>
@@ -34,6 +48,11 @@
             <a  routerLink="/display/inu-panel-tabs"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: false }">inu-panel-tabs</a>
+          </li>
+          <li>
+            <a  routerLink="/display/inu-toast"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: false }">inu-toast</a>
           </li>
         </ul>
       </li>

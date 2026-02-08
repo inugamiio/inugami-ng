@@ -1,0 +1,71 @@
+<xml>
+  <src name="imports" type="typescript" title="Import inu-button">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuButton} from 'inugami-ng/components/inu-button';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuButton
+  ]
+})
+export class MyAppView {
+}
+]]>
+  </src>
+
+  <src name="usage" type="xml" title="Usage">
+    <![CDATA[
+<ul class="actions">
+  <li>
+    <inu-button label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+  </li>
+</ul>
+]]>
+  </src>
+
+  <src name="usageLink" type="xml" title="Usage">
+    <![CDATA[
+<ul class="actions">
+  <li>
+    <inu-button [link]="true" label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button [link]="true"  icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button [link]="true"  icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button [link]="true"  icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button [link]="true"  icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+  </li>
+</ul>
+]]>
+  </src>
+
+</xml>

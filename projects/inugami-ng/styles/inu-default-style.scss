@@ -1,7 +1,9 @@
 :root {
   --main-header-title-color: #0c0c0c;
   --main-header-title-background: #e1e4e7;
+  --background-color: #ffffff;
   --shadow-color: #d1d1d1;
+  --text-color-light: #f8f7f7;
   --text-color: #1a1a1a;
   --primary-dark: #b20505;
   --primary: #cc0000;
@@ -19,6 +21,7 @@
   --success-dark: #0f621d;
   --success: #1f812f;
   --success-light: #4aa659;
+  --success-light-extra: #e1f1e4;
   --danger-dark: #6e1008;
   --danger: #da4134;
   --danger-light: #e5766c;
@@ -27,6 +30,7 @@
   --warning-dark: #a8700f;
   --warning: #efad32;
   --warning-light: #e0b971;
+  --warning-light-extra: #fcf0db;
   --background: #ffffff;
   --endpoint-font-color: #3b4151;
   --endpoint-verb-font-color: #3b4151;

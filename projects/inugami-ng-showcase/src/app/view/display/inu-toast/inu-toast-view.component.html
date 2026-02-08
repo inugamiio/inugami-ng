@@ -1,0 +1,93 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-toast</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2></h2>
+
+      </header>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="imports"></inu-code>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="usage"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+
+
+      <ul class="actions">
+        <li>
+          <inu-button label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+        </li>
+      </ul>
+
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="sendMessageHtml"></inu-code>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="sendMessageTs"></inu-code>
+    </article>
+
+
+
+   <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+      <fieldset>
+        <legend>inu-panel-tabs</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>delay</inu-table-flex-cell>
+            <inu-table-flex-cell>number</inu-table-flex-cell>
+            <inu-table-flex-cell>5000ms</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+      </fieldset>
+
+
+
+
+    </article>
+  </main>
+
+
+</section>
