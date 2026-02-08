@@ -1,10 +1,35 @@
 <div class="inu-toast">
 
-
   @if (messages()) {
     <ul>
       @for (message of messages(); track message; ) {
-        <li>{{ message.title }}</li>
+        <li [class]="resolveMessageStyleclass(message.value)">
+          <article>
+
+            <header>
+              <span class="inu-toast-header-icon">
+                  @if (message.value?.icon) {
+                    <inu-icon [icon]="message.value?.icon!" [size]="1"></inu-icon>
+                  }
+              </span>
+              <h3>
+                @if (message.value?.title) {
+                  {{ message.value?.title }}
+                }
+              </h3>
+
+              <span class="inu-toast-header-close" (click)="closeMessage(message)">
+                <inu-icon icon="close" [size]="0.7"></inu-icon>
+              </span>
+            </header>
+
+            <div class="inu-toast-content">
+              @if (message.value?.message) {
+                {{ message.value?.message }}
+              }
+            </div>
+          </article>
+        </li>
       }
     </ul>
 

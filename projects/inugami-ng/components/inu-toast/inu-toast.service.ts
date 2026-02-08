@@ -3,6 +3,8 @@ import {ToastMessage} from './inu-toast.model';
 import {TTLWrapper} from 'inugami-ng/models';
 import {UuidUtils} from 'inugami-ng/services';
 
+const DEFAULT_TTL = 5000;
+
 @Injectable({providedIn: 'root'})
 export class InuToastServices implements OnDestroy {
   //====================================================================================================================
@@ -42,8 +44,7 @@ export class InuToastServices implements OnDestroy {
   // API
   //====================================================================================================================
   addMessage(message: ToastMessage) {
-    const delay = message.delay && message.delay > 1000 ? message.delay : 5000;
-console.log('add message')
+    const delay = message.delay && message.delay > 1000 ? message.delay : DEFAULT_TTL;
     this._messages.update(prev => [...prev, {
       id: UuidUtils.buildUid(),
       ttl: new Date().getTime() + delay,
@@ -52,14 +53,19 @@ console.log('add message')
   }
 
 
-  private extractMessage(): ToastMessage[] {
-    const result: ToastMessage[] = [];
+  private extractMessage(): TTLWrapper<ToastMessage>[] {
+    const result: TTLWrapper<ToastMessage>[] = [];
     const currentMessages = this._messages();
     for (let message of currentMessages) {
       if (message.value) {
-        result.push(message.value)
+        result.push(message)
       }
     }
     return result;
+  }
+
+  removeMessage(message: TTLWrapper<ToastMessage>) {
+    const allMessages = this._messages().filter(m=> m.id!=message.id);
+    this._messages.set(allMessages);
   }
 }

@@ -25,7 +25,27 @@
         <h2>Example</h2>
       </header>
 
-        <button (click)="addMessage()">click</button>
+      <ul class="actions">
+        <li>
+          <button (click)="addMessage()">Default message</button>
+        </li>
+        <li>
+          <button (click)="addDebugMessage()">Debug message</button>
+        </li>
+
+        <li>
+          <button (click)="addSuccessMessage()">Success message</button>
+        </li>
+
+        <li>
+          <button (click)="addWarnMessage()">Warning message</button>
+        </li>
+
+        <li>
+          <button (click)="addErrorMessage()">Error message</button>
+        </li>
+      </ul>
+
     </article>
 
 
