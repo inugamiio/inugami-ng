@@ -13,7 +13,8 @@
         <h2></h2>
 
       </header>
-
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="imports"></inu-code>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="usage"></inu-code>
     </article>
 
     <!--================================================================================================================
@@ -25,27 +26,32 @@
         <h2>Example</h2>
       </header>
 
+
+
       <ul class="actions">
         <li>
-          <button (click)="addMessage()">Default message</button>
-        </li>
-        <li>
-          <button (click)="addDebugMessage()">Debug message</button>
+          <inu-button label="Default message" type="secondary" (click)="addMessage()"></inu-button>
         </li>
 
         <li>
-          <button (click)="addSuccessMessage()">Success message</button>
+          <inu-button icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
         </li>
 
         <li>
-          <button (click)="addWarnMessage()">Warning message</button>
+          <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
         </li>
 
         <li>
-          <button (click)="addErrorMessage()">Error message</button>
+          <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
         </li>
       </ul>
 
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="sendMessageHtml"></inu-code>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="sendMessageTs"></inu-code>
     </article>
 
 

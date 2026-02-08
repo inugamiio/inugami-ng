@@ -1,31 +1,27 @@
-import {Component, inject, signal} from '@angular/core';
-import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
+import {Component, inject} from '@angular/core';
 import {
   InuTableFlex,
   InuTableFlexCell,
   InuTableFlexHeader,
   InuTableFlexRow
 } from 'inugami-ng/components/inu-table-flex';
-import {InuCode} from 'inugami-ng/components/inu-code';
-import {InuToastServices} from 'inugami-ng/components/inu-toast';
 import {InuButton} from 'inugami-ng/components/inu-button';
+import {InuToastServices} from 'inugami-ng/components/inu-toast';
+import {InuCode} from 'inugami-ng/components/inu-code';
 
 @Component({
-  templateUrl: './inu-toast-view.component.html',
-  styleUrls: ['./inu-toast-view.component.scss'],
+  templateUrl: './inu-button-view.component.html',
+  styleUrls: ['./inu-button-view.component.scss'],
   imports: [
-    InuPanelTabs,
-    InuPanelTab,
     InuTableFlex,
     InuTableFlexCell,
     InuTableFlexHeader,
     InuTableFlexRow,
-    InuCode,
-    InuButton
+    InuButton,
+    InuCode
   ]
 })
-export class InuToastView {
-
+export class InuButtonView {
   toastServices = inject(InuToastServices);
 
   protected addMessage() {
@@ -34,7 +30,7 @@ export class InuToastView {
       message: 'some message',
       level: "info",
       icon:'idea'
-    });
+    })
   }
 
   protected addDebugMessage() {
@@ -72,4 +68,5 @@ export class InuToastView {
       icon:'danger'
     })
   }
+
 }

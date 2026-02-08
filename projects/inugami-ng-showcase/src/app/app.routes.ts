@@ -8,11 +8,15 @@ import {InuCheckboxGroupView} from './view/forms/inu-checkbox-group/inu-checkbox
 import {InuTableFlexView} from './view/table/inu-table-flex/inu-table-flex.view';
 import {InuPanelTabsView} from './view/display/inu-panel-tabs/inu-panel-tabs.view';
 import {InuToastView} from './view/display/inu-toast/inu-toast-view.component';
+import {InuButtonView} from './view/actions/inu-button/inu-button-view.component';
 
 
 export const routes: Routes = [
   {path: "", component: HomeView},
   {path: "icons", component: IconsView},
+  {path: "actions", children:[
+      {path: "inu-button", component: InuButtonView},
+    ]},
   {
     path: "display", children: [
       {path: "inu-cite", component: InuCiteView},

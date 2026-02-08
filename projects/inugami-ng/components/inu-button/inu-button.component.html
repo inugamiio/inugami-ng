@@ -1,0 +1,32 @@
+@if(link()){
+  <span [class]="_styleClass()">
+
+      @if(icon()){
+        <span class="inu-button-icon">
+          <inu-icon [icon]="icon()" [size]="1"></inu-icon>
+        </span>
+      }
+
+    <span class="inu-button-label">
+      @if(label()){
+        {{label()}}
+      }
+    </span>
+  </span>
+}
+@else{
+  <button [class]="_styleClass()">
+
+      @if(icon()){
+        <span class="inu-button-icon">
+          <inu-icon [icon]="icon()" [size]="1"></inu-icon>
+        </span>
+      }
+
+    <span class="inu-button-label">
+      @if(label()){
+        {{label()}}
+      }
+    </span>
+  </button>
+}
