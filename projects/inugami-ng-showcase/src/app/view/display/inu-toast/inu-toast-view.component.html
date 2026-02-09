@@ -1,0 +1,118 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-toast</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Show notifications within your apps</h2>
+      </header>
+
+      <p>
+        The <code>inu-toast</code> component allows you to display notifications in your applications as toast messages.
+        These toasts are automatically dismissed after a specific delay.
+      </p>
+
+      <p>
+        To function correctly, the <code>inu-toast</code> component must be placed at the very end of your main Angular
+        template.
+      </p>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="imports"></inu-code>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="usage"></inu-code>
+
+      <p>
+        To add notifications, you need to use the <code>InuToastServices</code> service.
+      </p>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="InuToastServices"></inu-code>
+
+      <p>
+        The <code>addMessage</code> method takes a message parameter of type <code>ToastMessage</code>.
+      </p>
+      <inu-code url="data/display/inu_toast_source_code.xml" tag="ToastMessage"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+
+
+      <ul class="actions">
+        <li>
+          <inu-button label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+        </li>
+
+        <li>
+          <inu-button icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+        </li>
+      </ul>
+
+      <inu-panel-tabs>
+        <inu-panel-tab name="html" label="HTML">
+          <inu-code url="data/display/inu_toast_source_code.xml" tag="sendMessageHtml"></inu-code>
+        </inu-panel-tab>
+        <inu-panel-tab name="typescript" label="TypeScript">
+          <inu-code url="data/display/inu_toast_source_code.xml" tag="sendMessageTs"></inu-code>
+        </inu-panel-tab>
+      </inu-panel-tabs>
+    </article>
+
+
+
+   <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+      <fieldset>
+        <legend>inu-panel-tabs</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>delay</inu-table-flex-cell>
+            <inu-table-flex-cell>number</inu-table-flex-cell>
+            <inu-table-flex-cell>5000ms</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+      </fieldset>
+
+
+
+
+    </article>
+  </main>
+
+
+</section>

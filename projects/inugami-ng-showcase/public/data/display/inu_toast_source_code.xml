@@ -1,0 +1,119 @@
+<xml>
+  <src name="imports" type="typescript" title="Import inu-button">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuToast} from 'inugami-ng/components/inu-toast';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuToast
+  ]
+})
+export class App {
+}
+]]>
+  </src>
+
+  <src name="usage" type="xml" title="Usage">
+    <![CDATA[
+<div class="page-content">
+  <section class="page-section">
+    <div class="page-section-content">
+      <aside class="bd-sidebar">
+        <inugami-ng-aside></inugami-ng-aside>
+      </aside>
+      <div class="bd-content">
+        <router-outlet/>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<inu-toast></inu-toast>
+
+]]>
+  </src>
+
+  <src name="sendMessageHtml" type="xml" title="Send message view">
+    <![CDATA[
+<ul class="actions">
+  <li>
+    <inu-button label="Default message" type="secondary" (click)="addMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="bug" label="Debug message"  (click)="addDebugMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>
+  </li>
+
+  <li>
+    <inu-button icon="danger" label="Error message"  type="error" (click)="addErrorMessage()"></inu-button>
+  </li>
+</ul>
+]]>
+  </src>
+
+  <src name="sendMessageTs" type="typescript" title="Send message typescript">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuButton} from 'inugami-ng/components/inu-button';
+import {InuToastServices} from 'inugami-ng/components/inu-toast';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuButton
+  ]
+})
+export class MyAppView {
+
+  toastServices = inject(InuToastServices);
+
+  protected addMessage() {
+    this.toastServices.addMessage({
+      title: 'Hello',
+      message: 'some message',
+      level: "info",
+      icon:'idea'
+    });
+  }
+}
+]]>
+  </src>
+
+
+  <src name="InuToastServices" type="typescript" title="Add message">
+    <![CDATA[
+this.toastServices.addMessage({
+  title: 'Hello',
+  message: 'some message',
+  level: "info",
+  icon:'idea'
+});
+]]>
+  </src>
+
+  <src name="ToastMessage" type="typescript" title="Add message">
+    <![CDATA[
+export interface ToastMessage {
+  title?: string;
+  message?: string;
+  level?:'debug'|'success'|'info'|'warn'|'error';
+  icon?: string;
+  delay?:number;
+}
+]]>
+  </src>
+
+</xml>
