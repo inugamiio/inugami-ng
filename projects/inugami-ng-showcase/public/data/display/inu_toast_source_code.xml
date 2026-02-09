@@ -93,4 +93,27 @@ export class MyAppView {
   </src>
 
 
+  <src name="InuToastServices" type="typescript" title="Add message">
+    <![CDATA[
+this.toastServices.addMessage({
+  title: 'Hello',
+  message: 'some message',
+  level: "info",
+  icon:'idea'
+});
+]]>
+  </src>
+
+  <src name="ToastMessage" type="typescript" title="Add message">
+    <![CDATA[
+export interface ToastMessage {
+  title?: string;
+  message?: string;
+  level?:'debug'|'success'|'info'|'warn'|'error';
+  icon?: string;
+  delay?:number;
+}
+]]>
+  </src>
+
 </xml>

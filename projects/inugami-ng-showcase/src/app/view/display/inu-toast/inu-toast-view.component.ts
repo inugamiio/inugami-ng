@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
 import {
   InuTableFlex,
