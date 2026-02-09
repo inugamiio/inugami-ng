@@ -77,7 +77,7 @@
     </header>
     <div class="icons">
       @for (icon of icons(); track icon; ) {
-        <article>
+        <article (click)="copy(icon,$event)">
           <header>
             <inu-icon [icon]="icon" [size]="3"></inu-icon>
             <h3>{{ icon }}</h3>
