@@ -3,7 +3,7 @@ import {ToastMessage} from './inu-toast.model';
 import {TTLWrapper} from 'inugami-ng/models';
 import {UuidUtils} from 'inugami-ng/services';
 
-const DEFAULT_TTL = 5000;
+const DEFAULT_TTL = 555000;
 
 @Injectable({providedIn: 'root'})
 export class InuToastServices implements OnDestroy {
