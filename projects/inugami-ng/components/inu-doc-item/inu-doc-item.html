@@ -1,0 +1,70 @@
+<section [class]="_styleClass()" >
+  <header [id]="data()?.id">
+    @if(data()?.href) {
+      <a [href]="data()?.href" class="anchor-link">
+        <div  class="anchor">
+          @if(icon()){
+            <div class="inug-doc-item-icon">
+              <inu-icon [icon]="icon()" [size]="iconSize()"></inu-icon>
+            </div>
+          }
+          @if(data()?.level==1){
+            <h1 class="title">{{data()?.title}}</h1>
+          }
+          @if(data()?.level==2){
+            <h2 class="title">{{data()?.title}}</h2>
+          }
+          @else if (data()?.level==3) {
+            <h3 class="title">{{data()?.title}}</h3>
+          }
+          @else if (data()?.level==4) {
+            <h4 class="title">{{data()?.title}}</h4>
+          }
+          @else if (data()?.level==5) {
+            <h5 class="title">{{data()?.title}}</h5>
+          }
+          @else {
+            <h6 class="title">{{data()?.title}}</h6>
+          }
+          <div class="anchor-icon">
+            <inu-icon icon="link" [size]="1"></inu-icon>
+          </div>
+        </div>
+      </a>
+    }
+    @else{
+      <div  class="anchor">
+        @if(icon()){
+          <div class="inug-doc-item-icon">
+            <inu-icon [icon]="icon()" [size]="iconSize()"></inu-icon>
+          </div>
+        }
+        @if(data()?.level==1){
+          <h1 class="title">{{data()?.title}}</h1>
+        }
+        @if(data()?.level==2){
+          <h2 class="title">{{data()?.title}}</h2>
+        }
+        @else if (data()?.level==3) {
+          <h3 class="title">{{data()?.title}}</h3>
+        }
+        @else if (data()?.level==4) {
+          <h4 class="title">{{data()?.title}}</h4>
+        }
+        @else if (data()?.level==5) {
+          <h5 class="title">{{data()?.title}}</h5>
+        }
+        @else {
+          <h6 class="title">{{data()?.title}}</h6>
+        }
+        <div class="anchor-icon">
+          <inu-icon icon="link" [size]="1"></inu-icon>
+        </div>
+      </div>
+    }
+
+  </header>
+  <div class="content">
+    <ng-content></ng-content>
+  </div>
+</section>
