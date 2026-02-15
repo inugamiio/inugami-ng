@@ -9,9 +9,24 @@
     =
     =================================================================================================================-->
     <article>
-      <header>
-      </header>
+      <p>
+        The <code>inu-doc-item</code> component is designed to define sections within a documentation page so they can
+        be referenced by the inu-doc-summary component. The purpose of <code>inu-doc-summary</code> is to generate a
+        table of contents from these various sections.
+      </p>
 
+      <p>
+        These two components are designed to work in tandem.
+      </p>
+
+      <inu-code url="data/display/inu_doc_item_source_code.xml" tag="import"></inu-code>
+
+      <p>
+        The <code>inu-doc-summary</code> component requires the list of all <code>inu-doc-item</code> components present
+        on the page. Therefore, it is essential to inject these components using <code>viewChildren</code>
+      </p>
+
+      <inu-code url="data/display/inu_doc_item_source_code.xml" tag="usage"></inu-code>
     </article>
 
     <!--================================================================================================================
@@ -22,6 +37,13 @@
       <header>
         <h2>Example</h2>
       </header>
+
+      <fieldset>
+        <legend>Summary</legend>
+        <inu-doc-summary [children]="children()" ></inu-doc-summary>
+      </fieldset>
+
+
 
       <inu-doc-item icon="layer"
                     title="level2"
@@ -70,55 +92,85 @@
         <h2>Properties</h2>
       </header>
 
-      <inu-table-flex>
-        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
-        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
-        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
-        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+      <fieldset>
+        <legend>inu-doc-item</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>href</inu-table-flex-cell>
-          <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>undefined</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>href</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>icon</inu-table-flex-cell>
-          <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>undefined</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>icon</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>id</inu-table-flex-cell>
-          <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>undefined</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>id</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>level</inu-table-flex-cell>
-          <inu-table-flex-cell>number</inu-table-flex-cell>
-          <inu-table-flex-cell>2</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>level</inu-table-flex-cell>
+            <inu-table-flex-cell>number</inu-table-flex-cell>
+            <inu-table-flex-cell>2</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>styleClass</inu-table-flex-cell>
-          <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>inu-doc-item</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-doc-item</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>title</inu-table-flex-cell>
-          <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>undefined</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>title</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
 
-      </inu-table-flex>
+        </inu-table-flex>
+      </fieldset>
+
+      <fieldset>
+        <legend>inu-doc-summary</legend>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>children</inu-table-flex-cell>
+            <inu-table-flex-cell>InuDocItem[]</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>maxLevel</inu-table-flex-cell>
+            <inu-table-flex-cell>number</inu-table-flex-cell>
+            <inu-table-flex-cell>3</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+
+        </inu-table-flex>
+      </fieldset>
+
     </article>
   </main>
 

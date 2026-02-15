@@ -1,13 +1,12 @@
-import {Component, signal} from '@angular/core';
+import {Component, signal, viewChildren} from '@angular/core';
 import {
   InuTableFlex,
   InuTableFlexCell,
   InuTableFlexHeader,
   InuTableFlexRow
 } from 'inugami-ng/components/inu-table-flex';
-import {
-  InuDocItem
-} from 'inugami-ng/components/inu-doc-item';
+import {InuCode} from 'inugami-ng/components/inu-code';
+import {InuDocItem, InuDocSummary} from 'inugami-ng/components/inu-doc-item';
 
 @Component({
   templateUrl: './inu-doc-item.view.html',
@@ -17,9 +16,15 @@ import {
     InuTableFlexCell,
     InuTableFlexHeader,
     InuTableFlexRow,
-    InuDocItem
+    InuDocItem,
+    InuDocSummary,
+    InuCode
   ]
 })
 export class InuDocItemView {
   genericString = signal<string>('<string>')
+
+  readonly children = viewChildren(InuDocItem);
+
+
 }

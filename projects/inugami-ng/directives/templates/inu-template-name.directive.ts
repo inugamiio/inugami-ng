@@ -13,7 +13,6 @@ export class InugamiTemplateDirective implements OnInit, OnDestroy {
   private registry:InuTemplateRegistryService = inject(InuTemplateRegistryService);
 
   ngOnInit(): void {
-    console.log('InugamiTemplateDirective')
     if (this.name) {
       this.registry.register(this.name, this.templateRef);
     }

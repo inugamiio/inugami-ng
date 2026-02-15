@@ -1,6 +1,7 @@
-import {Component, effect, input, signal} from '@angular/core';
+import {Component, contentChildren, effect, input, signal, viewChildren} from '@angular/core';
 import {InuDocItemComponentData} from './inu-doc-item.model';
 import {InuIcon} from 'inugami-icons';
+import {UuidUtils} from 'inugami-ng/services';
 
 @Component({
   selector: 'inu-doc-item',
@@ -24,11 +25,13 @@ export class InuDocItem {
   readonly href = input<string | undefined | null>('');
   readonly id = input<string | undefined | null>('');
   readonly level = input<number | undefined | null>(2);
-
+  readonly children = contentChildren(InuDocItem);
   //
   _styleClass = signal<string>('');
   iconSize = signal<number>(1);
   data = signal<InuDocItemComponentData | undefined>(undefined);
+  _data: InuDocItemComponentData | undefined = undefined;
+  uid: string = UuidUtils.buildUid();
 
   //==================================================================================================================
   // INIT
@@ -46,10 +49,10 @@ export class InuDocItem {
     const id = this.id() ? this.id() : '';
     const level = this.level() ? this.level() : 2;
 
-    const fullHref : string[] = [];
-    if(href){
+    const fullHref: string[] = [];
+    if (href) {
       fullHref.push(href);
-      if(id){
+      if (id) {
         fullHref.push(id);
       }
     }
@@ -59,6 +62,7 @@ export class InuDocItem {
       id: id!,
       level: level!
     }
+    this._data = value;
     this.data.set(value);
 
 
