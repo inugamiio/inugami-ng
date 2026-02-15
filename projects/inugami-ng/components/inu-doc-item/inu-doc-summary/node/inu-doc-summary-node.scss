@@ -1,0 +1,35 @@
+.inu-doc-summary-node{
+  list-style: square;
+  margin: 0;
+  padding-left: 1rem;
+  a{
+    color: var(--text-color);
+    text-decoration: none;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .level{
+    font-size: 1rem;
+  }
+  .level-0{
+    .inu-doc-summary-node-title{
+      font-size: 140%;
+      color: var(--primary-dark);
+    }
+  }
+  .level-1{
+    .inu-doc-summary-node-title{
+      font-size: 120%;
+      color: var(--neutral-dark);
+    }
+  }
+  .level-2{
+    .inu-doc-summary-node-title{
+      font-size: 100%;
+      color: var(--neutral-dark);
+    }
+  }
+
+
+}

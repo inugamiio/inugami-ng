@@ -9,6 +9,7 @@ import {InuTableFlexView} from './view/table/inu-table-flex/inu-table-flex.view'
 import {InuPanelTabsView} from './view/display/inu-panel-tabs/inu-panel-tabs.view';
 import {InuToastView} from './view/display/inu-toast/inu-toast-view.component';
 import {InuButtonView} from './view/actions/inu-button/inu-button-view.component';
+import {InuDocItemView} from './view/display/inu-doc-item/inu-doc-item.view';
 
 
 export const routes: Routes = [
@@ -21,6 +22,7 @@ export const routes: Routes = [
     path: "display", children: [
       {path: "inu-cite", component: InuCiteView},
       {path: "inu-code", component: InuCodeView},
+      {path: "inu-doc-item", component: InuDocItemView},
       {path: "inu-open-api", component: InuOpenApiView},
       {path: "inu-panel-tabs", component: InuPanelTabsView},
       {path: "inu-toast", component: InuToastView}

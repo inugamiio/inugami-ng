@@ -1,0 +1,20 @@
+@if (nodes() && acceptedLevels()) {
+  <ul class="inu-doc-summary-node">
+    @for (node of nodes(); track node; ) {
+      <li [class]="computeClass(node)">
+        <div class="inu-doc-summary-node-title">
+          @if (node.value?.href){
+            <a [href]="node.value?.href">
+              <div class="inu-doc-summary-title">{{node.value?.title!}}</div>
+            </a>
+          } @else {
+            <div class="inu-doc-summary-title">{{node.value?.title!}}</div>
+          }
+        </div>
+        @if (node.children){
+          <inu-doc-summary-node [nodes]="node.children" [maxLevel]="maxLevel()"> </inu-doc-summary-node>
+        }
+      </li>
+    }
+  </ul>
+}

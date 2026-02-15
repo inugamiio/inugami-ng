@@ -36,7 +36,7 @@ export class IconsView implements OnInit {
 
     const content : string = event.ctrlKey
       ? icon
-      :`<inu-icon [icon]="${icon}" [size]="1"></inu-icon>`;
+      :`<inu-icon icon="${icon}" [size]="1"></inu-icon>`;
 
     navigator.clipboard.writeText(content)
       .then(()=> {
