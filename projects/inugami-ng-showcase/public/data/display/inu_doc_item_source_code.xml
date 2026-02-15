@@ -1,0 +1,66 @@
+<xml>
+  <src name="import" type="typescript" title="Import inu-doc-item">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuDocItem, InuDocSummary} from 'inugami-ng/components/inu-doc-item';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuDocSummary,
+    InuCode
+  ]
+})
+export class MyAppView {
+  readonly children = viewChildren(InuDocItem);
+}
+]]>
+  </src>
+
+  <src name="usage" type="html" title="Usage inu-doc-item">
+    <![CDATA[
+<fieldset>
+  <legend>Summary</legend>
+  <inu-doc-summary [children]="children()"></inu-doc-summary>
+</fieldset>
+
+<inu-doc-item icon="layer"
+              title="level2"
+              [level]="2"
+              href="display/inu-doc-item"
+              id="level2">
+
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id ex nec urna pharetra maximus eget
+      eget lectus. Duis facilisis leo id odio tempus
+    </p>
+    <p>
+      In finibus augue vehicula. Sed enim orci, placerat sit amet
+      dictum non, pharetra vitae lacus
+    </p>
+
+  <inu-doc-item title="level3" [level]="3" href="display/inu-doc-item" id="level3">
+    <p>
+      Etiam dictum sem turpis, a laoreet lacus suscipit eget. Fusce elementum, lorem a tempor viverra, sem turpis
+      rutrum enim, quis viverra lorem dui quis dui. Sed a arcu et lorem lobortis fermentum. Fusce arcu augue,
+      faucibus ut suscipit in, pulvinar eu libero. Fusce vitae scelerisque lorem, in tristique lectus.
+      Donec odio sem, vestibulum quis turpis non
+    </p>
+
+    <inu-doc-item title="level4" [level]="4" href="display/inu-doc-item" id="level4">
+      <p>
+        In ac eleifend enim. Nunc et elementum nisi, eu pulvinar lectus. Class aptent taciti sociosqu ad litora
+        torquent per conubia nostra, per inceptos himenaeos. Curabitur mattis scelerisque tincidunt.
+        Praesent commodo ante et velit molestie, nec rutrum ligula cursus. Morbi consectetur, ante lacinia varius
+        viverra, tellus ipsum convallis eros
+      </p>
+    </inu-doc-item>
+
+  </inu-doc-item>
+
+</inu-doc-item>
+]]>
+  </src>
+
+</xml>

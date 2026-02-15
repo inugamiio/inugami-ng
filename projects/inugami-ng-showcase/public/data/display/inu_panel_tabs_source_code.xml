@@ -2,13 +2,13 @@
   <src name="import" type="typescript" title="Import inu-panel-tabs">
     <![CDATA[
 import {Component} from '@angular/core';
-import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
+import {InuPanelTab, InuDocSummary} from "inugami-ng/components/inu-panel-tabs";
 
 @Component({
   templateUrl: './my-app.view.html',
   styleUrls: ['./my-app.view.scss'],
   imports: [
-    InuPanelTabs,
+    InuDocSummary,
     InuPanelTab
   ]
 })

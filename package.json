@@ -44,7 +44,7 @@
     "highlight.js": "^11.11.1",
     "ngx-highlight-js": "^11.0.0",
     "ngx-google-analytics":"14.0.1",
-    "inugami-icons":"0.0.10"
+    "inugami-icons":"0.0.12"
   },
   "devDependencies": {
     "@angular/build": "^21.0.5",

@@ -53,7 +53,6 @@ export class InuOpenApiFilter {
 
 
   private onValueChanged(value: OpenApiFilter) {
-    console.log('InuOpenApiFilter', value)
     this.filterChanged.emit(value);
   }
 }

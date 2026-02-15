@@ -605,3 +605,14 @@ dl {
 .m-height-60{
   min-height: 60rem;
 }
+
+
+fieldset{
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-left: 0.125rem solid transparent;
+  &:hover{
+    border-left: 0.125rem solid var(--neutral);
+  }
+}
