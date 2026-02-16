@@ -98,6 +98,19 @@
     }
   }
 
+  &.disabled {
+    background-color: var(--neutral-light-extra);
+    border: 1px solid var(--neutral);
+    -webkit-box-shadow: 0px 0px 0.25rem 0px rgba(0, 0, 0, 0);
+    box-shadow: 0px 0px 0.25rem 0px rgba(0, 0, 0, 0);
+    color: var(--neutral);
+    fill:var(--neutral);
+    &:hover{
+      border: 1px solid var(--neutral);
+      -webkit-box-shadow: 0px 0px 0.25rem 0px rgba(0, 0, 0, 0);
+      box-shadow: 0px 0px 0.25rem 0px rgba(0, 0, 0, 0);
+    }
+  }
 
   &.link {
     border-top: none;
@@ -110,4 +123,6 @@
       background: linear-gradient(to bottom, transparent 95%, var(--neutral) 100%);
     }
   }
+
+
 }

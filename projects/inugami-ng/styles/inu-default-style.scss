@@ -616,3 +616,12 @@ fieldset{
     border-left: 0.125rem solid var(--neutral);
   }
 }
+
+
+.actions-inline{
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  gap:1rem;
+}

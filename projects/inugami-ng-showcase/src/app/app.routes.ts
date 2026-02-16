@@ -10,6 +10,7 @@ import {InuPanelTabsView} from './view/display/inu-panel-tabs/inu-panel-tabs.vie
 import {InuToastView} from './view/display/inu-toast/inu-toast-view.component';
 import {InuButtonView} from './view/actions/inu-button/inu-button-view.component';
 import {InuDocItemView} from './view/display/inu-doc-item/inu-doc-item.view';
+import {InuCopyView} from './view/actions/inu-copy/inu-copy.view';
 
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path: "icons", component: IconsView},
   {path: "actions", children:[
       {path: "inu-button", component: InuButtonView},
+      {path: "inu-copy", component: InuCopyView}
     ]},
   {
     path: "display", children: [
