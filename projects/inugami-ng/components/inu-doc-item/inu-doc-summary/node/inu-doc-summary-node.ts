@@ -1,15 +1,12 @@
-import {Component, effect, input, signal} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {InuDocItem} from '../../inu-doc-item';
 import {TreeNode} from 'inugami-ng/models';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'inu-doc-summary-node',
   standalone: true,
   providers: [],
-  imports: [
-    JsonPipe
-  ],
+  imports: [],
   templateUrl: './inu-doc-summary-node.html',
   styleUrl: './inu-doc-summary-node.scss',
 })
@@ -51,14 +48,14 @@ export class InuDocSummaryNode {
     return result.join(' ');
   }
 
-  protected acceptedLevels():boolean {
+  protected acceptedLevels(): boolean {
     const nodes = this.nodes();
-    if(!nodes || nodes.length==0){
+    if (!nodes || nodes.length == 0) {
       return false;
     }
 
-    const level = nodes[0].level+1;
+    const level = nodes[0].level + 1;
     const maxLevel = this.maxLevel();
-    return level<=maxLevel;
+    return level <= maxLevel;
   }
 }
