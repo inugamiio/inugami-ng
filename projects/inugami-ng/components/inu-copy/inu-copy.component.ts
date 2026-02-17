@@ -1,5 +1,4 @@
-import {Component, computed, input, inject} from '@angular/core';
-import {InuIcon} from 'inugami-icons';
+import {Component, computed, inject, input} from '@angular/core';
 import {InuButton} from 'inugami-ng/components/inu-button';
 import {InuCopyServices} from './inu-copy.service';
 import {InuToastServices} from '../inu-toast/inu-toast.service';
@@ -7,7 +6,7 @@ import {InuToastServices} from '../inu-toast/inu-toast.service';
 @Component({
   selector: 'inu-copy',
   standalone: true,
-  imports: [InuIcon, InuButton],
+  imports: [InuButton],
   templateUrl: './inu-copy.component.html',
   styleUrl: './inu-copy.component.scss',
 })
