@@ -1,0 +1,30 @@
+<xml>
+
+  <src name="import" type="typescript" title="Import inu-copy">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {InuCopy} from 'inugami-ng/components/inu-copy';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuCopy
+  ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
+
+
+  <src name="usage" type="html" title="Usage">
+    <![CDATA[
+ <inu-copy label="Copy element"
+           type="success"
+           content="Some content"
+           notificationMessage="value copied : 'Some content'"></inu-copy>
+]]>
+  </src>
+</xml>
