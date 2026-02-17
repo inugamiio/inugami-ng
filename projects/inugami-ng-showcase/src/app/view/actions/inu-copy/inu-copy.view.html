@@ -1,0 +1,131 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-copy</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <p>
+        The <code>inu-copy</code> component allows you to copy a value to the clipboard.
+      </p>
+
+      <inu-code url="data/actions/inu_copy_source_code.xml" tag="import"></inu-code>
+      <inu-code url="data/actions/inu_copy_source_code.xml" tag="usage"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <ul class="actions-inline">
+        <li>
+          <inu-copy label="Copy element"
+                    type="success"
+                    content="Some content"
+                    notificationMessage="value copied : 'Some content'"></inu-copy>
+        </li>
+        <li>
+          <inu-copy icon="upload" label="Copy element without content"  type="success"></inu-copy>
+        </li>
+      </ul>
+
+    </article>
+
+
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>content</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>undefined</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>icon</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>copy</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>iconNotification</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>copy</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>label</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>link</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>false</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>notificationLabel</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>Value copied to clipboard</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>notificationMessage</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>inu-copy</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>type</inu-table-flex-cell>
+            <inu-table-flex-cell>string</inu-table-flex-cell>
+            <inu-table-flex-cell>success</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+
+        </inu-table-flex>
+
+
+    </article>
+  </main>
+
+
+</section>

@@ -17,12 +17,14 @@ export class InuButton {
   icon = input<string | null>(null);
   type = input<string>('');
   link = input<boolean>(false);
+  disabled = input<boolean>(false);
 
   _styleClass = computed<string>(() => {
     return [
       'inu-button',
       this.type() ? this.type() : '',
-      this.link()?'link':''
+      this.link() ? 'link' : '',
+      this.disabled()? 'disabled' : ''
     ].join(' ');
   })
 
