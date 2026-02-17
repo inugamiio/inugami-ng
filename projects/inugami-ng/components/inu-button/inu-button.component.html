@@ -15,7 +15,7 @@
   </span>
 }
 @else{
-  <button [class]="_styleClass()">
+  <button [class]="_styleClass()" [disabled]="disabled()">
 
       @if(icon()){
         <span class="inu-button-icon">

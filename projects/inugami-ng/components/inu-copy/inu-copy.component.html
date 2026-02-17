@@ -1,0 +1,9 @@
+<div [class]="_styleClass()">
+  <inu-button [label]="label()"
+              [icon]="icon()"
+              [type]="type()"
+              [link]="link()"
+              [disabled]="!content()"
+              (click)="copyContent()"
+  ></inu-button>
+</div>
