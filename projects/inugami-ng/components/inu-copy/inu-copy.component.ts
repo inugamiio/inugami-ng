@@ -1,7 +1,7 @@
 import {Component, computed, inject, input} from '@angular/core';
 import {InuButton} from 'inugami-ng/components/inu-button';
 import {InuCopyServices} from './inu-copy.service';
-import {InuToastServices} from '../inu-toast/inu-toast.service';
+import {InuToastServices} from 'inugami-ng/components/inu-toast';
 
 @Component({
   selector: 'inu-copy',
