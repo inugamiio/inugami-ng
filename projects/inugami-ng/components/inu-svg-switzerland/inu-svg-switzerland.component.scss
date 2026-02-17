@@ -1,0 +1,175 @@
+/*
+
+ */
+svg {
+  border: 1px solid black;
+}
+
+::ng-deep {
+  .inu-svg-switzerland-lakes {
+    fill: #729fcf;
+    stroke-opacity: 0;
+  }
+
+  .inu-svg-switzerland-cantons {
+    .inu-svg-switzerland-canton {
+      stroke-opacity: 0;
+      stroke: #22241c;
+      stroke-width: 4;
+      stroke-dasharray: none;
+
+      &.selected {
+        stroke: #dfdfdf;
+        stroke-opacity: 1;
+      }
+
+      &:hover {
+        stroke-opacity: 1;
+      }
+    }
+  }
+
+  .colored-AI {
+    fill: #20603D;
+  }
+
+  .colored-AG {
+    fill: #D36E70;
+  }
+
+  .colored-AR {
+    fill: #00BB2D;
+  }
+
+  .colored-BE {
+    fill: #4C9141;
+
+  }
+
+  .colored-BL {
+    fill: #641C34;
+
+  }
+
+  .colored-BS {
+    fill: #9C9C9C;
+  }
+
+  .colored-FR {
+    fill: #343E40;
+  }
+
+  .colored-GE {
+    fill: #5c3c60;
+  }
+
+  .colored-GL {
+    fill: #C6A664;
+
+  }
+
+  .colored-GR {
+    fill: #6D6552;
+
+  }
+
+  .colored-JU {
+    fill: #909090;
+
+  }
+
+  .colored-LU {
+    fill: #FDF4E3;
+
+  }
+
+  .colored-NE {
+    fill: #2E3A23;
+
+  }
+
+  .colored-NW {
+    fill: #5E2129;
+
+  }
+
+  .colored-OW {
+    fill: #4E5452;
+
+  }
+
+  .colored-SG {
+    fill: #3D642D;
+  }
+
+  .colored-SH {
+    fill: #FF2301;
+  }
+
+  .colored-SO {
+    fill: #D6AE01;
+
+  }
+
+  .colored-SZ {
+    fill: #23282B;
+
+  }
+
+  .colored-TG {
+    fill: #6C6874;
+
+  }
+
+  .colored-TI {
+    fill: #59351F;
+
+  }
+
+  .colored-UR {
+    fill: #434750;
+
+  }
+
+  .colored-VD {
+    fill: #8B8C7A;
+
+  }
+
+  .colored-VS {
+    fill: #AEA04B;
+
+  }
+
+  .colored-ZG {
+    fill: #B32821;
+  }
+
+  .colored-ZH {
+    fill: #6C4675;
+  }
+
+  .inu-svg-switzerland-cantons {
+    .inu-svg-switzerland-canton{
+      transition: fill 150ms, stroke 100ms, stroke-opacity 50ms;
+      cursor: pointer;
+      outline: none;
+      &.monochrome {
+        fill: #dcdcdc;
+        stroke: #bdbcc3;
+        stroke-opacity: 0.5;
+        &:hover{
+          stroke-opacity: 1;
+          stroke: #717076;
+        }
+        &.selected{
+          fill: #2f5e76;
+          stroke-opacity: 1;
+          stroke: #717076;
+        }
+      }
+    }
+  }
+
+}
+
