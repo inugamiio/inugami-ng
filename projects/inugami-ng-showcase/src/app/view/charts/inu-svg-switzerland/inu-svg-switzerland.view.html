@@ -49,15 +49,21 @@
       <div class="d-flex-row">
         <div style="height: 400px; width: 500px;">
           <inu-svg-switzerland [styleGenerator]="colorLevel()"
-                               [actionHandler]="actionHandler"></inu-svg-switzerland>
+                               [actionHandler]="actionHandlerForm"
+                               [formField]="myForm.cantons"
+                               [valueExtractor]="valueExtractor"
+                               [matcher]="cantonMatcher"
+                               (changed)="onChanged($event)"></inu-svg-switzerland>
         </div>
         <div>
           <ul class="d-list-flex-column d-gap-1">
-            <li><inu-button (click)="chooseBlue()" label="Blue" type="secondary"></inu-button></li>
-            <li><inu-button (click)="chooseRed()" label="Red" type="error"></inu-button></li>
-            <li><inu-button (click)="chooseGreen()" label="Green" type="primary"></inu-button></li>
-            <li><inu-button (click)="chooseColor()" label="Color" ></inu-button></li>
+            @for (colorName of colorNames();track colorName;) {
+              <li><inu-button (click)="chooseColor(colorName)" [label]="colorName" ></inu-button></li>
+            }
           </ul>
+        </div>
+        <div>
+          <inu-code [source]="data()" type="json"></inu-code>
         </div>
       </div>
 

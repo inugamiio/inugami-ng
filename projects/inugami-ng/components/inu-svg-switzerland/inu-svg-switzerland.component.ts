@@ -1,8 +1,25 @@
-import {AfterViewInit, Component, computed, effect, ElementRef, input, output, signal, viewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  input, model,
+  ModelSignal,
+  output,
+  signal,
+  viewChild
+} from '@angular/core';
 import {SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from 'inugami-ng/services';
-import {InuSvgSwitzerlandAction, InuSvgSwitzerlandStyleGenerator, SelectItemCanton} from './inu-svg-switzerland.model';
+import {
+  InuSvgSwitzerlandAction,
+  InuSvgSwitzerlandStyleGenerator,
+  InuSvgSwitzerlandValueExtractor,
+  SelectItemCanton
+} from './inu-svg-switzerland.model';
 import {SVG_SWITZERLAND_COLORED} from './inu-svg-switzerland.utils';
-import {InuSelectItem} from 'inugami-ng/models';
+import {InuSelectItem, InuSelectItemMatcher} from 'inugami-ng/models';
+import {FormValueControl} from '@angular/forms/signals';
 
 @Component({
   selector: 'inu-svg-switzerland',
@@ -15,7 +32,7 @@ import {InuSelectItem} from 'inugami-ng/models';
   `,
   styleUrl: './inu-svg-switzerland.component.scss',
 })
-export class InuSvgSwitzerland implements AfterViewInit {
+export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewInit {
 
 
   //==================================================================================================================
@@ -26,13 +43,20 @@ export class InuSvgSwitzerland implements AfterViewInit {
   valid = input<boolean>(true);
   actionHandler = input<InuSvgSwitzerlandAction | undefined>(undefined);
   styleGenerator = input<InuSvgSwitzerlandStyleGenerator | undefined>(undefined);
+  valueExtractor = input<InuSvgSwitzerlandValueExtractor | undefined>(undefined);
+  matcher = input<InuSelectItemMatcher | undefined>();
+  value: ModelSignal<T[]> = model(<T[]>[]);
+  formValue = model<T[]>([]);
   //
   selected = output<InuSelectItem<any>[]>();
-
+  changed = output<T[]>();
 
   //
   private component = viewChild<ElementRef<HTMLElement>>('component');
   private container = viewChild<ElementRef<HTMLElement>>('container');
+  private onModelChange: (value: T[]) => void = () => {
+  };
+
   _styleClass = computed<string>(() => {
     return [
       'inu-svg',
@@ -58,7 +82,6 @@ export class InuSvgSwitzerland implements AfterViewInit {
 
   constructor() {
     effect(() => {
-      console.log('effect>>>')
       this.initStyleGenerator();
       this.updateValues();
     });
@@ -72,13 +95,14 @@ export class InuSvgSwitzerland implements AfterViewInit {
       this.resolveParentSize(component, container);
       this.initializeLayout(container);
       this.resize();
+      this.initValues(this.value());
       this.updateValues();
     }
   }
 
-  initStyleGenerator(){
-      const generator = this.styleGenerator();
-      this._styleGenerator.set(generator ? generator : SVG_SWITZERLAND_COLORED)
+  initStyleGenerator() {
+    const generator = this.styleGenerator();
+    this._styleGenerator.set(generator ? generator : SVG_SWITZERLAND_COLORED)
   }
 
   //==================================================================================================================
@@ -378,9 +402,11 @@ export class InuSvgSwitzerland implements AfterViewInit {
       result.onmousedown = (mouseEvent: MouseEvent) => mouseEvent.preventDefault();
       result.onclick = (mouseEvent: MouseEvent) => this.onClick(canton, result, mouseEvent);
       result.ondblclick = (mouseEvent: MouseEvent) => this.ondblclick(canton, result, mouseEvent);
+      result.ontouchend = (toucheEvent: TouchEvent) => this.ontouchend(canton, result, toucheEvent);
       this.cantons[canton] = <SelectItemCanton>{
         name: canton,
         node: result,
+        lastTap: 0,
         selectItem: {
           id: canton,
           title: canton
@@ -394,36 +420,71 @@ export class InuSvgSwitzerland implements AfterViewInit {
   //==================================================================================================================
   // ACTIONS
   //==================================================================================================================
-
-
-  public updateValues() {
-      const styleGenerator = this._styleGenerator();
+  private initValues(values: any[]) {
+    if (values.length == 0) {
+      return;
+    }
+    for (let value of values) {
+      const matcher = this.matcher();
       const cantons = Object.keys(this.cantons);
       for (let cantonName of cantons) {
         const canton = this.cantons[cantonName] as SelectItemCanton;
 
-        const style = styleGenerator(canton.selectItem);
-        if (style?.style) {
-          canton.node.setAttribute('style', style.style);
-        }
-        if (style?.styleclass) {
-          canton.node.setAttribute('class', `inu-svg-switzerland-canton ${cantonName} ${style.styleclass}`);
+        const selectItem = this.extractMatchValue(canton, value, matcher);
+        if (selectItem) {
+          canton.selectItem = selectItem;
         }
       }
+    }
+  }
+
+  private extractMatchValue(canton: SelectItemCanton, value: any, matcher?: InuSelectItemMatcher): InuSelectItem<any> | undefined {
+    if (typeof value == 'string' && canton.name === value) {
+      return <InuSelectItem<any>>{
+        selected: true,
+        value: value
+      }
+    } else if (matcher) {
+      return matcher(canton.selectItem, value);
+    }
+    return undefined;
+  }
+
+  public updateValues() {
+    const extractor = this.valueExtractor();
+    const valueExtractor = extractor ? extractor : (v: any) => v?.value;
+    const styleGenerator = this._styleGenerator();
+    const cantons = Object.keys(this.cantons);
+    for (let cantonName of cantons) {
+      const canton = this.cantons[cantonName] as SelectItemCanton;
+
+      const style = styleGenerator({
+        id: canton.selectItem.id,
+        selected: canton.selectItem.selected,
+        title: canton.selectItem.title,
+        value: valueExtractor(canton.selectItem)
+      });
+      if (style?.style) {
+        canton.node.setAttribute('style', style.style);
+      }
+      if (style?.styleclass) {
+        canton.node.setAttribute('class', `inu-svg-switzerland-canton ${cantonName} ${style.styleclass}`);
+      }
+    }
   }
 
   //==================================================================================================================
   // EVENT
   //==================================================================================================================
   private ondblclick(cantonName: string, result: any, event: MouseEvent) {
-   this.onClick(cantonName,result,event);
+    this.onClick(cantonName, result, event);
   }
 
   private onClick(cantonName: string, result: any, event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
     if (event.ctrlKey) {
-      return this.deselect(cantonName, result, event);
+      return this.deselect(cantonName);
     }
 
     const canton: SelectItemCanton | undefined = this.cantons[cantonName] as SelectItemCanton;
@@ -441,7 +502,32 @@ export class InuSvgSwitzerland implements AfterViewInit {
     this.updateValues();
     this.sendSelected();
   }
-  private deselect(cantonName: string, result: any, event: MouseEvent) {
+
+  private ontouchend(cantonName: string, result: SVGElement, toucheEvent: TouchEvent) {
+    toucheEvent.preventDefault();
+    const canton: SelectItemCanton | undefined = this.cantons[cantonName] as SelectItemCanton;
+    if (!canton) {
+      return;
+    }
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - canton.lastTap;
+    if (tapLength < 300 && tapLength > 0) {
+      this.deselect(cantonName);
+    } else {
+      canton.selectItem.selected = true;
+      const handler = this.actionHandler();
+      if (handler) {
+        const newValue = handler.onSelected(canton.selectItem);
+        canton.selectItem.value = newValue;
+      }
+      canton.lastTap = currentTime;
+    }
+    this.updateValues();
+    this.sendSelected();
+  }
+
+
+  private deselect(cantonName: string) {
     const canton: SelectItemCanton | undefined = this.cantons[cantonName] as SelectItemCanton;
     if (!canton || canton.selectItem.disabled) {
       return;
@@ -450,7 +536,7 @@ export class InuSvgSwitzerland implements AfterViewInit {
 
     const handler = this.actionHandler();
     if (handler) {
-      if(!handler.toggleSelectState()){
+      if (!handler.toggleSelectState()) {
         canton.selectItem.selected = true;
       }
       const newValue = handler.onDeselected(canton.selectItem);
@@ -461,20 +547,25 @@ export class InuSvgSwitzerland implements AfterViewInit {
   }
 
 
-
   private sendSelected() {
+
+    const values: any[] = [];
     const result: InuSelectItem<any>[] = [];
 
-    setTimeout(() => {
-      const cantons = Object.keys(this.cantons);
-      for (let cantonName of cantons) {
-        const cantonItem: SelectItemCanton = this.cantons[cantonName] as SelectItemCanton;
-        if (cantonItem.selectItem.selected || cantonItem.selectItem.value != undefined) {
-          result.push(cantonItem.selectItem);
-        }
+    const cantons = Object.keys(this.cantons);
+    for (let cantonName of cantons) {
+      const cantonItem: SelectItemCanton = this.cantons[cantonName] as SelectItemCanton;
+      if (cantonItem.selectItem.selected || cantonItem.selectItem.value != undefined) {
+        result.push(cantonItem.selectItem);
+        values.push(cantonItem.selectItem.value);
       }
-      this.selected.emit(result);
-    });
+    }
+
+    this.selected.emit(result);
+    this.formValue.set([...values]);
+    this.value.set([...values])
+    this.changed.emit([...values]);
+    this.onModelChange([...values]);
   }
 
   //==================================================================================================================

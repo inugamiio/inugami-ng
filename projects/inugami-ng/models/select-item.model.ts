@@ -6,3 +6,4 @@ export interface InuSelectItem<T>{
   disabled?:boolean;
   selected?:boolean;
 }
+export type InuSelectItemMatcher = (selectItem: InuSelectItem<any>, value:any) => InuSelectItem<any>|undefined;
