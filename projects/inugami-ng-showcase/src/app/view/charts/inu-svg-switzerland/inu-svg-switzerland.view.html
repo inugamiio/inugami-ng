@@ -49,7 +49,9 @@
       <div class="d-flex-row">
         <div style="height: 400px; width: 500px;">
           <inu-svg-switzerland [styleGenerator]="colorLevel()"
-                               [actionHandler]="actionHandler"></inu-svg-switzerland>
+                               [actionHandler]="actionHandlerForm"
+                               [formField]="myForm.cantons"
+                               [valueExtractor]="valueExtractor"></inu-svg-switzerland>
         </div>
         <div>
           <ul class="d-list-flex-column d-gap-1">
@@ -58,6 +60,9 @@
             <li><inu-button (click)="chooseGreen()" label="Green" type="primary"></inu-button></li>
             <li><inu-button (click)="chooseColor()" label="Color" ></inu-button></li>
           </ul>
+        </div>
+        <div>
+          <inu-code [source]="data()" type="json"></inu-code>
         </div>
       </div>
 
