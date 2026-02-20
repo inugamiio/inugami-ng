@@ -1,0 +1,98 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-svg-switzerland</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <div style="height: 400px; width: 500px;">
+        <inu-svg-switzerland></inu-svg-switzerland>
+      </div>
+
+
+    </article>
+
+    <article>
+      <header>
+        <h2>Example monochrome</h2>
+      </header>
+
+      <div style="height: 400px; width: 500px;">
+        <inu-svg-switzerland [styleGenerator]="monochrome"></inu-svg-switzerland>
+      </div>
+
+
+    </article>
+
+
+    <article>
+      <header>
+        <h2>Example handler</h2>
+      </header>
+
+      <div class="d-flex-row">
+        <div style="height: 400px; width: 500px;">
+          <inu-svg-switzerland [styleGenerator]="colorLevel()"
+                               [actionHandler]="actionHandler"></inu-svg-switzerland>
+        </div>
+        <div>
+          <ul class="d-list-flex-column d-gap-1">
+            <li><inu-button (click)="chooseBlue()" label="Blue" type="secondary"></inu-button></li>
+            <li><inu-button (click)="chooseRed()" label="Red" type="error"></inu-button></li>
+            <li><inu-button (click)="chooseGreen()" label="Green" type="primary"></inu-button></li>
+            <li><inu-button (click)="chooseColor()" label="Color" ></inu-button></li>
+          </ul>
+        </div>
+      </div>
+
+
+
+    </article>
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>inu-copy</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+
+
+    </article>
+  </main>
+
+
+</section>

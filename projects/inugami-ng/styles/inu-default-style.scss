@@ -456,13 +456,47 @@ dl {
   }
 }
 
+
+.d-flex{
+  display: flex;
+}
+.d-flex-column{
+  display: flex;
+  flex-direction: column;
+}
+.d-flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
 .flex-row{
   display: flex;
   gap: 0.25rem;
   align-items: center;
 }
 
+.d-gap-1{
+  gap:1rem;
+}
+.d-gap-2{
+  gap:2rem;
+}
+.d-gap-3{
+  gap:3rem;
+}
 
+.d-gap-4{
+  gap:4rem;
+}
+.d-list-flex-row{
+  list-style: none;
+  display: flex;
+}
+.d-list-flex-column{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
 .inu-flex-table{
   width: 100%;
   display: grid;
@@ -491,6 +525,7 @@ dl {
     }
   }
 }
+
 
 .form-container{
   display: flex;
@@ -625,3 +660,6 @@ fieldset{
   margin: 0;
   gap:1rem;
 }
+
+
+

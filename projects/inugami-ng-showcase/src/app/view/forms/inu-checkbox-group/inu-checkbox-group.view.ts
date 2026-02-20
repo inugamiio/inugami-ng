@@ -55,9 +55,9 @@ export class InuCheckboxGroupView {
 
 
   verbs = computed<InuSelectItem<string>[]>(() => [
-    {value: 'GET', title: 'GET', styleClass: 'verb-get'},
-    {value: 'POST', title: 'POST', styleClass: 'verb-post'},
-    {value: 'PUT', title: 'PUT', styleClass: 'verb-put'}
+    {id:'GET' ,value: 'GET', title: 'GET', styleClass: 'verb-get'},
+    {id:'POST',value: 'POST', title: 'POST', styleClass: 'verb-post'},
+    {id:'PUT' ,value: 'PUT', title: 'PUT', styleClass: 'verb-put'}
   ]);
 
   genericT = signal<string>('<T>')
