@@ -1,4 +1,4 @@
-import {Component, effect, signal} from '@angular/core';
+import {Component, computed, effect, signal} from '@angular/core';
 import {
   InuTableFlex,
   InuTableFlexCell,
@@ -9,25 +9,31 @@ import {
   InuSvgSwitzerland,
   InuSvgSwitzerlandAction,
   InuSvgSwitzerlandStyleGenerator,
-  SVG_SWITZERLAND_MONOCHROME, SVG_SWITZERLAND_LEVEL_MONOCHROME_BLUE, SVG_SWITZERLAND_LEVEL_MONOCHROME_GREEN,
-  SVG_SWITZERLAND_LEVEL_MONOCHROME_RED, SVG_SWITZERLAND_LEVEL_COLOR_10
+  SVG_SWITZERLAND_LEVEL_COLOR_100, SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR,
+  SVG_SWITZERLAND_LEVEL_MONOCHROME_BLUE,
+  SVG_SWITZERLAND_LEVEL_MONOCHROME_GREEN,
+  SVG_SWITZERLAND_LEVEL_MONOCHROME_RED,
+  SVG_SWITZERLAND_MONOCHROME
 } from 'inugami-ng/components/inu-svg-switzerland';
 import {InuButton} from 'inugami-ng/components/inu-button';
 import {InuCode} from 'inugami-ng/components/inu-code';
-import {InuSelectItem} from 'inugami-ng/models';
-import {form, FormField} from '@angular/forms/signals';
-import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
-import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {InuSelectItem, InuSelectItemMatcher, SvgStyle} from 'inugami-ng/models';
+import {FieldTree, form, FormField} from '@angular/forms/signals';
+import {JsonPipe} from '@angular/common';
 
 interface CantonValue {
   name: string;
   level: number;
 }
+
 interface MyFormModel {
   cantons: CantonValue[];
 }
 
-
+const MAX_LEVEL = 55;
+const SVG_SWITZERLAND_MAT_LAB: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL);
+}
 
 @Component({
   templateUrl: './inu-svg-switzerland.view.html',
@@ -40,7 +46,8 @@ interface MyFormModel {
     InuSvgSwitzerland,
     InuButton,
     InuCode,
-    FormField
+    FormField,
+    JsonPipe
   ]
 })
 export class InuSvgSwitzerlandView {
@@ -52,26 +59,30 @@ export class InuSvgSwitzerlandView {
 
   actionHandler!: InuSvgSwitzerlandAction;
   actionHandlerForm!: InuSvgSwitzerlandAction;
-  data = signal<string>('');
+
   formModel = signal<MyFormModel>({
     cantons: [
-      {name:'VD', level: 5 },
-      {name:'GE', level: 2 },
-      {name:'FR', level: 3 },
-      {name:'VS', level: 1 }
+      {name: 'VD', level: 35},
+      {name: 'GE', level: 25},
+      {name: 'FR', level: 10},
+      {name: 'VS', level: 5}
     ]
   });
-  myForm = form(this.formModel, (path) => {
+  myForm:FieldTree<MyFormModel> = form(this.formModel, (path) => {
   });
+
+  data = signal<string>('');
+  cantonMatcher!: InuSelectItemMatcher;
   //====================================================================================================================
   // INIT
   //====================================================================================================================
   constructor() {
+    this.cantonMatcher = (selectItem, value)=> this.matchCantonSelectItem(selectItem, value);
     effect(() => {
-      const value = this.myForm();
-      this.onValueChanged(value);
-    }, { allowSignalWrites: true });
-
+      const currentFormValue = this.myForm().value();
+      const result = JSON.stringify(currentFormValue, null, 2);
+      this.data.set(result);
+    });
     this.actionHandler = {
       onSelected: (value) => this.onCantonSelected(value),
       onDeselected: (value) => this.onCantonDeselected(value),
@@ -86,21 +97,16 @@ export class InuSvgSwitzerlandView {
 
 
 
-
+  }
+  matchCantonSelectItem(selectItem: InuSelectItem<any>, value:any):InuSelectItem<any>|undefined{
+  console.log('selectItem',selectItem)
+    if(selectItem.id  != value.name){
+      return undefined;
+    }
+    selectItem.value = value;
+    return selectItem;
   }
 
-
-  private onValueChanged(value: any) {
-
-      const currentValue = this.data();
-      const newValue = JSON.stringify(value.value(), null, 4);
-      if(currentValue!=newValue){
-        this.data.set(newValue);
-      }
-
-
-
-  }
   //====================================================================================================================
   // ACTION
   //====================================================================================================================
@@ -117,12 +123,11 @@ export class InuSvgSwitzerlandView {
   }
 
   private onCantonSelectedForm(value: InuSelectItem<any>): CantonValue {
-    console.log('this.formModel',this.formModel())
     const currentValue = value?.value?.level == undefined ? 0 : (Number(value?.value?.level));
     const result = currentValue + 1;
     return {
       name: value.id,
-      level : result > 10 ? 10 : result
+      level: result > MAX_LEVEL ? MAX_LEVEL : result
     }
   }
 
@@ -131,15 +136,13 @@ export class InuSvgSwitzerlandView {
     const result = currentValue - 1;
     return {
       name: value.id,
-      level : result <= 0 ? 0 : result
+      level: result <= 0 ? 0 : result
     }
   }
 
-  protected valueExtractor(selectItem: InuSelectItem<any>): number|undefined{
-    return selectItem && selectItem.value ? selectItem.value.level: undefined;
+  protected valueExtractor(selectItem: InuSelectItem<any>): number | undefined {
+    return selectItem && selectItem.value ? selectItem.value.level : undefined;
   }
-
-
 
 
   protected chooseBlue() {
@@ -155,6 +158,10 @@ export class InuSvgSwitzerlandView {
   }
 
   protected chooseColor() {
-    this.colorLevel.set(SVG_SWITZERLAND_LEVEL_COLOR_10);
+    this.colorLevel.set(SVG_SWITZERLAND_MAT_LAB);
+  }
+
+  protected onChanged(event: any[]) {
+    //console.log('onChanged', event)
   }
 }

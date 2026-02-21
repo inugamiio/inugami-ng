@@ -51,7 +51,9 @@
           <inu-svg-switzerland [styleGenerator]="colorLevel()"
                                [actionHandler]="actionHandlerForm"
                                [formField]="myForm.cantons"
-                               [valueExtractor]="valueExtractor"></inu-svg-switzerland>
+                               [valueExtractor]="valueExtractor"
+                               [matcher]="cantonMatcher"
+                               (changed)="onChanged($event)"></inu-svg-switzerland>
         </div>
         <div>
           <ul class="d-list-flex-column d-gap-1">
@@ -63,6 +65,7 @@
         </div>
         <div>
           <inu-code [source]="data()" type="json"></inu-code>
+          {{data()|json}}
         </div>
       </div>
 

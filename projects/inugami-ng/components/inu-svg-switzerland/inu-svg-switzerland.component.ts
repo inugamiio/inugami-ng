@@ -18,7 +18,7 @@ import {
   SelectItemCanton
 } from './inu-svg-switzerland.model';
 import {SVG_SWITZERLAND_COLORED} from './inu-svg-switzerland.utils';
-import {InuSelectItem} from 'inugami-ng/models';
+import {InuSelectItem, InuSelectItemMatcher} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 
 @Component({
@@ -32,7 +32,7 @@ import {FormValueControl} from '@angular/forms/signals';
   `,
   styleUrl: './inu-svg-switzerland.component.scss',
 })
-export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueControl<T[]>, AfterViewInit {
+export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewInit {
 
 
   //==================================================================================================================
@@ -44,6 +44,7 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueCon
   actionHandler = input<InuSvgSwitzerlandAction | undefined>(undefined);
   styleGenerator = input<InuSvgSwitzerlandStyleGenerator | undefined>(undefined);
   valueExtractor = input<InuSvgSwitzerlandValueExtractor | undefined>(undefined);
+  matcher = input<InuSelectItemMatcher | undefined>();
   value: ModelSignal<T[]> = model(<T[]>[]);
   formValue = model<T[]>([]);
   //
@@ -81,7 +82,6 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueCon
 
   constructor() {
     effect(() => {
-      console.log('effect>>>', this.value())
       this.initStyleGenerator();
       this.updateValues();
     });
@@ -95,6 +95,7 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueCon
       this.resolveParentSize(component, container);
       this.initializeLayout(container);
       this.resize();
+      this.initValues(this.value());
       this.updateValues();
     }
   }
@@ -417,7 +418,38 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueCon
   //==================================================================================================================
   // ACTIONS
   //==================================================================================================================
+  private initValues(values: any[]) {
+    if (values.length == 0) {
+      return;
+    }
+    for(let value of values){
+      const matcher = this.matcher();
+      const cantons = Object.keys(this.cantons);
+      for (let cantonName of cantons) {
+        const canton = this.cantons[cantonName] as SelectItemCanton;
 
+        const selectItem = this.extractMatchValue(canton, value, matcher);
+        if (selectItem) {
+          canton.selectItem = selectItem;
+        }
+      }
+
+    }
+    console.log('cantons', this.cantons)
+  }
+
+  private extractMatchValue(canton: SelectItemCanton, value: any, matcher?: InuSelectItemMatcher): InuSelectItem<any> | undefined {
+      console.log('extractMatchValue', value)
+      if (typeof value == 'string' && canton.name === value) {
+        return <InuSelectItem<any>>{
+          selected: true,
+          value: value
+        }
+      } else if (matcher) {
+        return matcher(canton.selectItem, value);
+      }
+    return undefined;
+  }
 
   public updateValues() {
     const extractor = this.valueExtractor();
@@ -493,26 +525,24 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueCon
 
 
   private sendSelected() {
-    setTimeout(() => {
-      const values: any[] = [];
-      const result: InuSelectItem<any>[] = [];
 
-      const cantons = Object.keys(this.cantons);
-      for (let cantonName of cantons) {
-        const cantonItem: SelectItemCanton = this.cantons[cantonName] as SelectItemCanton;
-        if (cantonItem.selectItem.selected || cantonItem.selectItem.value != undefined) {
-          result.push(cantonItem.selectItem);
-          values.push(cantonItem.selectItem.value)
-        }
+    const values: any[] = [];
+    const result: InuSelectItem<any>[] = [];
+
+    const cantons = Object.keys(this.cantons);
+    for (let cantonName of cantons) {
+      const cantonItem: SelectItemCanton = this.cantons[cantonName] as SelectItemCanton;
+      if (cantonItem.selectItem.selected || cantonItem.selectItem.value != undefined) {
+        result.push(cantonItem.selectItem);
+        values.push(cantonItem.selectItem.value);
       }
+    }
 
-
-      this.selected.emit(result);
-      this.formValue.set(values);
-      this.changed.emit(values);
-      this.onModelChange(values);
-    });
-
+    this.selected.emit(result);
+    this.formValue.set([...values]);
+    this.value.set([...values])
+    this.changed.emit([...values]);
+    this.onModelChange([...values]);
   }
 
   //==================================================================================================================
@@ -524,11 +554,5 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, FormValueCon
     }
   }
 
-  registerOnChange(fn: any): void {
-    this.onModelChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-  }
 
 }
