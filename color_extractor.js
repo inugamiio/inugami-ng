@@ -33,4 +33,4 @@ async function extractUniqueColors(imagePath) {
   }
 }
 
-extractUniqueColors('colors/level.png');
+extractUniqueColors('colors/matlab.png');
