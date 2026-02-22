@@ -491,11 +491,13 @@ dl {
 .d-list-flex-row{
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
 }
 .d-list-flex-column{
   list-style: none;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 .inu-flex-table{
   width: 100%;

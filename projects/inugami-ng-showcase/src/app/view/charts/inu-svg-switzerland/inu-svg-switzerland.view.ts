@@ -19,6 +19,7 @@ import {InuButton} from 'inugami-ng/components/inu-button';
 import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuSelectItem, InuSelectItemMatcher, SvgStyle} from 'inugami-ng/models';
 import {FieldTree, form, FormField} from '@angular/forms/signals';
+import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
 import {
   COLORS_ANDROID,
   COLORS_BOOTSTRAP,
@@ -41,28 +42,28 @@ const SVG_SWITZERLAND_MAT_LAB: InuSvgSwitzerlandStyleGenerator = (selectItem: In
   return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL);
 }
 
-const COLORS : any ={
-  matlab : SVG_SWITZERLAND_MAT_LAB,
-  android : (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
-    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL,COLORS_ANDROID);
+const COLORS: any = {
+  matlab: SVG_SWITZERLAND_MAT_LAB,
+  android: (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL, COLORS_ANDROID);
   },
-  bootstrap : (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
-    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL,COLORS_BOOTSTRAP);
+  bootstrap: (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL, COLORS_BOOTSTRAP);
   },
-  bootstrapPrimary : (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
-    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL,COLORS_BOOTSTRAP_PRIMARY);
+  bootstrapPrimary: (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL, COLORS_BOOTSTRAP_PRIMARY);
   },
-  gnome : (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
-    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL,COLORS_GNOME);
+  gnome: (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL, COLORS_GNOME);
   },
-  level : (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
-    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL,COLORS_GNOME);
+  level: (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL, COLORS_LEVEL);
   },
-  topo : (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
-    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL,COLORS_TOPO);
+  topo: (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+    return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, MAX_LEVEL, COLORS_TOPO);
   },
-  blue : SVG_SWITZERLAND_LEVEL_MONOCHROME_BLUE,
-  green : SVG_SWITZERLAND_LEVEL_MONOCHROME_GREEN,
+  blue: SVG_SWITZERLAND_LEVEL_MONOCHROME_BLUE,
+  green: SVG_SWITZERLAND_LEVEL_MONOCHROME_GREEN,
   red: SVG_SWITZERLAND_LEVEL_MONOCHROME_RED
 }
 
@@ -77,14 +78,16 @@ const COLORS : any ={
     InuSvgSwitzerland,
     InuButton,
     InuCode,
-    FormField
+    FormField,
+    InuPanelTabs,
+    InuPanelTab
   ]
 })
 export class InuSvgSwitzerlandView {
   //====================================================================================================================
   // ATTRIBUTES
   //====================================================================================================================
-  monochrome: InuSvgSwitzerlandStyleGenerator = SVG_SWITZERLAND_MONOCHROME;
+  monochrome = computed<InuSvgSwitzerlandStyleGenerator>(() => SVG_SWITZERLAND_MONOCHROME);
   colorLevel = signal<InuSvgSwitzerlandStyleGenerator>(SVG_SWITZERLAND_MAT_LAB);
 
   actionHandler!: InuSvgSwitzerlandAction;
@@ -98,20 +101,23 @@ export class InuSvgSwitzerlandView {
       {name: 'VS', level: 5}
     ]
   });
-  myForm:FieldTree<MyFormModel> = form(this.formModel, (path) => {
+  myForm: FieldTree<MyFormModel> = form(this.formModel, (path) => {
   });
 
   data = signal<string>('');
-  cantonMatcher!: InuSelectItemMatcher;
-
-  colorNames = computed<string[]>(()=> {
+  colorNames = computed<string[]>(() => {
     return Object.keys(COLORS);
   })
+
+  //-----------
+  changeType: string = 'OutputEmitterRef<T[]>';
+  hoverType: string = 'OutputEmitterRef<InuSelectItem<any>>';
+  leaveType: string = 'OutputEmitterRef<InuSelectItem<any>>';
+  selectedType: string = 'OutputEmitterRef<InuSelectItem<any>[]>';
   //====================================================================================================================
   // INIT
   //====================================================================================================================
   constructor() {
-    this.cantonMatcher = (selectItem, value)=> this.matchCantonSelectItem(selectItem, value);
     effect(() => {
       const currentFormValue = this.myForm().value();
       const result = JSON.stringify(currentFormValue, null, 2);
@@ -130,10 +136,10 @@ export class InuSvgSwitzerlandView {
     }
 
 
-
   }
-  matchCantonSelectItem(selectItem: InuSelectItem<any>, value:any):InuSelectItem<any>|undefined{
-    if(selectItem.id  != value.name){
+
+  matchCantonSelectItem(selectItem: InuSelectItem<any>, value: any): InuSelectItem<any> | undefined {
+    if (selectItem.id != value.name) {
       return undefined;
     }
     selectItem.value = value;
@@ -178,16 +184,22 @@ export class InuSvgSwitzerlandView {
   }
 
 
-  protected chooseColor(color:string){
+  protected chooseColor(color: string) {
     let currentColor = COLORS[color];
-    if(!currentColor){
+    if (!currentColor) {
       currentColor = COLORS['matlab'];
     }
     this.colorLevel.set(currentColor);
   }
 
 
-
   protected onChanged(event: any[]) {
   }
+
+  protected onHover(event: InuSelectItem<any>) {
+  }
+
+  protected onLeave(event: InuSelectItem<any>) {
+  }
+
 }

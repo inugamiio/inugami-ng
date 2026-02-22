@@ -38,17 +38,19 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  styleclass = input<string>('');
-  disabled = input<boolean>(false);
-  valid = input<boolean>(true);
   actionHandler = input<InuSvgSwitzerlandAction | undefined>(undefined);
-  styleGenerator = input<InuSvgSwitzerlandStyleGenerator | undefined>(undefined);
-  valueExtractor = input<InuSvgSwitzerlandValueExtractor | undefined>(undefined);
-  matcher = input<InuSelectItemMatcher | undefined>();
-  value: ModelSignal<T[]> = model(<T[]>[]);
+  disabled = input<boolean>(false);
   formValue = model<T[]>([]);
+  matcher = input<InuSelectItemMatcher | undefined>();
+  styleGenerator = input<InuSvgSwitzerlandStyleGenerator | undefined>(undefined);
+  styleclass = input<string>('');
+  valid = input<boolean>(true);
+  value: ModelSignal<T[]> = model(<T[]>[]);
+  valueExtractor = input<InuSvgSwitzerlandValueExtractor | undefined>(undefined);
   //
   selected = output<InuSelectItem<any>[]>();
+  hover = output<InuSelectItem<any>>();
+  leave = output<InuSelectItem<any>>();
   changed = output<T[]>();
 
   //
@@ -403,6 +405,8 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
       result.onclick = (mouseEvent: MouseEvent) => this.onClick(canton, result, mouseEvent);
       result.ondblclick = (mouseEvent: MouseEvent) => this.ondblclick(canton, result, mouseEvent);
       result.ontouchend = (toucheEvent: TouchEvent) => this.ontouchend(canton, result, toucheEvent);
+      result.onmouseenter = (mouseEvent: MouseEvent) => this.onHover(canton, mouseEvent);
+      result.onmouseleave = (mouseEvent: MouseEvent) => this.onMouseLeave(canton, mouseEvent);
       this.cantons[canton] = <SelectItemCanton>{
         name: canton,
         node: result,
@@ -483,6 +487,9 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
   private onClick(cantonName: string, result: any, event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
+    if (this.disabled()) {
+      return;
+    }
     if (event.ctrlKey) {
       return this.deselect(cantonName);
     }
@@ -505,6 +512,9 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
 
   private ontouchend(cantonName: string, result: SVGElement, toucheEvent: TouchEvent) {
     toucheEvent.preventDefault();
+    if (this.disabled()) {
+      return;
+    }
     const canton: SelectItemCanton | undefined = this.cantons[cantonName] as SelectItemCanton;
     if (!canton) {
       return;
@@ -568,6 +578,22 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
     this.onModelChange([...values]);
   }
 
+
+  private onHover(cantonName: string, mouseEvent: MouseEvent) {
+    const canton: SelectItemCanton | undefined = this.cantons[cantonName] as SelectItemCanton;
+    if (!canton) {
+      return;
+    }
+    setTimeout(() => this.hover.emit(canton.selectItem));
+  }
+
+  private onMouseLeave(cantonName: string, mouseEvent: MouseEvent) {
+    const canton: SelectItemCanton | undefined = this.cantons[cantonName] as SelectItemCanton;
+    if (!canton) {
+      return;
+    }
+    setTimeout(() => this.leave.emit(canton.selectItem));
+  }
   //==================================================================================================================
   // TOOLS
   //==================================================================================================================
