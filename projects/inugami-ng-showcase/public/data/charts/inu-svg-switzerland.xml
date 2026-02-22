@@ -1,0 +1,246 @@
+<xml>
+  <src name="imports" type="typescript" title="Import inu-svg-switzerland">
+    <![CDATA[
+import {Component} from '@angular/core';
+import { InuSvgSwitzerland } from 'inugami-ng/components/inu-svg-switzerland';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuSvgSwitzerland
+  ]
+})
+export class MyAppView {
+}
+]]>
+  </src>
+
+  <src name="usage" type="xml" title="Usage inu-svg-switzerland">
+    <![CDATA[
+<div style="height: 400px; width: 500px;">
+    <inu-svg-switzerland></inu-svg-switzerland>
+</div>
+]]>
+  </src>
+
+
+  <src name="usageWithStyleGenerator" type="xml" title="Usage with styleGenerator">
+    <![CDATA[
+<div style="height: 400px; width: 500px;">
+    <inu-svg-switzerland [styleGenerator]="monochrome()"></inu-svg-switzerland>
+</div>
+]]>
+  </src>
+  <src name="usageWithStyleGeneratorTs" type="typescript" title="Define InuSvgSwitzerlandStyleGenerator">
+    <![CDATA[
+import {Component} from '@angular/core';
+import { InuSvgSwitzerland } from 'inugami-ng/components/inu-svg-switzerland';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuSvgSwitzerland
+  ]
+})
+export class MyAppView {
+  monochrome = computed<InuSvgSwitzerlandStyleGenerator>(() => SVG_SWITZERLAND_MONOCHROME);
+}
+]]>
+  </src>
+
+  <src name="usageFormHtml" type="xml" title="Usage with styleGenerator">
+    <![CDATA[
+<div style="height: 400px; width: 500px;">
+  <inu-svg-switzerland [formField]="myForm.cantons"
+                       [actionHandler]="actionHandlerForm"
+                       [matcher]="cantonMatcher"
+                       [valueExtractor]="valueExtractor"
+                       [styleGenerator]="colorLevel()"></inu-svg-switzerland>
+</div>
+]]>
+  </src>
+
+  <src name="usageFormTs" type="typescript" title="Signal form">
+    <![CDATA[
+import {Component} from '@angular/core';
+import { InuSvgSwitzerland } from 'inugami-ng/components/inu-svg-switzerland';
+
+interface CantonValue {
+  name: string;
+  level: number;
+}
+
+interface MyFormModel {
+  cantons: CantonValue[];
+}
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [
+    InuSvgSwitzerland
+  ]
+})
+export class MyAppView {
+  colorLevel = signal<InuSvgSwitzerlandStyleGenerator>(SVG_SWITZERLAND_MAT_LAB);
+  actionHandler!: InuSvgSwitzerlandAction;
+  actionHandlerForm!: InuSvgSwitzerlandAction;
+
+  formModel = signal<MyFormModel>({
+    cantons: [
+      {name: 'VD', level: 35},
+      {name: 'GE', level: 25},
+      {name: 'FR', level: 10},
+      {name: 'VS', level: 5}
+    ]
+  });
+  myForm: FieldTree<MyFormModel> = form(this.formModel, (path) => {
+  });
+
+  //=======================================================
+  // INIT
+  //=======================================================
+  constructor() {
+    this.actionHandlerForm = {
+      onSelected: (value) => this.onCantonSelectedForm(value),
+      onDeselected: (value) => this.onCantonDeselectedForm(value),
+      toggleSelectState: () => false
+    }
+  }
+
+  //=======================================================
+  // MATCHER
+  //=======================================================
+  private cantonMatcher(selectItem: InuSelectItem<any>,
+                        value: any): InuSelectItem<any> | undefined {
+    if (selectItem.id != value.name) {
+      return undefined;
+    }
+    selectItem.value = value;
+    return selectItem;
+  }
+  //=======================================================
+  // HANDLER
+  //=======================================================
+  private onCantonSelectedForm(value: InuSelectItem<any>): CantonValue {
+    const currentValue = value?.value?.level == undefined ? 0 : (Number(value?.value?.level));
+    const result = currentValue + 1;
+    return {
+      name: value.id,
+      level: result > MAX_LEVEL ? MAX_LEVEL : result
+    }
+  }
+
+  private onCantonDeselectedForm(value: InuSelectItem<any>): CantonValue {
+    const currentValue = value?.value?.level == undefined ? 0 : (Number(value?.value?.level));
+    const result = currentValue - 1;
+    return {
+      name: value.id,
+      level: result <= 0 ? 0 : result
+    }
+  }
+}
+]]>
+  </src>
+
+  <src name="InuSvgSwitzerlandStyleGenerator" type="typescript" title="InuSvgSwitzerlandStyleGenerator">
+    <![CDATA[
+export type InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>) => SvgStyle | undefined;
+
+]]>
+  </src>
+
+  <src name="InuSvgSwitzerlandStyleGeneratorExisting" type="typescript" title="Existing InuSvgSwitzerlandStyleGenerator">
+    <![CDATA[
+export const SVG_SWITZERLAND_COLORED: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return {
+    styleclass: `colored-${selectItem.id} ${selectItem.selected ? 'selected' : ''}`
+  }
+}
+
+export const SVG_SWITZERLAND_MONOCHROME: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return {
+    styleclass: `monochrome ${selectItem.selected ? 'selected' : ''}`
+  }
+}
+
+export const SVG_SWITZERLAND_LEVEL_MONOCHROME_BLUE: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return SVG_SWITZERLAND_LEVEL_MONOCHROME_GENERATOR(selectItem, 200, 0, 10);
+}
+export const SVG_SWITZERLAND_LEVEL_MONOCHROME_RED: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return SVG_SWITZERLAND_LEVEL_MONOCHROME_GENERATOR(selectItem, 0, 0, 10);
+}
+export const SVG_SWITZERLAND_LEVEL_MONOCHROME_GREEN: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return SVG_SWITZERLAND_LEVEL_MONOCHROME_GENERATOR(selectItem, 100, 0, 10);
+}
+
+export const SVG_SWITZERLAND_LEVEL_COLOR_100: InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>): SvgStyle | undefined => {
+  return SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR(selectItem, 0, 100);
+}
+
+export const SVG_SWITZERLAND_LEVEL_COLOR_GENERATOR = (selectItem: InuSelectItem<any>,
+                                                      min: number,
+                                                      max: number,
+                                                      colors?:string[]) => {
+  const color = GET_COLOR(COMPUTE_PERCENT(Number(selectItem.value) || 0, min, max), colors?colors:COLORS_MATLAB);
+
+  return {
+    styleclass: `color-level`,
+    style: `fill:${color};`
+  };
+}
+]]>
+  </src>
+
+  <src name="actionHandler" type="typescript" title="Implement actionHandler">
+    <![CDATA[
+export class MyAppView {
+  actionHandler!: InuSvgSwitzerlandAction;
+  //...
+
+  //=======================================================
+  // INIT
+  //=======================================================
+  constructor() {
+    this.actionHandlerForm = {
+      onSelected: (value) => this.onCantonSelectedForm(value),
+      onDeselected: (value) => this.onCantonDeselectedForm(value),
+      toggleSelectState: () => false
+    }
+  }
+
+  //=======================================================
+  // HANDLER
+  //=======================================================
+  private onCantonSelectedForm(value: InuSelectItem<any>): CantonValue {
+    const currentValue = value?.value?.level == undefined ? 0 : (Number(value?.value?.level));
+    const result = currentValue + 1;
+    return {
+      name: value.id,
+      level: result > MAX_LEVEL ? MAX_LEVEL : result
+    }
+  }
+
+  private onCantonDeselectedForm(value: InuSelectItem<any>): CantonValue {
+    const currentValue = value?.value?.level == undefined ? 0 : (Number(value?.value?.level));
+    const result = currentValue - 1;
+    return {
+      name: value.id,
+      level: result <= 0 ? 0 : result
+    }
+  }
+}
+]]>
+  </src>
+
+
+  <src name="valueExtractor" type="typescript" title="Implementation valueExtractor">
+    <![CDATA[
+protected valueExtractor(selectItem: InuSelectItem<any>): number | undefined {
+    return selectItem && selectItem.value ? selectItem.value.level : undefined;
+}
+]]>
+  </src>
+</xml>
