@@ -46,15 +46,16 @@
         <h2>Example handler</h2>
       </header>
 
+      <div style="height: 400px; width: 500px;">
+        <inu-svg-switzerland [styleGenerator]="colorLevel()"
+                             [actionHandler]="actionHandlerForm"
+                             [formField]="myForm.cantons"
+                             [valueExtractor]="valueExtractor"
+                             [matcher]="cantonMatcher"
+                             (changed)="onChanged($event)"></inu-svg-switzerland>
+      </div>
+
       <div class="d-flex-row">
-        <div style="height: 400px; width: 500px;">
-          <inu-svg-switzerland [styleGenerator]="colorLevel()"
-                               [actionHandler]="actionHandlerForm"
-                               [formField]="myForm.cantons"
-                               [valueExtractor]="valueExtractor"
-                               [matcher]="cantonMatcher"
-                               (changed)="onChanged($event)"></inu-svg-switzerland>
-        </div>
         <div>
           <ul class="d-list-flex-column d-gap-1">
             @for (colorName of colorNames();track colorName;) {
