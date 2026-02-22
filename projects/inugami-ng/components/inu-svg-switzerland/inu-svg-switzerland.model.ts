@@ -1,6 +1,7 @@
 import {InuSelectItem, SvgStyle} from 'inugami-ng/models';
 
 
+export type InuSvgSwitzerlandValueExtractor = (selectItem: InuSelectItem<any>) => number | undefined;
 export type InuSvgSwitzerlandStyleGenerator = (selectItem: InuSelectItem<any>) => SvgStyle | undefined;
 
 export interface InuSvgSwitzerlandAction {
@@ -13,4 +14,5 @@ export interface SelectItemCanton {
   name: string;
   node: SVGElement;
   selectItem: InuSelectItem<any>;
+  lastTap : number;
 }
