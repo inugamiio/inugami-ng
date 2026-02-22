@@ -17,14 +17,15 @@ import {
 } from 'inugami-ng/components/inu-svg-switzerland';
 import {InuButton} from 'inugami-ng/components/inu-button';
 import {InuCode} from 'inugami-ng/components/inu-code';
-import {InuSelectItem, InuSelectItemMatcher, SvgStyle} from 'inugami-ng/models';
+import {InuSelectItem, SvgStyle} from 'inugami-ng/models';
 import {FieldTree, form, FormField} from '@angular/forms/signals';
 import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
 import {
   COLORS_ANDROID,
   COLORS_BOOTSTRAP,
   COLORS_BOOTSTRAP_PRIMARY,
-  COLORS_GNOME, COLORS_LEVEL,
+  COLORS_GNOME,
+  COLORS_LEVEL,
   COLORS_TOPO
 } from 'inugami-ng/services';
 

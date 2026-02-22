@@ -234,4 +234,13 @@ export class MyAppView {
 }
 ]]>
   </src>
+
+
+  <src name="valueExtractor" type="typescript" title="Implementation valueExtractor">
+    <![CDATA[
+protected valueExtractor(selectItem: InuSelectItem<any>): number | undefined {
+    return selectItem && selectItem.value ? selectItem.value.level : undefined;
+}
+]]>
+  </src>
 </xml>
