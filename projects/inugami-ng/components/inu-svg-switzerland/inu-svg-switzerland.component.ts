@@ -3,7 +3,7 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
+  ElementRef, HostListener,
   input, model,
   ModelSignal,
   output,
@@ -106,13 +106,20 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
     const generator = this.styleGenerator();
     this._styleGenerator.set(generator ? generator : SVG_SWITZERLAND_COLORED)
   }
+  @HostListener('window:resize')
+  onResize() {
+    const component = this.component();
+    const container = this.container();
+    if (component && container) {
+      this.resolveParentSize(component, container);
+      this.resize();
+    }
+  }
 
   //==================================================================================================================
   // RENDERING
   //=================================================================================================================
   private resolveParentSize(component: ElementRef<HTMLElement>, container: ElementRef<HTMLElement>) {
-
-
     if (component?.nativeElement && component?.nativeElement.parentNode && component?.nativeElement.parentNode.parentNode) {
       this.parent = component?.nativeElement.parentNode.parentNode as HTMLElement;
     }
@@ -123,9 +130,7 @@ export class InuSvgSwitzerland<T> implements FormValueControl<T[]>, AfterViewIni
       this.width = parentSize.width;
     }
 
-
     container?.nativeElement.setAttribute('style', `display: block; height:${this.height}px;width:${this.width}px`);
-
   }
 
   private initializeLayout(container: ElementRef<HTMLElement>) {

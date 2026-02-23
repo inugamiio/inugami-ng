@@ -518,6 +518,7 @@ export const SVG_TRANSFORM: SvgTransform = {
   // ALIGN
   // ========================================================================
   center: (compo: SVGElement, svgContainer: HTMLElement, onX: boolean, onY: boolean): number => {
+    SVG_TRANSFORM.clean(compo);
     const containerSize = SVG.MATH.size(svgContainer);
     let pos = SVG.MATH.size(compo);
 
