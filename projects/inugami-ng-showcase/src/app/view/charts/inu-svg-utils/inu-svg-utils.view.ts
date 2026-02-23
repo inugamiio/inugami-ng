@@ -36,7 +36,6 @@ export class InuSvgUtilsView {
     const inputElement = event.target as HTMLInputElement;
     const value = Number(inputElement.value);
     this.percent.set(value);
-    console.log('onPercentChanged', value);
   }
 
   protected onColorPaletteChanged(event: Event) {
