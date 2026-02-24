@@ -1,19 +1,9 @@
 /**/
-
-.colors{
-  display: flex;
-  flex-direction: row;
-  .color{
-    height: 1rem;
-    width: 1rem;
+::ng-deep{
+  inu-svg-isometric{
+    svg{
+      border: 1px solid black;
+    }
   }
 }
 
-.selected-color{
-  display: flex;
-  flex-direction: row;
-  .color{
-    height: 4rem;
-    width: 4rem;
-  }
-}
