@@ -1,0 +1,19 @@
+/**/
+
+.colors{
+  display: flex;
+  flex-direction: row;
+  .color{
+    height: 1rem;
+    width: 1rem;
+  }
+}
+
+.selected-color{
+  display: flex;
+  flex-direction: row;
+  .color{
+    height: 4rem;
+    width: 4rem;
+  }
+}

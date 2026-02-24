@@ -13,6 +13,7 @@ import {InuDocItemView} from './view/display/inu-doc-item/inu-doc-item.view';
 import {InuCopyView} from './view/actions/inu-copy/inu-copy.view';
 import {InuSvgSwitzerlandView} from './view/charts/inu-svg-switzerland/inu-svg-switzerland.view';
 import {InuSvgUtilsView} from './view/charts/inu-svg-utils/inu-svg-utils.view';
+import {InuSvgIsometricView} from './view/charts/inu-svg-isometric/inu-svg-isometric.view';
 
 
 export const routes: Routes = [
@@ -24,6 +25,7 @@ export const routes: Routes = [
     ]},
   {path: "charts", children:[
       {path: "inu-svg-utils", component: InuSvgUtilsView},
+      {path: "inu-svg-isometric", component: InuSvgIsometricView},
       {path: "inu-svg-switzerland", component: InuSvgSwitzerlandView}
     ]},
   {
