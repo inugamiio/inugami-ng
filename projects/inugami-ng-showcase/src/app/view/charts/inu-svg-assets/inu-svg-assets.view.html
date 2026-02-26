@@ -1,0 +1,81 @@
+<section>
+  <header>
+    <h1>Inugami-NG : SVG assets</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+      </header>
+
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+      <div class="svg-asset-panel">
+        <menu>
+          @for (assetSet of assetSets(); track assetSet.name) {
+            <div class="asset-set">
+              <div class="asset-set-name">{{ assetSet.name }}</div>
+            </div>
+            <div class="asset-set-assets">
+              @for (asset of assetSet.assets; track asset.name) {
+                <div class="asset-set-asset" (click)="selectAsset(asset)">
+                  <div style="height: 32px; width: 32px">
+                    <inu-svg-asset [asset]="asset"></inu-svg-asset>
+                  </div>
+
+                  <div>{{ asset.name }}</div>
+                </div>
+              }
+            </div>
+          }
+
+        </menu>
+        <div class="display">
+          @if (asset()) {
+            <div class="asset-display-grp">
+              <div class="asset-display" style="height: 256px; width: 256px">
+                <inu-svg-asset [asset]="asset()" [type]="type()" [state]="state()"></inu-svg-asset>
+              </div>
+            </div>
+
+
+            <div class="asset-display-type">
+              <ul>
+                @for (type of asset()?.types; track type.name) {
+                  <li>
+                    <div class="asset-display-type-name">{{ type.name }}</div>
+
+                    <ul class="asset-display-state">
+                      @for (state of type.states; track state.name) {
+                        <li>
+                          <inu-button [label]="state.name" (click)="selectState(type.name,state.name )"></inu-button>
+                        </li>
+                      }
+                    </ul>
+
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+
+    </article>
+
+
+  </main>
+
+
+</section>

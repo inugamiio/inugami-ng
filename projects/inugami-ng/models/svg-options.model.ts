@@ -3,6 +3,13 @@ export interface SvgOptionalOption{
   styleClass?: string|null
 }
 
+export interface SvgDefsPatternOption{
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  patternUnits?: 'userSpaceOnUse'|'objectBoundingBox';
+}
 
 export interface RectOption extends SvgOptionalOption{
   height?: number;

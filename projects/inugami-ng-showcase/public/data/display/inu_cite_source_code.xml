@@ -2,13 +2,13 @@
   <src name="inu-cite-import" type="typescript" title="Import inu-cite">
     <![CDATA[
 import {Component} from '@angular/core';
-import {InuSvgIsometric} from 'inugami-ng/components/inu-cite';
+import {InuSvgAsset} from 'inugami-ng/components/inu-cite';
 
 @Component({
   templateUrl: './my-app.view.html',
   styleUrls: ['./my-app.view.scss'],
   imports: [
-    InuSvgIsometric
+    InuSvgAsset
   ]
 })
 export class MyAppView {
@@ -48,14 +48,14 @@ export class MyAppView {
   <src name="inu-cite-import-directive" type="typescript" title="Template name directive">
     <![CDATA[
 import {Component} from '@angular/core';
-import {InuSvgIsometric} from 'inugami-ng/components/inu-cite';
+import {InuSvgAsset} from 'inugami-ng/components/inu-cite';
 import {InugamiTemplateDirective} from 'inugami-ng/directives';
 
 @Component({
   templateUrl: './my-app.view.html',
   styleUrls: ['./my-app.view.scss'],
   imports: [
-    InuSvgIsometric,
+    InuSvgAsset,
     InugamiTemplateDirective
   ]
 })

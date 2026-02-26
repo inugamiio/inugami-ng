@@ -1,0 +1,55 @@
+/**/
+.svg-asset-panel {
+  display: flex;
+  gap: 2rem;
+
+  menu {
+    display: flex;
+    max-width: 20rem;
+    min-width: 10rem;
+    flex-direction: column;
+    gap: 2rem;
+
+  }
+
+  .display {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2rem;
+
+    .asset-display-grp{
+      display: flex;
+      justify-content: center;
+      .asset-display {
+        border: 1px solid var(--neutral);
+      }
+    }
+
+
+    .asset-display-type {
+      display: flex;
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+      }
+
+      .asset-display-type-name {
+        font-weight: bold;
+      }
+
+      .asset-display-state {
+        ul {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+
+}

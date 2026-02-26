@@ -1,6 +1,14 @@
-import { CircleOption, RectOption, SvgAnimationCallback, SvgAnimationOption, SvgOptionalOption, SvgTimerGenerator, TextOption } from "./svg-options.model";
+import {
+  CircleOption, RectOption, SvgAnimationCallback, SvgAnimationOption,
+  SvgDefsPatternOption, SvgOptionalOption, SvgTimerGenerator, TextOption
+} from "./svg-options.model";
 import { Dimension, Position, Size, SvgStyle, TransformationInfo, Vector } from "./svg.models";
-
+import {SvgAsset, SvgAssetSet} from "inugami-svg-assets";
+export interface SvgAssets {
+  getAssetSets : () => SvgAssetSet[];
+  register : (sets:SvgAssetSet[]) => void;
+  getAsset : (setName:string, assetName:string ) => SvgAsset|undefined;
+}
 export interface SvgTransform {
   clean  : (node: SVGElement) => void;
   translateX: (node: SVGElement | null, posX:number)=> void;
@@ -21,6 +29,8 @@ export interface SvgTransform {
 }
 
 export interface SvgBuilder {
+  createDefs: (parent: SVGElement|HTMLElement|null)=> SVGElement|null;
+  createDefsPattern: (parent: SVGElement|HTMLElement|null, id:string, option?: SvgDefsPatternOption)=> SVGElement|null;
   createGroup : (parent: SVGElement|HTMLElement|null, option?: SvgOptionalOption)=> SVGElement|null;
   createText : (label:string, parent: SVGElement, option?: SvgOptionalOption)=> SVGElement|null;
   createLine : (vector:Vector, parent: SVGElement, option?: SvgOptionalOption)=> SVGElement|null;
@@ -40,6 +50,7 @@ export interface SvgMath {
   size : (node: SVGElement| HTMLElement)=> Size;
   computeDimension: (parent: SVGElement|HTMLElement, widthRatio:number|null, heightRatio:number|null, fontRatio:number)=> Dimension;
   nowNano : ()=> number;
+  zoom : (value:number, zoom:number)=> number;
 }
 
 
