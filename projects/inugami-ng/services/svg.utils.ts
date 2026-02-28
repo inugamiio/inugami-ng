@@ -8,7 +8,7 @@ import {
   SvgAnimationOption,
   SvgAnimationParameters,
   SvgAnimations, SvgAssets,
-  SvgBuilder, SvgDefsPatternOption,
+  SvgBuilder, SvgDefsPatternOption, SvgFilterOption,
   SvgMath,
   SvgOptionalOption,
   SvgStyle,
@@ -227,6 +227,24 @@ export const SVG_BUILDER: SvgBuilder = {
   // ========================================================================
   createDefs: (parent: SVGElement | HTMLElement | null): SVGElement | null => {
     return SVG_BUILDER.createNode('defs', parent, {});
+  },
+  createFilter: (parentDefs: SVGElement | HTMLElement | null, id: string, option?: SvgFilterOption): SVGElement | null => {
+    const result = SVG_BUILDER.createNode('filter', parentDefs, {});
+    if (result) {
+      result.setAttribute('id', id);
+
+      const currentOption = option ? option : {};
+      result.setAttribute('height', `${currentOption.height?currentOption.height:10}`);
+      result.setAttribute('width', `${currentOption.width?currentOption.width:10}`);
+      result.setAttribute('y', `${currentOption.y?currentOption.y:0}`);
+      result.setAttribute('y', `${currentOption.x?currentOption.x:0}`);
+
+
+      if (currentOption.style) {
+        result.setAttribute('style', `${currentOption.style}`);
+      }
+    }
+    return result;
   },
   createDefsPattern: (parent: SVGElement | HTMLElement | null, id: string, option?: SvgDefsPatternOption): SVGElement | null => {
     const result = SVG_BUILDER.createNode('pattern', parent, {});

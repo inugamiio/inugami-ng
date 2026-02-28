@@ -119,7 +119,11 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
     this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
     this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
 
-
+    const filter = SVG_BUILDER.createFilter(this.defs, 'shadow', {style:'color-interpolation-filters: sRGB;'});
+    const gaussian = SVG_BUILDER.createNode('feGaussianBlur',filter);
+    if(gaussian){
+      gaussian.setAttribute('stdDeviation', '1');
+    }
     if (this.canvas) {
       this.graph = SVG_BUILDER.createGroup(this.canvas, {styleClass: 'graph'});
     }

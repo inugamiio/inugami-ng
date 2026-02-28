@@ -10,6 +10,13 @@ export interface SvgDefsPatternOption{
   height?: number;
   patternUnits?: 'userSpaceOnUse'|'objectBoundingBox';
 }
+export interface SvgFilterOption{
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  style?: string;
+}
 
 export interface RectOption extends SvgOptionalOption{
   height?: number;

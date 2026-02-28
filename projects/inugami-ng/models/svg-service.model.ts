@@ -1,6 +1,6 @@
 import {
   CircleOption, RectOption, SvgAnimationCallback, SvgAnimationOption,
-  SvgDefsPatternOption, SvgOptionalOption, SvgTimerGenerator, TextOption
+  SvgDefsPatternOption, SvgFilterOption, SvgOptionalOption, SvgTimerGenerator, TextOption
 } from "./svg-options.model";
 import { Dimension, Position, Size, SvgStyle, TransformationInfo, Vector } from "./svg.models";
 import {SvgAsset, SvgAssetSet} from "inugami-svg-assets";
@@ -30,6 +30,7 @@ export interface SvgTransform {
 
 export interface SvgBuilder {
   createDefs: (parent: SVGElement|HTMLElement|null)=> SVGElement|null;
+  createFilter: (parentDefs: SVGElement|HTMLElement|null, id:string, option?: SvgFilterOption)=> SVGElement|null;
   createDefsPattern: (parent: SVGElement|HTMLElement|null, id:string, option?: SvgDefsPatternOption)=> SVGElement|null;
   createGroup : (parent: SVGElement|HTMLElement|null, option?: SvgOptionalOption)=> SVGElement|null;
   createText : (label:string, parent: SVGElement, option?: SvgOptionalOption)=> SVGElement|null;

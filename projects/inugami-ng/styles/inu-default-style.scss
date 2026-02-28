@@ -15,6 +15,7 @@
   --neutral-light-extra: #eff3f7;
   --neutral-light: #cdd2d8;
   --neutral-dark: #5d6269;
+  --neutral-dark-extra: #262728;
   --neutral: #7a8088;
   --info: #1f5294;
   --info-light: #6094d7;
@@ -662,6 +663,30 @@ fieldset{
   margin: 0;
   gap:1rem;
 }
-
-
-
+.inu-svg-asset{
+  .top{
+    fill: var(--neutral);
+  }
+  .bottom{
+    fill: var(--neutral-dark-extra);
+  }
+  .left{
+    fill: var(--neutral-dark);
+  }
+  .right{
+    fill: var(--neutral-light);
+  }
+  .front{
+    fill: var(--neutral-light-extra);
+  }
+  .shadow{
+    fill: var(--neutral-dark-extra);
+    fill: #241f31;
+    stroke: none;
+    stroke-width: 0.264999;
+    paint-order: stroke fill markers;
+    fill-opacity: 1;
+    filter: url(#shadow);
+    opacity: 0.17684887;
+  }
+}
