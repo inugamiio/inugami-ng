@@ -15,7 +15,6 @@ import {SVG, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from 'inugami-ng/services';
 import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {SvgAssetUtils} from '../../services/svg.asset.utils';
-import {Subscriber} from "rxjs";
 
 @Component({
   selector: 'inu-svg-isometric',
@@ -137,9 +136,9 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         this.zoom = Math.max(0.001, newZoom);
         const newX = x * progress;
         const newY = y * progress;
-        if(this.locator){
-          SVG.TRANSFORM.translateX(this.locator,this.position.x+newX);
-          SVG.TRANSFORM.translateY(this.locator,this.position.y+newY);
+        if (this.locator) {
+          SVG.TRANSFORM.translateX(this.locator, this.position.x + newX);
+          SVG.TRANSFORM.translateY(this.locator, this.position.y + newY);
         }
 
         this.updateAfterZoom();
@@ -148,11 +147,11 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         timer: SVG.ANIMATION.TYPES.easeOutCubic,
         onDone: () => {
           this.zoom = this.defaultZoom;
-          if(this.locator){
+          if (this.locator) {
             this.position.x = 0;
             this.position.y = 0;
-            SVG.TRANSFORM.translateX(this.locator,this.position.x);
-            SVG.TRANSFORM.translateY(this.locator,this.position.y);
+            SVG.TRANSFORM.translateX(this.locator, this.position.x);
+            SVG.TRANSFORM.translateY(this.locator, this.position.y);
           }
           this.updateAfterZoom();
         }
@@ -181,6 +180,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   private initializeLayout(container: ElementRef<HTMLElement>) {
 
     this.defs = SVG_BUILDER.createDefs(container?.nativeElement);
+    const gridGrp = SVG_BUILDER.createGroup(container?.nativeElement);
     this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
     this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
     container.nativeElement.onmousemove = (event: MouseEvent) => this.moveViewport(event);
@@ -194,12 +194,13 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       gaussian.setAttribute('stdDeviation', '1');
     }
 
+    if (gridGrp) {
+      this.renderGrid(gridGrp);
+    }
     if (this.canvas) {
       this.graph = SVG_BUILDER.createGroup(this.canvas, {styleClass: 'graph'});
     }
-
     if (this.graph) {
-      this.renderGrid(this.graph);
       this.renderLayers(this.graph);
     }
 
