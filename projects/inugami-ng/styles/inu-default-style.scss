@@ -8,10 +8,12 @@
   --primary-dark: #b20505;
   --primary: #cc0000;
   --primary-light: #afcf2c;
+  --secondary-dark-extra: #0a203d;
   --secondary-dark: #1b3c67;
   --secondary: #1f5294;
   --secondary-light: #2c73cf;
   --secondary-light-extra: #d8e7ff;
+  --neutral-light-extra-plus: #fbfbfe;
   --neutral-light-extra: #eff3f7;
   --neutral-light: #cdd2d8;
   --neutral-dark: #5d6269;
@@ -663,6 +665,7 @@ fieldset{
   margin: 0;
   gap:1rem;
 }
+
 .inu-svg-asset{
   .top{
     fill: var(--neutral);
@@ -689,4 +692,34 @@ fieldset{
     filter: url(#shadow);
     opacity: 0.17684887;
   }
+}
+.w10{
+     width: 10%;
+}
+.w20{
+     width: 20%;
+}
+.w30{
+     width: 30%;
+}
+.w40{
+     width: 40%;
+}
+.w50{
+      width: 50%;
+}
+.w60{
+     width: 60%;
+}
+.w70{
+     width: 70%;
+}
+.w80{
+   width: 50%;
+}
+.w90{
+     width: 90%;
+}
+.w100{
+  width: 100%;
 }

@@ -25,12 +25,6 @@ export class InuSvgAssetView {
   //====================================================================================================================
   // INIT
   //====================================================================================================================
-  constructor() {
-
-
-  }
-
-
   protected getDefaultAssetState(asset: SvgAsset): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(asset.types.find(t => t.name === 'default')
       ?.states.find(s => s.name === 'default')

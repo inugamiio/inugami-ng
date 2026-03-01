@@ -33,8 +33,7 @@
                   <div style="height: 32px; width: 32px">
                     <inu-svg-asset [asset]="asset"></inu-svg-asset>
                   </div>
-
-                  <div>{{ asset.name }}</div>
+                  <div class="asset-set-asset-name">{{ asset.name }}</div>
                 </div>
               }
             </div>
@@ -51,22 +50,28 @@
 
 
             <div class="asset-display-type">
-              <ul>
-                @for (type of asset()?.types; track type.name) {
-                  <li>
-                    <div class="asset-display-type-name">{{ type.name }}</div>
+              <fieldset class="w100">
+                <legend class="legend-types">Types</legend>
+                <ul>
+                  @for (type of asset()?.types; track type.name) {
+                    <li>
+                      <div class="asset-display-type-name">{{ type.name }}</div>
 
-                    <ul class="asset-display-state">
-                      @for (state of type.states; track state.name) {
-                        <li>
-                          <inu-button [label]="state.name" (click)="selectState(type.name,state.name )"></inu-button>
-                        </li>
-                      }
-                    </ul>
+                      <fieldset>
+                        <legend  class="legend-states">States</legend>
+                        <ul class="asset-display-state">
+                          @for (state of type.states; track state.name) {
+                            <li>
+                              <inu-button [label]="state.name" (click)="selectState(type.name,state.name )"></inu-button>
+                            </li>
+                          }
+                        </ul>
+                      </fieldset>
+                    </li>
+                  }
+                </ul>
+              </fieldset>
 
-                  </li>
-                }
-              </ul>
             </div>
           }
         </div>

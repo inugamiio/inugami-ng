@@ -1,13 +1,13 @@
 import {
   CircleOption,
-  Dimension,
+  Dimension, Point,
   Position,
   RectOption,
   Size,
   SvgAnimationCallback,
   SvgAnimationOption,
   SvgAnimationParameters,
-  SvgAnimations, SvgAssets,
+  SvgAnimations, SvgAssetDTO, SvgAssetElement, SvgAssets,
   SvgBuilder, SvgDefsPatternOption, SvgFilterOption,
   SvgMath,
   SvgOptionalOption,
@@ -19,6 +19,7 @@ import {
   Vector
 } from "inugami-ng/models";
 import {SvgAsset, SvgAssetSet} from 'inugami-svg-assets';
+import {SvgAssetUtils} from './svg.asset.utils';
 
 
 export const DEFAULT_FONT_SIZE = 12;
@@ -221,6 +222,13 @@ export const SVG_MATH: SvgMath = {
 // SVG_BUILDER
 //#############################################################################
 export const SVG_BUILDER: SvgBuilder = {
+  createAsset(asset: SvgAssetDTO,
+              parent: SVGElement | HTMLElement | null,
+              center: Point,
+              scale: number,
+              isometric: boolean): SvgAssetElement | undefined {
+    return SvgAssetUtils.createAsset(asset, parent, center, scale, isometric);
+  },
 
   // ========================================================================
   // createDefs
@@ -234,10 +242,10 @@ export const SVG_BUILDER: SvgBuilder = {
       result.setAttribute('id', id);
 
       const currentOption = option ? option : {};
-      result.setAttribute('height', `${currentOption.height?currentOption.height:10}`);
-      result.setAttribute('width', `${currentOption.width?currentOption.width:10}`);
-      result.setAttribute('y', `${currentOption.y?currentOption.y:0}`);
-      result.setAttribute('y', `${currentOption.x?currentOption.x:0}`);
+      result.setAttribute('height', `${currentOption.height ? currentOption.height : 10}`);
+      result.setAttribute('width', `${currentOption.width ? currentOption.width : 10}`);
+      result.setAttribute('y', `${currentOption.y ? currentOption.y : 0}`);
+      result.setAttribute('y', `${currentOption.x ? currentOption.x : 0}`);
 
 
       if (currentOption.style) {

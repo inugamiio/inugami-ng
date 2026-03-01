@@ -2,8 +2,18 @@ import {
   CircleOption, RectOption, SvgAnimationCallback, SvgAnimationOption,
   SvgDefsPatternOption, SvgFilterOption, SvgOptionalOption, SvgTimerGenerator, TextOption
 } from "./svg-options.model";
-import { Dimension, Position, Size, SvgStyle, TransformationInfo, Vector } from "./svg.models";
+import {
+  Dimension, Point,
+  Position,
+  Size,
+  SvgAssetDTO,
+  SvgAssetElement,
+  SvgStyle,
+  TransformationInfo,
+  Vector
+} from "./svg.models";
 import {SvgAsset, SvgAssetSet} from "inugami-svg-assets";
+
 export interface SvgAssets {
   getAssetSets : () => SvgAssetSet[];
   register : (sets:SvgAssetSet[]) => void;
@@ -41,6 +51,11 @@ export interface SvgBuilder {
   ellipse: (layer: SVGElement, option?: CircleOption)=>SVGElement|null ;
   text: (layer: SVGElement, label: string,option?:TextOption )=>SVGElement|null ;
   createNode : (nodeType:string,parent: SVGElement|HTMLElement|null, option?: SvgOptionalOption)=> SVGElement|null;
+  createAsset : (asset:SvgAssetDTO,
+                 parent: SVGElement|HTMLElement|null,
+                 center:Point,
+                 scall:number,
+                 isometric:boolean)=> SvgAssetElement|undefined;
 }
 
 export interface SvgMath {
