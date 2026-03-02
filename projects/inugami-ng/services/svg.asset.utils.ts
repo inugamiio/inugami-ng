@@ -1,5 +1,6 @@
 import {Point, SvgAssetDTO, SvgAssetElement} from 'inugami-ng/models';
-import {SVG_ASSETS, SVG_BUILDER, SVG_TRANSFORM} from 'inugami-ng/services';
+import {SVG_ASSETS, SVG_BUILDER, SVG_TRANSFORM} from "./svg.utils";
+
 
 
 export class SvgAssetUtils {
