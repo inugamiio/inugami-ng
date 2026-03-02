@@ -1,14 +1,14 @@
 import {
   CircleOption,
-  Dimension,
+  Dimension, Point,
   Position,
   RectOption,
   Size,
   SvgAnimationCallback,
   SvgAnimationOption,
   SvgAnimationParameters,
-  SvgAnimations,
-  SvgBuilder,
+  SvgAnimations, SvgAssetDTO, SvgAssetElement, SvgAssets,
+  SvgBuilder, SvgDefsPatternOption, SvgFilterOption,
   SvgMath,
   SvgOptionalOption,
   SvgStyle,
@@ -18,12 +18,15 @@ import {
   TransformationInfo,
   Vector
 } from "inugami-ng/models";
+import {SvgAsset, SvgAssetSet} from 'inugami-svg-assets';
+import {SvgAssetUtils} from './svg.asset.utils';
 
 
 export const DEFAULT_FONT_SIZE = 12;
 export const TWO_PI = 2 * Math.PI;
 export const TWO_PI_RATIO = (2 * Math.PI) / 360;
 export const DEGRE_CONVERTOR = 180 / Math.PI;
+
 
 const isNull = (value: any): boolean => {
   return value == undefined || value == null;
@@ -38,13 +41,54 @@ const convertToNumber = (value: any): number | null => {
 }
 
 //#############################################################################
+// ASSETS
+//#############################################################################
+const ASSETS: SvgAssetSet[] = [];
+
+export const SVG_ASSETS: SvgAssets = {
+  getAssetSets: (): SvgAssetSet[] => {
+    return ASSETS;
+  },
+
+  register: (sets: SvgAssetSet[]) => {
+
+    for (let set of sets) {
+      const savedSet = ASSETS.find(s => s.name === set.name);
+      if (!savedSet) {
+        ASSETS.push(set);
+        continue;
+      }
+
+      if (!savedSet.assets) {
+        savedSet.assets = set.assets;
+        continue;
+      }
+      for (let asset of set.assets) {
+        const savedAsset = savedSet.assets.find(a => a.name === asset.name);
+        if (savedAsset) {
+          savedAsset.types = asset.types;
+          savedAsset.attributes = asset.attributes;
+        } else {
+          savedSet.assets.push(asset);
+        }
+      }
+    }
+  },
+  getAsset: (setName: string, assetName: string): SvgAsset | undefined => {
+    return ASSETS.find(s => s.name === setName)
+      ?.assets
+      ?.find(a => a.name === assetName);
+  }
+}
+
+//#############################################################################
 // SVG_CONST
 //#############################################################################
 export const SVG_CONST: any = {
   DATETIME_YEAR: 60000 * 1440 * 365,
   MINUTE: 60000,
   NB_MINUTES_PER_DAY: 1440,
-  NANO_TO_MILLIS : 1000000
+  NANO_TO_MILLIS: 1000000
 };
 
 
@@ -164,8 +208,12 @@ export const SVG_MATH: SvgMath = {
     }
   },
 
-  nowNano : ()=>{
+  nowNano: () => {
     return performance.now() + performance.timeOrigin;
+  },
+
+  zoom: (value: number, zoom: number) => {
+    return value * zoom;
   }
 }
 
@@ -174,7 +222,52 @@ export const SVG_MATH: SvgMath = {
 // SVG_BUILDER
 //#############################################################################
 export const SVG_BUILDER: SvgBuilder = {
+  createAsset(asset: SvgAssetDTO,
+              parent: SVGElement | HTMLElement | null,
+              center: Point,
+              scale: number,
+              isometric: boolean): SvgAssetElement | undefined {
+    return SvgAssetUtils.createAsset(asset, parent, center, scale, isometric);
+  },
 
+  // ========================================================================
+  // createDefs
+  // ========================================================================
+  createDefs: (parent: SVGElement | HTMLElement | null): SVGElement | null => {
+    return SVG_BUILDER.createNode('defs', parent, {});
+  },
+  createFilter: (parentDefs: SVGElement | HTMLElement | null, id: string, option?: SvgFilterOption): SVGElement | null => {
+    const result = SVG_BUILDER.createNode('filter', parentDefs, {});
+    if (result) {
+      result.setAttribute('id', id);
+
+      const currentOption = option ? option : {};
+      result.setAttribute('height', `${currentOption.height ? currentOption.height : 10}`);
+      result.setAttribute('width', `${currentOption.width ? currentOption.width : 10}`);
+      result.setAttribute('y', `${currentOption.y ? currentOption.y : 0}`);
+      result.setAttribute('y', `${currentOption.x ? currentOption.x : 0}`);
+
+
+      if (currentOption.style) {
+        result.setAttribute('style', `${currentOption.style}`);
+      }
+    }
+    return result;
+  },
+  createDefsPattern: (parent: SVGElement | HTMLElement | null, id: string, option?: SvgDefsPatternOption): SVGElement | null => {
+    const result = SVG_BUILDER.createNode('pattern', parent, {});
+    const currentOption = option ? option : {};
+
+    if (result) {
+      result.setAttribute('id', id);
+      result.setAttribute('x', `${currentOption.x == undefined ? 0 : currentOption.x}`);
+      result.setAttribute('y', `${currentOption.y == undefined ? 0 : currentOption.y}`);
+      result.setAttribute('width', `${currentOption.width == undefined ? 10 : currentOption.width}`);
+      result.setAttribute('height', `${currentOption.height == undefined ? 10 : currentOption.height}`);
+      result.setAttribute('patternUnits', `${currentOption.patternUnits == undefined ? 'userSpaceOnUse' : currentOption.patternUnits}`);
+    }
+    return result;
+  },
   // ========================================================================
   // createGroup
   // ========================================================================
@@ -247,7 +340,6 @@ export const SVG_BUILDER: SvgBuilder = {
   },
 
 
-
   // ========================================================================
   // Circle
   // ========================================================================
@@ -282,8 +374,8 @@ export const SVG_BUILDER: SvgBuilder = {
       let result = SVG_BUILDER.createNode('cirellipsecle', parent, currentOption);
 
       if (result) {
-        result.setAttribute("rx", ''+dimention.width);
-        result.setAttribute("ry", ''+dimention.height);
+        result.setAttribute("rx", '' + dimention.width);
+        result.setAttribute("ry", '' + dimention.height);
         result.setAttribute("cx", '' + 0);
         result.setAttribute("cy", '' + 0);
         return result;
@@ -345,8 +437,6 @@ export const SVG_BUILDER: SvgBuilder = {
 }
 
 
-
-
 //#############################################################################
 // SVG_TRANSFORMATION
 //#############################################################################
@@ -378,7 +468,6 @@ export const SVG_TRANSFORM: SvgTransform = {
     position.y = posY;
     SVG_TRANSFORM._genericTransform(node, position);
   },
-
 
 
   // ========================================================================
@@ -430,7 +519,7 @@ export const SVG_TRANSFORM: SvgTransform = {
   // ========================================================================
   // extractTransformInformation
   // ========================================================================
-  extractTransformInformation: (node: SVGElement|HTMLElement): TransformationInfo => {
+  extractTransformInformation: (node: SVGElement | HTMLElement): TransformationInfo => {
     const attrTransfo = node.getAttribute("transform");
 
     let x = null;
@@ -483,7 +572,6 @@ export const SVG_TRANSFORM: SvgTransform = {
   },
 
 
-
   // ========================================================================
   // _genericTransform
   // ========================================================================
@@ -492,13 +580,11 @@ export const SVG_TRANSFORM: SvgTransform = {
       node.setAttribute("transform", "translate(" + [isNull(transfo.x) ? 0 : transfo.x,
         isNull(transfo.y) ? 0 : transfo.y]
         .join(',') + ")");
-    }
-    else if (SVG_TRANSFORM._noTranslate(transfo)) {
+    } else if (SVG_TRANSFORM._noTranslate(transfo)) {
       node.setAttribute("transform", "scale(" + [isNull(transfo.scaleX) ? 0 : transfo.scaleX,
         isNull(transfo.scaleY) ? 0 : transfo.scaleY]
         .join(',') + ")");
-    }
-    else {
+    } else {
       SVG_TRANSFORM.matrix(node,
         transfo.scaleX ? transfo.scaleX : 0,
         transfo.scaleY ? transfo.scaleY : 0,
@@ -549,7 +635,7 @@ export const SVG_TRANSFORM: SvgTransform = {
   // ========================================================================
   // TOOLS
   // ========================================================================
-  toogleClass: (node: SVGElement|HTMLElement, styleclass: string): void => {
+  toogleClass: (node: SVGElement | HTMLElement, styleclass: string): void => {
     if (!node) {
       return;
     }
@@ -564,7 +650,7 @@ export const SVG_TRANSFORM: SvgTransform = {
       node.setAttribute('class', styleclass);
     }
   },
-  removeClass: (node:  SVGElement|HTMLElement, styleclass: string): void => {
+  removeClass: (node: SVGElement | HTMLElement, styleclass: string): void => {
     if (!node) {
       return;
     }
@@ -575,7 +661,7 @@ export const SVG_TRANSFORM: SvgTransform = {
       }
     }
   },
-  addClass: (node:  SVGElement|HTMLElement, styleclass: string): void => {
+  addClass: (node: SVGElement | HTMLElement, styleclass: string): void => {
     if (!node) {
       return;
     }
@@ -588,7 +674,7 @@ export const SVG_TRANSFORM: SvgTransform = {
       node.setAttribute('class', styleclass);
     }
   },
-  hasClass: (node:  SVGElement|HTMLElement, styleclass: string): boolean => {
+  hasClass: (node: SVGElement | HTMLElement, styleclass: string): boolean => {
     if (!node) {
       return false;
     }
@@ -601,7 +687,7 @@ export const SVG_TRANSFORM: SvgTransform = {
 // SVG STYLE GENERATOR
 //#############################################################################
 export const SVG_STYLE_GENERATOR: SvgStyleGenerators = {
-  BY_TYPE: (value:number, maxValue:number, minValue:number, type:string): SvgStyle =>{
+  BY_TYPE: (value: number, maxValue: number, minValue: number, type: string): SvgStyle => {
     return {
       style: type
     }
@@ -611,67 +697,66 @@ export const SVG_STYLE_GENERATOR: SvgStyleGenerators = {
 //#############################################################################
 // SVG ANIMATION
 //#############################################################################
-export const SVG_ANIMATION : SvgAnimations = {
-  TYPES : {
-    linear:(time:number): number => time,
-    parabolic : (time:number): number => -(4*Math.pow(time, 2)) + (4*time),
-    easeOutCubic : (time:number) => Math.pow(time-1, 3) + 1,
-    easeInCubic : (time:number) => Math.pow(time, 3),
-    easeInQuad : (time:number) => time*time,
-    easeOutQuad : (time:number) => time*(2-time),
+export const SVG_ANIMATION: SvgAnimations = {
+  TYPES: {
+    linear: (time: number): number => time,
+    parabolic: (time: number): number => -(4 * Math.pow(time, 2)) + (4 * time),
+    easeOutCubic: (time: number) => Math.pow(time - 1, 3) + 1,
+    easeInCubic: (time: number) => Math.pow(time, 3),
+    easeInQuad: (time: number) => time * time,
+    easeOutQuad: (time: number) => time * (2 - time),
   },
-  animate : (callback:SvgAnimationCallback, option?:SvgAnimationOption):void=>{
+  animate: (callback: SvgAnimationCallback, option?: SvgAnimationOption): void => {
 
-    const currentOption:SvgAnimationOption = option?option:{};
-    const duration = (currentOption.duration ? currentOption.duration:250);
+    const currentOption: SvgAnimationOption = option ? option : {};
+    const duration = (currentOption.duration ? currentOption.duration : 250);
     const now = new Date().getTime();
 
-    const params : SvgAnimationParameters = {
-      timer       : currentOption.timer?currentOption.timer: SVG_ANIMATION.TYPES.linear,
-      delay       : currentOption.delay?currentOption.delay:0,
-      duration    : (now+duration)-now,
-      startTime   : now,
-      ttl         : now+duration,
-      callback    : callback,
-      onDone      : currentOption.onDone
+    const params: SvgAnimationParameters = {
+      timer: currentOption.timer ? currentOption.timer : SVG_ANIMATION.TYPES.linear,
+      delay: currentOption.delay ? currentOption.delay : 0,
+      duration: (now + duration) - now,
+      startTime: now,
+      ttl: now + duration,
+      callback: callback,
+      onDone: currentOption.onDone
     }
 
 
-
-    if(params.delay>0){
-      setTimeout(()=>{
+    if (params.delay > 0) {
+      setTimeout(() => {
         const now = new Date().getTime();
-        params.startTime   = now;
-        params.ttl         = now+duration;
+        params.startTime = now;
+        params.ttl = now + duration;
         new AnimationHandler(params).run();
-      },currentOption.delay);
-    }else{
+      }, currentOption.delay);
+    } else {
       new AnimationHandler(params).run();
     }
   }
 }
 
-class AnimationHandler{
+class AnimationHandler {
 
-  private animeId :number|null= null;
+  private animeId: number | null = null;
 
   constructor(private parameters: SvgAnimationParameters) {
   }
 
-  public run(){
+  public run() {
     let duration = this.parameters.duration;
-    let initialTimestamp= window.performance.now();
-    let timestamp=0;
+    let initialTimestamp = window.performance.now();
+    let timestamp = 0;
 
     const frame = () => {
-      timestamp= window.performance.now()- initialTimestamp;
-      const progress = timestamp/duration
-      if (progress >=1) {
+      timestamp = window.performance.now() - initialTimestamp;
+      const progress = timestamp / duration
+      if (progress >= 1) {
         this.parameters.callback(this.parameters.timer(1));
-        if(this.parameters.onDone){
+        if (this.parameters.onDone) {
           this.parameters.onDone();
         }
-        if(this.animeId){
+        if (this.animeId) {
           cancelAnimationFrame(this.animeId);
         }
 
@@ -696,6 +781,6 @@ export const SVG = {
   MATH: SVG_MATH,
   BUILDER: SVG_BUILDER,
   TRANSFORM: SVG_TRANSFORM,
-  STYLE : SVG_STYLE_GENERATOR,
-  ANIMATION:SVG_ANIMATION
+  STYLE: SVG_STYLE_GENERATOR,
+  ANIMATION: SVG_ANIMATION
 }

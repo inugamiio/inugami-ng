@@ -8,13 +8,16 @@
   --primary-dark: #b20505;
   --primary: #cc0000;
   --primary-light: #afcf2c;
+  --secondary-dark-extra: #0a203d;
   --secondary-dark: #1b3c67;
   --secondary: #1f5294;
   --secondary-light: #2c73cf;
   --secondary-light-extra: #d8e7ff;
+  --neutral-light-extra-plus: #fbfbfe;
   --neutral-light-extra: #eff3f7;
   --neutral-light: #cdd2d8;
   --neutral-dark: #5d6269;
+  --neutral-dark-extra: #262728;
   --neutral: #7a8088;
   --info: #1f5294;
   --info-light: #6094d7;
@@ -663,5 +666,60 @@ fieldset{
   gap:1rem;
 }
 
-
-
+.inu-svg-asset{
+  .top{
+    fill: var(--neutral);
+  }
+  .bottom{
+    fill: var(--neutral-dark-extra);
+  }
+  .left{
+    fill: var(--neutral-dark);
+  }
+  .right{
+    fill: var(--neutral-light);
+  }
+  .front{
+    fill: var(--neutral-light-extra);
+  }
+  .shadow{
+    fill: var(--neutral-dark-extra);
+    fill: #241f31;
+    stroke: none;
+    stroke-width: 0.264999;
+    paint-order: stroke fill markers;
+    fill-opacity: 1;
+    filter: url(#shadow);
+    opacity: 0.17684887;
+  }
+}
+.w10{
+     width: 10%;
+}
+.w20{
+     width: 20%;
+}
+.w30{
+     width: 30%;
+}
+.w40{
+     width: 40%;
+}
+.w50{
+      width: 50%;
+}
+.w60{
+     width: 60%;
+}
+.w70{
+     width: 70%;
+}
+.w80{
+   width: 50%;
+}
+.w90{
+     width: 90%;
+}
+.w100{
+  width: 100%;
+}

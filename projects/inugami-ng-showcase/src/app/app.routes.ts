@@ -13,19 +13,27 @@ import {InuDocItemView} from './view/display/inu-doc-item/inu-doc-item.view';
 import {InuCopyView} from './view/actions/inu-copy/inu-copy.view';
 import {InuSvgSwitzerlandView} from './view/charts/inu-svg-switzerland/inu-svg-switzerland.view';
 import {InuSvgUtilsView} from './view/charts/inu-svg-utils/inu-svg-utils.view';
+import {InuSvgIsometricView} from './view/charts/inu-svg-isometric/inu-svg-isometric.view';
+import {InuSvgAssetView} from './view/charts/inu-svg-assets/inu-svg-assets.view';
 
 
 export const routes: Routes = [
   {path: "", component: HomeView},
   {path: "icons", component: IconsView},
-  {path: "actions", children:[
+  {
+    path: "actions", children: [
       {path: "inu-button", component: InuButtonView},
       {path: "inu-copy", component: InuCopyView}
-    ]},
-  {path: "charts", children:[
+    ]
+  },
+  {
+    path: "charts", children: [
+      {path: "inu-svg-assets", component: InuSvgAssetView},
       {path: "inu-svg-utils", component: InuSvgUtilsView},
+      {path: "inu-svg-isometric", component: InuSvgIsometricView},
       {path: "inu-svg-switzerland", component: InuSvgSwitzerlandView}
-    ]},
+    ]
+  },
   {
     path: "display", children: [
       {path: "inu-cite", component: InuCiteView},
@@ -37,11 +45,15 @@ export const routes: Routes = [
 
     ]
   },
-  {path: "forms", children:[
+  {
+    path: "forms", children: [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
-  ]},
-  {path: "tables", children:[
+    ]
+  },
+  {
+    path: "tables", children: [
       {path: "inu-table-flex", component: InuTableFlexView},
-    ]},
-  { path: '**', redirectTo: '' }
+    ]
+  },
+  {path: '**', redirectTo: ''}
 ];
