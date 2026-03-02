@@ -11,10 +11,10 @@ import {
   viewChild
 } from '@angular/core';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
-import {SVG, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from 'inugami-ng/services';
+import {SVG, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM, SvgAssetUtils} from 'inugami-ng/services';
 import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
-import {SvgAssetUtils} from '../../services/svg.asset.utils';
+
 
 @Component({
   selector: 'inu-svg-isometric',
