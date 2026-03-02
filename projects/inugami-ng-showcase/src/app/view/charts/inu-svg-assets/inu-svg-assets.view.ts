@@ -19,6 +19,11 @@ export class InuSvgAssetView {
   //====================================================================================================================
   private sanitizer = inject(DomSanitizer);
   assetSets = computed<SvgAssetSet[]>(() => SVG_ASSETS.getAssetSets());
+  assetSetsNames = computed(()=> {
+    const result = this.assetSets().map(a=> a.name);
+    result.sort();
+    return result;
+  });
   asset = signal<SvgAsset | undefined>(undefined);
   type  = signal<string|undefined>(undefined);
   state  = signal<string|undefined>(undefined);
@@ -42,5 +47,15 @@ export class InuSvgAssetView {
       this.type.set(type);
       this.state.set(state);
 
+  }
+
+  protected getAssets(assetSet: string):SvgAsset[] {
+    const currentAssetSet = this.assetSets().find(a=> a.name==assetSet);
+    if(!currentAssetSet){
+      return [];
+    }
+    const assets = currentAssetSet.assets;
+    assets.sort((v,r)=> v.name.localeCompare(r.name));
+    return assets;
   }
 }

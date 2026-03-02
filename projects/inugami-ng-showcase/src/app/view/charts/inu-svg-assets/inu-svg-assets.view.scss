@@ -107,7 +107,10 @@
       }
     }
   }
-
+  .legend-asset-name{
+    width: 100%;
+    border-bottom: 1px solid var(--neutral);
+  }
   .legend-types{
     width: 100%;
     border-bottom: 1px solid var(--neutral);
