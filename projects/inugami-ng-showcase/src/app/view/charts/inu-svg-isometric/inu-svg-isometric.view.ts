@@ -67,6 +67,36 @@ export class InuSvgIsometricView {
             y: -100,
             size: 2,
             title: 'Box 1'
+          },
+          {
+            name: 'router_1',
+            assertSet: 'isometric',
+            assertName: 'router',
+            type:'90',
+            x: -300,
+            y: 0,
+            size: 2,
+            title: 'router 1'
+          },
+          {
+            name: 'router_2',
+            title: 'router 2',
+            assertSet: 'isometric',
+            assertName: 'router',
+            type:'90',
+            x: -200,
+            y: 100,
+            size: 2
+          },
+          {
+            name: 'router_3',
+            title: 'router 3',
+            assertSet: 'isometric',
+            assertName: 'router',
+            type:'default',
+            x: 50,
+            y: 200,
+            size: 1
           }
         ]
       }

@@ -60,7 +60,6 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
   //====================================================================================================================
   constructor() {
     effect(() => {
-      console.log('effect')
       this.asset();
       this.type();
       this.state();
@@ -72,7 +71,6 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('Changes detected:', changes);
     this.updateValues();
   }
 
@@ -136,7 +134,6 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
   // UPDATE VALUES
   //====================================================================================================================
   public updateValues() {
-    console.log('updateValues')
     const asset = this.asset();
     if (!asset || !this.graph) {
       return;

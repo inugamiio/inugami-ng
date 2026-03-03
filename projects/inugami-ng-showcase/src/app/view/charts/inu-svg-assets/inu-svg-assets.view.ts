@@ -43,7 +43,6 @@ export class InuSvgAssetView {
   }
 
   protected selectState(type: string, state: string) {
-    console.log('selectState',type,state)
       this.type.set(type);
       this.state.set(state);
 

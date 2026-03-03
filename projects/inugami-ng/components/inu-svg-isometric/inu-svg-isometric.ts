@@ -128,17 +128,31 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       const endZoom = this.defaultZoom;
       const delta = endZoom - startZoom;
 
-      const x = this.position.x < 0 ? -this.position.x : this.position.x;
-      const y = this.position.y < 0 ? -this.position.y : this.position.y;
+      let currentX = 0;
+      let currentY = 0;
+      let x = 0;
+      let y = 0;
+
+      if(this.parent && this.locator){
+        const currentTransfoAttr = this.locator.getAttribute('transform');
+        const currentTransfo =SVG_TRANSFORM.extractTransformInformation(this.locator);
+        SVG_TRANSFORM.center(this.locator, this.parent, true, true);
+        const centerTransfo =SVG_TRANSFORM.extractTransformInformation(this.locator);
+        this.locator.setAttribute('transform',currentTransfoAttr!);
+        currentX =currentTransfo.x!;
+        currentY =currentTransfo.y!;
+        x = currentX-centerTransfo.x!;
+        y = currentY-centerTransfo.y!;
+      }
 
       SVG.ANIMATION.animate((progress: number) => {
         const newZoom = startZoom + (delta * progress);
         this.zoom = Math.max(0.001, newZoom);
-        const newX = x * progress;
-        const newY = y * progress;
+        const newX = currentX+(x * progress);
+        const newY = currentY+(y * progress);
         if (this.locator) {
-          SVG.TRANSFORM.translateX(this.locator, this.position.x + newX);
-          SVG.TRANSFORM.translateY(this.locator, this.position.y + newY);
+          SVG_TRANSFORM.translateY(this.locator,newY);
+          SVG_TRANSFORM.translateX(this.locator,newX);
         }
 
         this.updateAfterZoom();
@@ -150,8 +164,9 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
           if (this.locator) {
             this.position.x = 0;
             this.position.y = 0;
-            SVG.TRANSFORM.translateX(this.locator, this.position.x);
-            SVG.TRANSFORM.translateY(this.locator, this.position.y);
+            if(this.parent){
+              SVG_TRANSFORM.center(this.locator, this.parent, true, true);
+            }
           }
           this.updateAfterZoom();
         }

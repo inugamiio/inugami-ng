@@ -145,6 +145,9 @@ class Asset implements SvgAssetElement {
 
     let x = this.center.x + (this.x * this.scale);
     let y = this.center.y + (this.y * this.scale);
+    if(this.isometric){
+      y = y / Math.sqrt(3)
+    }
     SVG_TRANSFORM.translateY(this.node, y);
     SVG_TRANSFORM.translateX(this.node, x);
   }
