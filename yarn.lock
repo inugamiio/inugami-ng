@@ -3087,6 +3087,13 @@ inugami-icons@0.0.12:
   dependencies:
     tslib "^2.3.0"
 
+inugami-svg-assets@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/inugami-svg-assets/-/inugami-svg-assets-0.0.3.tgz#b88528309a84e7b144f8b5303288ac03338471ed"
+  integrity sha512-vGJxnK1B2mjDRTPHRYHL7X0fldTmJT9QaUz2n+5m65AYTAhJvvsy8EOLIbsu/F/e0/TalUllOW58LgP3/q+tBQ==
+  dependencies:
+    tslib "^2.3.0"
+
 ip-address@^10.0.1:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/ip-address/-/ip-address-10.1.0.tgz#d8dcffb34d0e02eb241427444a6e23f5b0595aa4"

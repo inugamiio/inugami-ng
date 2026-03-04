@@ -7,7 +7,7 @@ import {
   HostListener,
   input,
   model,
-  ModelSignal,
+  ModelSignal, signal,
   viewChild
 } from '@angular/core';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
@@ -48,11 +48,13 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     ].join(' ');
   })
   //---
-  defaultZoom: number = 50;
+  defaultSize: number = 50;
   zoom: number = 50;
-  previousMouseMove: MouseEvent | undefined = undefined;
+  previousMouseMove: Point = {x: 0, y: 0};
   value: ModelSignal<SvgLayerDTO[]> = model(<SvgLayerDTO[]>[]);
   position: Point = {x: 0, y: 0};
+  assetSelected = signal<SvgAssetElement | undefined>(undefined);
+  trackMouseMove = signal<boolean>(false);
   //--- SVG components
   height: number = 400;
   width: number = 600;
@@ -117,6 +119,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     if (this.zoom <= 0) {
       this.zoom = 0.001;
     }
+
     this.updateAfterZoom();
   }
 
@@ -124,53 +127,71 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   onMouseDown(event: MouseEvent) {
     if (event.button === 1) {
       event.preventDefault();
-      const startZoom = this.zoom;
-      const endZoom = this.defaultZoom;
-      const delta = endZoom - startZoom;
-
+      let startZoom = this.zoom;
+      let endZoom = this.defaultSize;
+      let delta = endZoom - startZoom;
       let currentX = 0;
       let currentY = 0;
       let x = 0;
       let y = 0;
 
-      if(this.parent && this.locator){
+      if (this.parent && this.locator) {
         const currentTransfoAttr = this.locator.getAttribute('transform');
-        const currentTransfo =SVG_TRANSFORM.extractTransformInformation(this.locator);
+        const currentTransfo = SVG_TRANSFORM.extractTransformInformation(this.locator);
         SVG_TRANSFORM.center(this.locator, this.parent, true, true);
-        const centerTransfo =SVG_TRANSFORM.extractTransformInformation(this.locator);
-        this.locator.setAttribute('transform',currentTransfoAttr!);
-        currentX =currentTransfo.x!;
-        currentY =currentTransfo.y!;
-        x = currentX-centerTransfo.x!;
-        y = currentY-centerTransfo.y!;
+        const centerTransfo = SVG_TRANSFORM.extractTransformInformation(this.locator);
+        this.locator.setAttribute('transform', currentTransfoAttr!);
+        currentX = currentTransfo.x!;
+        currentY = currentTransfo.y!;
+        x = centerTransfo.x! - currentX;
+        y = centerTransfo.y! - currentY;
+
+        startZoom = currentTransfo.scaleX!;
+        endZoom = centerTransfo.scaleX!;
+        delta = endZoom - startZoom;
       }
 
       SVG.ANIMATION.animate((progress: number) => {
         const newZoom = startZoom + (delta * progress);
-        this.zoom = Math.max(0.001, newZoom);
-        const newX = currentX+(x * progress);
-        const newY = currentY+(y * progress);
+        const newX = currentX + (x * progress);
+        const newY = currentY + (y * progress);
         if (this.locator) {
-          SVG_TRANSFORM.translateY(this.locator,newY);
-          SVG_TRANSFORM.translateX(this.locator,newX);
+          SVG_TRANSFORM.translateY(this.locator, newY);
+          SVG_TRANSFORM.translateX(this.locator, newX);
+          SVG_TRANSFORM.scale(this.locator, newZoom, newZoom);
         }
-
-        this.updateAfterZoom();
+        this.updateGridSize(this.defaultSize*(newZoom));
       }, {
         duration: 2000,
         timer: SVG.ANIMATION.TYPES.easeOutCubic,
         onDone: () => {
-          this.zoom = this.defaultZoom;
+          this.zoom = this.defaultSize;
           if (this.locator) {
-            this.position.x = 0;
-            this.position.y = 0;
-            if(this.parent){
+            if (this.parent) {
               SVG_TRANSFORM.center(this.locator, this.parent, true, true);
+              const doneTransfo = SVG_TRANSFORM.extractTransformInformation(this.locator);
+              this.position.x = doneTransfo.x!;
+              this.position.y = doneTransfo.y!;
             }
+            this.updateGridSize(this.zoom);
           }
-          this.updateAfterZoom();
         }
       });
+    }
+  }
+
+  private updateGridSize(zoom: number) {
+    const width = SVG_MATH.zoom(1, zoom);
+    const height = this.isometric() ? width / Math.sqrt(3) : width;
+
+    if (this.patternGroup) {
+      const currentZoom = width / this.defaultSize;
+      SVG_TRANSFORM.scale(this.patternGroup, currentZoom, currentZoom);
+
+      if (this.gridPattern) {
+        this.gridPattern.setAttribute('height', `${height}`);
+        this.gridPattern.setAttribute('width', `${width}`);
+      }
     }
   }
 
@@ -198,6 +219,8 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     const gridGrp = SVG_BUILDER.createGroup(container?.nativeElement);
     this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
     this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
+    container.nativeElement.onmousedown = (event: MouseEvent) => this.trackMouse(true, event);
+    container.nativeElement.onmouseup = (event: MouseEvent) => this.trackMouse(false, event);
     container.nativeElement.onmousemove = (event: MouseEvent) => this.moveViewport(event);
 
     if (this.defs) {
@@ -364,7 +387,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     const height = this.isometric() ? width / Math.sqrt(3) : width;
 
     if (this.patternGroup) {
-      const zoom = width / this.defaultZoom;
+      const zoom = width / this.defaultSize;
       SVG_TRANSFORM.scale(this.patternGroup, zoom, zoom);
       if (this.layers) {
         SVG_TRANSFORM.scale(this.layers, zoom, zoom);
@@ -383,39 +406,65 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   public resize(): void {
     if (this.locator && this.parent) {
       SVG_TRANSFORM.center(this.locator, this.parent, true, true);
+      const doneTransfo = SVG_TRANSFORM.extractTransformInformation(this.locator);
+      this.position.x = doneTransfo.x!;
+      this.position.y = doneTransfo.y!;
+    }
+  }
+
+  private trackMouse(track: boolean, event: MouseEvent) {
+    event.preventDefault();
+    this.trackMouseMove.set(track);
+    if (track) {
+      this.previousMouseMove = {
+        x: event.x,
+        y: event.y
+      };
+    } else {
+      this.previousMouseMove = {x: 0, y: 0};
     }
   }
 
   private moveViewport(event: MouseEvent) {
+    event.preventDefault();
     const container = this.container()?.nativeElement;
     if (!container) {
       return;
     }
 
-
-    if (event.ctrlKey) {
-
-      if (this.previousMouseMove) {
-        let mainContentSize = SVG.MATH.size(container);
-        console.log('moveViewport', event, mainContentSize)
-        let posX = this.previousMouseMove.x - event.x;
-        let posY = this.previousMouseMove.y - event.y;
-
-        this.position.x = this.position.x - posX;
-        this.position.y = this.position.y - posY;
-        if (this.locator) {
-          SVG.TRANSFORM.translateY(this.locator, this.position.y);
-          SVG.TRANSFORM.translateX(this.locator, this.position.x);
-        }
-        this.previousMouseMove = event;
-      } else {
-        this.previousMouseMove = event;
-      }
-
-
-    } else {
-      this.previousMouseMove = undefined;
+    const trackMouse = this.trackMouseMove();
+    if (!trackMouse) {
+      return;
     }
+    const assetSelected = this.assetSelected();
+
+    const currentMove: Point = {
+      x: event.x,
+      y: event.y
+    };
+
+    const delta: Point = {
+      x: this.previousMouseMove.x - currentMove.x,
+      y: this.previousMouseMove.y - currentMove.y
+    }
+
+    if (this.previousMouseMove) {
+
+    }
+
+
+    if (!assetSelected) {
+      this.position.x = this.position.x - delta.x;
+      this.position.y = this.position.y - delta.y;
+      if (this.locator) {
+        SVG.TRANSFORM.translateY(this.locator, this.position.y);
+        SVG.TRANSFORM.translateX(this.locator, this.position.x);
+      }
+    } else {
+      // mnage drag
+    }
+
+    this.previousMouseMove = currentMove;
   }
 
 
