@@ -31,6 +31,7 @@
         flex-direction: column;
         align-items: center;
         cursor: pointer;
+        width: 4rem;
         &:hover{
           color:var(--secondary);
           ::ng-deep{
