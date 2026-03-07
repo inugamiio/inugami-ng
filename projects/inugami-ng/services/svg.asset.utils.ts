@@ -2,7 +2,6 @@ import {Point, SvgAssetDTO, SvgAssetElement} from 'inugami-ng/models';
 import {SVG_ASSETS, SVG_BUILDER, SVG_TRANSFORM} from "./svg.utils";
 
 
-
 export class SvgAssetUtils {
 
   public static createAsset(asset: SvgAssetDTO,
@@ -46,6 +45,32 @@ class Asset implements SvgAssetElement {
   type: string;
   x: number;
   y: number;
+  onover: (event:MouseEvent,asset: SvgAssetElement) => void = (a) => {
+  };
+  onclick: (event: PointerEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  onmousedown: (event: MouseEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  onmousemove: (event: MouseEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  onmouseleave: (event: MouseEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondblclick: (event: MouseEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondrag: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondrop: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondragend: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondragstart: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondragleave: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondragover: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
+  ondragenter: (event: DragEvent, asset: SvgAssetElement) => void = (e, a) => {
+  };
 
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
@@ -70,9 +95,6 @@ class Asset implements SvgAssetElement {
     this.updatePosition();
   }
 
-  remove(): void {
-    throw new Error("Method not implemented.");
-  }
 
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -91,17 +113,6 @@ class Asset implements SvgAssetElement {
     this.updateRender(previousAssertSet, previousAssertName, previousType, previousState);
     this.updateStyleclass();
     this.updatePosition();
-  }
-
-  updateValue(value: SvgAssetDTO) {
-    this.assertSet = value.assertSet;
-    this.type = value.type ? value.type : DEFAULT;
-    this.state = value.state ? value.state : DEFAULT;
-    this.name = value.name;
-    this.title = value.title ? value.title : '';
-    this.size = value.size < 0 ? 1 : value.size;
-    this.x = value.x;
-    this.y = value.y;
   }
 
   private updateRender(previousAssertSet: string, previousAssertName: string, previousType: string, previousState: string) {
@@ -132,7 +143,22 @@ class Asset implements SvgAssetElement {
     if (!state) {
       return;
     }
+    const self = this;
     this.node.innerHTML = state.content;
+
+    this.node.onmouseenter = (event) => this.onover(event, self);
+    this.node.onclick = (event) => this.onclick(event, self);
+    this.node.onmousedown = (event) => this.onmousedown(event, self);
+    this.node.onmousemove = (event) => this.onmousemove(event, self);
+    this.node.onmouseleave = (event) => this.onmouseleave(event, self);
+    this.node.ondblclick = (event) => this.ondblclick(event, self);
+    this.node.ondrag = (event) => this.ondrag(event, self);
+    this.node.ondrop = (event) => this.ondrop(event, self);
+    this.node.ondragend = (event) => this.ondragend(event, self);
+    this.node.ondragstart = (event) => this.ondragstart(event, self);
+    this.node.ondragleave = (event) => this.ondragleave(event, self);
+    this.node.ondragover = (event) => this.ondragover(event, self);
+    this.node.ondragenter = (event) => this.ondragenter(event, self);
   }
 
   updateStyleclass() {
@@ -145,12 +171,41 @@ class Asset implements SvgAssetElement {
 
     let x = this.center.x + (this.x * this.scale);
     let y = this.center.y + (this.y * this.scale);
-    if(this.isometric){
+    if (this.isometric) {
       y = y / Math.sqrt(3)
     }
     SVG_TRANSFORM.translateY(this.node, y);
     SVG_TRANSFORM.translateX(this.node, x);
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  // EVENT
+  //--------------------------------------------------------------------------------------------------------------------
+
+  updateValue(value: SvgAssetDTO) {
+    this.assertSet = value.assertSet;
+    this.type = value.type ? value.type : DEFAULT;
+    this.state = value.state ? value.state : DEFAULT;
+    this.name = value.name;
+    this.title = value.title ? value.title : '';
+    this.size = value.size < 0 ? 1 : value.size;
+    this.x = value.x;
+    this.y = value.y;
+  }
+
+
+  //--------------------------------------------------------------------------------------------------------------------
+  // ACTIONS
+  //--------------------------------------------------------------------------------------------------------------------
+  remove(): void {
+
+  }
+
+  addStyleClass(style:string): void {
+    SVG_TRANSFORM.addClass(this.node, style);
+  }
+  removeStyleClass(style:string): void {
+    SVG_TRANSFORM.removeClass(this.node, style);
+  }
 
 }

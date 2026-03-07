@@ -18,5 +18,15 @@
       stroke-opacity: 1;
     }
   }
+  .hud{
+    .toolbar{
+      .inu-svg-asset{
+        &.over{
+          fill: var(--secondary);
+        }
+      }
+    }
+  }
+
 }
 

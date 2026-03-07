@@ -14,6 +14,7 @@ import {InuTemplateRegistryService} from 'inugami-ng/directives';
 import {SVG, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM, SvgAssetUtils} from 'inugami-ng/services';
 import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
+import {InuSvgIsometricHud} from './inu-svg-isometric-hud';
 
 
 @Component({
@@ -70,6 +71,8 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   gridPatternRect: SVGElement | null = null;
   layers: SVGElement | null = null;
   layersComponents: SvgLayerElement[] = [];
+  hud: InuSvgIsometricHud | undefined = undefined;
+
 
   //====================================================================================================================
   // INIT
@@ -160,7 +163,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
           SVG_TRANSFORM.translateX(this.locator, newX);
           SVG_TRANSFORM.scale(this.locator, newZoom, newZoom);
         }
-        this.updateGridSize(this.defaultSize*(newZoom));
+        this.updateGridSize(this.defaultSize * (newZoom));
       }, {
         duration: 2000,
         timer: SVG.ANIMATION.TYPES.easeOutCubic,
@@ -241,6 +244,14 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     if (this.graph) {
       this.renderLayers(this.graph);
     }
+    if (container?.nativeElement) {
+
+      this.hud = new InuSvgIsometricHud({
+        parent: container?.nativeElement,
+        height: this.height,
+        width: this.width
+      });
+    }
 
     this.updateValues();
   }
@@ -314,6 +325,10 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     }
     return result;
   }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  // HUD
+  //--------------------------------------------------------------------------------------------------------------------
 
 
   //====================================================================================================================
@@ -410,6 +425,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       this.position.x = doneTransfo.x!;
       this.position.y = doneTransfo.y!;
     }
+    this.hud?.updatePosition(this.height, this.width);
   }
 
   private trackMouse(track: boolean, event: MouseEvent) {
