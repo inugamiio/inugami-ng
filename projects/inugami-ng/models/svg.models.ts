@@ -53,8 +53,8 @@ export interface SvgLayerDTO {
 
 export interface SvgAssetDTO {
   name: string;
-  assertSet: string;
-  assertName: string;
+  assetSet: string;
+  assetName: string;
   x: number;
   y: number;
   size: number;
@@ -64,25 +64,22 @@ export interface SvgAssetDTO {
   styleClass?: string;
 }
 export interface SvgAssetDTOOptions {
-  name?: string,
-  type?: string,
-  state?: string,
-  asset?: SvgAssetDTO,
-  parent?: SVGElement | HTMLElement | null,
-  center?: Point,
-  position?: Point,
-  scale?: number,
-  size?: number,
-  isometric?: boolean,
+  parent: SVGElement | HTMLElement,
+  node: SVGElement ,
+  asset: SvgAssetDTO,
+  center: Point,
+  scale: number,
+  isometric: boolean,
   enableHitBox?: boolean,
-  title?: string,
   styleClass?: string
+  name?: string,
+  title?: string
 }
 
 export interface SvgAssetElement {
   name: string;
-  assertSet: string;
-  assertName: string;
+  assetSet: string;
+  assetName: string;
   x: number;
   y: number;
   size: number;

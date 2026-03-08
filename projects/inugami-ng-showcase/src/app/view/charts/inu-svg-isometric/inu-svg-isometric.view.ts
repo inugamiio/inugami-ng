@@ -42,8 +42,8 @@ export class InuSvgIsometricView {
         asserts: [
           {
             name: 'desktop_1',
-            assertSet: 'isometric',
-            assertName: 'desktop',
+            assetSet: 'isometric',
+            assetName: 'desktop',
             x: 0,
             y: 0,
             size: 2,
@@ -51,8 +51,8 @@ export class InuSvgIsometricView {
           },
           {
             name: 'desktop_2',
-            assertSet: 'isometric',
-            assertName: 'desktop',
+            assetSet: 'isometric',
+            assetName: 'desktop',
             type: '90',
             x: 200,
             y: 100,
@@ -61,8 +61,8 @@ export class InuSvgIsometricView {
           },
           {
             name: 'box_1',
-            assertSet: 'isometric',
-            assertName: 'box',
+            assetSet: 'isometric',
+            assetName: 'box',
             x: -100,
             y: -100,
             size: 2,
@@ -70,8 +70,8 @@ export class InuSvgIsometricView {
           },
           {
             name: 'router_1',
-            assertSet: 'isometric',
-            assertName: 'router',
+            assetSet: 'isometric',
+            assetName: 'router',
             type:'90',
             x: -300,
             y: 0,
@@ -81,8 +81,8 @@ export class InuSvgIsometricView {
           {
             name: 'router_2',
             title: 'router 2',
-            assertSet: 'isometric',
-            assertName: 'router',
+            assetSet: 'isometric',
+            assetName: 'router',
             type:'90',
             x: -200,
             y: 100,
@@ -91,8 +91,8 @@ export class InuSvgIsometricView {
           {
             name: 'router_3',
             title: 'router 3',
-            assertSet: 'isometric',
-            assertName: 'router',
+            assetSet: 'isometric',
+            assetName: 'router',
             type:'default',
             x: 50,
             y: 200,

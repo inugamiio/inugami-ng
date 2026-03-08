@@ -85,8 +85,8 @@ export class InuSvgIsometricHud {
         parent: result,
         name: button.name,
         asset:{
-          assertSet : ASSETS_TOOLS,
-          assertName : button.icon
+          assetSet : ASSETS_TOOLS,
+          assetName : button.icon
         },
         styleClass: POINTER
       });
@@ -166,7 +166,7 @@ export class InuSvgIsometricHud {
   //====================================================================================================================
   private createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
     console.log('createAsset')
-    const assetIcon = SVG_ASSETS.getAsset(option.asset?.assertSet!, option.asset?.assertName!);
+    const assetIcon = SVG_ASSETS.getAsset(option.asset?.assetSet!, option.asset?.assetName!);
     if (!assetIcon || !parent) {
       return undefined;
     }
@@ -175,8 +175,8 @@ export class InuSvgIsometricHud {
     return SvgAssetUtils.createAsset(
       {
         name: option.name!,
-        assertSet: option.asset?.assertSet!,
-        assertName: option.asset?.assertName!,
+        assetSet: option.asset?.assetSet!,
+        assetName: option.asset?.assetName!,
         x: 0,
         y: 0,
         size: this.scale

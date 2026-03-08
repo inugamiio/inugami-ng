@@ -1,4 +1,4 @@
-import {Point, Size, SvgAssetDTO, SvgAssetElement} from 'inugami-ng/models';
+import {Point, Size, SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement} from 'inugami-ng/models';
 import {SVG, SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from "./svg.utils";
 
 
@@ -7,7 +7,7 @@ export class SvgAssetUtils {
   public static createAsset(asset: SvgAssetDTO,
                             parent: SVGElement | HTMLElement | null,
                             center: Point,
-                            scall: number,
+                            scale: number,
                             isometric: boolean,
                             enableHitBox?: boolean): SvgAssetElement | undefined {
     if (!parent) {
@@ -18,8 +18,18 @@ export class SvgAssetUtils {
     if (!node) {
       return undefined;
     }
-    return new Asset(node, parent, asset, center, scall, isometric, enableHitBox);
+    //node, parent, asset, center, scall, isometric, enableHitBox
+    return new Asset({
+      parent:parent,
+      node:node,
+      asset:asset,
+      center:center,
+      scale:scale,
+      isometric:isometric,
+      enableHitBox:enableHitBox
+    });
   }
+
 }
 
 
@@ -37,8 +47,8 @@ class Asset implements SvgAssetElement {
   scale: number;
   isometric: boolean;
   enableHitBox: boolean;
-  assertSet: string;
-  assertName: string;
+  assetSet: string;
+  assetName: string;
   name: string;
   node: SVGElement;
   size: number;
@@ -78,27 +88,23 @@ class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
   //--------------------------------------------------------------------------------------------------------------------
-  constructor(node: SVGElement, parent: SVGElement | HTMLElement, asset: SvgAssetDTO, center: Point, scall: number,
-              isometric?: boolean,
-              enableHitBox?: boolean,
-              styleClass?: string
-  ) {
-    this.parent = parent;
-    this.node = node;
-    this.center = center;
-    this.scale = scall;
-    this.isometric = isometric == undefined ? false : isometric;
-    this.assertSet = asset?.assertSet!;
-    this.assertName = asset?.assertName!;
-    this.enableHitBox = enableHitBox == undefined ? false : enableHitBox!;
-    this.styleClass = styleClass!;
-    this.type = asset.type ? asset.type : DEFAULT;
-    this.state = asset.state ? asset.state : DEFAULT;
-    this.name = asset.name;
-    this.title = asset.title ? asset.title : '';
-    this.size = asset.size < 0 ? 1 : asset.size;
-    this.x = asset.x;
-    this.y = asset.y;
+  constructor(option: SvgAssetDTOOptions) {
+    this.parent = option.parent;
+    this.node = option.node;
+    this.center = option.center;
+    this.scale = option.scale;
+    this.isometric = option.isometric;
+    this.assetSet = option.asset.assetSet!;
+    this.assetName = option.asset.assetName!;
+    this.enableHitBox = option.enableHitBox == undefined ? false : option.enableHitBox!;
+    this.styleClass = option.styleClass!;
+    this.type = option.asset.type ? option.asset.type : DEFAULT;
+    this.state = option.asset.state ? option.asset.state : DEFAULT;
+    this.name = option.asset.name!;
+    this.title = option.title ? option.title : '';
+    this.size = option.asset.size == undefined ? 1 : option.asset.size < 0 ? 1 : option.asset.size;
+    this.x = option.asset.x;
+    this.y = option.asset.y;
     this.updateStyleclass();
     this.processUpdateRender();
     this.updatePosition();
@@ -109,8 +115,8 @@ class Asset implements SvgAssetElement {
   // CONSTRUCTOR
   //--------------------------------------------------------------------------------------------------------------------
   update(value: SvgAssetDTO, center: Point, scall: number, isometric: boolean): void {
-    const previousAssertSet = `${this.assertSet}`;
-    const previousAssertName = `${this.assertName}`;
+    const previousAssertSet = `${this.assetSet}`;
+    const previousAssertName = `${this.assetName}`;
     const previousType = `${this.type}`;
     const previousState = `${this.state}`;
     this.center = center;
@@ -124,7 +130,7 @@ class Asset implements SvgAssetElement {
   }
 
   private updateRender(previousAssertSet: string, previousAssertName: string, previousType: string, previousState: string) {
-    if (previousAssertSet == this.assertSet && previousType == this.type && previousState == this.state) {
+    if (previousAssertSet == this.assetSet && previousType == this.type && previousState == this.state) {
       return;
     }
     this.processUpdateRender();
@@ -132,7 +138,7 @@ class Asset implements SvgAssetElement {
 
   private processUpdateRender() {
     this.node.replaceChildren();
-    let assetContent = SVG_ASSETS.getAsset(this.assertSet, this.assertName);
+    let assetContent = SVG_ASSETS.getAsset(this.assetSet, this.assetName);
     if (!assetContent) {
       return;
     }
@@ -183,7 +189,7 @@ class Asset implements SvgAssetElement {
   updateStyleclass() {
     const styleclass = [
       'inu-svg-asset',
-      this.assertSet,
+      this.assetSet,
       'type-' + this.type,
       'type-state' + this.state,
       this.name,
@@ -209,7 +215,7 @@ class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
 
   updateValue(value: SvgAssetDTO) {
-    this.assertSet = value.assertSet;
+    this.assetSet = value.assetSet;
     this.type = value.type ? value.type : DEFAULT;
     this.state = value.state ? value.state : DEFAULT;
     this.name = value.name;
