@@ -28,22 +28,24 @@ class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // ATTRIBUTES
   //--------------------------------------------------------------------------------------------------------------------
-  parent: SVGElement | HTMLElement;
-  center: Point;
-  scale: number;
-  isometric: boolean;
-  enableHitBox: boolean;
-  assetSet: string;
   assetName: string;
+  assetSet: string;
+  center: Point;
+  drag: boolean = false;
+  enableHitBox: boolean;
+  isometric: boolean;
   name: string;
   node: SVGElement;
+  parent: SVGElement | HTMLElement;
+  scale: number;
   size: number;
   state: string;
+  styleClass: string;
   title: string;
   type: string;
-  styleClass: string;
   x: number;
   y: number;
+
   onover: (event: MouseEvent, asset: SvgAssetElement) => void = (a) => {
   };
   onclick: (event: PointerEvent, asset: SvgAssetElement) => void = (e, a) => {
@@ -79,7 +81,7 @@ class Asset implements SvgAssetElement {
     this.node = option.node!;
     this.center = option.center ? option.center : {x: 0, y: 0};
     this.scale = option.scale;
-    this.isometric = option.isometric==undefined?false:option.isometric;
+    this.isometric = option.isometric == undefined ? false : option.isometric;
     this.assetSet = option.asset.assetSet!;
     this.assetName = option.asset.assetName!;
     this.enableHitBox = option.enableHitBox == undefined ? false : option.enableHitBox!;
@@ -159,15 +161,37 @@ class Asset implements SvgAssetElement {
 
     this.node.onmouseenter = (event) => this.onover(event, self);
     this.node.onclick = (event) => this.onclick(event, self);
-    this.node.onmousedown = (event) => this.onmousedown(event, self);
+    this.node.onmousedown = (event) => {
+      console.log('drag')
+      this.drag = true;
+      this.onmousedown(event, self);
+    }
+    this.node.onmouseup = (event: MouseEvent) => {
+      this.drag = false;
+    }
     this.node.onmousemove = (event) => this.onmousemove(event, self);
     this.node.onmouseleave = (event) => this.onmouseleave(event, self);
     this.node.ondblclick = (event) => this.ondblclick(event, self);
-    this.node.ondrag = (event) => this.ondrag(event, self);
+    this.node.ondrag = (event) => {
+      console.log('drag')
+      this.drag = true;
+      this.ondrag(event, self);
+    };
     this.node.ondrop = (event) => this.ondrop(event, self);
-    this.node.ondragend = (event) => this.ondragend(event, self);
-    this.node.ondragstart = (event) => this.ondragstart(event, self);
-    this.node.ondragleave = (event) => this.ondragleave(event, self);
+    this.node.ondragend = (event) => {
+      this.drag = false;
+      this.ondragend(event, self);
+    }
+    this.node.ondragstart = (event) => {
+      console.log('drag start')
+      this.drag = true;
+      this.ondragstart(event, self);
+    };
+    this.node.ondragleave = (event) => {
+      console.log('drag stop')
+      this.drag = false;
+      this.ondragleave(event, self);
+    };
     this.node.ondragover = (event) => this.ondragover(event, self);
     this.node.ondragenter = (event) => this.ondragenter(event, self);
   }
@@ -187,13 +211,14 @@ class Asset implements SvgAssetElement {
   private updatePosition() {
     SVG_TRANSFORM.scale(this.node, this.size * this.scale, this.size * this.scale)
 
-    let x = this.center.x + (this.x * this.scale);
-    let y = this.center.y + (this.y * this.scale);
+    this.x = this.center.x + (this.x * this.scale);
+    this.y = this.center.y + (this.y * this.scale);
     if (this.isometric) {
-      y = y / Math.sqrt(3)
+      this.y = this.y / Math.sqrt(3);
     }
-    SVG_TRANSFORM.translateY(this.node, y);
-    SVG_TRANSFORM.translateX(this.node, x);
+
+    SVG_TRANSFORM.translateY(this.node, this.y);
+    SVG_TRANSFORM.translateX(this.node, this.x);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -227,13 +252,27 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.removeClass(this.node, style);
   }
 
-  getComponentSize(): Size {
-    return SVG.MATH.size(this.node);
+  moveDrag(position: Point, zoom:number): void {
+    this.x = this.x-(position.x/zoom);
+    this.y = this.y-(position.y/zoom);
+    this.move({x: this.x, y: this.y});
   }
 
-  move(point: Point): void {
-    SVG_TRANSFORM.translateX(this.node, point.x);
-    SVG_TRANSFORM.translateY(this.node, point.y);
+  move(position: Point): void {
+    SVG_TRANSFORM.translateX(this.node, position.x);
+    SVG_TRANSFORM.translateY(this.node, position.y);
+
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  // GETTERS
+  //--------------------------------------------------------------------------------------------------------------------
+  isDrag(): boolean {
+    return this.drag;
+  }
+
+  getComponentSize(): Size {
+    return SVG.MATH.size(this.node);
   }
 
 }

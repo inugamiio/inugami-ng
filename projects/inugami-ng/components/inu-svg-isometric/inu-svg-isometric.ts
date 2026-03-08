@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
 import {SVG, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM, SvgAssetUtils} from 'inugami-ng/services';
-import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement} from 'inugami-ng/models';
+import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement, TransformationInfo} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {InuSvgIsometricHud} from './inu-svg-isometric-hud';
 
@@ -60,6 +60,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   height: number = 400;
   width: number = 600;
   scale: number = 1;
+  ratio: number = 1;
   center: Point = {x: this.width / 2, y: this.height / 2};
   parent: HTMLElement | null = null;
   locator: SVGElement | null = null;
@@ -268,6 +269,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
+
     if (event.button === 1) {
       event.preventDefault();
       let startZoom = this.zoom;
@@ -293,7 +295,6 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         endZoom = centerTransfo.scaleX!;
         delta = endZoom - startZoom;
       }
-
       SVG.ANIMATION.animate((progress: number) => {
         const newZoom = startZoom + (delta * progress);
         const newX = currentX + (x * progress);
@@ -322,6 +323,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       });
     }
   }
+
 
   private updateGridSize(zoom: number) {
     const width = SVG_MATH.zoom(1, zoom);
@@ -387,23 +389,42 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
     copyStyles(container, clone);
 
+
+    const realLocator: SVGElement | null = container.querySelector('.locator') as SVGElement;
     const locator = clone.querySelector('.locator');
+    let positionGrp: SVGElement | null | undefined = undefined;
+
     if (locator && clone) {
       const svgLocator = locator as SVGElement;
       clone.replaceChildren();
-      clone.appendChild(svgLocator);
+      positionGrp = SVG_BUILDER.createGroup(clone as HTMLElement, {styleClass: 'position'});
+      if (positionGrp) {
+        positionGrp.appendChild(svgLocator);
+      }
     }
 
     const padding = 20;
     const size = SVG_MATH.size(container);
     const viewBoxValue = `${size.x - padding} ${size.y - padding} ${size.width + padding * 2} ${size.height + padding * 2}`;
-
     const htmlCloneNode = clone as HTMLElement;
     htmlCloneNode.setAttribute('viewBox', viewBoxValue);
     htmlCloneNode.setAttribute('xmlns:inkscape', 'http://www.inkscape.org/namespaces/inkscape');
     htmlCloneNode.setAttribute('xmlns:sodipodi', 'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd');
-    htmlCloneNode.style.width = '100%';
-    htmlCloneNode.style.height = 'auto';
+
+    htmlCloneNode.style.width = `${size.width}px`;
+    htmlCloneNode.style.height = `${size.height}px`;
+
+    if (positionGrp && clone && realLocator) {
+      const locatorSize = SVG.MATH.size(realLocator);
+      const posGrp = SVG.MATH.size(positionGrp);
+      const diffSizeX = size.width - locatorSize.width;
+      const newPosX = (-posGrp.x) + (diffSizeX / 2);
+      const diffSizeY = size.height - locatorSize.height;
+      const newPosY = (-posGrp.y) + (diffSizeY / 2);
+
+      SVG.TRANSFORM.translateX(positionGrp, newPosX)
+      SVG.TRANSFORM.translateY(positionGrp, newPosY);
+    }
 
     const svgData = new XMLSerializer().serializeToString(clone);
     const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
@@ -508,6 +529,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         this.gridPattern.setAttribute('width', `${width}`);
       }
     }
+    this.computeRatio();
   }
 
 
@@ -516,6 +538,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   //====================================================================================================================
   public resize(): void {
     if (this.locator && this.parent) {
+      this.computeRatio();
       SVG_TRANSFORM.center(this.locator, this.parent, true, true);
       const doneTransfo = SVG_TRANSFORM.extractTransformInformation(this.locator);
       this.position.x = doneTransfo.x!;
@@ -524,6 +547,14 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     this.hud?.updatePosition(this.height, this.width);
   }
 
+  private computeRatio(){
+    if(!this.parent || !this.locator){
+      return;
+    }
+    const parentSize = SVG_MATH.size(this.parent);
+    const locatorSize = SVG_MATH.size(this.locator);
+    this.ratio = parentSize.width / locatorSize.width;
+  }
   private trackMouse(track: boolean, event: MouseEvent) {
     event.preventDefault();
     this.trackMouseMove.set(track);
@@ -538,7 +569,6 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   }
 
   private moveViewport(event: MouseEvent) {
-    event.preventDefault();
     const container = this.container()?.nativeElement;
     if (!container) {
       return;
@@ -548,8 +578,6 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     if (!trackMouse) {
       return;
     }
-    const assetSelected = this.assetSelected();
-
     const currentMove: Point = {
       x: event.x,
       y: event.y
@@ -560,12 +588,11 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       y: this.previousMouseMove.y - currentMove.y
     }
 
-    if (this.previousMouseMove) {
 
-    }
+    const asset = this.searchDragComponent();
 
-
-    if (!assetSelected) {
+    if (!asset) {
+      event.preventDefault();
       this.position.x = this.position.x - delta.x;
       this.position.y = this.position.y - delta.y;
       if (this.locator) {
@@ -573,10 +600,23 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         SVG.TRANSFORM.translateX(this.locator, this.position.x);
       }
     } else {
-      // mnage drag
+      asset.moveDrag({
+        x: delta.x,
+        y: delta.y
+      }, this.ratio);
     }
 
     this.previousMouseMove = currentMove;
+  }
+
+  private searchDragComponent(): SvgAssetElement | undefined {
+    for (let layer of this.layersComponents) {
+      const assert = layer.assets.find(a => a.isDrag());
+      if (assert) {
+        return assert;
+      }
+    }
+    return undefined;
   }
 
 

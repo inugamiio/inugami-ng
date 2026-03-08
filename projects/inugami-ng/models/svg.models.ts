@@ -92,14 +92,12 @@ export interface SvgAssetElement {
   update: (value: SvgAssetDTO, center: Point, scale: number, isometric: boolean) => void;
 
   addStyleClass(style: string): void;
-
   removeStyleClass(style: string): void;
-
   remove(): void;
-
-  getComponentSize(): Size;
-
+  moveDrag(point: Point, zoom:number): void;
   move(point: Point): void;
+  getComponentSize(): Size;
+  isDrag(): boolean;
 
   onover: (event: MouseEvent, asset: SvgAssetElement) => void;
   onclick: (event: PointerEvent, asset: SvgAssetElement) => void;
@@ -114,6 +112,8 @@ export interface SvgAssetElement {
   ondragleave: (event: DragEvent, asset: SvgAssetElement) => void;
   ondragover: (event: DragEvent, asset: SvgAssetElement) => void;
   ondragenter: (event: DragEvent, asset: SvgAssetElement) => void;
+
+
 }
 
 export interface SvgLayerElement {
