@@ -4,34 +4,7 @@ import {SVG, SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from "./svg.utils
 
 export class SvgAssetUtils {
 
-  public static createAsset(asset: SvgAssetDTO,
-                            parent: SVGElement | HTMLElement | null,
-                            center: Point,
-                            scale: number,
-                            isometric: boolean,
-                            enableHitBox?: boolean): SvgAssetElement | undefined {
-    if (!parent) {
-      return undefined;
-    }
-
-    const node = SVG_BUILDER.createGroup(parent, {});
-    if (!node) {
-      return undefined;
-    }
-
-
-    return new Asset({
-      parent: parent,
-      node: node,
-      asset: asset,
-      center: center,
-      scale: scale,
-      isometric: isometric,
-      enableHitBox: enableHitBox
-    });
-  }
-
-  public static createAssetOpts(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
+  public static createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
     if (!option.parent) {
       return undefined;
     }

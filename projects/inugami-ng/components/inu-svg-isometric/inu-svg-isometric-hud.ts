@@ -165,12 +165,11 @@ export class InuSvgIsometricHud {
   // TOOLS
   //====================================================================================================================
   private createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
-    console.log('createAsset')
     const assetIcon = SVG_ASSETS.getAsset(option.asset?.assetSet!, option.asset?.assetName!);
     if (!assetIcon || !parent) {
       return undefined;
     }
-    return SvgAssetUtils.createAssetOpts({
+    return SvgAssetUtils.createAsset({
       parent:option.parent!,
       asset: {
         name: option.name!,

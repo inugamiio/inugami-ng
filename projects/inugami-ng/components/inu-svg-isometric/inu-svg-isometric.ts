@@ -389,7 +389,15 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     if (existingAsset) {
       existingAsset.update(asset, this.center, this.scale, this.isometric());
     } else {
-      const newAsset = SvgAssetUtils.createAsset(asset, layer.node, this.center, this.scale, this.isometric());
+      const newAsset = SvgAssetUtils.createAsset({
+        parent:layer.node,
+        asset: asset,
+        scale : this.scale,
+        center:this.center,
+        isometric:this.isometric(),
+        enableHitBox:false
+      });
+
       if (newAsset) {
         layer.assets.push(newAsset);
       }
