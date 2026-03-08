@@ -5,6 +5,9 @@ export interface InuSvgIsometricHudOption {
   parent: HTMLElement;
   height: number;
   width: number;
+  onZoomIn: (event: MouseEvent) => void;
+  onZoomOut: (event: MouseEvent) => void;
+  onDownload: () => void;
 }
 
 const POINTER = 'cursor-pointer';
@@ -20,6 +23,7 @@ export class InuSvgIsometricHud {
   width!: number;
   scale: number = 0.7;
   toolbarMargin = 1.25;
+  option!: InuSvgIsometricHudOption;
   //
   hud: SVGElement | null = null;
   hudToolbar: SVGElement | null = null;
@@ -36,6 +40,7 @@ export class InuSvgIsometricHud {
     this.parent = option.parent;
     this.height = option.height;
     this.width = option.width;
+    this.option = option;
     this.render();
   }
 
@@ -43,7 +48,6 @@ export class InuSvgIsometricHud {
   // RENDERING
   //====================================================================================================================
   private render() {
-    console.log('hud render')
     this.hud = SVG_BUILDER.createGroup(this.parent, {styleClass: `hud`});
     this.hudToolbar = this.renderHudToolbar(this.hud);
     this.hudInspector = this.renderHudInspector(this.hud);
@@ -65,7 +69,8 @@ export class InuSvgIsometricHud {
         name: 'download',
         icon: 'download',
         onover: (event, node) => this.onOverAsset(node),
-        onmouseleave: (event, node) => this.onLeaveAsset(node)
+        onmouseleave: (event, node) => this.onLeaveAsset(node),
+        onclick: (event) => this.option.onDownload()
       },
       {
         name: 'zoom-div',
@@ -74,9 +79,17 @@ export class InuSvgIsometricHud {
       {
         name: 'zoom-plus',
         icon: 'zoom',
-        type: 'default',
         onover: (event, node) => this.onOverAsset(node),
-        onmouseleave: (event, node) => this.onLeaveAsset(node)
+        onmouseleave: (event, node) => this.onLeaveAsset(node),
+        onclick: (event) => this.option.onZoomIn(event)
+      },
+      {
+        name: 'zoom-min',
+        icon: 'zoom',
+        type: 'min',
+        onover: (event, node) => this.onOverAsset(node),
+        onmouseleave: (event, node) => this.onLeaveAsset(node),
+        onclick: (event) => this.option.onZoomOut(event)
       },
     ];
 
@@ -86,7 +99,9 @@ export class InuSvgIsometricHud {
         name: button.name,
         asset: {
           assetSet: ASSETS_TOOLS,
-          assetName: button.icon
+          assetName: button.icon,
+          type: button.type ? button.type : 'default',
+          state: button.state ? button.state : 'default'
         },
         styleClass: POINTER
       });
@@ -165,23 +180,23 @@ export class InuSvgIsometricHud {
   // TOOLS
   //====================================================================================================================
   private createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
-    const assetIcon = SVG_ASSETS.getAsset(option.asset?.assetSet!, option.asset?.assetName!);
+    const assetIcon = SVG_ASSETS.getAsset(option.asset.assetSet!, option.asset.assetName!);
     if (!assetIcon || !parent) {
       return undefined;
     }
+
+    const asset = option.asset;
+    asset.x = 0;
+    asset.y = 0;
+    asset.size = this.scale;
+    asset.name = option.name!;
+
     return SvgAssetUtils.createAsset({
-      parent:option.parent!,
-      asset: {
-        name: option.name!,
-        assetSet: option.asset?.assetSet!,
-        assetName: option.asset?.assetName!,
-        x: 0,
-        y: 0,
-        size: this.scale
-      },
-      scale : this.scale,
-      isometric:false,
-      enableHitBox:true
+      parent: option.parent!,
+      asset: asset,
+      scale: this.scale,
+      isometric: false,
+      enableHitBox: true
     });
   }
 

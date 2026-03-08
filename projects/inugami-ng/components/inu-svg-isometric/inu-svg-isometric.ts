@@ -94,6 +94,146 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     }
   }
 
+
+  //====================================================================================================================
+  // RENDERING
+  //====================================================================================================================
+  private resolveParentSize(component: ElementRef<HTMLElement>, container: ElementRef<HTMLElement>) {
+    if (component?.nativeElement && component?.nativeElement.parentNode && component?.nativeElement.parentNode.parentNode) {
+      this.parent = component?.nativeElement.parentNode.parentNode as HTMLElement;
+    }
+
+    if (this.parent) {
+      let parentSize = SVG_MATH.size(this.parent);
+      this.height = parentSize.height;
+      this.width = parentSize.width;
+    }
+
+    this.center = {x: this.width / 2, y: this.height / 2};
+    container?.nativeElement.setAttribute('style', `display: block; height:${this.height}px;width:${this.width}px`);
+  }
+
+  private initializeLayout(container: ElementRef<HTMLElement>) {
+
+    this.defs = SVG_BUILDER.createDefs(container?.nativeElement);
+    const gridGrp = SVG_BUILDER.createGroup(container?.nativeElement);
+    this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
+    this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
+    container.nativeElement.onmousedown = (event: MouseEvent) => this.trackMouse(true, event);
+    container.nativeElement.onmouseup = (event: MouseEvent) => this.trackMouse(false, event);
+    container.nativeElement.onmousemove = (event: MouseEvent) => this.moveViewport(event);
+
+    if (this.defs) {
+      this.createGridDefs(this.defs);
+    }
+    const filter = SVG_BUILDER.createFilter(this.defs, 'shadow', {style: 'color-interpolation-filters: sRGB;'});
+    const gaussian = SVG_BUILDER.createNode('feGaussianBlur', filter);
+    if (gaussian) {
+      gaussian.setAttribute('stdDeviation', '1');
+    }
+
+    if (gridGrp) {
+      this.renderGrid(gridGrp);
+    }
+    if (this.canvas) {
+      this.graph = SVG_BUILDER.createGroup(this.canvas, {styleClass: 'graph'});
+    }
+    if (this.graph) {
+      this.renderLayers(this.graph);
+    }
+    if (container?.nativeElement) {
+
+      this.hud = new InuSvgIsometricHud({
+        parent: container?.nativeElement,
+        height: this.height,
+        width: this.width,
+        //
+        onZoomIn: (e) => this.onZoomIn(e),
+        onZoomOut: (e) => this.onZoomOut(e),
+        onDownload: () => this.download()
+      });
+    }
+
+    this.updateValues();
+  }
+
+  private renderLayers(graph: SVGElement) {
+    this.layers = SVG_BUILDER.createGroup(this.graph, {styleClass: 'layers'});
+  }
+
+  private createLayer(name: string): SvgLayerElement | undefined {
+    if (this.layers) {
+      const layer = SVG_BUILDER.createGroup(this.layers, {styleClass: `layer ${name}`});
+      if (layer) {
+        const result = <SvgLayerElement>{
+          name: name,
+          node: layer,
+          assets: []
+        };
+        this.layersComponents.push(result);
+        return result;
+      }
+    }
+    return undefined;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  // GRID
+  //--------------------------------------------------------------------------------------------------------------------
+  private createGridDefs(defs: SVGElement) {
+    this.gridPattern = SVG_BUILDER.createDefsPattern(defs,
+      'gridBackground',
+      {
+        x: 0,
+        y: 0,
+        height: SVG_MATH.zoom(1, this.zoom),
+        width: SVG_MATH.zoom(1, this.zoom),
+        patternUnits: "userSpaceOnUse"
+      });
+
+    this.patternGroup = SVG_BUILDER.createGroup(this.gridPattern, {styleClass: 'inu-svg-isometric-grid-background'});
+    if (this.patternGroup) {
+      const isometric = this.isometric();
+      if (isometric) {
+
+        SVG_BUILDER.createCurve(this.patternGroup, 'M 0,14.4337 L 25,0 L 50,14.4337 L 25,28.8675 Z');
+      } else {
+        this.gridPatternRect = SVG_BUILDER.createRect(this.patternGroup, {
+          height: SVG_MATH.zoom(1, this.zoom),
+          width: SVG_MATH.zoom(1, this.zoom)
+        });
+      }
+
+    }
+
+  }
+
+  private renderGrid(graph: SVGElement) {
+    const gridGroup = SVG_BUILDER.createGroup(graph, {styleClass: 'inu-svg-isometric-grid'});
+    if (gridGroup) {
+      this.renderBackground(gridGroup);
+    }
+  }
+
+  private renderBackground(graph: SVGElement): SVGElement | null {
+    const result = SVG_BUILDER.createRect(graph, {
+      height: this.height,
+      width: this.width,
+      styleClass: 'inu-svg-isometric-border'
+    });
+    if (result) {
+      result.setAttribute('fill', 'url(#gridBackground)');
+    }
+    return result;
+  }
+
+
+  //====================================================================================================================
+  // EVENTS
+  //====================================================================================================================
+  //--------------------------------------------------------------------------------------------------------------------
+  // ZOOM
+  //--------------------------------------------------------------------------------------------------------------------
   @HostListener('window:resize')
   onResize() {
     const component = this.component();
@@ -198,138 +338,85 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     }
   }
 
-  //====================================================================================================================
-  // RENDERING
-  //====================================================================================================================
-  private resolveParentSize(component: ElementRef<HTMLElement>, container: ElementRef<HTMLElement>) {
-    if (component?.nativeElement && component?.nativeElement.parentNode && component?.nativeElement.parentNode.parentNode) {
-      this.parent = component?.nativeElement.parentNode.parentNode as HTMLElement;
-    }
-
-    if (this.parent) {
-      let parentSize = SVG_MATH.size(this.parent);
-      this.height = parentSize.height;
-      this.width = parentSize.width;
-    }
-
-    this.center = {x: this.width / 2, y: this.height / 2};
-    container?.nativeElement.setAttribute('style', `display: block; height:${this.height}px;width:${this.width}px`);
+  private onZoomIn(event: MouseEvent) {
+    this.zoom = this.zoom + 1;
+    this.updateAfterZoom();
   }
 
-  private initializeLayout(container: ElementRef<HTMLElement>) {
-
-    this.defs = SVG_BUILDER.createDefs(container?.nativeElement);
-    const gridGrp = SVG_BUILDER.createGroup(container?.nativeElement);
-    this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
-    this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
-    container.nativeElement.onmousedown = (event: MouseEvent) => this.trackMouse(true, event);
-    container.nativeElement.onmouseup = (event: MouseEvent) => this.trackMouse(false, event);
-    container.nativeElement.onmousemove = (event: MouseEvent) => this.moveViewport(event);
-
-    if (this.defs) {
-      this.createGridDefs(this.defs);
+  private onZoomOut(event: MouseEvent) {
+    this.zoom = this.zoom - 1;
+    if (this.zoom <= 0) {
+      this.zoom = 0.001;
     }
-    const filter = SVG_BUILDER.createFilter(this.defs, 'shadow', {style: 'color-interpolation-filters: sRGB;'});
-    const gaussian = SVG_BUILDER.createNode('feGaussianBlur', filter);
-    if (gaussian) {
-      gaussian.setAttribute('stdDeviation', '1');
-    }
-
-    if (gridGrp) {
-      this.renderGrid(gridGrp);
-    }
-    if (this.canvas) {
-      this.graph = SVG_BUILDER.createGroup(this.canvas, {styleClass: 'graph'});
-    }
-    if (this.graph) {
-      this.renderLayers(this.graph);
-    }
-    if (container?.nativeElement) {
-
-      this.hud = new InuSvgIsometricHud({
-        parent: container?.nativeElement,
-        height: this.height,
-        width: this.width
-      });
-    }
-
-    this.updateValues();
-  }
-
-  private renderLayers(graph: SVGElement) {
-    this.layers = SVG_BUILDER.createGroup(this.graph, {styleClass: 'layers'});
-  }
-
-  private createLayer(name: string): SvgLayerElement | undefined {
-    if (this.layers) {
-      const layer = SVG_BUILDER.createGroup(this.layers, {styleClass: `layer ${name}`});
-      if (layer) {
-        const result = <SvgLayerElement>{
-          name: name,
-          node: layer,
-          assets: []
-        };
-        this.layersComponents.push(result);
-        return result;
-      }
-    }
-    return undefined;
+    this.updateAfterZoom();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
-  // GRID
+  // DOWNALOD
   //--------------------------------------------------------------------------------------------------------------------
-  private createGridDefs(defs: SVGElement) {
-    this.gridPattern = SVG_BUILDER.createDefsPattern(defs,
-      'gridBackground',
-      {
-        x: 0,
-        y: 0,
-        height: SVG_MATH.zoom(1, this.zoom),
-        width: SVG_MATH.zoom(1, this.zoom),
-        patternUnits: "userSpaceOnUse"
+  private download() {
+    console.log('download')
+    const container = this.container()?.nativeElement;
+    if (!container) {
+      return;
+    }
+
+    const clone = container.cloneNode(true) as Element;
+
+    const copyStyles = (source: any, target: any) => {
+      const computed = window.getComputedStyle(source);
+      const svgProps = [
+        "fill", "stroke", "stroke-width", "opacity", "display",
+        "font-family", "font-size", "font-weight", "text-anchor",
+        "transform", "filter", "stop-color", "stop-opacity"
+      ];
+
+      svgProps.forEach(prop => {
+        target.style[prop] = computed.getPropertyValue(prop);
       });
 
-    this.patternGroup = SVG_BUILDER.createGroup(this.gridPattern, {styleClass: 'inu-svg-isometric-grid-background'});
-    if (this.patternGroup) {
-      const isometric = this.isometric();
-      if (isometric) {
-
-        SVG_BUILDER.createCurve(this.patternGroup, 'M 0,14.4337 L 25,0 L 50,14.4337 L 25,28.8675 Z');
-      } else {
-        this.gridPatternRect = SVG_BUILDER.createRect(this.patternGroup, {
-          height: SVG_MATH.zoom(1, this.zoom),
-          width: SVG_MATH.zoom(1, this.zoom)
-        });
+      for (let i = 0; i < source.children.length; i++) {
+        const currentStyleClass = source.children[i].getAttribute('class');
+        if (currentStyleClass == 'inu-svg-isometric-grid' || currentStyleClass == 'hud') {
+          target.children[i].replaceChildren();
+          continue;
+        }
+        copyStyles(source.children[i], target.children[i]);
       }
+    };
 
+    copyStyles(container, clone);
+
+    const locator = clone.querySelector('.locator');
+    if (locator && clone) {
+      const svgLocator = locator as SVGElement;
+      clone.replaceChildren();
+      clone.appendChild(svgLocator);
     }
 
+    const padding = 20;
+    const size = SVG_MATH.size(container);
+    const viewBoxValue = `${size.x - padding} ${size.y - padding} ${size.width + padding * 2} ${size.height + padding * 2}`;
+
+    const htmlCloneNode = clone as HTMLElement;
+    htmlCloneNode.setAttribute('viewBox', viewBoxValue);
+    htmlCloneNode.setAttribute('xmlns:inkscape', 'http://www.inkscape.org/namespaces/inkscape');
+    htmlCloneNode.setAttribute('xmlns:sodipodi', 'http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd');
+    htmlCloneNode.style.width = '100%';
+    htmlCloneNode.style.height = 'auto';
+
+    const svgData = new XMLSerializer().serializeToString(clone);
+    const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = 'graph.svg';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(svgUrl);
   }
-
-  private renderGrid(graph: SVGElement) {
-    const gridGroup = SVG_BUILDER.createGroup(graph, {styleClass: 'inu-svg-isometric-grid'});
-    if (gridGroup) {
-      this.renderBackground(gridGroup);
-    }
-  }
-
-  private renderBackground(graph: SVGElement): SVGElement | null {
-    const result = SVG_BUILDER.createRect(graph, {
-      height: this.height,
-      width: this.width,
-      styleClass: 'inu-svg-isometric-border'
-    });
-    if (result) {
-      result.setAttribute('fill', 'url(#gridBackground)');
-    }
-    return result;
-  }
-
-  //--------------------------------------------------------------------------------------------------------------------
-  // HUD
-  //--------------------------------------------------------------------------------------------------------------------
-
 
   //====================================================================================================================
   // UPDATE VALUES
@@ -390,12 +477,12 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       existingAsset.update(asset, this.center, this.scale, this.isometric());
     } else {
       const newAsset = SvgAssetUtils.createAsset({
-        parent:layer.node,
+        parent: layer.node,
         asset: asset,
-        scale : this.scale,
-        center:this.center,
-        isometric:this.isometric(),
-        enableHitBox:false
+        scale: this.scale,
+        center: this.center,
+        isometric: this.isometric(),
+        enableHitBox: false
       });
 
       if (newAsset) {
@@ -422,6 +509,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       }
     }
   }
+
 
   //====================================================================================================================
   // TOOLS
