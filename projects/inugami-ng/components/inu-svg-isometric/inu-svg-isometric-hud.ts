@@ -1,11 +1,14 @@
 import {SVG_ASSETS, SVG_BUILDER, SvgAssetUtils} from 'inugami-ng/services';
-import {SvgAssetDTO, SvgAssetElement} from 'inugami-ng/models';
+import {SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement, SvgButton} from 'inugami-ng/models';
 
 export interface InuSvgIsometricHudOption {
   parent: HTMLElement;
   height: number;
   width: number;
 }
+
+const POINTER = 'cursor-pointer';
+const ASSETS_TOOLS = 'tools';
 
 export class InuSvgIsometricHud {
 
@@ -15,11 +18,12 @@ export class InuSvgIsometricHud {
   parent!: HTMLElement;
   height!: number;
   width!: number;
-  scale:number=0.7;
+  scale: number = 0.7;
+  toolbarMargin = 1.25;
   //
   hud: SVGElement | null = null;
   hudToolbar: SVGElement | null = null;
-  hudToolbarAssets: SvgAssetElement[]= [];
+  hudToolbarAssets: SvgAssetElement[] = [];
   hudInspector: SVGElement | null = null;
   hudSettings: SVGElement | null = null;
   hudNavigation: SVGElement | null = null;
@@ -40,7 +44,7 @@ export class InuSvgIsometricHud {
   //====================================================================================================================
   private render() {
     console.log('hud render')
-    this.hud = SVG_BUILDER.createGroup(this.parent , {styleClass: `hud`});
+    this.hud = SVG_BUILDER.createGroup(this.parent, {styleClass: `hud`});
     this.hudToolbar = this.renderHudToolbar(this.hud);
     this.hudInspector = this.renderHudInspector(this.hud);
     this.hudSettings = this.renderHudSettings(this.hud);
@@ -50,12 +54,60 @@ export class InuSvgIsometricHud {
   private renderHudToolbar(parent: SVGElement | null) {
     const result = SVG_BUILDER.createGroup(this.hud, {styleClass: `toolbar`});
 
+    const buttons: SvgButton[] = [
+      {
+        name: 'add-asset',
+        icon: 'category',
+        onover: (event, node) => this.onOverAsset(node),
+        onmouseleave: (event, node) => this.onLeaveAsset(node)
+      },
+      {
+        name: 'download',
+        icon: 'download',
+        onover: (event, node) => this.onOverAsset(node),
+        onmouseleave: (event, node) => this.onLeaveAsset(node)
+      },
+      {
+        name: 'zoom-div',
+        icon: 'div'
+      },
+      {
+        name: 'zoom-plus',
+        icon: 'zoom',
+        type: 'default',
+        onover: (event, node) => this.onOverAsset(node),
+        onmouseleave: (event, node) => this.onLeaveAsset(node)
+      },
+    ];
 
-    const addAsset = this.createAsset('add-asset', 'tools', 'category', result);
-    if(addAsset){
-      addAsset.onover = (event, node)=> this.onOverAsset(node);
-      addAsset.onmouseleave = (event, node)=> this.onLeaveAsset(node);
-      this.hudToolbarAssets.push(addAsset);
+    for (let button of buttons) {
+      const buttonAsset = this.createAsset(<SvgAssetDTOOptions>{
+        parent: result,
+        name: button.name,
+        asset:{
+          assertSet : ASSETS_TOOLS,
+          assertName : button.icon
+        },
+        styleClass: POINTER
+      });
+      if (!buttonAsset) {
+        continue;
+      }
+
+      if (button.onover) buttonAsset.onover = button.onover;
+      if (button.onclick) buttonAsset.onclick = button.onclick;
+      if (button.onmousedown) buttonAsset.onmousedown = button.onmousedown;
+      if (button.onmousemove) buttonAsset.onmousemove = button.onmousemove;
+      if (button.onmouseleave) buttonAsset.onmouseleave = button.onmouseleave;
+      if (button.ondblclick) buttonAsset.ondblclick = button.ondblclick;
+      if (button.ondrag) buttonAsset.ondrag = button.ondrag;
+      if (button.ondrop) buttonAsset.ondrop = button.ondrop;
+      if (button.ondragend) buttonAsset.ondragend = button.ondragend;
+      if (button.ondragstart) buttonAsset.ondragstart = button.ondragstart;
+      if (button.ondragleave) buttonAsset.ondragleave = button.ondragleave;
+      if (button.ondragover) buttonAsset.ondragover = button.ondragover;
+      if (button.ondragenter) buttonAsset.ondragenter = button.ondragenter;
+      this.hudToolbarAssets.push(buttonAsset);
     }
 
 
@@ -84,35 +136,86 @@ export class InuSvgIsometricHud {
   // ACTIONS
   //====================================================================================================================
   updatePosition(height: number, width: number) {
-
+    this.updatePositionHudToolbar(height, width);
   }
+
+  private updatePositionHudToolbar(height: number, width: number) {
+    if (this.hudToolbarAssets.length == 0) {
+      return;
+    }
+
+    const size = this.hudToolbarAssets[0].getComponentSize();
+    for (let i = 1; i < this.hudToolbarAssets.length; i++) {
+      this.hudToolbarAssets[i].move({x: (i * size.width) * this.toolbarMargin, y: 0});
+    }
+  }
+
   //====================================================================================================================
   // EVENTS
   //====================================================================================================================
   private onOverAsset(node: SvgAssetElement) {
     node.addStyleClass('over');
   }
+
   private onLeaveAsset(node: SvgAssetElement) {
     node.removeStyleClass('over');
   }
+
   //====================================================================================================================
   // TOOLS
   //====================================================================================================================
-  private createAsset(name: string, assetSet: string, assetName: string, parent?: SVGElement | null): SvgAssetElement | undefined {
-    const assetIcon = SVG_ASSETS.getAsset(assetSet, assetName);
+  private createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
+    console.log('createAsset')
+    const assetIcon = SVG_ASSETS.getAsset(option.asset?.assertSet!, option.asset?.assertName!);
     if (!assetIcon || !parent) {
       return undefined;
     }
+
+
+    return SvgAssetUtils.createAsset(
+      {
+        name: option.name!,
+        assertSet: option.asset?.assertSet!,
+        assertName: option.asset?.assertName!,
+        x: 0,
+        y: 0,
+        size: this.scale
+      },
+      option.parent!,
+      {x: 0, y: 0},
+      this.scale,
+      false,
+      true);
+  }
+
+
+  /*
+  private createAsset(option:SvgAssetDTOOptions): SvgAssetElement | undefined {
+    const assetIcon = SVG_ASSETS.getAsset(option.asset?.assetSet!, option.asset?.assetName!);
+    if (!assetIcon || !option.parent) {
+      return undefined;
+    }
     const asset: SvgAssetDTO = {
-      name: name,
-      assertSet: assetSet,
-      assertName: assetName,
+      name: option.name!,
+      assetSet: option.asset?.assetSet!,
+      assetName: option.asset?.assetName!,
       x: 0,
       y: 0,
       size: this.scale
     }
-    return SvgAssetUtils.createAsset(asset, parent, {x: 0, y: 0}, this.scale, false);
+
+    return SvgAssetUtils.createAssetOpts({
+      name: option.name,
+      type: option.type,
+      state: option.state,
+      asset:asset,
+      parent:option.parent,
+      center:{x: 0, y: 0},
+      scale:this.scale,
+      isometric:false,
+      enableHitBox:true,
+      styleClass:option.styleClass
+    });
   }
-
-
+   */
 }

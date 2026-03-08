@@ -1,5 +1,5 @@
-import {Point, SvgAssetDTO, SvgAssetElement} from 'inugami-ng/models';
-import {SVG_ASSETS, SVG_BUILDER, SVG_TRANSFORM} from "./svg.utils";
+import {Point, Size, SvgAssetDTO, SvgAssetElement} from 'inugami-ng/models';
+import {SVG, SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from "./svg.utils";
 
 
 export class SvgAssetUtils {
@@ -8,7 +8,8 @@ export class SvgAssetUtils {
                             parent: SVGElement | HTMLElement | null,
                             center: Point,
                             scall: number,
-                            isometric: boolean): SvgAssetElement | undefined {
+                            isometric: boolean,
+                            enableHitBox?: boolean): SvgAssetElement | undefined {
     if (!parent) {
       return undefined;
     }
@@ -17,7 +18,7 @@ export class SvgAssetUtils {
     if (!node) {
       return undefined;
     }
-    return new Asset(node, parent, asset, center, scall, isometric);
+    return new Asset(node, parent, asset, center, scall, isometric, enableHitBox);
   }
 }
 
@@ -35,6 +36,7 @@ class Asset implements SvgAssetElement {
   center: Point;
   scale: number;
   isometric: boolean;
+  enableHitBox: boolean;
   assertSet: string;
   assertName: string;
   name: string;
@@ -43,9 +45,10 @@ class Asset implements SvgAssetElement {
   state: string;
   title: string;
   type: string;
+  styleClass: string;
   x: number;
   y: number;
-  onover: (event:MouseEvent,asset: SvgAssetElement) => void = (a) => {
+  onover: (event: MouseEvent, asset: SvgAssetElement) => void = (a) => {
   };
   onclick: (event: PointerEvent, asset: SvgAssetElement) => void = (e, a) => {
   };
@@ -75,14 +78,20 @@ class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
   //--------------------------------------------------------------------------------------------------------------------
-  constructor(node: SVGElement, parent: SVGElement | HTMLElement, asset: SvgAssetDTO, center: Point, scall: number, isometric: boolean) {
+  constructor(node: SVGElement, parent: SVGElement | HTMLElement, asset: SvgAssetDTO, center: Point, scall: number,
+              isometric?: boolean,
+              enableHitBox?: boolean,
+              styleClass?: string
+  ) {
     this.parent = parent;
     this.node = node;
     this.center = center;
     this.scale = scall;
-    this.isometric = isometric;
-    this.assertSet = asset.assertSet;
-    this.assertName = asset.assertName;
+    this.isometric = isometric == undefined ? false : isometric;
+    this.assertSet = asset?.assertSet!;
+    this.assertName = asset?.assertName!;
+    this.enableHitBox = enableHitBox == undefined ? false : enableHitBox!;
+    this.styleClass = styleClass!;
     this.type = asset.type ? asset.type : DEFAULT;
     this.state = asset.state ? asset.state : DEFAULT;
     this.name = asset.name;
@@ -94,7 +103,6 @@ class Asset implements SvgAssetElement {
     this.processUpdateRender();
     this.updatePosition();
   }
-
 
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -144,7 +152,18 @@ class Asset implements SvgAssetElement {
       return;
     }
     const self = this;
-    this.node.innerHTML = state.content;
+    if (this.enableHitBox) {
+      const hitboxGrp = SVG_BUILDER.createGroup(this.node, {styleClass: `hitbox-grp`});
+      const content = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
+      if (content && hitboxGrp) {
+        content.innerHTML = state.content;
+        const size = SVG_MATH.size(content);
+        SVG_BUILDER.createRect(hitboxGrp, {height: size.height, width: size.width, styleClass: 'hitbox'});
+      }
+    } else {
+      this.node.innerHTML = state.content;
+    }
+
 
     this.node.onmouseenter = (event) => this.onover(event, self);
     this.node.onclick = (event) => this.onclick(event, self);
@@ -162,7 +181,14 @@ class Asset implements SvgAssetElement {
   }
 
   updateStyleclass() {
-    const styleclass = ['inu-svg-asset', this.assertSet, 'type-' + this.type, 'type-state' + this.state, this.name];
+    const styleclass = [
+      'inu-svg-asset',
+      this.assertSet,
+      'type-' + this.type,
+      'type-state' + this.state,
+      this.name,
+      this.styleClass
+    ];
     this.node.setAttribute('class', styleclass.join(' '));
   }
 
@@ -201,11 +227,21 @@ class Asset implements SvgAssetElement {
 
   }
 
-  addStyleClass(style:string): void {
+  addStyleClass(style: string): void {
     SVG_TRANSFORM.addClass(this.node, style);
   }
-  removeStyleClass(style:string): void {
+
+  removeStyleClass(style: string): void {
     SVG_TRANSFORM.removeClass(this.node, style);
+  }
+
+  getComponentSize(): Size {
+    return SVG.MATH.size(this.node);
+  }
+
+  move(point: Point): void {
+    SVG_TRANSFORM.translateX(this.node, point.x);
+    SVG_TRANSFORM.translateY(this.node, point.y);
   }
 
 }

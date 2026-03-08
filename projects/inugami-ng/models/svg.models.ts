@@ -63,7 +63,21 @@ export interface SvgAssetDTO {
   title?: string;
   styleClass?: string;
 }
-
+export interface SvgAssetDTOOptions {
+  name?: string,
+  type?: string,
+  state?: string,
+  asset?: SvgAssetDTO,
+  parent?: SVGElement | HTMLElement | null,
+  center?: Point,
+  position?: Point,
+  scale?: number,
+  size?: number,
+  isometric?: boolean,
+  enableHitBox?: boolean,
+  title?: string,
+  styleClass?: string
+}
 
 export interface SvgAssetElement {
   name: string;
@@ -78,28 +92,52 @@ export interface SvgAssetElement {
   node?: SVGElement;
   update: (value: SvgAssetDTO, center: Point, scale: number, isometric: boolean) => void;
 
-  addStyleClass(style:string): void;
-  removeStyleClass(style:string): void;
+  addStyleClass(style: string): void;
+
+  removeStyleClass(style: string): void;
+
   remove(): void;
 
-  onover: (event:MouseEvent,asset: SvgAssetElement) => void ;
-  onclick: (event:PointerEvent,asset: SvgAssetElement) => void ;
-  onmousedown: (event:MouseEvent,asset: SvgAssetElement) => void ;
-  onmousemove: (event:MouseEvent,asset: SvgAssetElement) => void ;
-  onmouseleave: (event:MouseEvent,asset: SvgAssetElement) => void ;
+  getComponentSize(): Size;
 
-  ondblclick: (event:MouseEvent,asset: SvgAssetElement) => void ;
-  ondrag: (event:DragEvent,asset: SvgAssetElement) => void ;
-  ondrop: (event:DragEvent,asset: SvgAssetElement) => void ;
-  ondragend: (event:DragEvent,asset: SvgAssetElement) => void ;
-  ondragstart: (event:DragEvent,asset: SvgAssetElement) => void ;
-  ondragleave: (event:DragEvent,asset: SvgAssetElement) => void ;
-  ondragover: (event:DragEvent,asset: SvgAssetElement) => void ;
-  ondragenter: (event:DragEvent,asset: SvgAssetElement) => void ;
+  move(point: Point): void;
+
+  onover: (event: MouseEvent, asset: SvgAssetElement) => void;
+  onclick: (event: PointerEvent, asset: SvgAssetElement) => void;
+  onmousedown: (event: MouseEvent, asset: SvgAssetElement) => void;
+  onmousemove: (event: MouseEvent, asset: SvgAssetElement) => void;
+  onmouseleave: (event: MouseEvent, asset: SvgAssetElement) => void;
+  ondblclick: (event: MouseEvent, asset: SvgAssetElement) => void;
+  ondrag: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondrop: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragend: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragstart: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragleave: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragover: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragenter: (event: DragEvent, asset: SvgAssetElement) => void;
 }
 
 export interface SvgLayerElement {
   name: string;
   node: SVGElement;
   assets: SvgAssetElement[];
+}
+export interface SvgButton{
+  name:string;
+  icon:string;
+  type?:string;
+  state?:string;
+  onover?: (event: MouseEvent, asset: SvgAssetElement) => void;
+  onclick?: (event: PointerEvent, asset: SvgAssetElement) => void;
+  onmousedown?: (event: MouseEvent, asset: SvgAssetElement) => void;
+  onmousemove?: (event: MouseEvent, asset: SvgAssetElement) => void;
+  onmouseleave?: (event: MouseEvent, asset: SvgAssetElement) => void;
+  ondblclick?: (event: MouseEvent, asset: SvgAssetElement) => void;
+  ondrag?: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondrop?: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragend?: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragstart?: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragleave?: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragover?: (event: DragEvent, asset: SvgAssetElement) => void;
+  ondragenter?: (event: DragEvent, asset: SvgAssetElement) => void;
 }
