@@ -84,9 +84,9 @@ export class InuSvgIsometricHud {
       const buttonAsset = this.createAsset(<SvgAssetDTOOptions>{
         parent: result,
         name: button.name,
-        asset:{
-          assetSet : ASSETS_TOOLS,
-          assetName : button.icon
+        asset: {
+          assetSet: ASSETS_TOOLS,
+          assetName: button.icon
         },
         styleClass: POINTER
       });
@@ -170,10 +170,9 @@ export class InuSvgIsometricHud {
     if (!assetIcon || !parent) {
       return undefined;
     }
-
-
-    return SvgAssetUtils.createAsset(
-      {
+    return SvgAssetUtils.createAssetOpts({
+      parent:option.parent!,
+      asset: {
         name: option.name!,
         assetSet: option.asset?.assetSet!,
         assetName: option.asset?.assetName!,
@@ -181,41 +180,10 @@ export class InuSvgIsometricHud {
         y: 0,
         size: this.scale
       },
-      option.parent!,
-      {x: 0, y: 0},
-      this.scale,
-      false,
-      true);
-  }
-
-
-  /*
-  private createAsset(option:SvgAssetDTOOptions): SvgAssetElement | undefined {
-    const assetIcon = SVG_ASSETS.getAsset(option.asset?.assetSet!, option.asset?.assetName!);
-    if (!assetIcon || !option.parent) {
-      return undefined;
-    }
-    const asset: SvgAssetDTO = {
-      name: option.name!,
-      assetSet: option.asset?.assetSet!,
-      assetName: option.asset?.assetName!,
-      x: 0,
-      y: 0,
-      size: this.scale
-    }
-
-    return SvgAssetUtils.createAssetOpts({
-      name: option.name,
-      type: option.type,
-      state: option.state,
-      asset:asset,
-      parent:option.parent,
-      center:{x: 0, y: 0},
-      scale:this.scale,
+      scale : this.scale,
       isometric:false,
-      enableHitBox:true,
-      styleClass:option.styleClass
+      enableHitBox:true
     });
   }
-   */
+
 }

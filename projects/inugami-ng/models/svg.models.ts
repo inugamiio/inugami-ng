@@ -63,14 +63,16 @@ export interface SvgAssetDTO {
   title?: string;
   styleClass?: string;
 }
+
 export interface SvgAssetDTOOptions {
-  parent: SVGElement | HTMLElement,
-  node: SVGElement ,
   asset: SvgAssetDTO,
-  center: Point,
   scale: number,
-  isometric: boolean,
+
+  node?: SVGElement,
+  parent?: SVGElement | HTMLElement | null,
+  center?: Point,
   enableHitBox?: boolean,
+  isometric?: boolean,
   styleClass?: string
   name?: string,
   title?: string
@@ -119,11 +121,12 @@ export interface SvgLayerElement {
   node: SVGElement;
   assets: SvgAssetElement[];
 }
-export interface SvgButton{
-  name:string;
-  icon:string;
-  type?:string;
-  state?:string;
+
+export interface SvgButton {
+  name: string;
+  icon: string;
+  type?: string;
+  state?: string;
   onover?: (event: MouseEvent, asset: SvgAssetElement) => void;
   onclick?: (event: PointerEvent, asset: SvgAssetElement) => void;
   onmousedown?: (event: MouseEvent, asset: SvgAssetElement) => void;

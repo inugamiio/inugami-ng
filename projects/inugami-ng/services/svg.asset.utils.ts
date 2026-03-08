@@ -18,18 +18,31 @@ export class SvgAssetUtils {
     if (!node) {
       return undefined;
     }
-    //node, parent, asset, center, scall, isometric, enableHitBox
+
+
     return new Asset({
-      parent:parent,
-      node:node,
-      asset:asset,
-      center:center,
-      scale:scale,
-      isometric:isometric,
-      enableHitBox:enableHitBox
+      parent: parent,
+      node: node,
+      asset: asset,
+      center: center,
+      scale: scale,
+      isometric: isometric,
+      enableHitBox: enableHitBox
     });
   }
 
+  public static createAssetOpts(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
+    if (!option.parent) {
+      return undefined;
+    }
+
+    const node = SVG_BUILDER.createGroup(option.parent, {});
+    if (!node) {
+      return undefined;
+    }
+    option.node = node;
+    return new Asset(option);
+  }
 }
 
 
@@ -89,11 +102,11 @@ class Asset implements SvgAssetElement {
   // CONSTRUCTOR
   //--------------------------------------------------------------------------------------------------------------------
   constructor(option: SvgAssetDTOOptions) {
-    this.parent = option.parent;
-    this.node = option.node;
-    this.center = option.center;
+    this.parent = option.parent!;
+    this.node = option.node!;
+    this.center = option.center ? option.center : {x: 0, y: 0};
     this.scale = option.scale;
-    this.isometric = option.isometric;
+    this.isometric = option.isometric==undefined?false:option.isometric;
     this.assetSet = option.asset.assetSet!;
     this.assetName = option.asset.assetName!;
     this.enableHitBox = option.enableHitBox == undefined ? false : option.enableHitBox!;
