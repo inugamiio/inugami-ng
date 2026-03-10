@@ -24,6 +24,7 @@ export class InuSvgAssetView {
     result.sort();
     return result;
   });
+  assetSet = signal<string>('');
   asset = signal<SvgAsset | undefined>(undefined);
   type  = signal<string|undefined>(undefined);
   state  = signal<string|undefined>(undefined);
@@ -36,7 +37,8 @@ export class InuSvgAssetView {
       ?.content ?? '');
   }
 
-  protected selectAsset(asset: SvgAsset) {
+  protected selectAsset(assetSet:string,asset: SvgAsset) {
+    this.assetSet.set(assetSet);
     this.type.set('default');
     this.state.set('default');
     this.asset.set(asset);

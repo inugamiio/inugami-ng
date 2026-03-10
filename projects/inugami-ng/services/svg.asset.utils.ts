@@ -80,7 +80,7 @@ class Asset implements SvgAssetElement {
     this.parent = option.parent!;
     this.node = option.node!;
     this.center = option.center ? option.center : {x: 0, y: 0};
-    this.scale = option.scale;
+    this.scale = option.scale?option.scale:1;
     this.isometric = option.isometric == undefined ? false : option.isometric;
     this.assetSet = option.asset.assetSet!;
     this.assetName = option.asset.assetName!;
@@ -91,8 +91,8 @@ class Asset implements SvgAssetElement {
     this.name = option.asset.name!;
     this.title = option.title ? option.title : '';
     this.size = option.asset.size == undefined ? 1 : option.asset.size < 0 ? 1 : option.asset.size;
-    this.x = option.asset.x;
-    this.y = option.asset.y;
+    this.x = this.toNumber(option.asset.x);
+    this.y = this.toNumber(option.asset.y);
     this.updateStyleclass();
     this.processUpdateRender();
     this.updatePosition();
@@ -153,16 +153,17 @@ class Asset implements SvgAssetElement {
         content.innerHTML = state.content;
         const size = SVG_MATH.size(content);
         SVG_BUILDER.createRect(hitboxGrp, {height: size.height, width: size.width, styleClass: 'hitbox'});
+        this.resolveRef(content);
       }
     } else {
       this.node.innerHTML = state.content;
+      this.resolveRef(this.node);
     }
 
 
     this.node.onmouseenter = (event) => this.onover(event, self);
     this.node.onclick = (event) => this.onclick(event, self);
     this.node.onmousedown = (event) => {
-      console.log('drag')
       this.drag = true;
       this.onmousedown(event, self);
     }
@@ -173,7 +174,6 @@ class Asset implements SvgAssetElement {
     this.node.onmouseleave = (event) => this.onmouseleave(event, self);
     this.node.ondblclick = (event) => this.ondblclick(event, self);
     this.node.ondrag = (event) => {
-      console.log('drag')
       this.drag = true;
       this.ondrag(event, self);
     };
@@ -183,12 +183,10 @@ class Asset implements SvgAssetElement {
       this.ondragend(event, self);
     }
     this.node.ondragstart = (event) => {
-      console.log('drag start')
       this.drag = true;
       this.ondragstart(event, self);
     };
     this.node.ondragleave = (event) => {
-      console.log('drag stop')
       this.drag = false;
       this.ondragleave(event, self);
     };
@@ -221,6 +219,41 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.translateX(this.node, this.x);
   }
 
+  private resolveRef(node: SVGElement) {
+    const nodes:SVGElement[] = this.searchRef(node);
+    for(let refNode of nodes){
+      this.renderRef(refNode);
+    }
+  }
+  private searchRef(node: SVGElement):SVGElement[] {
+    const result:SVGElement[] = [];
+    const ref = node.getAttribute('ref');
+    if(ref){
+      result.push(node);
+    }
+    else{
+      if(node.children){
+        for(let child of node.children){
+          result.push(...this.searchRef(child as SVGElement))
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private renderRef(refNode: SVGElement) {
+    const ref = refNode.getAttribute('ref');
+    if(!ref){
+      return;
+    }
+
+    const parts = ref.split(':');
+    const asset = SVG_ASSETS.getAsset(this.assetSet,this.assetName);
+    let type =asset?.types.find(t=> t.name ==parts[0]);
+    let state = type?.states?.find(s=> s.name == parts[1]);
+//TODO
+  }
   //--------------------------------------------------------------------------------------------------------------------
   // EVENT
   //--------------------------------------------------------------------------------------------------------------------
@@ -232,8 +265,8 @@ class Asset implements SvgAssetElement {
     this.name = value.name;
     this.title = value.title ? value.title : '';
     this.size = value.size < 0 ? 1 : value.size;
-    this.x = value.x;
-    this.y = value.y;
+    this.x = this.toNumber(value.x);
+    this.y = this.toNumber(value.y);
   }
 
 
@@ -274,5 +307,19 @@ class Asset implements SvgAssetElement {
   getComponentSize(): Size {
     return SVG.MATH.size(this.node);
   }
+
+  private toNumber(value: any):number {
+    if(!value){
+      return 0;
+    }
+    try{
+      const realValue = Number(value);
+      return realValue;
+    }catch (e){
+      return 0;
+    }
+  }
+
+
 
 }

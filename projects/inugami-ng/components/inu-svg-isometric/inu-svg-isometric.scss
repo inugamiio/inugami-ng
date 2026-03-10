@@ -28,5 +28,18 @@
     }
   }
 
+
 }
 
+.inu-svg-isometric-debug{
+  display: block;
+  .inu-svg-isometric-debug-content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    dl{
+      width: 33%;
+    }
+  }
+
+}

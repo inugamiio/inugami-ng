@@ -7,22 +7,49 @@ import {
   HostListener,
   input,
   model,
-  ModelSignal, signal,
+  ModelSignal,
+  signal,
   viewChild
 } from '@angular/core';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
 import {SVG, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM, SvgAssetUtils} from 'inugami-ng/services';
-import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement, TransformationInfo} from 'inugami-ng/models';
+import {Point, SvgAssetDTO, SvgAssetElement, SvgLayerDTO, SvgLayerElement} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {InuSvgIsometricHud} from './inu-svg-isometric-hud';
+import {InuPointPipe} from 'inugami-ng/pipes';
 
 
 @Component({
   selector: 'inu-svg-isometric',
   standalone: true,
   providers: [InuTemplateRegistryService],
-  imports: [],
+  imports: [
+    InuPointPipe
+  ],
   template: `
+    <div class="inu-svg-isometric-debug">
+      <div class="inu-svg-isometric-debug-content">
+        <dl>
+          <dt>viewport size</dt>
+          <dd>{{ viewportSize()| inuPipePoint }}</dd>
+          <dt>center</dt>
+          <dd>{{ center()| inuPipePoint }}</dd>
+
+        </dl>
+        <dl>
+          <dt>zoom</dt>
+          <dd>{{ zoom() }}</dd>
+          <dt>trackMouseMove</dt>
+          <dd>{{ trackMouseMove() }}</dd>
+          <dt>mousePosition</dt>
+          <dd>{{ mousePosition()| inuPipePoint }}</dd>
+          <dt>previousMouseMove</dt>
+          <dd>{{ previousMouseMove()| inuPipePoint }}</dd>
+        </dl>
+      </div>
+
+    </div>
+
     <div [class]="_styleClass()" #component>
       <svg #container xmlns="http://www.w3.org/2000/svg"></svg>
     </div>
@@ -37,6 +64,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   isometric = input<boolean>(true);
   disabled = input<boolean>(false);
   styleclass = input<string>('');
+  styleclassheight = input<string>('');
   //
   private component = viewChild<ElementRef<HTMLElement>>('component');
   private container = viewChild<ElementRef<HTMLElement>>('container');
@@ -47,21 +75,26 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       this.disabled() ? 'disabled' : '',
       this.styleclass() ? this.styleclass() : ''
     ].join(' ');
-  })
+  });
   //---
-  defaultSize: number = 50;
-  zoom: number = 50;
-  previousMouseMove: Point = {x: 0, y: 0};
-  value: ModelSignal<SvgLayerDTO[]> = model(<SvgLayerDTO[]>[]);
-  position: Point = {x: 0, y: 0};
+  height = signal<number>(400);
+  width = signal<number>(600);
+  viewportSize = computed<Point>(() => <Point>{x: this.height(), y: this.width()});
+  center = signal<Point>({x: 0, y: 0});
+  zoom = signal<number>(50);
   assetSelected = signal<SvgAssetElement | undefined>(undefined);
   trackMouseMove = signal<boolean>(false);
+  mousePosition = signal<Point>({x: 0, y: 0});
+  previousMouseMove = signal<Point>({x: 0, y: 0});
+  value: ModelSignal<SvgLayerDTO[]> = model(<SvgLayerDTO[]>[]);
+  //---
+  defaultSize: number = 50;
+  position: Point = {x: 0, y: 0};
+
   //--- SVG components
-  height: number = 400;
-  width: number = 600;
   scale: number = 1;
   ratio: number = 1;
-  center: Point = {x: this.width / 2, y: this.height / 2};
+
   parent: HTMLElement | null = null;
   locator: SVGElement | null = null;
   defs: SVGElement | null = null;
@@ -106,12 +139,14 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
     if (this.parent) {
       let parentSize = SVG_MATH.size(this.parent);
-      this.height = parentSize.height;
-      this.width = parentSize.width;
+      this.height.set(parentSize.height);
+      this.width.set(parentSize.width);
     }
 
-    this.center = {x: this.width / 2, y: this.height / 2};
-    container?.nativeElement.setAttribute('style', `display: block; height:${this.height}px;width:${this.width}px`);
+    this.center.set(<Point>{y: this.width() / 2, x: this.height() / 2});
+    container?.nativeElement
+      .setAttribute('style', `display: block; height:${this.height()}px;width:${this.width()}px`);
+
   }
 
   private initializeLayout(container: ElementRef<HTMLElement>) {
@@ -146,8 +181,8 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
       this.hud = new InuSvgIsometricHud({
         parent: container?.nativeElement,
-        height: this.height,
-        width: this.width,
+        height: this.height(),
+        width: this.width(),
         //
         onZoomIn: (e) => this.onZoomIn(e),
         onZoomOut: (e) => this.onZoomOut(e),
@@ -187,8 +222,8 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       {
         x: 0,
         y: 0,
-        height: SVG_MATH.zoom(1, this.zoom),
-        width: SVG_MATH.zoom(1, this.zoom),
+        height: SVG_MATH.zoom(1, this.zoom()),
+        width: SVG_MATH.zoom(1, this.zoom()),
         patternUnits: "userSpaceOnUse"
       });
 
@@ -200,8 +235,8 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         SVG_BUILDER.createCurve(this.patternGroup, 'M 0,14.4337 L 25,0 L 50,14.4337 L 25,28.8675 Z');
       } else {
         this.gridPatternRect = SVG_BUILDER.createRect(this.patternGroup, {
-          height: SVG_MATH.zoom(1, this.zoom),
-          width: SVG_MATH.zoom(1, this.zoom)
+          height: SVG_MATH.zoom(1, this.zoom()),
+          width: SVG_MATH.zoom(1, this.zoom())
         });
       }
 
@@ -218,8 +253,8 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
   private renderBackground(graph: SVGElement): SVGElement | null {
     const result = SVG_BUILDER.createRect(graph, {
-      height: this.height,
-      width: this.width,
+      height: this.height(),
+      width: this.width(),
       styleClass: 'inu-svg-isometric-border'
     });
     if (result) {
@@ -256,12 +291,12 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       step = 0.1;
     }
     if (event.deltaY > 0) {
-      this.zoom = this.zoom - step;
+      this.zoom.set(this.zoom() - step);
     } else {
-      this.zoom = this.zoom + step;
+      this.zoom.set(this.zoom() - step);
     }
-    if (this.zoom <= 0) {
-      this.zoom = 0.001;
+    if (this.zoom() <= 0) {
+      this.zoom.set(0.001);
     }
 
     this.updateAfterZoom();
@@ -272,7 +307,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
     if (event.button === 1) {
       event.preventDefault();
-      let startZoom = this.zoom;
+      let startZoom = this.zoom();
       let endZoom = this.defaultSize;
       let delta = endZoom - startZoom;
       let currentX = 0;
@@ -309,7 +344,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
         duration: 2000,
         timer: SVG.ANIMATION.TYPES.easeOutCubic,
         onDone: () => {
-          this.zoom = this.defaultSize;
+          this.zoom.set(this.defaultSize);
           if (this.locator) {
             if (this.parent) {
               SVG_TRANSFORM.center(this.locator, this.parent, true, true);
@@ -317,7 +352,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
               this.position.x = doneTransfo.x!;
               this.position.y = doneTransfo.y!;
             }
-            this.updateGridSize(this.zoom);
+            this.updateGridSize(this.zoom());
           }
         }
       });
@@ -341,15 +376,14 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   }
 
   private onZoomIn(event: MouseEvent) {
-    this.zoom = this.zoom + 1;
+    const zoom = this.zoom();
+    this.zoom.set(zoom + 1);
     this.updateAfterZoom();
   }
 
   private onZoomOut(event: MouseEvent) {
-    this.zoom = this.zoom - 1;
-    if (this.zoom <= 0) {
-      this.zoom = 0.001;
-    }
+    const zoom = this.zoom() - 1;
+    this.zoom.set(zoom <= 0 ? 0.001 : zoom);
     this.updateAfterZoom();
   }
 
@@ -495,13 +529,13 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   private updateOrCreateAsset(asset: SvgAssetDTO, layer: SvgLayerElement) {
     const existingAsset = layer.assets.find(a => a.name == asset.name);
     if (existingAsset) {
-      existingAsset.update(asset, this.center, this.scale, this.isometric());
+      existingAsset.update(asset, this.center(), this.scale, this.isometric());
     } else {
       const newAsset = SvgAssetUtils.createAsset({
         parent: layer.node,
         asset: asset,
         scale: this.scale,
-        center: this.center,
+        center: this.center(),
         isometric: this.isometric(),
         enableHitBox: false
       });
@@ -513,8 +547,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   }
 
   updateAfterZoom() {
-
-    const width = SVG_MATH.zoom(1, this.zoom);
+    const width = SVG_MATH.zoom(1, this.zoom());
     const height = this.isometric() ? width / Math.sqrt(3) : width;
 
     if (this.patternGroup) {
@@ -544,27 +577,25 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       this.position.x = doneTransfo.x!;
       this.position.y = doneTransfo.y!;
     }
-    this.hud?.updatePosition(this.height, this.width);
+    this.hud?.updatePosition(this.height(), this.width());
   }
 
-  private computeRatio(){
-    if(!this.parent || !this.locator){
+  private computeRatio() {
+    if (!this.parent || !this.locator) {
       return;
     }
     const parentSize = SVG_MATH.size(this.parent);
     const locatorSize = SVG_MATH.size(this.locator);
     this.ratio = parentSize.width / locatorSize.width;
   }
+
   private trackMouse(track: boolean, event: MouseEvent) {
     event.preventDefault();
     this.trackMouseMove.set(track);
     if (track) {
-      this.previousMouseMove = {
-        x: event.x,
-        y: event.y
-      };
+      this.previousMouseMove.set({x: event.x, y: event.y});
     } else {
-      this.previousMouseMove = {x: 0, y: 0};
+      this.previousMouseMove.set({x: 0, y: 0});
     }
   }
 
@@ -573,7 +604,10 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     if (!container) {
       return;
     }
-
+    this.mousePosition.set(<Point>{
+      x: event.x,
+      y: event.y
+    });
     const trackMouse = this.trackMouseMove();
     if (!trackMouse) {
       return;
@@ -583,9 +617,10 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       y: event.y
     };
 
+    const previousMouseMove = this.previousMouseMove();
     const delta: Point = {
-      x: this.previousMouseMove.x - currentMove.x,
-      y: this.previousMouseMove.y - currentMove.y
+      x: previousMouseMove.x - currentMove.x,
+      y: previousMouseMove.y - currentMove.y
     }
 
 
@@ -606,7 +641,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
       }, this.ratio);
     }
 
-    this.previousMouseMove = currentMove;
+    this.previousMouseMove.set(currentMove);
   }
 
   private searchDragComponent(): SvgAssetElement | undefined {

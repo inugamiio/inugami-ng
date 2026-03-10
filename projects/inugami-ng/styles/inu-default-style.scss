@@ -694,6 +694,15 @@ fieldset{
     filter: url(#shadow);
     opacity: 0.17684887;
   }
+  .shadow-selected{
+    fill: var(--secondary-light);
+    stroke: none;
+    stroke-width: 0.264999;
+    paint-order: stroke fill markers;
+    fill-opacity: 1;
+    filter: url(#shadow);
+    opacity: 0.17684887;
+  }
   .hitbox{
     fill-opacity: 0;
   }

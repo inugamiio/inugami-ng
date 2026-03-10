@@ -21,8 +21,11 @@
       <header>
         <h2>Example</h2>
       </header>
+
       <div style="height: 45rem;" class="svg-graph">
-        <inu-svg-isometric [formField]="myForm.layers"></inu-svg-isometric>
+          <inu-svg-isometric [formField]="myForm.layers"></inu-svg-isometric>
+      </div>
+      <div style="height: 15rem;">
       </div>
     </article>
 
@@ -30,29 +33,33 @@
     <!--=================================================================================================================
    = PROPERTIES
    =================================================================================================================-->
-    <article>
-      <header>
-        <h2>Properties</h2>
-      </header>
+    <div>
+
+      <article>
+        <header>
+          <h2>Properties</h2>
+        </header>
 
 
-      <inu-table-flex>
-        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
-        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
-        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
-        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
 
-        <inu-table-flex-row>
-          <inu-table-flex-cell>disabled</inu-table-flex-cell>
-          <inu-table-flex-cell>boolean</inu-table-flex-cell>
-          <inu-table-flex-cell>false</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-        </inu-table-flex-row>
-      </inu-table-flex>
+          <inu-table-flex-row>
+            <inu-table-flex-cell>disabled</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>false</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+        </inu-table-flex>
 
 
-    </article>
+      </article>
+    </div>
+
   </main>
 
 
