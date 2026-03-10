@@ -29,9 +29,9 @@
             </div>
             <div class="asset-set-assets">
               @for (asset of getAssets(assetSet); track asset.name) {
-                <div class="asset-set-asset" (click)="selectAsset(asset)">
+                <div class="asset-set-asset" (click)="selectAsset(assetSet,asset)">
                   <div style="height: 32px; width: 32px">
-                    <inu-svg-asset [asset]="asset"></inu-svg-asset>
+                    <inu-svg-asset [assetSet]="assetSet"  [asset]="asset"></inu-svg-asset>
                   </div>
                   <div class="asset-set-asset-name">{{ asset.name }}</div>
                 </div>
@@ -46,7 +46,7 @@
               <legend class="legend-asset-name">Asset : {{asset()?.name!}}</legend>
               <div class="asset-display-grp">
                 <div class="asset-display" style="height: 256px; width: 256px">
-                  <inu-svg-asset [asset]="asset()" [type]="type()" [state]="state()"></inu-svg-asset>
+                  <inu-svg-asset [assetSet]="assetSet()" [asset]="asset()" [type]="type()" [state]="state()"></inu-svg-asset>
                 </div>
               </div>
             </fieldset>

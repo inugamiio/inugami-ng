@@ -18,5 +18,28 @@
       stroke-opacity: 1;
     }
   }
+  .hud{
+    .toolbar{
+      .inu-svg-asset{
+        &.over{
+          fill: var(--secondary);
+        }
+      }
+    }
+  }
+
+
 }
 
+.inu-svg-isometric-debug{
+  display: block;
+  .inu-svg-isometric-debug-content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    dl{
+      width: 33%;
+    }
+  }
+
+}

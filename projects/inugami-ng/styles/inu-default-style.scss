@@ -665,7 +665,9 @@ fieldset{
   margin: 0;
   gap:1rem;
 }
-
+.cursor-pointer{
+  cursor: pointer;
+}
 .inu-svg-asset{
   .top{
     fill: var(--neutral);
@@ -691,6 +693,18 @@ fieldset{
     fill-opacity: 1;
     filter: url(#shadow);
     opacity: 0.17684887;
+  }
+  .shadow-selected{
+    fill: var(--secondary-light);
+    stroke: none;
+    stroke-width: 0.264999;
+    paint-order: stroke fill markers;
+    fill-opacity: 1;
+    filter: url(#shadow);
+    opacity: 0.17684887;
+  }
+  .hitbox{
+    fill-opacity: 0;
   }
 }
 .w10{

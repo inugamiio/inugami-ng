@@ -6,13 +6,14 @@ import {
   ElementRef,
   HostListener,
   input,
-  OnChanges,
+  OnChanges, signal,
   SimpleChanges,
   viewChild
 } from '@angular/core';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
-import {SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from 'inugami-ng/services';
+import {SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM, SvgAssetUtils} from 'inugami-ng/services';
 import {SvgAsset} from 'inugami-svg-assets';
+import {SvgAssetDTOOptions} from 'inugami-ng/models';
 
 @Component({
   selector: 'inu-svg-asset',
@@ -31,6 +32,7 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
   //====================================================================================================================
   // ATTRIBUTES
   //====================================================================================================================
+  assetSet = input<string>('');
   asset = input<SvgAsset | undefined>(undefined);
   type = input<string | undefined>('default');
   state = input<string | undefined>('default');
@@ -117,9 +119,9 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
     this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
     this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
 
-    const filter = SVG_BUILDER.createFilter(this.defs, 'shadow', {style:'color-interpolation-filters: sRGB;'});
-    const gaussian = SVG_BUILDER.createNode('feGaussianBlur',filter);
-    if(gaussian){
+    const filter = SVG_BUILDER.createFilter(this.defs, 'shadow', {style: 'color-interpolation-filters: sRGB;'});
+    const gaussian = SVG_BUILDER.createNode('feGaussianBlur', filter);
+    if (gaussian) {
       gaussian.setAttribute('stdDeviation', '1');
     }
     if (this.canvas) {
@@ -141,7 +143,7 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
     this.graph.replaceChildren();
 
     const type = this.type();
-    const state = this.state();
+    let state = this.state();
     let currentType = asset.types.find(t => t.name == type);
     if (!currentType) {
       currentType = asset.types.find(t => t.name == 'default');
@@ -151,11 +153,23 @@ export class InuSvgAsset implements AfterViewInit, OnChanges {
     }
     let currentState = currentType.states.find(t => t.name == state);
     if (!currentState) {
-      currentState = currentType.states.find(t => t.name == 'default');
+      state = 'default';
     }
-    if (currentState) {
-      this.graph.innerHTML = currentState.content;
-    }
+
+    const node = SVG_BUILDER.createGroup(this.graph);
+    SvgAssetUtils.createAsset(<SvgAssetDTOOptions>{
+      parent: this.graph,
+      node: node,
+      asset: {
+        assetSet: this.assetSet(),
+        assetName: asset.name,
+        type: type,
+        state: state,
+        x: 0,
+        y: 0
+      }
+    });
+
     setTimeout(() => this.resize(), 0);
   }
 

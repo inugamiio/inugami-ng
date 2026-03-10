@@ -7,7 +7,7 @@ import {
   SvgAnimationCallback,
   SvgAnimationOption,
   SvgAnimationParameters,
-  SvgAnimations, SvgAssetDTO, SvgAssetElement, SvgAssets,
+  SvgAnimations, SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement, SvgAssets,
   SvgBuilder, SvgDefsPatternOption, SvgFilterOption,
   SvgMath,
   SvgOptionalOption,
@@ -222,12 +222,8 @@ export const SVG_MATH: SvgMath = {
 // SVG_BUILDER
 //#############################################################################
 export const SVG_BUILDER: SvgBuilder = {
-  createAsset(asset: SvgAssetDTO,
-              parent: SVGElement | HTMLElement | null,
-              center: Point,
-              scale: number,
-              isometric: boolean): SvgAssetElement | undefined {
-    return SvgAssetUtils.createAsset(asset, parent, center, scale, isometric);
+  createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
+    return SvgAssetUtils.createAsset(option);
   },
 
   // ========================================================================
