@@ -22,6 +22,7 @@ import {SvgAsset, SvgAssetSet} from 'inugami-svg-assets';
 import {SvgAssetUtils} from './svg.asset.utils';
 
 
+
 export const DEFAULT_FONT_SIZE = 12;
 export const TWO_PI = 2 * Math.PI;
 export const TWO_PI_RATIO = (2 * Math.PI) / 360;
@@ -222,6 +223,7 @@ export const SVG_MATH: SvgMath = {
 // SVG_BUILDER
 //#############################################################################
 export const SVG_BUILDER: SvgBuilder = {
+
   createAsset(option: SvgAssetDTOOptions): SvgAssetElement | undefined {
     return SvgAssetUtils.createAsset(option);
   },
@@ -270,7 +272,6 @@ export const SVG_BUILDER: SvgBuilder = {
   createGroup: (parent: SVGElement | HTMLElement | null, option?: SvgOptionalOption): SVGElement | null => {
     return SVG_BUILDER.createNode('g', parent, option);
   },
-
 
   // ========================================================================
   // createText
@@ -411,6 +412,21 @@ export const SVG_BUILDER: SvgBuilder = {
     }
 
     return result;
+  },
+
+  // ========================================================================
+  // USE
+  // ========================================================================
+  createUse(id: string, parent: SVGElement | HTMLElement | null, option: SvgOptionalOption | undefined): SVGElement | null {
+    if(!parent){
+      return null;
+    }
+    const result = SVG_BUILDER.createNode('use', parent, option);
+    if(result){
+      result.setAttribute('href', `#${id}`);
+      return result;
+    }
+    return null;
   },
   // ========================================================================
   // createGroup

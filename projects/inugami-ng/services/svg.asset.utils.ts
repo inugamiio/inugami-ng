@@ -37,6 +37,7 @@ class Asset implements SvgAssetElement {
   name: string;
   node: SVGElement;
   parent: SVGElement | HTMLElement;
+  hiddenAssetLayer!: SVGElement | null;
   scale: number;
   size: number;
   state: string;
@@ -76,11 +77,13 @@ class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
   //--------------------------------------------------------------------------------------------------------------------
+
   constructor(option: SvgAssetDTOOptions) {
     this.parent = option.parent!;
+    this.hiddenAssetLayer = option.hiddenAssetsLayer ? option.hiddenAssetsLayer : this.createHiddenLayer(option.parent!);
     this.node = option.node!;
     this.center = option.center ? option.center : {x: 0, y: 0};
-    this.scale = option.scale?option.scale:1;
+    this.scale = option.scale ? option.scale : 1;
     this.isometric = option.isometric == undefined ? false : option.isometric;
     this.assetSet = option.asset.assetSet!;
     this.assetName = option.asset.assetName!;
@@ -98,6 +101,15 @@ class Asset implements SvgAssetElement {
     this.updatePosition();
   }
 
+  private createHiddenLayer(parent: SVGElement | HTMLElement): SVGElement | null {
+    const hiddenAssetLayer = SVG_BUILDER.createGroup(parent,)
+    if (hiddenAssetLayer) {
+      hiddenAssetLayer.setAttribute('inkscape:label', 'hidden');
+      hiddenAssetLayer.setAttribute('inkscape:groupmode', 'layer');
+      hiddenAssetLayer.setAttribute('style', 'display: none;');
+    }
+    return hiddenAssetLayer;
+  }
 
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
@@ -146,18 +158,34 @@ class Asset implements SvgAssetElement {
       return;
     }
     const self = this;
+    const assetTargetId = `${this.assetSet}:${this.assetName}:${type.name}:${state.name}`;
+    let assetId = this.searchAssetContent(assetTargetId);
+    if (!assetId) {
+      const newAsset = this.createAssetContent(state.content, assetTargetId);
+      if (newAsset) {
+        assetId = assetTargetId;
+      }
+
+    } else {
+
+      //   content.innerHTML = state.content;
+    }
+
+
     if (this.enableHitBox) {
       const hitboxGrp = SVG_BUILDER.createGroup(this.node, {styleClass: `hitbox-grp`});
       const content = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
+
       if (content && hitboxGrp) {
-        content.innerHTML = state.content;
+
+        SVG_BUILDER.createUse(assetId!, content);
         const size = SVG_MATH.size(content);
         SVG_BUILDER.createRect(hitboxGrp, {height: size.height, width: size.width, styleClass: 'hitbox'});
-        this.resolveRef(content);
+        this.generateIds(content);
       }
     } else {
-      this.node.innerHTML = state.content;
-      this.resolveRef(this.node);
+      SVG_BUILDER.createUse(assetId!, this.node!);
+      this.generateIds(this.node);
     }
 
 
@@ -194,6 +222,34 @@ class Asset implements SvgAssetElement {
     this.node.ondragenter = (event) => this.ondragenter(event, self);
   }
 
+
+  private searchAssetContent(assetTargetId: string): string | undefined {
+    if (!this.hiddenAssetLayer) {
+      return undefined;
+    }
+    for (let child of this.hiddenAssetLayer.children) {
+      const childId = child.getAttribute('id');
+      if (childId == assetTargetId) {
+        return assetTargetId;
+      }
+    }
+    return undefined;
+  }
+
+  private createAssetContent(createAssetContent: string, id: string): SVGElement | undefined {
+    console.log('createAssetContent')
+    if (!this.hiddenAssetLayer) {
+      return undefined;
+    }
+    const asset = SVG_BUILDER.createGroup(this.hiddenAssetLayer);
+    if (asset) {
+      asset.setAttribute('id', id);
+      asset.innerHTML = createAssetContent;
+      return asset;
+    }
+    return undefined;
+  }
+
   updateStyleclass() {
     const styleclass = [
       'inu-svg-asset',
@@ -219,41 +275,10 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.translateX(this.node, this.x);
   }
 
-  private resolveRef(node: SVGElement) {
-    const nodes:SVGElement[] = this.searchRef(node);
-    for(let refNode of nodes){
-      this.renderRef(refNode);
-    }
-  }
-  private searchRef(node: SVGElement):SVGElement[] {
-    const result:SVGElement[] = [];
-    const ref = node.getAttribute('ref');
-    if(ref){
-      result.push(node);
-    }
-    else{
-      if(node.children){
-        for(let child of node.children){
-          result.push(...this.searchRef(child as SVGElement))
-        }
-      }
-    }
+  private generateIds(node: SVGElement) {
 
-    return result;
   }
 
-  private renderRef(refNode: SVGElement) {
-    const ref = refNode.getAttribute('ref');
-    if(!ref){
-      return;
-    }
-
-    const parts = ref.split(':');
-    const asset = SVG_ASSETS.getAsset(this.assetSet,this.assetName);
-    let type =asset?.types.find(t=> t.name ==parts[0]);
-    let state = type?.states?.find(s=> s.name == parts[1]);
-//TODO
-  }
   //--------------------------------------------------------------------------------------------------------------------
   // EVENT
   //--------------------------------------------------------------------------------------------------------------------
@@ -285,9 +310,9 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.removeClass(this.node, style);
   }
 
-  moveDrag(position: Point, zoom:number): void {
-    this.x = this.x-(position.x/zoom);
-    this.y = this.y-(position.y/zoom);
+  moveDrag(position: Point, zoom: number): void {
+    this.x = this.x - (position.x / zoom);
+    this.y = this.y - (position.y / zoom);
     this.move({x: this.x, y: this.y});
   }
 
@@ -308,18 +333,17 @@ class Asset implements SvgAssetElement {
     return SVG.MATH.size(this.node);
   }
 
-  private toNumber(value: any):number {
-    if(!value){
+  private toNumber(value: any): number {
+    if (!value) {
       return 0;
     }
-    try{
+    try {
       const realValue = Number(value);
       return realValue;
-    }catch (e){
+    } catch (e) {
       return 0;
     }
   }
-
 
 
 }

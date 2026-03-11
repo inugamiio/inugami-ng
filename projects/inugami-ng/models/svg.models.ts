@@ -70,6 +70,7 @@ export interface SvgAssetDTOOptions {
 
   node?: SVGElement,
   parent?: SVGElement | HTMLElement | null,
+  hiddenAssetsLayer?: SVGElement  | null,
   center?: Point,
   enableHitBox?: boolean,
   isometric?: boolean,
