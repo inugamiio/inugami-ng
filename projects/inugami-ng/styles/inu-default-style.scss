@@ -668,7 +668,7 @@ fieldset{
 .cursor-pointer{
   cursor: pointer;
 }
-.inu-svg-asset{
+svg{
   .top{
     fill: var(--neutral);
   }
@@ -695,18 +695,19 @@ fieldset{
     opacity: 0.17684887;
   }
   .shadow-selected{
-    fill: var(--secondary-light);
+    fill: #006fff;
     stroke: none;
     stroke-width: 0.264999;
     paint-order: stroke fill markers;
     fill-opacity: 1;
     filter: url(#shadow);
-    opacity: 0.17684887;
+    opacity: 0.4;
   }
   .hitbox{
     fill-opacity: 0;
   }
 }
+
 .w10{
      width: 10%;
 }

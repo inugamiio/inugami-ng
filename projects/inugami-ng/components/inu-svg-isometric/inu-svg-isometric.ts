@@ -96,6 +96,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   ratio: number = 1;
 
   parent: HTMLElement | null = null;
+  hiddenAssetLayer: SVGElement | null = null;
   locator: SVGElement | null = null;
   defs: SVGElement | null = null;
   canvas: SVGElement | null = null;
@@ -153,11 +154,18 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
 
     this.defs = SVG_BUILDER.createDefs(container?.nativeElement);
     const gridGrp = SVG_BUILDER.createGroup(container?.nativeElement);
+    this.hiddenAssetLayer = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'hidden-layer'});
     this.locator = SVG_BUILDER.createGroup(container?.nativeElement, {styleClass: 'locator'});
     this.canvas = SVG_BUILDER.createGroup(this.locator, {styleClass: 'canvas'});
     container.nativeElement.onmousedown = (event: MouseEvent) => this.trackMouse(true, event);
     container.nativeElement.onmouseup = (event: MouseEvent) => this.trackMouse(false, event);
     container.nativeElement.onmousemove = (event: MouseEvent) => this.moveViewport(event);
+
+    if(this.hiddenAssetLayer){
+      this.hiddenAssetLayer.setAttribute('inkscape:label', 'hidden');
+      this.hiddenAssetLayer.setAttribute('inkscape:groupmode', 'layer');
+      this.hiddenAssetLayer.setAttribute('style', 'display: hidden;');
+    }
 
     if (this.defs) {
       this.createGridDefs(this.defs);

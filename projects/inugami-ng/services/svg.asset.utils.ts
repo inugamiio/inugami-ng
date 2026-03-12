@@ -1,5 +1,6 @@
 import {Point, Size, SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement} from 'inugami-ng/models';
 import {SVG, SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from "./svg.utils";
+import {SvgAsset, SvgAssetState, SvgAssetType} from 'inugami-svg-assets';
 
 
 export class SvgAssetUtils {
@@ -24,6 +25,8 @@ export class SvgAssetUtils {
 //======================================================================================================================
 const DEFAULT = 'default';
 
+const SELECTED = 'selected';
+
 class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // ATTRIBUTES
@@ -40,6 +43,7 @@ class Asset implements SvgAssetElement {
   scale: number;
   size: number;
   state: string;
+  previousState: string | undefined = undefined;
   styleClass: string;
   title: string;
   type: string;
@@ -76,11 +80,12 @@ class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
   //--------------------------------------------------------------------------------------------------------------------
+
   constructor(option: SvgAssetDTOOptions) {
     this.parent = option.parent!;
     this.node = option.node!;
     this.center = option.center ? option.center : {x: 0, y: 0};
-    this.scale = option.scale?option.scale:1;
+    this.scale = option.scale ? option.scale : 1;
     this.isometric = option.isometric == undefined ? false : option.isometric;
     this.assetSet = option.asset.assetSet!;
     this.assetName = option.asset.assetName!;
@@ -96,7 +101,9 @@ class Asset implements SvgAssetElement {
     this.updateStyleclass();
     this.processUpdateRender();
     this.updatePosition();
+
   }
+
 
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -126,14 +133,7 @@ class Asset implements SvgAssetElement {
 
   private processUpdateRender() {
     this.node.replaceChildren();
-    let assetContent = SVG_ASSETS.getAsset(this.assetSet, this.assetName);
-    if (!assetContent) {
-      return;
-    }
-    let type = assetContent.types.find(t => t.name == this.type);
-    if (!type) {
-      type = assetContent.types.find(t => t.name == DEFAULT);
-    }
+    const type = this.findAssetType();
     if (!type) {
       return;
     }
@@ -146,53 +146,76 @@ class Asset implements SvgAssetElement {
       return;
     }
     const self = this;
+    let assetStateContent: SVGElement | null | undefined = undefined;
+
     if (this.enableHitBox) {
       const hitboxGrp = SVG_BUILDER.createGroup(this.node, {styleClass: `hitbox-grp`});
-      const content = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
-      if (content && hitboxGrp) {
-        content.innerHTML = state.content;
-        const size = SVG_MATH.size(content);
+      assetStateContent = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
+
+      if (this.node && hitboxGrp) {
+        const size = SVG_MATH.size(this.node);
         SVG_BUILDER.createRect(hitboxGrp, {height: size.height, width: size.width, styleClass: 'hitbox'});
-        this.resolveRef(content);
       }
     } else {
-      this.node.innerHTML = state.content;
-      this.resolveRef(this.node);
+      assetStateContent = this.node;
     }
 
-
-    this.node.onmouseenter = (event) => this.onover(event, self);
-    this.node.onclick = (event) => this.onclick(event, self);
-    this.node.onmousedown = (event) => {
-      this.drag = true;
-      this.onmousedown(event, self);
-    }
-    this.node.onmouseup = (event: MouseEvent) => {
-      this.drag = false;
-    }
-    this.node.onmousemove = (event) => this.onmousemove(event, self);
-    this.node.onmouseleave = (event) => this.onmouseleave(event, self);
-    this.node.ondblclick = (event) => this.ondblclick(event, self);
-    this.node.ondrag = (event) => {
-      this.drag = true;
-      this.ondrag(event, self);
-    };
-    this.node.ondrop = (event) => this.ondrop(event, self);
-    this.node.ondragend = (event) => {
-      this.drag = false;
-      this.ondragend(event, self);
-    }
-    this.node.ondragstart = (event) => {
-      this.drag = true;
-      this.ondragstart(event, self);
-    };
-    this.node.ondragleave = (event) => {
-      this.drag = false;
-      this.ondragleave(event, self);
-    };
-    this.node.ondragover = (event) => this.ondragover(event, self);
-    this.node.ondragenter = (event) => this.ondragenter(event, self);
+    this.renderContent(assetStateContent, state);
+    this.bindEvent(this.node);
   }
+
+
+  private renderContent(content: SVGElement | null, assetContent: SvgAssetState) {
+    if (!content) {
+      return;
+    }
+    content.innerHTML = assetContent.content;
+    this.replaceUse(content);
+  }
+
+  private replaceUse(node: SVGElement, parent?: SVGElement) {
+    if (node.nodeName == 'use') {
+      this.renderUseTarget(node, parent)
+      node.remove();
+    } else {
+      for (let child of node.children) {
+        this.replaceUse(child as SVGElement, node);
+      }
+    }
+  }
+
+  private renderUseTarget(node: SVGElement, parent?: SVGElement): void {
+    const href = node.getAttribute('href');
+    if (!href || !parent) {
+      return;
+    }
+    this.processRenderUseTarget(href, parent);
+  }
+
+
+  private processRenderUseTarget(id: string, layer: SVGElement | null) {
+    const parts = id.replaceAll('#', '').split(':');
+    let asset: SvgAsset | undefined = undefined;
+    if (parts.length >= 4) {
+      asset = SVG_ASSETS.getAsset(parts[0], parts[1]);
+    }
+    if (asset) {
+      const type = asset.types.find(t => t.name == parts[2]);
+      let state: SvgAssetState | undefined = undefined;
+      if (type) {
+        state = type.states.find(s => s.name == parts[3]);
+      }
+      if (state) {
+        const grp = SVG_BUILDER.createGroup(layer);
+        if (grp) {
+          grp.setAttribute('id', [parts[0], parts[1], parts[2], parts[3]].join(':'));
+          grp.innerHTML = state.content;
+        }
+
+      }
+    }
+  }
+
 
   updateStyleclass() {
     const styleclass = [
@@ -219,44 +242,46 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.translateX(this.node, this.x);
   }
 
-  private resolveRef(node: SVGElement) {
-    const nodes:SVGElement[] = this.searchRef(node);
-    for(let refNode of nodes){
-      this.renderRef(refNode);
-    }
-  }
-  private searchRef(node: SVGElement):SVGElement[] {
-    const result:SVGElement[] = [];
-    const ref = node.getAttribute('ref');
-    if(ref){
-      result.push(node);
-    }
-    else{
-      if(node.children){
-        for(let child of node.children){
-          result.push(...this.searchRef(child as SVGElement))
-        }
-      }
-    }
 
-    return result;
-  }
-
-  private renderRef(refNode: SVGElement) {
-    const ref = refNode.getAttribute('ref');
-    if(!ref){
-      return;
-    }
-
-    const parts = ref.split(':');
-    const asset = SVG_ASSETS.getAsset(this.assetSet,this.assetName);
-    let type =asset?.types.find(t=> t.name ==parts[0]);
-    let state = type?.states?.find(s=> s.name == parts[1]);
-//TODO
-  }
   //--------------------------------------------------------------------------------------------------------------------
   // EVENT
   //--------------------------------------------------------------------------------------------------------------------
+  private bindEvent(node: SVGElement) {
+    const self = this;
+    this.node.onmouseenter = (event) => this.onover(event, self);
+    this.node.onclick = (event) => this.onclick(event, self);
+    this.node.onmousedown = (event) => {
+      this.drag = true;
+      this.onSelected();
+      this.onmousedown(event, self);
+    }
+    this.node.onmouseup = (event: MouseEvent) => {
+      this.drag = false;
+      this.onDeselected();
+    }
+    this.node.onmousemove = (event) => this.onmousemove(event, self);
+    this.node.onmouseleave = (event) => this.onmouseleave(event, self);
+    this.node.ondblclick = (event) => this.ondblclick(event, self);
+    this.node.ondrag = (event) => {
+      this.drag = true;
+      this.ondrag(event, self);
+    };
+    this.node.ondrop = (event) => this.ondrop(event, self);
+    this.node.ondragend = (event) => {
+      this.drag = false;
+      this.ondragend(event, self);
+    }
+    this.node.ondragstart = (event) => {
+      this.drag = true;
+      this.ondragstart(event, self);
+    };
+    this.node.ondragleave = (event) => {
+      this.drag = false;
+      this.ondragleave(event, self);
+    };
+    this.node.ondragover = (event) => this.ondragover(event, self);
+    this.node.ondragenter = (event) => this.ondragenter(event, self);
+  }
 
   updateValue(value: SvgAssetDTO) {
     this.assetSet = value.assetSet;
@@ -269,6 +294,15 @@ class Asset implements SvgAssetElement {
     this.y = this.toNumber(value.y);
   }
 
+
+  private onSelected() {
+    this.stateChange(SELECTED);
+
+  }
+
+  private onDeselected() {
+    this.stateRevert();
+  }
 
   //--------------------------------------------------------------------------------------------------------------------
   // ACTIONS
@@ -285,9 +319,9 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.removeClass(this.node, style);
   }
 
-  moveDrag(position: Point, zoom:number): void {
-    this.x = this.x-(position.x/zoom);
-    this.y = this.y-(position.y/zoom);
+  moveDrag(position: Point, zoom: number): void {
+    this.x = this.x - (position.x / zoom);
+    this.y = this.y - (position.y / zoom);
     this.move({x: this.x, y: this.y});
   }
 
@@ -296,6 +330,24 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.translateY(this.node, position.y);
 
   }
+
+  stateChange(state: string): void {
+    const type = this.findAssetType();
+    const newState = type?.states.find(s => s.name == state);
+    if (newState) {
+      this.previousState = this.state;
+      this.state = newState.name;
+      this.processUpdateRender();
+    }
+  }
+  stateRevert(): void {
+    if(this.previousState){
+      this.state = this.previousState ? this.previousState : DEFAULT;
+      this.processUpdateRender();
+      this.previousState = undefined;
+    }
+  }
+
 
   //--------------------------------------------------------------------------------------------------------------------
   // GETTERS
@@ -308,18 +360,28 @@ class Asset implements SvgAssetElement {
     return SVG.MATH.size(this.node);
   }
 
-  private toNumber(value: any):number {
-    if(!value){
+  private toNumber(value: any): number {
+    if (!value) {
       return 0;
     }
-    try{
+    try {
       const realValue = Number(value);
       return realValue;
-    }catch (e){
+    } catch (e) {
       return 0;
     }
   }
 
 
-
+  private findAssetType(): SvgAssetType | undefined {
+    let assetContent = SVG_ASSETS.getAsset(this.assetSet, this.assetName);
+    if (!assetContent) {
+      return;
+    }
+    let type = assetContent.types.find(t => t.name == this.type);
+    if (!type) {
+      type = assetContent.types.find(t => t.name == DEFAULT);
+    }
+    return type;
+  }
 }

@@ -44,6 +44,7 @@ export interface SvgBuilder {
   createFilter: (parentDefs: SVGElement | HTMLElement | null, id: string, option?: SvgFilterOption) => SVGElement | null;
   createDefsPattern: (parent: SVGElement | HTMLElement | null, id: string, option?: SvgDefsPatternOption) => SVGElement | null;
   createGroup: (parent: SVGElement | HTMLElement | null, option?: SvgOptionalOption) => SVGElement | null;
+  createUse: (id:string,parent: SVGElement | HTMLElement | null, option?: SvgOptionalOption) => SVGElement | null;
   createText: (label: string, parent: SVGElement, option?: SvgOptionalOption) => SVGElement | null;
   createLine: (vector: Vector, parent: SVGElement, option?: SvgOptionalOption) => SVGElement | null;
   createRect: (parent: SVGElement, option?: RectOption) => SVGElement | null;
