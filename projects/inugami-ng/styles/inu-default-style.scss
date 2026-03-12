@@ -668,7 +668,7 @@ fieldset{
 .cursor-pointer{
   cursor: pointer;
 }
-.inu-svg-asset{
+svg{
   .top{
     fill: var(--neutral);
   }
@@ -707,6 +707,7 @@ fieldset{
     fill-opacity: 0;
   }
 }
+
 .w10{
      width: 10%;
 }

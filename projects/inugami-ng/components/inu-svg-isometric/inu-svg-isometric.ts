@@ -164,7 +164,7 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
     if(this.hiddenAssetLayer){
       this.hiddenAssetLayer.setAttribute('inkscape:label', 'hidden');
       this.hiddenAssetLayer.setAttribute('inkscape:groupmode', 'layer');
-      this.hiddenAssetLayer.setAttribute('style', 'display: none;');
+      this.hiddenAssetLayer.setAttribute('style', 'display: hidden;');
     }
 
     if (this.defs) {

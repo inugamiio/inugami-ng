@@ -1,5 +1,6 @@
 import {Point, Size, SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement} from 'inugami-ng/models';
 import {SVG, SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from "./svg.utils";
+import {SvgAsset, SvgAssetState} from 'inugami-svg-assets';
 
 
 export class SvgAssetUtils {
@@ -102,13 +103,12 @@ class Asset implements SvgAssetElement {
   }
 
   private createHiddenLayer(parent: SVGElement | HTMLElement): SVGElement | null {
-    const hiddenAssetLayer = SVG_BUILDER.createGroup(parent,)
-    if (hiddenAssetLayer) {
-      hiddenAssetLayer.setAttribute('inkscape:label', 'hidden');
+    const hiddenAssetLayer = SVG_BUILDER.createGroup(parent, {styleClass:'hidden-layer'})
+    const result = SVG_BUILDER.createGroup(hiddenAssetLayer)
+    if (hiddenAssetLayer && result) {
       hiddenAssetLayer.setAttribute('inkscape:groupmode', 'layer');
-      hiddenAssetLayer.setAttribute('style', 'display: none;');
     }
-    return hiddenAssetLayer;
+    return result;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -165,10 +165,6 @@ class Asset implements SvgAssetElement {
       if (newAsset) {
         assetId = assetTargetId;
       }
-
-    } else {
-
-      //   content.innerHTML = state.content;
     }
 
 
@@ -177,7 +173,6 @@ class Asset implements SvgAssetElement {
       const content = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
 
       if (content && hitboxGrp) {
-
         SVG_BUILDER.createUse(assetId!, content);
         const size = SVG_MATH.size(content);
         SVG_BUILDER.createRect(hitboxGrp, {height: size.height, width: size.width, styleClass: 'hitbox'});
@@ -188,6 +183,7 @@ class Asset implements SvgAssetElement {
       this.generateIds(this.node);
     }
 
+    this.renderUseTarget(this.hiddenAssetLayer!, this.hiddenAssetLayer);
 
     this.node.onmouseenter = (event) => this.onover(event, self);
     this.node.onclick = (event) => this.onclick(event, self);
@@ -237,7 +233,6 @@ class Asset implements SvgAssetElement {
   }
 
   private createAssetContent(createAssetContent: string, id: string): SVGElement | undefined {
-    console.log('createAssetContent')
     if (!this.hiddenAssetLayer) {
       return undefined;
     }
@@ -275,10 +270,59 @@ class Asset implements SvgAssetElement {
     SVG_TRANSFORM.translateX(this.node, this.x);
   }
 
+
+  private renderUseTarget(node: SVGElement, hiddenAssetLayer: SVGElement | null) {
+    const ids : string[] = this.extractUseId(node);
+    if(ids.length>0){
+      for(let id of ids){
+        this.processRenderUseTarget(id, hiddenAssetLayer);
+      }
+    }
+  }
+
+  private processRenderUseTarget(id: string, hiddenAssetLayer: SVGElement | null) {
+    const parts = id.replaceAll('#','').split(':');
+    let asset : SvgAsset | undefined =  undefined;
+    if(parts.length>=4){
+      asset = SVG_ASSETS.getAsset(parts[0],parts[1]);
+    }
+    if(asset){
+      const type = asset.types.find(t=> t.name==parts[2]);
+      let state:SvgAssetState|undefined = undefined;
+      if(type){
+        state=  type.states.find(s=> s.name==parts[3]);
+      }
+      if(state){
+        const grp = SVG_BUILDER.createGroup(hiddenAssetLayer);
+        if(grp){
+          grp.setAttribute('id', [parts[0],parts[1],parts[2],parts[3]].join(':'));
+          grp.innerHTML = state.content;
+        }
+
+      }
+    }
+    console.log('parts',parts)
+  }
+
+  private extractUseId(node: SVGElement) {
+    const result : string[] = [];
+
+    if(node.nodeName == 'use'){
+      const value = node.getAttribute('href');
+      if(value){
+        result.push(value);
+        return result;
+      }
+    }
+    for(let child of node.children){
+      result.push(...this.extractUseId(child as SVGElement));
+    }
+    return result;
+  }
+
   private generateIds(node: SVGElement) {
 
   }
-
   //--------------------------------------------------------------------------------------------------------------------
   // EVENT
   //--------------------------------------------------------------------------------------------------------------------
@@ -344,6 +388,7 @@ class Asset implements SvgAssetElement {
       return 0;
     }
   }
+
 
 
 }
