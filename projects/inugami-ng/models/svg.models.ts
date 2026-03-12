@@ -70,7 +70,6 @@ export interface SvgAssetDTOOptions {
 
   node?: SVGElement,
   parent?: SVGElement | HTMLElement | null,
-  hiddenAssetsLayer?: SVGElement  | null,
   center?: Point,
   enableHitBox?: boolean,
   isometric?: boolean,
@@ -99,6 +98,8 @@ export interface SvgAssetElement {
   move(point: Point): void;
   getComponentSize(): Size;
   isDrag(): boolean;
+  stateChange(state:string) : void;
+  stateRevert():void;
 
   onover: (event: MouseEvent, asset: SvgAssetElement) => void;
   onclick: (event: PointerEvent, asset: SvgAssetElement) => void;

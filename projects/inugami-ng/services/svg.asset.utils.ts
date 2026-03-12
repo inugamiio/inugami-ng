@@ -1,6 +1,6 @@
 import {Point, Size, SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement} from 'inugami-ng/models';
 import {SVG, SVG_ASSETS, SVG_BUILDER, SVG_MATH, SVG_TRANSFORM} from "./svg.utils";
-import {SvgAsset, SvgAssetState} from 'inugami-svg-assets';
+import {SvgAsset, SvgAssetState, SvgAssetType} from 'inugami-svg-assets';
 
 
 export class SvgAssetUtils {
@@ -25,6 +25,8 @@ export class SvgAssetUtils {
 //======================================================================================================================
 const DEFAULT = 'default';
 
+const SELECTED = 'selected';
+
 class Asset implements SvgAssetElement {
   //--------------------------------------------------------------------------------------------------------------------
   // ATTRIBUTES
@@ -38,10 +40,10 @@ class Asset implements SvgAssetElement {
   name: string;
   node: SVGElement;
   parent: SVGElement | HTMLElement;
-  hiddenAssetLayer!: SVGElement | null;
   scale: number;
   size: number;
   state: string;
+  previousState: string | undefined = undefined;
   styleClass: string;
   title: string;
   type: string;
@@ -81,7 +83,6 @@ class Asset implements SvgAssetElement {
 
   constructor(option: SvgAssetDTOOptions) {
     this.parent = option.parent!;
-    this.hiddenAssetLayer = option.hiddenAssetsLayer ? option.hiddenAssetsLayer : this.createHiddenLayer(option.parent!);
     this.node = option.node!;
     this.center = option.center ? option.center : {x: 0, y: 0};
     this.scale = option.scale ? option.scale : 1;
@@ -100,16 +101,10 @@ class Asset implements SvgAssetElement {
     this.updateStyleclass();
     this.processUpdateRender();
     this.updatePosition();
+
   }
 
-  private createHiddenLayer(parent: SVGElement | HTMLElement): SVGElement | null {
-    const hiddenAssetLayer = SVG_BUILDER.createGroup(parent, {styleClass:'hidden-layer'})
-    const result = SVG_BUILDER.createGroup(hiddenAssetLayer)
-    if (hiddenAssetLayer && result) {
-      hiddenAssetLayer.setAttribute('inkscape:groupmode', 'layer');
-    }
-    return result;
-  }
+
 
   //--------------------------------------------------------------------------------------------------------------------
   // CONSTRUCTOR
@@ -138,14 +133,7 @@ class Asset implements SvgAssetElement {
 
   private processUpdateRender() {
     this.node.replaceChildren();
-    let assetContent = SVG_ASSETS.getAsset(this.assetSet, this.assetName);
-    if (!assetContent) {
-      return;
-    }
-    let type = assetContent.types.find(t => t.name == this.type);
-    if (!type) {
-      type = assetContent.types.find(t => t.name == DEFAULT);
-    }
+    const type = this.findAssetType();
     if (!type) {
       return;
     }
@@ -158,92 +146,76 @@ class Asset implements SvgAssetElement {
       return;
     }
     const self = this;
-    const assetTargetId = `${this.assetSet}:${this.assetName}:${type.name}:${state.name}`;
-    let assetId = this.searchAssetContent(assetTargetId);
-    if (!assetId) {
-      const newAsset = this.createAssetContent(state.content, assetTargetId);
-      if (newAsset) {
-        assetId = assetTargetId;
-      }
-    }
-
+    let assetStateContent: SVGElement | null | undefined = undefined;
 
     if (this.enableHitBox) {
       const hitboxGrp = SVG_BUILDER.createGroup(this.node, {styleClass: `hitbox-grp`});
-      const content = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
+      assetStateContent = SVG_BUILDER.createGroup(hitboxGrp, {styleClass: `content`});
 
-      if (content && hitboxGrp) {
-        SVG_BUILDER.createUse(assetId!, content);
-        const size = SVG_MATH.size(content);
+      if (this.node && hitboxGrp) {
+        const size = SVG_MATH.size(this.node);
         SVG_BUILDER.createRect(hitboxGrp, {height: size.height, width: size.width, styleClass: 'hitbox'});
-        this.generateIds(content);
       }
     } else {
-      SVG_BUILDER.createUse(assetId!, this.node!);
-      this.generateIds(this.node);
+      assetStateContent = this.node;
     }
 
-    this.renderUseTarget(this.hiddenAssetLayer!, this.hiddenAssetLayer);
-
-    this.node.onmouseenter = (event) => this.onover(event, self);
-    this.node.onclick = (event) => this.onclick(event, self);
-    this.node.onmousedown = (event) => {
-      this.drag = true;
-      this.onmousedown(event, self);
-    }
-    this.node.onmouseup = (event: MouseEvent) => {
-      this.drag = false;
-    }
-    this.node.onmousemove = (event) => this.onmousemove(event, self);
-    this.node.onmouseleave = (event) => this.onmouseleave(event, self);
-    this.node.ondblclick = (event) => this.ondblclick(event, self);
-    this.node.ondrag = (event) => {
-      this.drag = true;
-      this.ondrag(event, self);
-    };
-    this.node.ondrop = (event) => this.ondrop(event, self);
-    this.node.ondragend = (event) => {
-      this.drag = false;
-      this.ondragend(event, self);
-    }
-    this.node.ondragstart = (event) => {
-      this.drag = true;
-      this.ondragstart(event, self);
-    };
-    this.node.ondragleave = (event) => {
-      this.drag = false;
-      this.ondragleave(event, self);
-    };
-    this.node.ondragover = (event) => this.ondragover(event, self);
-    this.node.ondragenter = (event) => this.ondragenter(event, self);
+    this.renderContent(assetStateContent, state);
+    this.bindEvent(this.node);
   }
 
 
-  private searchAssetContent(assetTargetId: string): string | undefined {
-    if (!this.hiddenAssetLayer) {
-      return undefined;
+  private renderContent(content: SVGElement | null, assetContent: SvgAssetState) {
+    if (!content) {
+      return;
     }
-    for (let child of this.hiddenAssetLayer.children) {
-      const childId = child.getAttribute('id');
-      if (childId == assetTargetId) {
-        return assetTargetId;
+    content.innerHTML = assetContent.content;
+    this.replaceUse(content);
+  }
+
+  private replaceUse(node: SVGElement, parent?: SVGElement) {
+    if (node.nodeName == 'use') {
+      this.renderUseTarget(node, parent)
+      node.remove();
+    } else {
+      for (let child of node.children) {
+        this.replaceUse(child as SVGElement, node);
       }
     }
-    return undefined;
   }
 
-  private createAssetContent(createAssetContent: string, id: string): SVGElement | undefined {
-    if (!this.hiddenAssetLayer) {
-      return undefined;
+  private renderUseTarget(node: SVGElement, parent?: SVGElement): void {
+    const href = node.getAttribute('href');
+    if (!href || !parent) {
+      return;
     }
-    const asset = SVG_BUILDER.createGroup(this.hiddenAssetLayer);
-    if (asset) {
-      asset.setAttribute('id', id);
-      asset.innerHTML = createAssetContent;
-      return asset;
-    }
-    return undefined;
+    this.processRenderUseTarget(href, parent);
   }
+
+
+  private processRenderUseTarget(id: string, layer: SVGElement | null) {
+    const parts = id.replaceAll('#', '').split(':');
+    let asset: SvgAsset | undefined = undefined;
+    if (parts.length >= 4) {
+      asset = SVG_ASSETS.getAsset(parts[0], parts[1]);
+    }
+    if (asset) {
+      const type = asset.types.find(t => t.name == parts[2]);
+      let state: SvgAssetState | undefined = undefined;
+      if (type) {
+        state = type.states.find(s => s.name == parts[3]);
+      }
+      if (state) {
+        const grp = SVG_BUILDER.createGroup(layer);
+        if (grp) {
+          grp.setAttribute('id', [parts[0], parts[1], parts[2], parts[3]].join(':'));
+          grp.innerHTML = state.content;
+        }
+
+      }
+    }
+  }
+
 
   updateStyleclass() {
     const styleclass = [
@@ -271,61 +243,45 @@ class Asset implements SvgAssetElement {
   }
 
 
-  private renderUseTarget(node: SVGElement, hiddenAssetLayer: SVGElement | null) {
-    const ids : string[] = this.extractUseId(node);
-    if(ids.length>0){
-      for(let id of ids){
-        this.processRenderUseTarget(id, hiddenAssetLayer);
-      }
-    }
-  }
-
-  private processRenderUseTarget(id: string, hiddenAssetLayer: SVGElement | null) {
-    const parts = id.replaceAll('#','').split(':');
-    let asset : SvgAsset | undefined =  undefined;
-    if(parts.length>=4){
-      asset = SVG_ASSETS.getAsset(parts[0],parts[1]);
-    }
-    if(asset){
-      const type = asset.types.find(t=> t.name==parts[2]);
-      let state:SvgAssetState|undefined = undefined;
-      if(type){
-        state=  type.states.find(s=> s.name==parts[3]);
-      }
-      if(state){
-        const grp = SVG_BUILDER.createGroup(hiddenAssetLayer);
-        if(grp){
-          grp.setAttribute('id', [parts[0],parts[1],parts[2],parts[3]].join(':'));
-          grp.innerHTML = state.content;
-        }
-
-      }
-    }
-    console.log('parts',parts)
-  }
-
-  private extractUseId(node: SVGElement) {
-    const result : string[] = [];
-
-    if(node.nodeName == 'use'){
-      const value = node.getAttribute('href');
-      if(value){
-        result.push(value);
-        return result;
-      }
-    }
-    for(let child of node.children){
-      result.push(...this.extractUseId(child as SVGElement));
-    }
-    return result;
-  }
-
-  private generateIds(node: SVGElement) {
-
-  }
   //--------------------------------------------------------------------------------------------------------------------
   // EVENT
   //--------------------------------------------------------------------------------------------------------------------
+  private bindEvent(node: SVGElement) {
+    const self = this;
+    this.node.onmouseenter = (event) => this.onover(event, self);
+    this.node.onclick = (event) => this.onclick(event, self);
+    this.node.onmousedown = (event) => {
+      this.drag = true;
+      this.onSelected();
+      this.onmousedown(event, self);
+    }
+    this.node.onmouseup = (event: MouseEvent) => {
+      this.drag = false;
+      this.onDeselected();
+    }
+    this.node.onmousemove = (event) => this.onmousemove(event, self);
+    this.node.onmouseleave = (event) => this.onmouseleave(event, self);
+    this.node.ondblclick = (event) => this.ondblclick(event, self);
+    this.node.ondrag = (event) => {
+      this.drag = true;
+      this.ondrag(event, self);
+    };
+    this.node.ondrop = (event) => this.ondrop(event, self);
+    this.node.ondragend = (event) => {
+      this.drag = false;
+      this.ondragend(event, self);
+    }
+    this.node.ondragstart = (event) => {
+      this.drag = true;
+      this.ondragstart(event, self);
+    };
+    this.node.ondragleave = (event) => {
+      this.drag = false;
+      this.ondragleave(event, self);
+    };
+    this.node.ondragover = (event) => this.ondragover(event, self);
+    this.node.ondragenter = (event) => this.ondragenter(event, self);
+  }
 
   updateValue(value: SvgAssetDTO) {
     this.assetSet = value.assetSet;
@@ -338,6 +294,15 @@ class Asset implements SvgAssetElement {
     this.y = this.toNumber(value.y);
   }
 
+
+  private onSelected() {
+    this.stateChange(SELECTED);
+
+  }
+
+  private onDeselected() {
+    this.stateRevert();
+  }
 
   //--------------------------------------------------------------------------------------------------------------------
   // ACTIONS
@@ -366,6 +331,24 @@ class Asset implements SvgAssetElement {
 
   }
 
+  stateChange(state: string): void {
+    const type = this.findAssetType();
+    const newState = type?.states.find(s => s.name == state);
+    if (newState) {
+      this.previousState = this.state;
+      this.state = newState.name;
+      this.processUpdateRender();
+    }
+  }
+  stateRevert(): void {
+    if(this.previousState){
+      this.state = this.previousState ? this.previousState : DEFAULT;
+      this.processUpdateRender();
+      this.previousState = undefined;
+    }
+  }
+
+
   //--------------------------------------------------------------------------------------------------------------------
   // GETTERS
   //--------------------------------------------------------------------------------------------------------------------
@@ -390,5 +373,15 @@ class Asset implements SvgAssetElement {
   }
 
 
-
+  private findAssetType(): SvgAssetType | undefined {
+    let assetContent = SVG_ASSETS.getAsset(this.assetSet, this.assetName);
+    if (!assetContent) {
+      return;
+    }
+    let type = assetContent.types.find(t => t.name == this.type);
+    if (!type) {
+      type = assetContent.types.find(t => t.name == DEFAULT);
+    }
+    return type;
+  }
 }

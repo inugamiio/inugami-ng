@@ -10,6 +10,7 @@ import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuSvgIsometric} from 'inugami-ng/components/inu-svg-isometric';
 import {FieldTree, form, FormField} from '@angular/forms/signals';
 import {SvgLayerDTO} from "inugami-ng/models";
+import {InuIcon} from 'inugami-icons';
 
 
 interface MyFormModel {
@@ -28,7 +29,8 @@ interface MyFormModel {
     InuTableFlexRow,
     InuCode,
     InuSvgIsometric,
-    FormField
+    FormField,
+    InuIcon
   ]
 })
 export class InuSvgIsometricView {
