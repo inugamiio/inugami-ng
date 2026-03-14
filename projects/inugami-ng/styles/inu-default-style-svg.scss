@@ -1,0 +1,39 @@
+svg{
+  .top{
+    fill: var(--neutral);
+  }
+  .bottom{
+    fill: var(--neutral-dark-extra);
+  }
+  .left{
+    fill: var(--neutral-dark);
+  }
+  .right{
+    fill: var(--neutral-light);
+  }
+  .front{
+    fill: var(--neutral-light-extra);
+  }
+  .shadow{
+    fill: var(--neutral-dark-extra);
+    fill: #241f31;
+    stroke: none;
+    stroke-width: 0.264999;
+    paint-order: stroke fill markers;
+    fill-opacity: 1;
+    filter: url(#shadow);
+    opacity: 0.17684887;
+  }
+  .shadow-selected{
+    fill: #006fff;
+    stroke: none;
+    stroke-width: 0.264999;
+    paint-order: stroke fill markers;
+    fill-opacity: 1;
+    filter: url(#shadow);
+    opacity: 0.4;
+  }
+  .hitbox{
+    fill-opacity: 0;
+  }
+}

@@ -1,0 +1,29 @@
+.form-container{
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+}
+
+.form-row{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 2rem;
+}
+
+.form-row-col{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.form-cell{
+  display: flex;
+  flex-direction: row;
+}
+.form-cell-col{
+  display: flex;
+  flex-direction: column;
+}

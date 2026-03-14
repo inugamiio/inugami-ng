@@ -24,7 +24,23 @@
         </fieldset>
       }
 
+      <fieldset class="chooseColor">
+        <legend>Choose color</legend>
+        <div>
+          <select name="colorPalette" (change)="onColorPaletteChanged($event)" >
+            @for (key of allColorKeys(); track key; ) {
+              <option [value]="key">{{ key }}</option>
+            }
+          </select>
+          <input  type="number" min="0" max="100" (change)="onPercentChanged($event)"/>
+        </div>
+        <div class="selected-color">
+          <div class="color"  [style]="`background-color:${color()}`" ></div>
+        </div>
+        <div>
 
+        </div>
+      </fieldset>
     </article>
 
 

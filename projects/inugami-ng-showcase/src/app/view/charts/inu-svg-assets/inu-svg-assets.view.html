@@ -1,0 +1,90 @@
+<section>
+  <header>
+    <h1>Inugami-NG : SVG assets</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+      </header>
+
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+      <div class="svg-asset-panel">
+        <menu>
+          @for (assetSet of assetSetsNames(); track assetSet) {
+            <div class="asset-set">
+              <div class="asset-set-name">{{ assetSet }}</div>
+            </div>
+            <div class="asset-set-assets">
+              @for (asset of getAssets(assetSet); track asset.name) {
+                <div class="asset-set-asset" (click)="selectAsset(assetSet,asset)">
+                  <div style="height: 32px; width: 32px">
+                    <inu-svg-asset [assetSet]="assetSet"  [asset]="asset"></inu-svg-asset>
+                  </div>
+                  <div class="asset-set-asset-name">{{ asset.name }}</div>
+                </div>
+              }
+            </div>
+          }
+
+        </menu>
+        <div class="display">
+          @if (asset()) {
+            <fieldset>
+              <legend class="legend-asset-name">Asset : {{asset()?.name!}}</legend>
+              <div class="asset-display-grp">
+                <div class="asset-display" style="height: 256px; width: 256px">
+                  <inu-svg-asset [assetSet]="assetSet()" [asset]="asset()" [type]="type()" [state]="state()"></inu-svg-asset>
+                </div>
+              </div>
+            </fieldset>
+
+
+
+            <div class="asset-display-type">
+              <fieldset class="w100">
+                <legend class="legend-types">Types</legend>
+                <ul>
+                  @for (type of asset()?.types; track type.name) {
+                    <li>
+                      <div class="asset-display-type-name">{{ type.name }}</div>
+
+                      <fieldset>
+                        <legend  class="legend-states">States</legend>
+                        <ul class="asset-display-state">
+                          @for (state of type.states; track state.name) {
+                            <li>
+                              <inu-button [label]="state.name" (click)="selectState(type.name,state.name )"></inu-button>
+                            </li>
+                          }
+                        </ul>
+                      </fieldset>
+                    </li>
+                  }
+                </ul>
+              </fieldset>
+
+            </div>
+          }
+        </div>
+      </div>
+
+    </article>
+
+
+  </main>
+
+
+</section>

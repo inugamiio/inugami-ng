@@ -1,0 +1,45 @@
+/*
+ */
+::ng-deep{
+
+  .inu-svg-isometric-grid-background{
+    rect {
+      fill: none;
+      stroke-width: 1;
+      paint-order: stroke;
+      stroke: var(--neutral-light);
+      stroke-opacity: 1;
+    }
+    path{
+      fill: none;
+      stroke-width: 1;
+      paint-order: stroke;
+      stroke: var(--neutral-light);
+      stroke-opacity: 1;
+    }
+  }
+  .hud{
+    .toolbar{
+      .inu-svg-asset{
+        &.over{
+          fill: var(--secondary);
+        }
+      }
+    }
+  }
+
+
+}
+
+.inu-svg-isometric-debug{
+  display: block;
+  .inu-svg-isometric-debug-content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    dl{
+      width: 33%;
+    }
+  }
+
+}

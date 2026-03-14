@@ -1,6 +1,6 @@
 {
   "name": "inugami-ng",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "license": "GPL-3.0-only",
   "description": "Inugami project angular library",
   "keywords": ["inugami",  "angular", "components"],
@@ -11,10 +11,12 @@
   },
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
+    "build": "ng build && npm run compile-css",
+    "build-ng": "ng build inugami-ng;npm run compile-css",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start": "ng serve --port 4300"
+    "start": "ng serve --port 4300",
+    "compile-css": "sass projects/inugami-ng/styles/inu-default-style.scss dist/inugami-ng/styles/inu-default-style.css --no-source-map --style=compressed"
   },
   "prettier": {
     "printWidth": 100,
@@ -44,7 +46,9 @@
     "highlight.js": "^11.11.1",
     "ngx-highlight-js": "^11.0.0",
     "ngx-google-analytics":"14.0.1",
-    "inugami-icons":"0.0.12"
+    "inugami-icons":"0.0.12",
+    "inugami-svg-assets":"0.0.6",
+    "saas": "^1.0.0"
   },
   "devDependencies": {
     "@angular/build": "^21.0.5",

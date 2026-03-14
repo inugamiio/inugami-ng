@@ -32,7 +32,7 @@
       </header>
 
 
-      <div style="height: 400px; width: 500px;">
+      <div style="height: 35rem;" class="svg-graph">
         <inu-svg-switzerland></inu-svg-switzerland>
       </div>
 
@@ -51,7 +51,7 @@
         <h2>Example monochrome</h2>
       </header>
 
-      <div style="height: 400px; width: 500px;">
+      <div style="height: 35rem;" class="svg-graph">
         <inu-svg-switzerland [styleGenerator]="monochrome()"></inu-svg-switzerland>
       </div>
 
@@ -92,26 +92,24 @@
       <p>
         The component is built for use within <strong>Signal Forms</strong>, a feature introduced in <strong>Angular 21</strong>.
       </p>
-      <div class="d-flex-row">
-        <div>
-          <ul class="d-list-flex-column d-gap-1">
-            @for (colorName of colorNames(); track colorName; ) {
-              <li>
-                <inu-button (click)="chooseColor(colorName)" [label]="colorName"></inu-button>
-              </li>
-            }
-          </ul>
-        </div>
-        <div style="height: 400px; width: 500px;">
-          <inu-svg-switzerland [styleGenerator]="colorLevel()"
-                               [actionHandler]="actionHandlerForm"
-                               [formField]="myForm.cantons"
-                               [valueExtractor]="valueExtractor"
-                               [matcher]="matchCantonSelectItem"
-                               (changed)="onChanged($event)"
-                               (hover)="onHover($event)"
-                               (leave)="onLeave($event)"></inu-svg-switzerland>
-        </div>
+      <div style="height: 35rem;" class="svg-graph">
+        <inu-svg-switzerland [styleGenerator]="colorLevel()"
+                             [actionHandler]="actionHandlerForm"
+                             [formField]="myForm.cantons"
+                             [valueExtractor]="valueExtractor"
+                             [matcher]="matchCantonSelectItem"
+                             (changed)="onChanged($event)"
+                             (hover)="onHover($event)"
+                             (leave)="onLeave($event)"></inu-svg-switzerland>
+      </div>
+      <div>
+        <ul class="color-actions">
+          @for (colorName of colorNames(); track colorName; ) {
+            <li>
+              <inu-button (click)="chooseColor(colorName)" [label]="colorName"></inu-button>
+            </li>
+          }
+        </ul>
       </div>
 
 
@@ -148,7 +146,7 @@
       <inu-code url="data/charts/inu-svg-switzerland.xml" tag="valueExtractor"></inu-code>
     </article>
 
-    <!--================================================================================================================
+   <!--=================================================================================================================
    = PROPERTIES
    =================================================================================================================-->
     <article>

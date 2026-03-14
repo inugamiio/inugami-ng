@@ -1,0 +1,18 @@
+<xml>
+  <src name="imports" type="typescript" title="Import inu-svg-switzerland">
+    <![CDATA[
+import {Component} from '@angular/core';
+import {GET_COLOR} from 'inugami-ng/services';
+
+@Component({
+  templateUrl: './my-app.view.html',
+  styleUrls: ['./my-app.view.scss'],
+  imports: [ ]
+})
+export class MyAppView {
+
+}
+]]>
+  </src>
+
+</xml>

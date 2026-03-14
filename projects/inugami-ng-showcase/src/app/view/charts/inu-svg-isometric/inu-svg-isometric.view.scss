@@ -1,0 +1,17 @@
+/**/
+::ng-deep{
+  inu-svg-isometric{
+    svg{
+      border: 1px solid black;
+    }
+  }
+}
+
+.wip{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  h2{
+    color: var(--neutral-dark)
+  }
+}
