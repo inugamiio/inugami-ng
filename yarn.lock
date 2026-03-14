@@ -3087,10 +3087,10 @@ inugami-icons@0.0.12:
   dependencies:
     tslib "^2.3.0"
 
-inugami-svg-assets@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/inugami-svg-assets/-/inugami-svg-assets-0.0.4.tgz#295ba142f068f2cb9face97069918ec562df7811"
-  integrity sha512-TcbAKk0cZ0zGcvZnSKvZHgpEoggTR9SEpxXM0Eep2W4gMbJ3lk0Q1w20Z34wbnSpsgwREIqi2TDozZd9vjcAyw==
+inugami-svg-assets@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/inugami-svg-assets/-/inugami-svg-assets-0.0.6.tgz#fdc16e5d1ec6597bc5413a674fc0154136bef82a"
+  integrity sha512-HBk/29+dTmR0HS4hEYoj3qosEnSiLGhzr/q2/mlX0lfq8zCYuqL7PLYyHR9RgMs5MoH03xKhnxItQtFJFACbbQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -4095,6 +4095,11 @@ rxjs@7.8.2, rxjs@^7.8.1, rxjs@~7.8.0:
   integrity sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==
   dependencies:
     tslib "^2.1.0"
+
+saas@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/saas/-/saas-1.0.0.tgz#0091274f26664300bbca5e9893bc4bb88709e677"
+  integrity sha512-FgayhFS18BlPfcyMcOqxD7PIyNyUjqyv8R+rsr3X2KRK2icEUL4uvWBF+lZ0IPqJIO2kUO0d20OXY+R+pdriqg==
 
 "safer-buffer@>= 2.1.2 < 3.0.0":
   version "2.1.2"
