@@ -18,6 +18,6 @@
          [disabled]="disabled()"
          (focusin)="onFocus()"
          (focusout)="onFocusOut()"
-         (blur)="formField?.state()?.markAsTouched()"
+         (blur)="_formField?.state()?.markAsTouched()"
          (keyup)="onChanged($event)" #input>
 </div>
