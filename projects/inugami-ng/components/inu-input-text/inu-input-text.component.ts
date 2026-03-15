@@ -43,10 +43,10 @@ export class InuInputText implements FormValueControl<string | number>,FormValue
 
 
   // FormValueControl
-  formField = inject(FormField, { optional: true });
+  _formField = inject(FormField, { optional: true });
   value: ModelSignal<string | number> = model<string | number>('');
   valid = computed(() => {
-    const state = this.formField?.state()
+    const state = this._formField?.state()
     if (!state) return true;
     const isInvalid = state.invalid();
     const hasBeenTouched = state.touched();
@@ -106,5 +106,6 @@ export class InuInputText implements FormValueControl<string | number>,FormValue
 
   protected onFocusOut() {
     this.focus.set(false);
+    this._formField?.state()?.markAsTouched();
   }
 }
