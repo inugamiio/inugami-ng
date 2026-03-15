@@ -106,5 +106,6 @@ export class InuInputText implements FormValueControl<string | number>,FormValue
 
   protected onFocusOut() {
     this.focus.set(false);
+    this._formField?.state()?.markAsTouched();
   }
 }
