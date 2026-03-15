@@ -15,6 +15,7 @@ import {InuSvgSwitzerlandView} from './view/charts/inu-svg-switzerland/inu-svg-s
 import {InuSvgUtilsView} from './view/charts/inu-svg-utils/inu-svg-utils.view';
 import {InuSvgIsometricView} from './view/charts/inu-svg-isometric/inu-svg-isometric.view';
 import {InuSvgAssetView} from './view/charts/inu-svg-assets/inu-svg-assets.view';
+import {InuInputTextView} from './view/forms/inu-input-text/inu-input-text.view';
 
 
 export const routes: Routes = [
@@ -48,6 +49,7 @@ export const routes: Routes = [
   {
     path: "forms", children: [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
+      {path: "inu-input-text", component: InuInputTextView}
     ]
   },
   {

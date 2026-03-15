@@ -1,0 +1,23 @@
+<div [class]="_styleClass()">
+  <div class="inu-input-text-label">
+    @if(icon()){
+      <inu-icon [icon]="icon()!" [size]="1"></inu-icon>
+    }
+    @if (label()) {
+      <label [for]="id()">{{ label()! }}</label>
+    }
+    @if (_required()) {
+      <inu-icon icon="required" [size]="0.5"></inu-icon>
+    }
+  </div>
+
+  <input [id]="id()"
+         [name]="name()!"
+         [type]="type()"
+         [value]="value()"
+         [disabled]="disabled()"
+         (focusin)="onFocus()"
+         (focusout)="onFocusOut()"
+         (blur)="formField?.state()?.markAsTouched()"
+         (keyup)="onChanged($event)" #input>
+</div>

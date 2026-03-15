@@ -1,8 +1,9 @@
 import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
-import { InugamiIconsUtils, InuIcon} from 'inugami-icons';
+import {InugamiIconsUtils, InuIcon} from 'inugami-icons';
 import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuCite} from 'inugami-ng/components/inu-cite';
 import {InuToastServices} from 'inugami-ng/components/inu-toast';
+import {InuInputText} from 'inugami-ng/components/inu-input-text';
 
 @Component({
   templateUrl: './icons.view.html',
@@ -10,7 +11,8 @@ import {InuToastServices} from 'inugami-ng/components/inu-toast';
   imports: [
     InuIcon,
     InuCode,
-    InuCite
+    InuCite,
+    InuInputText
   ]
 })
 export class IconsView implements OnInit {
@@ -21,7 +23,7 @@ export class IconsView implements OnInit {
   //==================================================================================================================
   protected icons: WritableSignal<string[]> = signal<string[]>([]);
   toastServices = inject(InuToastServices);
-
+  filter = signal<string>('');
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
@@ -34,19 +36,31 @@ export class IconsView implements OnInit {
 
   protected copy(icon: string, event: MouseEvent) {
 
-    const content : string = event.ctrlKey
+    const content: string = event.ctrlKey
       ? icon
-      :`<inu-icon icon="${icon}" [size]="1"></inu-icon>`;
+      : `<inu-icon icon="${icon}" [size]="1"></inu-icon>`;
 
     navigator.clipboard.writeText(content)
-      .then(()=> {
-          this.toastServices.addMessage({
-            title: 'Value copied to clipboard',
-            message: content,
-            level: "success",
-            icon:'approval'
-          });
+      .then(() => {
+        this.toastServices.addMessage({
+          title: 'Value copied to clipboard',
+          message: content,
+          level: "success",
+          icon: 'approval'
+        });
 
       });
+  }
+
+  protected onFilterChanged(event: string|number) {
+    this.filter.set(`${event}`);
+  }
+
+  protected allowToDisplay(icon: string) {
+    const filter = this.filter();
+    if(filter==''){
+      return true;
+    }
+    return icon.includes(filter);
   }
 }

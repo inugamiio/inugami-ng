@@ -1,0 +1,101 @@
+<xml>
+  <src name="html" type="html" title="template">
+    <![CDATA[
+<div class="form-container">
+        <div class="form-row">
+          <div class="form-col">
+            <div class="form-cell w100">
+              <inu-input-text label="First name"
+                              name="firstName"
+                              [required]="true"
+                              [formField]="userForm.firstName"></inu-input-text>
+            </div>
+            <div class="form-cell w100">
+              <inu-input-text label="Last name"
+                              name="lastName"
+                              [required]="true"
+                              [formField]="userForm.lastName"></inu-input-text>
+            </div>
+            <div class="form-cell w100">
+              <inu-input-text label="Email"
+                              name="emailName"
+                              [required]="true"
+                              [formField]="userForm.email"></inu-input-text>
+            </div>
+            <div class="form-cell w100">
+              <inu-input-text label="Old"
+                              type="number"
+                              name="old"
+                              [required]="true"
+                              [formField]="userForm.old"></inu-input-text>
+            </div>
+          </div>
+
+        </div>
+      </div>
+]]>
+  </src>
+
+  <src name="ts" type="html" title="template">
+    <![CDATA[
+
+interface UserForm {
+  uid: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  old: number;
+}
+
+@Component({
+  templateUrl: './inu-input-text.view.html',
+  styleUrls: ['./inu-input-text.view.scss'],
+  imports: [
+    InuCode,
+    InuInputText,
+    InuCode,
+    InuTableFlex,
+    InuTableFlexHeader,
+    InuTableFlexRow,
+    InuTableFlexCell,
+    InuPanelTabs,
+    InuPanelTab,
+    FormField
+  ]
+})
+export class InuInputTextView {
+
+  data = signal<string>('');
+  userModel = signal<UserForm>({
+    uid: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    old : 0
+  });
+
+  userForm: FieldTree<UserForm>  = form(this.userModel, (path) => {
+    required(path.email);
+  });
+
+
+  constructor() {
+    toObservable(this.userModel)
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(value => {
+        this.onValueChanged(value)
+      });
+  }
+
+  private onValueChanged(value: UserForm) {
+    this.data.set(JSON.stringify(value, null, 4));
+  }
+}
+]]>
+  </src>
+
+</xml>

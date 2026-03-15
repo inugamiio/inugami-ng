@@ -1,0 +1,56 @@
+.inu-input-text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  label {
+    font-weight: bold;
+    font-size: 90%;
+    width: auto;
+    transition: color 250ms;
+  }
+  inu-icon{
+    width: 1rem;
+  }
+
+  input {
+    border: none;
+    border-bottom: 2px solid var(--neutral);
+    transition: border-bottom 250ms;
+    outline: none;
+
+    &:focus {
+      border-bottom: 2px solid var(--secondary-light);
+    }
+
+
+    &.disabled {
+      border-bottom: 2px solid var(--neutral-light);
+    }
+  }
+
+  .inu-input-text-label {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+
+
+  }
+  &.focus{
+    .inu-input-text-label{
+      color: var(--secondary-light);
+      fill: var(--secondary-light);
+    }
+  }
+
+  &.invalid{
+    input{
+      border-bottom: 1px solid var(--danger);
+    }
+    .inu-input-text-label{
+      color: var(--danger);
+      fill:var(--danger);
+    }
+  }
+
+}
