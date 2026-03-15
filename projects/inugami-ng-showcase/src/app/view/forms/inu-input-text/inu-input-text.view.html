@@ -1,0 +1,146 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-input-text</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        The <code>inu-input-text</code> component provides an input compatible with <strong>Angular 21 signal-based forms</strong>.
+      </header>
+    </article>
+
+
+
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+      <div class="form-container">
+        <div class="form-row">
+          <div class="form-col">
+            <div class="form-cell w100">
+              <inu-input-text label="First name"
+                              name="firstName"
+                              [required]="true"
+                              [formField]="userForm.firstName"></inu-input-text>
+            </div>
+            <div class="form-cell w100">
+              <inu-input-text label="Last name"
+                              name="lastName"
+                              [required]="true"
+                              [formField]="userForm.lastName"></inu-input-text>
+            </div>
+            <div class="form-cell w100">
+              <inu-input-text label="Email"
+                              name="emailName"
+                              [required]="true"
+                              [formField]="userForm.email"></inu-input-text>
+            </div>
+            <div class="form-cell w100">
+              <inu-input-text label="Old"
+                              type="number"
+                              name="old"
+                              [required]="true"
+                              [formField]="userForm.old"></inu-input-text>
+            </div>
+          </div>
+
+        </div>
+        <div class="form-row">
+          <div class="form-col">
+            <div class="form-cell m-width-50p m-height-15">
+              <inu-panel-tabs>
+                <inu-panel-tab name="example" label="Example">
+                  <inu-code [source]="data()" type="json"></inu-code>
+                </inu-panel-tab>
+                <inu-panel-tab name="html" label="HTML">
+                  <inu-code url="data/form/inu_input_text_source_code.xml" tag="html"></inu-code>
+                </inu-panel-tab>
+
+                <inu-panel-tab name="ts" label="TypeScript">
+                  <inu-code url="data/form/inu_input_text_source_code.xml" tag="ts"></inu-code>
+                </inu-panel-tab>
+
+              </inu-panel-tabs>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>icon</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>name</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>name</inu-table-flex-cell>
+          <inu-table-flex-cell>type</inu-table-flex-cell>
+          <inu-table-flex-cell>text | number | email | password</inu-table-flex-cell>
+          <inu-table-flex-cell>text</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+    </article>
+  </main>
+
+
+</section>

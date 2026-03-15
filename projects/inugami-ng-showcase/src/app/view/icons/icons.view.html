@@ -75,15 +75,23 @@
     <header>
       <h2>Default icons</h2>
     </header>
+
+    <div>
+      <inu-input-text label="Filter"
+                      name="filter"
+                      icon="filter"
+                      (changed)="onFilterChanged($event)"></inu-input-text>
+    </div>
     <div class="icons">
       @for (icon of icons(); track icon; ) {
-        <article (click)="copy(icon,$event)">
-          <header>
-            <inu-icon [icon]="icon" [size]="3"></inu-icon>
-            <h3>{{ icon }}</h3>
-          </header>
-        </article>
-
+        @if(allowToDisplay(icon)) {
+          <article (click)="copy(icon,$event)">
+            <header>
+              <inu-icon [icon]="icon" [size]="3"></inu-icon>
+              <h3>{{ icon }}</h3>
+            </header>
+          </article>
+        }
       }
     </div>
   </article>

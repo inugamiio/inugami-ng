@@ -38,6 +38,14 @@
         <li>
           <inu-button icon="approval" label="Success message"  type="primary" (click)="addSuccessMessage()"></inu-button>
         </li>
+        <li>
+          <inu-button icon="approval"
+                      [processing]="processing()"
+                      processingIcon="refresh"
+                      label="Processing button"
+                      type="primary"
+                      (click)="process()"></inu-button>
+        </li>
 
         <li>
           <inu-button icon="warning" label="Warning message" type="warn" (click)="addWarnMessage()"></inu-button>

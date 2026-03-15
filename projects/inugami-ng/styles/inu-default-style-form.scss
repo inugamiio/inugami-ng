@@ -11,6 +11,11 @@
   gap: 2rem;
 }
 
+.form-col{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 .form-row-col{
   display: flex;
   flex-direction: row;
@@ -22,6 +27,7 @@
 .form-cell{
   display: flex;
   flex-direction: row;
+
 }
 .form-cell-col{
   display: flex;
