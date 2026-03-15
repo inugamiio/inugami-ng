@@ -1,31 +1,30 @@
-@if(link()){
+@if (link()) {
   <span [class]="_styleClass()">
 
-      @if(icon()){
-        <span class="inu-button-icon">
-          <inu-icon [icon]="icon()" [size]="1"></inu-icon>
+      @if (icon()) {
+        <span [class]="iconStyleClass()" [style.width]="`${iconSize()}rem`" [style.height]="`${iconSize()}rem`">
+          <inu-icon [icon]="processing()?_processIcon() : icon()" [size]="1"></inu-icon>
         </span>
       }
 
     <span class="inu-button-label">
-      @if(label()){
-        {{label()}}
+      @if (label()) {
+        {{ label() }}
       }
     </span>
   </span>
-}
-@else{
+} @else {
   <button [class]="_styleClass()" [disabled]="disabled()">
 
-      @if(icon()){
-        <span class="inu-button-icon">
-          <inu-icon [icon]="icon()" [size]="1"></inu-icon>
-        </span>
-      }
+    @if (icon()) {
+      <span [class]="iconStyleClass()"  [style.width]="`${iconSize()}rem`" [style.height]="`${iconSize()}rem`">
+          <inu-icon [icon]="processing()?_processIcon() : icon()" [size]="iconSize()"></inu-icon>
+      </span>
+    }
 
     <span class="inu-button-label">
-      @if(label()){
-        {{label()}}
+      @if (label()) {
+        {{ label() }}
       }
     </span>
   </button>

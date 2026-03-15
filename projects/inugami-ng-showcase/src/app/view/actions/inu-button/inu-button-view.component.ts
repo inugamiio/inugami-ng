@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {
   InuTableFlex,
   InuTableFlexCell,
@@ -23,6 +23,7 @@ import {InuCode} from 'inugami-ng/components/inu-code';
 })
 export class InuButtonView {
   toastServices = inject(InuToastServices);
+  processing = signal<boolean>(false);
 
   protected addMessage() {
     this.toastServices.addMessage({
@@ -69,4 +70,10 @@ export class InuButtonView {
     })
   }
 
+  protected process() {
+
+    this.processing.set(true);
+    console.log('process', this.processing())
+    setTimeout(()=> this.processing.set(false), 5000);
+  }
 }
