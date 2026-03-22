@@ -36,7 +36,7 @@
 ]]>
   </src>
 
-  <src name="ts" type="html" title="template">
+  <src name="ts" type="typescript" title="template">
     <![CDATA[
 
 interface UserForm {

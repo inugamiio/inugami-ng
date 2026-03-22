@@ -1,5 +1,5 @@
 import {Component, effect, inject, input, signal, WritableSignal} from '@angular/core';
-import {CacheServices} from "inugami-ng/services";
+import {InuCacheServices} from "inugami-ng/services";
 import {map, Observable, shareReplay, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {OpenApi} from './open-api.model';
@@ -26,7 +26,7 @@ export class InuOpenApi {
   url = input<string | undefined | null>(undefined);
   data = input<OpenApi | undefined | null>(undefined);
   private readonly http = inject(HttpClient);
-  private readonly cache = inject(CacheServices);
+  private readonly cache = inject(InuCacheServices);
   private readonly inuOpenApiService = inject(InuOpenApiServices);
 
   _value: WritableSignal<OpenApi | null> = signal<OpenApi | null>(null);

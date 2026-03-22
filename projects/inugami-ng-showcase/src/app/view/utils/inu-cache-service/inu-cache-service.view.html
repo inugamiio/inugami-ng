@@ -1,0 +1,138 @@
+<section>
+  <header>
+    <h1>Inugami-NG : InuCacheServices</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>In many cases, it is necessary to store values in a frontend-side cache to limit calls to the backend. The
+          retrieved values can have varying retention periods.</p>
+      </header>
+
+      <p>There are two main use cases:</p>
+      <ul>
+        <li>
+          <strong>Session-based values</strong>, which are linked to the current session and must be cleared upon a
+          page refresh (browser refresh).
+        </li>
+        <li>
+          <strong>Slow-changing backend values</strong> (such as reference data, labels, etc.). These values must be
+          retained for a much longer duration than a single user session.
+        </li>
+      </ul>
+
+      <p>
+        Managing a frontend-side cache also requires careful attention to potential collisions between applications
+        running on the same domain name.
+      </p>
+    </article>
+
+    <!--================================================================================================================
+    = Configuration
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Configuration</h2>
+      </header>
+
+      <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="config"></inu-code>
+
+      <p>
+        The cache requires specific application details, such as its environment, name, and version.
+        In the Angular application configuration, a new provider must be defined to carry this information. This is
+        achieved using the <code>provideCacheTracking</code> method, which leverages <strong>signals</strong> to provide
+        these details.
+      </p>
+
+      <p>
+        Using <strong>signals</strong> allows these values to be redefined after fetching the information from the
+        server, without blocking the application's execution.
+      </p>
+    </article>
+
+    <!--================================================================================================================
+    = USAGE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Usage</h2>
+      </header>
+
+      <p>When using the cache, there are different scenarios to handle:</p>
+      <ul>
+        <li>
+          Retrieving a value from the cache.
+        </li>
+        <li>
+          Handling concurrent requests, where other actions might already be fetching the same value from the server.
+        </li>
+        <li>
+          Defining (setting) a value in the cache.
+        </li>
+        <li>
+          Clear an item from the cache
+        </li>
+      </ul>
+
+      <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="usage_full"></inu-code>
+
+      <inu-doc-item title="Get value" [level]="3" href="utils/inu-cache-service" id="get_value">
+        <p>
+          This is the simplest case, where we want to retrieve a value from the cache. To do this, if the value is
+          session-related, we use the <code>get</code> method; if it has a specific retention policy, we use the <code>getTTL</code>
+          method.
+        </p>
+        <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="get"></inu-code>
+
+        <inu-cite level="success" title="Use functional keys only.">
+          <p>
+            The InuCacheServices service internally handles potential collisions between applications. The provided key
+            should be a functional key, without needing to account for this issue.
+          </p>
+        </inu-cite>
+      </inu-doc-item>
+
+      <inu-doc-item title="Pending value" [level]="3" href="utils/inu-cache-service" id="pending">
+        <p>
+          In more complex scenarios where multiple components might trigger the same request, it is crucial to handle
+          pending states. To do this, you can use the <code>getPending</code> and <code>getPendingTTL</code> methods,
+          which return an <code>Observable</code> to retrieve the value once the initial call is completed.
+        </p>
+        <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="pending"></inu-code>
+        <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="pending_usage"></inu-code>
+
+        <p>
+          For the pending mechanism to work, the first call must invoke the <code>setPending</code> method to provide
+          the observable to the cache. This allows the cache to notify all subsequent calls once the result is
+          available.
+        </p>
+      </inu-doc-item>
+
+      <inu-doc-item title="Set value" [level]="3" href="utils/inu-cache-service" id="set_value">
+        <p>
+          Once our service has retrieved the data from the server, it can be added to the cache.
+        </p>
+        <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="set_value"></inu-code>
+        <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="set_value_usage"></inu-code>
+      </inu-doc-item>
+
+
+      <inu-doc-item title="Clear value" [level]="3" href="utils/inu-cache-service" id="clear">
+        <p>
+          Depending on your application's logic, it may be necessary to evict values from the cache. To handle this, the
+          <code>clearKey</code>, <code>clearKeyTTL</code>, and <code>clear</code> methods are available.
+        </p>
+        <inu-code url="data/utils/inu_cache_service_source_code.xml" tag="clear"></inu-code>
+      </inu-doc-item>
+    </article>
+
+
+  </main>
+
+
+</section>
