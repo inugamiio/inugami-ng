@@ -11,7 +11,7 @@ import {
   viewChild
 } from '@angular/core';
 import {FormField, FormValueControl} from '@angular/forms/signals';
-import {UuidUtils} from 'inugami-ng/services';
+import {UuidUtils} from 'inugami-ng/utils';
 import {debounceTime, Subject} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {InuIcon} from 'inugami-icons';

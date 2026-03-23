@@ -1,5 +1,5 @@
-import {EnvironmentProviders, Injectable, makeEnvironmentProviders, signal, WritableSignal} from '@angular/core'
-import {UuidUtils} from 'inugami-ng/services'
+import {EnvironmentProviders, makeEnvironmentProviders, signal, WritableSignal} from '@angular/core'
+import {UuidUtils} from 'inugami-ng/utils'
 
 export interface CacheServiceTrackingOptions {
   env: WritableSignal<string>,

@@ -1,7 +1,7 @@
 import {computed, Injectable, OnDestroy, signal} from '@angular/core';
 import {ToastMessage} from './inu-toast.model';
 import {TTLWrapper} from 'inugami-ng/models';
-import {UuidUtils} from 'inugami-ng/services';
+import {UuidUtils} from 'inugami-ng/utils';
 
 const DEFAULT_TTL = 5000;
 

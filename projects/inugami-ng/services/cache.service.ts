@@ -1,9 +1,8 @@
 import {computed, inject, Injectable, signal} from "@angular/core";
 import {Observable} from "rxjs";
 import {CacheServiceTracking} from './cache.service.tracking'
-import {UuidUtils} from './uuid.utils'
-import {ObservableSubscriber} from './observable.utils'
-import {InuStringUtils} from './string.utils'
+import {InuStringUtils, ObservableSubscriber, UuidUtils} from 'inugami-ng/utils'
+
 
 export const TTL_UNLIMITED = -1
 export const TTL_MIN       = 60000;
