@@ -1,7 +1,7 @@
-import {Component, contentChildren, effect, input, signal, viewChildren} from '@angular/core';
+import {Component, contentChildren, effect, input, signal} from '@angular/core';
 import {InuDocItemComponentData} from './inu-doc-item.model';
 import {InuIcon} from 'inugami-icons';
-import {UuidUtils} from 'inugami-ng/services';
+import {UuidUtils} from 'inugami-ng/utils';
 
 @Component({
   selector: 'inu-doc-item',

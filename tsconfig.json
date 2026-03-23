@@ -11,7 +11,8 @@
       "inugami-ng/directives": ["./projects/inugami-ng/directives/public-api.ts"],
       "inugami-ng/models": ["./projects/inugami-ng/models/public-api.ts"],
       "inugami-ng/pipes": ["./projects/inugami-ng/pipes/public-api.ts"],
-      "inugami-ng/services": ["./projects/inugami-ng/services/public-api.ts"]
+      "inugami-ng/services": ["./projects/inugami-ng/services/public-api.ts"],
+      "inugami-ng/utils": ["./projects/inugami-ng/utils/public-api.ts"]
     },
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
