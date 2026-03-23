@@ -16,6 +16,9 @@ import {InuSvgUtilsView} from './view/charts/inu-svg-utils/inu-svg-utils.view';
 import {InuSvgIsometricView} from './view/charts/inu-svg-isometric/inu-svg-isometric.view';
 import {InuSvgAssetView} from './view/charts/inu-svg-assets/inu-svg-assets.view';
 import {InuInputTextView} from './view/forms/inu-input-text/inu-input-text.view';
+import {InuCacheServiceView} from './view/utils/inu-cache-service/inu-cache-service.view'
+import {InuStringUtilsView} from './view/utils/inu-string-utils/inu-string-utils.view'
+import {InuErrorServiceView} from './view/utils/inu-error-service/inu-error-service.view'
 
 
 export const routes: Routes = [
@@ -52,9 +55,17 @@ export const routes: Routes = [
       {path: "inu-input-text", component: InuInputTextView}
     ]
   },
+
   {
     path: "tables", children: [
-      {path: "inu-table-flex", component: InuTableFlexView},
+      {path: "inu-table-flex", component: InuTableFlexView}
+    ]
+  },
+  {
+    path: "utils", children: [
+      {path: "inu-cache-service", component: InuCacheServiceView},
+      {path: "inu-error-service", component: InuErrorServiceView},
+      {path: "inu-string-utils", component: InuStringUtilsView}
     ]
   },
   {path: '**', redirectTo: ''}

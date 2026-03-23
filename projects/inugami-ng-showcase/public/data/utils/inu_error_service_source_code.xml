@@ -1,0 +1,61 @@
+<xml>
+  <src name="forkJoin" type="typescript" title="Usage of InuErrorService">
+    <![CDATA[
+import {InuErrorService} from 'inugami-ng/services';
+
+@Component({
+             templateUrl: './inu-error-service.view.html',
+             styleUrls  : ['./inu-error-service.view.scss'],
+             imports: []
+           })
+export class InuErrorServiceView {
+  inuErrorService = inject(InuErrorService);
+
+  callFunctionalError() {
+    this.inuErrorService.forkJoin([this.processFunctionalError()])
+      .subscribe({
+                   next: res => console.log('response', res)
+                 });
+  }
+}
+]]>
+  </src>
+
+  <src name="problemDTO" type="typescript" title="ProblemDTO">
+    <![CDATA[
+export interface ProblemDTO{
+  type?:string;
+  message?:string;
+  localizedMessage?:string;
+  status?:number;
+  reasonPhrase?:string;
+  detail?:string;
+  instance?:string;
+  timestamp?:Date;
+  cause?:ProblemDTO;
+  details?:any;
+  errors?:ProblemErrorDTO[];
+  parameters?:ProblemParameterDTO[];
+}
+
+export interface ProblemErrorDTO{
+  name?:string;
+  type?:string;
+  reason?:string;
+
+}
+export interface ProblemParameterDTO{
+  errorCode?:string;
+  errorType?:string;
+  fields?:ProblemParameterFieldsDTO[];
+}
+export interface ProblemParameterFieldsDTO{
+  errorCode?:string;
+  errorType?:string;
+  name?:string;
+  detail?:string;
+  value?:any;
+}
+]]>
+  </src>
+</xml>

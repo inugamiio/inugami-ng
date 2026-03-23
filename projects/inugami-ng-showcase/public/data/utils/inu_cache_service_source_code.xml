@@ -1,0 +1,137 @@
+<xml>
+  <src name="config" type="typescript" title="ApplicationConfig">
+    <![CDATA[
+import {provideCacheTracking, UuidUtils} from 'inugami-ng/services';
+
+const APPLICATION = signal<string>('inu-showcase');
+const ENV         = signal<string>('dev');
+const SESSION_UID = signal<string>(UuidUtils.buildUid());
+const VERSION     = signal<string>('0.0.0');
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideCacheTracking({
+                           env        : ENV,
+                           sessionUid : SESSION_UID,
+                           application: APPLICATION,
+                           version    : VERSION
+                         }),
+    // ...
+  ]
+};
+]]>
+  </src>
+
+  <src name="usage_full" type="typescript" title="Usage">
+    <![CDATA[
+ loadFormUrl(url: string) {
+
+    const data = this.loadFormCache(url);
+    if (data) {
+      this.initSourceCode(data);
+      return;
+    }
+
+    const cacheKey = `inu-code_${url}`;
+    const pending = this.cache.getPending(cacheKey);
+
+    if (pending) {
+      pending.subscribe(res =>this.initSourceCode(res));
+      return;
+    }
+
+    const request = this.http.get(url, {responseType: 'text'})
+      .pipe(map(res => this.parseData(res, url)),
+        tap(data => this.cache.set(cacheKey, data)),
+        shareReplay(1)
+      );
+    this.cache.setPending(cacheKey, request);
+    request.subscribe();
+
+  }
+
+   initSourceCode(data: SourceCode[]) {
+     //...
+   }
+]]>
+  </src>
+
+
+  <src name="get" type="typescript" title="InuCacheServices get value">
+    <![CDATA[
+@Injectable({providedIn: 'root'})
+export class InuCacheServices {
+
+  public get<T>(key: string): T | undefined { }
+
+  public getTTL<T>(key: string): T | undefined { }
+}
+]]>
+  </src>
+
+  <src name="pending" type="typescript" title="InuCacheServices pending value">
+    <![CDATA[
+@Injectable({providedIn: 'root'})
+export class InuCacheServices {
+
+  public getPending(key: string): Observable<any> | undefined { }
+
+  public getPendingTTL(key: string): Observable<any> | undefined {  }
+}
+]]>
+  </src>
+
+  <src name="pending_usage" type="typescript" title="Usage pending value">
+    <![CDATA[
+const cacheKey = `inu-code_${url}`;
+const pending = this.cache.getPending(cacheKey);
+
+if (pending) {
+  pending.subscribe(res =>this.initSourceCode(res));
+  return;
+}
+const request = this.http.get(url, {responseType: 'text'});
+this.cache.setPending(cacheKey, request);
+
+]]>
+  </src>
+
+  <src name="set_value" type="typescript" title="InuCacheServices set value">
+    <![CDATA[
+@Injectable({providedIn: 'root'})
+export class InuCacheServices {
+
+  public set(key: string, value: any): void { }
+
+  public setTTL(key: string, value: any, ttl: number): void { }
+}
+]]>
+  </src>
+  <src name="set_value_usage" type="typescript" title="InuCacheServices set value usage">
+    <![CDATA[
+const request = this.http.get(url, {responseType: 'text'})
+      .pipe(map(res => this.parseData(res, url)),
+        tap(data => this.cache.set(cacheKey, data)),
+        shareReplay(1)
+      );
+
+this.cache.setPending(cacheKey, request);
+
+request.subscribe();
+]]>
+  </src>
+
+  <src name="clear" type="typescript" title="InuCacheServices clear value">
+    <![CDATA[
+@Injectable({providedIn: 'root'})
+export class InuCacheServices {
+  public clearKey(key : string) { }
+
+  public clearKeyTTL(key : string) {  }
+
+  public clear() { }
+}
+]]>
+  </src>
+
+</xml>

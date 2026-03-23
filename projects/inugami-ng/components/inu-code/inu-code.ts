@@ -5,7 +5,7 @@ import {
   input,
   signal
 } from '@angular/core';
-import {CacheServices} from "inugami-ng/services";
+import {InuCacheServices} from "inugami-ng/services";
 import {map, shareReplay, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {SourceCode} from './code.model';
@@ -32,7 +32,7 @@ export class InuCode {
 
 
   private readonly http = inject(HttpClient);
-  private readonly cache = inject(CacheServices);
+  private readonly cache = inject(InuCacheServices);
 
   sourceCode = signal<string>('');
   _title = signal<string>('');
@@ -68,10 +68,12 @@ export class InuCode {
       this.initSourceCode(data);
       return;
     }
+
     const cacheKey = `inu-code_${url}`;
     const pending = this.cache.getPending(cacheKey);
+
     if (pending) {
-      pending.subscribe(res => this.initSourceCode(res));
+      pending.subscribe(res =>this.initSourceCode(res));
       return;
     }
 

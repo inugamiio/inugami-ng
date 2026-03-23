@@ -1,0 +1,12 @@
+<xml>
+  <src name="normalize" type="typescript" title="InuStringUtils normalize">
+    <![CDATA[
+export class InuStringUtils {
+
+  public static normalize(value?: string): string { }
+}
+]]>
+  </src>
+
+
+</xml>
