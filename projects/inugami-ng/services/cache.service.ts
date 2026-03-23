@@ -15,7 +15,7 @@ export const TTL_HALF_DAY  = 12 * 60 * 60000;
 export const TTL_DAY       = 24 * 60 * 60000;
 
 const PENDING_REQUESTS: Map<string, ObservableSubscriber<any>> = new Map();
-
+const FALLBACK_CACHE: any                                      = {};
 
 interface TtlValue {
   key: string,
@@ -30,11 +30,11 @@ export class InuCacheServices {
   //==================================================================================================================
   // API
   //==================================================================================================================
+
   private cacheServiceTracking = inject(CacheServiceTracking, {optional: true});
   private localStorage         = computed<Storage>(() => window.localStorage);
   private sessionStorage       = computed<Storage>(() => window.sessionStorage);
-
-  private tracking = signal<CacheServiceTracking>(this.cacheServiceTracking ?? new CacheServiceTracking(
+  private tracking             = signal<CacheServiceTracking>(this.cacheServiceTracking ?? new CacheServiceTracking(
     {
       sessionUid : signal<string>(UuidUtils.buildUid()),
       env        : signal<string>('dev'),
@@ -42,7 +42,6 @@ export class InuCacheServices {
       version    : signal<string>('0.0.0')
     }
   ))
-
 
   //==================================================================================================================
   // API
@@ -96,10 +95,11 @@ export class InuCacheServices {
     this.processSetPending(key, obs)
   }
 
-  public clearKey(key : string) {
+  public clearKey(key: string) {
     this.localStorage().removeItem(this.buildKey(key));
   }
-  public clearKeyTTL(key : string) {
+
+  public clearKeyTTL(key: string) {
     this.sessionStorage().removeItem(this.buildKeyTTL(key));
   }
 
@@ -129,15 +129,23 @@ export class InuCacheServices {
   // READ from storage
   //====================================================================================================================
   private getFromSessionStorage<T>(realKey: string): T | undefined {
-    return this.extractStoredValue(this.sessionStorage().getItem(realKey), realKey);
+    let  rawData:string|null|undefined = this.sessionStorage().getItem(realKey);
+    if(!rawData){
+      rawData = FALLBACK_CACHE[realKey];
+    }
+    return this.extractStoredValue(rawData, realKey);
   }
 
   private getFromLocalStorage<T>(realKey: string): T | undefined {
-    return this.extractStoredValue(this.localStorage().getItem(realKey), realKey);
+    let  rawData:string|null|undefined = this.localStorage().getItem(realKey);
+    if(!rawData){
+      rawData = FALLBACK_CACHE[realKey];
+    }
+    return this.extractStoredValue(rawData, realKey);
   }
 
 
-  private extractStoredValue(rawValue: string | null, realKey: string) {
+  private extractStoredValue(rawValue: string|undefined | null, realKey: string) {
     if (!rawValue) {
       return undefined;
     }
@@ -180,7 +188,13 @@ export class InuCacheServices {
       ttl  : ttl,
       value: value
     };
-    storage.setItem(realKey, JSON.stringify(wrapper));
+
+    const data = JSON.stringify(wrapper);
+    try {
+      storage.setItem(realKey, data);
+    } catch (e) {
+      FALLBACK_CACHE[realKey] = data;
+    }
   }
 
   private buildKey(key: string) {
@@ -192,4 +206,6 @@ export class InuCacheServices {
     const tracking = this.tracking();
     return InuStringUtils.normalize(`${tracking.env()}_${tracking.application()}_${tracking.version()}_${key}`);
   }
+
+
 }
