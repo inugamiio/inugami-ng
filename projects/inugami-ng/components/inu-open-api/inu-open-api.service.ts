@@ -1,17 +1,31 @@
 import {Injectable} from '@angular/core';
-import {isDevMode} from '@angular/core';
 import {
-  Example, Extension,
-  ExternalDocs, Header, ObjectType,
+  Example,
+  Extension,
+  ExternalDocs,
+  Header,
+  ObjectType,
   OpenApi,
   OpenApiComponent,
-  OpenApiComponentSchema, OpenApiComponentSecurityScheme, OpenApiInfo,
-  OpenApiPathEndpoint, OpenApiPathEndpointParameter, OpenApiPathEndpointRequestBody, OpenApiPathEndpointResponse,
-  OpenApiProperty, OpenApiSchema,
-  OpenApiServer, Tags
+  OpenApiComponentSchema,
+  OpenApiComponentSecurityScheme,
+  OpenApiInfo,
+  OpenApiPathEndpoint,
+  OpenApiPathEndpointParameter,
+  OpenApiPathEndpointRequestBody,
+  OpenApiPathEndpointResponse,
+  OpenApiProperty,
+  OpenApiSchema,
+  OpenApiServer,
+  Tags
 } from "./open-api.model";
 
 const VERBS: string[] = ['get', 'put', 'post', 'delete', 'options', 'patch', 'trace'];
+
+interface ObjectTypeCache {
+  name: string;
+  value: ObjectType | OpenApiSchema;
+}
 
 @Injectable({providedIn: 'root'})
 export class InuOpenApiServices {
@@ -22,15 +36,15 @@ export class InuOpenApiServices {
   // =================================================================================================================
   public convertToOpenApi(response: any): OpenApi {
     const schemaTypes: OpenApiComponent | undefined = this.unmarshallComponents(response.components);
-
-    const result = {
-      openapi: response.openapi,
-      components: this.unmarshallComponents(response.components),
+    const objectTypeCache: ObjectTypeCache[]        = [];
+    const result                                    = {
+      openapi     : response.openapi,
+      components  : this.unmarshallComponents(response.components),
       externalDocs: this.unmarshallExternalDocs(response.externalDocs),
-      info: this.unmarshallInfo(response.info),
-      paths: this.unmarshallPaths(response.paths, schemaTypes),
-      servers: this.unmarshallServers(response.servers),
-      tags: this.unmarshallTags(response.tags)
+      info        : this.unmarshallInfo(response.info),
+      paths       : this.unmarshallPaths(response.paths, schemaTypes, objectTypeCache),
+      servers     : this.unmarshallServers(response.servers),
+      tags        : this.unmarshallTags(response.tags)
     };
 
     return result;
@@ -45,7 +59,7 @@ export class InuOpenApiServices {
       return undefined;
     }
     return {
-      schemas: this.unmarshallComponentsSchemas(components.schemas),
+      schemas        : this.unmarshallComponentsSchemas(components.schemas),
       securitySchemes: this.unmarshallComponentsSecuritySchemes(components.securitySchemes)
     };
   }
@@ -61,7 +75,7 @@ export class InuOpenApiServices {
     for (let key of keys) {
 
       const properties: OpenApiProperty[] = [];
-      const rawProperties = schemas[key].properties;
+      const rawProperties                 = schemas[key].properties;
       if (rawProperties) {
         const propertyKeys = Object.keys(rawProperties);
         for (let propertyKey of propertyKeys) {
@@ -77,14 +91,14 @@ export class InuOpenApiServices {
           let items: OpenApiSchema | undefined;
           if (property.items) {
             items = {
-              type: property.items.type,
-              format:property.items.format,
-              ref: property.items['$ref'] ? property.items['$ref'] : undefined
+              type  : property.items.type,
+              format: property.items.format,
+              ref   : property.items['$ref'] ? property.items['$ref'] : undefined
             };
           }
           const propertyItem: OpenApiProperty = {
             type: property.type,
-            ref:property['$ref'],
+            ref : property['$ref'],
             name: propertyKey
           };
 
@@ -100,11 +114,11 @@ export class InuOpenApiServices {
       }
 
       result.push({
-        id: `#/components/schemas/${key}`,
-        name: key,
-        type: schemas[key].type,
-        properties: properties
-      });
+                    id        : `#/components/schemas/${key}`,
+                    name      : key,
+                    type      : schemas[key].type,
+                    properties: properties
+                  });
     }
 
     return result;
@@ -121,10 +135,10 @@ export class InuOpenApiServices {
     for (let key of keys) {
       const value = schemas[key];
       result.push({
-        name: key,
-        type: value.type,
-        scheme: value.scheme
-      });
+                    name  : key,
+                    type  : value.type,
+                    scheme: value.scheme
+                  });
     }
 
     return result;
@@ -132,17 +146,17 @@ export class InuOpenApiServices {
 
   private unmarshallExternalDocs(externalDocs: any): ExternalDocs | undefined {
     return !externalDocs ? undefined : {
-      url: externalDocs.url,
+      url        : externalDocs.url,
       description: externalDocs.description,
-      extension: this.unmarshallExtension(externalDocs)
+      extension  : this.unmarshallExtension(externalDocs)
     };
   }
 
   private unmarshallInfo(info: any): OpenApiInfo | undefined {
     return {
-      title: info.title,
+      title      : info.title,
       description: info.description,
-      version: info.version
+      version    : info.version
     }
   }
 
@@ -153,15 +167,17 @@ export class InuOpenApiServices {
     }
     for (let server of servers) {
       result.push({
-        url: server.url,
-        description: server.description
-      });
+                    url        : server.url,
+                    description: server.description
+                  });
     }
     return result;
   }
 
 
-  private unmarshallPaths(paths: any, schemaTypes: OpenApiComponent | undefined): OpenApiPathEndpoint[] {
+  private unmarshallPaths(paths: any,
+                          schemaTypes: OpenApiComponent | undefined,
+                          objectTypeCache: ObjectTypeCache[]): OpenApiPathEndpoint[] {
     const result: OpenApiPathEndpoint[] = [];
     if (!paths) {
       return result;
@@ -170,24 +186,24 @@ export class InuOpenApiServices {
     const keys = Object.keys(paths);
     keys.sort();
     for (let key of keys) {
-      const path = paths[key];
+      const path     = paths[key];
       const verbKeys = Object.keys(path);
       verbKeys.sort();
 
       for (let verbKey of verbKeys) {
         if (this.isVerb(verbKey)) {
-          const openApiEndpoint = path[verbKey];
+          const openApiEndpoint               = path[verbKey];
           const endpoint: OpenApiPathEndpoint = {
-            uri: `${verbKey}_${key}`,
-            url: key,
-            verb: verbKey,
-            tags: openApiEndpoint.tags,
+            uri        : `${verbKey}_${key}`,
+            url        : key,
+            verb       : verbKey,
+            tags       : openApiEndpoint.tags,
             operationId: openApiEndpoint.operationId,
-            summary: openApiEndpoint.summary,
+            summary    : openApiEndpoint.summary,
             description: openApiEndpoint.description,
-            parameters: this.unmarshallEndpointParameters(openApiEndpoint.parameters),
-            requestBody: this.unmarshallEndpointRequestBody(openApiEndpoint.requestBody, schemaTypes),
-            responses: this.unmarshallEndpointResponse(openApiEndpoint.responses, schemaTypes),
+            parameters : this.unmarshallEndpointParameters(openApiEndpoint.parameters),
+            requestBody: this.unmarshallEndpointRequestBody(openApiEndpoint.requestBody, schemaTypes, objectTypeCache),
+            responses  : this.unmarshallEndpointResponse(openApiEndpoint.responses, schemaTypes, objectTypeCache),
           };
           result.push(endpoint);
         }
@@ -213,23 +229,23 @@ export class InuOpenApiServices {
       if (param.schema) {
         schema = {
           type: param.schema?.type,
-          ref: param.schema['$ref']
+          ref : param.schema['$ref']
         }
       }
       result.push({
-        name: param.name,
-        in: param.in,
-        required: param.required,
-        description: param.description,
-        deprecated: param.deprecated,
-        allowEmptyValue: param.allowEmptyValue,
-        style: param.style,
-        explode: param.explode,
-        allowReserved: param.allowReserved,
-        example: param.example,
-        examples: this.unmarshallExamples(param.examples),
-        schema: schema
-      });
+                    name           : param.name,
+                    in             : param.in,
+                    required       : param.required,
+                    description    : param.description,
+                    deprecated     : param.deprecated,
+                    allowEmptyValue: param.allowEmptyValue,
+                    style          : param.style,
+                    explode        : param.explode,
+                    allowReserved  : param.allowReserved,
+                    example        : param.example,
+                    examples       : this.unmarshallExamples(param.examples),
+                    schema         : schema
+                  });
     }
 
     return result;
@@ -251,10 +267,10 @@ export class InuOpenApiServices {
 
   private unmarshallExample(name: string, value: any): Example {
     const result: Example = {
-      name: name,
-      summary: value.summary,
-      description: value.description,
-      value: value.value,
+      name         : name,
+      summary      : value.summary,
+      description  : value.description,
+      value        : value.value,
       externalValue: value.externalValue
     };
 
@@ -275,7 +291,9 @@ export class InuOpenApiServices {
     return result;
   }
 
-  private unmarshallEndpointRequestBody(value: any, schemaTypes: OpenApiComponent | undefined): OpenApiPathEndpointRequestBody | undefined {
+  private unmarshallEndpointRequestBody(value: any,
+                                        schemaTypes: OpenApiComponent | undefined,
+                                        objectTypeCache: ObjectTypeCache[]): OpenApiPathEndpointRequestBody | undefined {
     if (!value) {
       return undefined;
     }
@@ -284,29 +302,56 @@ export class InuOpenApiServices {
     let schema: OpenApiSchema | undefined;
 
     if (value.content) {
-      contentType = Object.keys(value.content)[0];
-      const objectType = this.renderType(value.content[contentType].schema, schemaTypes);
+      contentType = Object.keys(value.content)[0]
+
+      let schemaData: any | undefined = this.extractSchema(value, contentType);
+
+      const objectType = this.renderType(schemaData, schemaTypes, objectTypeCache);
+      console.log('request', objectType)
       schema = {
-        type: value.content[contentType].schema.type,
-        ref: objectType?.value,
+        type : schemaData?.type,
+        ref  : objectType?.value,
         array: objectType?.array,
-        name: objectType?.name
+        name : objectType?.name
       }
     }
 
     return {
       contentType: contentType,
-      schema: schema,
-      required: value.required
+      schema     : schema,
+      required   : value.required
     };
   }
 
-  private unmarshallEndpointResponse(value: any, schemaTypes: OpenApiComponent | undefined): OpenApiPathEndpointResponse[] | undefined {
+  private extractSchema(value: any, contentType: string) {
+
+    let content = value.content;
+    if (!content) {
+      const fields = Object.keys(value).sort();
+      for (let field of fields) {
+        const subContent = value[field].content;
+        if (subContent) {
+          content = subContent;
+          break;
+        }
+      }
+    }
+
+    if (!content || !content[contentType]) {
+      return undefined;
+    }
+
+    return content[contentType].schema;
+  }
+
+  private unmarshallEndpointResponse(value: any,
+                                     schemaTypes: OpenApiComponent | undefined,
+                                     objectTypeCache: ObjectTypeCache[]): OpenApiPathEndpointResponse[] | undefined {
     if (!value) {
       return undefined;
     }
     const result: OpenApiPathEndpointResponse[] = [];
-    const keys = Object.keys(value);
+    const keys                                  = Object.keys(value);
 
     keys.sort();
     for (let key of keys) {
@@ -316,9 +361,9 @@ export class InuOpenApiServices {
 
       let examples: Example[] = [];
       if (response.content) {
-        contentType = Object.keys(response.content)[0];
+        contentType           = Object.keys(response.content)[0];
         const responseContent = response.content[contentType];
-        const rawSchema: any = responseContent.schema;
+        const rawSchema: any  = responseContent.schema;
 
 
         if (responseContent.examples) {
@@ -330,30 +375,54 @@ export class InuOpenApiServices {
           let ref: string | undefined = rawSchema['$ref']
           if (rawSchema['items']) {
             let items: any = rawSchema['items']
-            ref = items ? items['$ref'] : undefined;
+            ref            = items ? items['$ref'] : undefined;
           }
-          const objectType = this.renderType(value.content[contentType].schema, schemaTypes);
-          schema = {
-            type: type,
-            ref: objectType?.value,
-            array: objectType?.array,
-            name: objectType?.name
+
+          schema = objectTypeCache.find(v => v.name === ref);
+
+          if (!schema) {
+            let schemaData: any | undefined = this.extractSchema(value, contentType);
+
+            const objectType = this.renderType(schemaData, schemaTypes, objectTypeCache);
+
+            schema           = {
+              type : type,
+              ref  : this.extractObjectTypeValue(objectType?.value),
+              array: objectType?.array,
+              name : objectType?.name
+            };
+            if (ref) {
+              objectTypeCache.push({
+                                     name : ref,
+                                     value: schema
+                                   });
+            }
+
           }
+
+
         }
       }
 
 
       result.push({
-        status: key,
-        description: response.description,
-        contentType: contentType,
-        headers: this.unmarshallEndpointResponseHeader(response.headers),
-        schema: schema,
-        examples: examples.length > 0 ? examples : undefined
-      });
+                    status     : key,
+                    description: response.description,
+                    contentType: contentType,
+                    headers    : this.unmarshallEndpointResponseHeader(response.headers),
+                    schema     : schema,
+                    examples   : examples.length > 0 ? examples : undefined
+                  });
     }
 
     return result;
+  }
+
+  private extractObjectTypeValue(value: any) {
+    if(Array.isArray(value) && value.length>0){
+      return value[0];
+    }
+    return value;
   }
 
   private unmarshallEndpointResponseHeader(value: any): undefined | Header[] {
@@ -368,11 +437,11 @@ export class InuOpenApiServices {
     for (let key of keys) {
       const item = value[key];
       result.push({
-        name: key,
-        description: item.description,
-        externalDocs: item.externalDocs,
-        style: item.style
-      });
+                    name        : key,
+                    description : item.description,
+                    externalDocs: item.externalDocs,
+                    style       : item.style
+                  });
     }
 
     return result;
@@ -396,13 +465,13 @@ export class InuOpenApiServices {
       }
 
       result.push({
-        name: key,
-        summary: item.summary,
-        description: item.externalDocs,
-        value: valueContent,
-        externalValue: item.externalValue,
-        extensions: this.extractExtension(item)
-      });
+                    name         : key,
+                    summary      : item.summary,
+                    description  : item.externalDocs,
+                    value        : valueContent,
+                    externalValue: item.externalValue,
+                    extensions   : this.extractExtension(item)
+                  });
     }
 
     return result;
@@ -420,9 +489,9 @@ export class InuOpenApiServices {
     for (let key of keys) {
       if (key.startsWith('x-')) {
         result.push({
-          name: key.substring(2),
-          value: value[key]
-        });
+                      name : key.substring(2),
+                      value: value[key]
+                    });
       }
     }
 
@@ -461,7 +530,7 @@ export class InuOpenApiServices {
     }
 
     const result: any = {};
-    const keys = Object.keys(value);
+    const keys        = Object.keys(value);
     keys.sort();
 
     for (let key of keys) {
@@ -474,12 +543,15 @@ export class InuOpenApiServices {
   }
 
 
-  private renderType(schema: any, schemaTypes: OpenApiComponent | undefined, level?:number): ObjectType | undefined {
-    if (!schema) {
+  private renderType(schema: any,
+                     schemaTypes: OpenApiComponent | undefined,
+                     objectTypeCache: ObjectTypeCache[],
+                     level?: number): ObjectType | undefined {
+    if (!schema || (level! > 5)) {
       return undefined;
     }
 
-    const array = schema.type == 'array';
+    const array      = schema.type == 'array';
     let type: string = '';
     if (array) {
       if (schema.items) {
@@ -499,29 +571,47 @@ export class InuOpenApiServices {
       }
     }
 
+    if (currentType?.name) {
+      const cachedValue = objectTypeCache.find(v => v.name === currentType.name);
+      if (cachedValue) {
+        return cachedValue;
+      }
+    }
+
+
     let object: any = {};
     if (currentType && currentType.properties) {
       object = this.convertObjectPropertiesToObject(currentType.properties,
-        currentType.example?currentType.example:{},
-        schemaTypes,
-        level?level+1:0);
+                                                    currentType.example ? currentType.example : {},
+                                                    schemaTypes,
+                                                    objectTypeCache,
+                                                    level ? level + 1 : 0);
     }
 
     const result: ObjectType = {
       array: array,
-      name: currentType?.name,
+      name : currentType?.name,
       value: array ? [object] : object
     }
+    if (currentType?.name) {
+      objectTypeCache.push({
+                             name : currentType.name,
+                             value: result
+                           });
+    }
+
     return result;
   }
 
   private convertObjectPropertiesToObject(properties: any,
-                                          example:any,
-                                          schemaTypes: OpenApiComponent | undefined,level:number): any {
+                                          example: any,
+                                          schemaTypes: OpenApiComponent | undefined,
+                                          objectTypeCache: ObjectTypeCache[],
+                                          level: number): any {
     if (!properties) {
       return undefined;
     }
-    if(level>20){
+    if (level > 20) {
       return {};
     }
     const object: any = {};
@@ -529,39 +619,42 @@ export class InuOpenApiServices {
       if (!property.name) {
         continue;
       }
-      const type = property.type ? property.type : 'object';
-      const sample =example[property.name];
+      const type   = property.type ? property.type : 'object';
+      const sample = example[property.name];
 
       switch (type) {
         case 'string':
-          if('date' == property.format){
-            object[property.name] = sample?sample:'yyyyMMdd';
-          }else if('date-time' == property.format){
-            object[property.name] = sample?sample:'yyyyMMddTHH:mm:ss';
-          }else{
-            object[property.name] = sample?sample:'string';
+          if ('date' == property.format) {
+            object[property.name] = sample ? sample : 'yyyyMMdd';
+          } else if ('date-time' == property.format) {
+            object[property.name] = sample ? sample : 'yyyyMMddTHH:mm:ss';
+          } else {
+            object[property.name] = sample ? sample : 'string';
           }
 
           break
         case 'number':
           if ('float' == property.format || 'double' == property.format) {
-            object[property.name] = sample?sample:0.0;
+            object[property.name] = sample ? sample : 0.0;
           } else {
-            object[property.name] = sample?sample:0;
+            object[property.name] = sample ? sample : 0;
           }
           break
         case 'integer':
-          object[property.name] = sample?sample:0;
+          object[property.name] = sample ? sample : 0;
           break
         case 'boolean':
           object[property.name] = false;
           break;
         case 'array':
-          object[property.name] = this.convertArray(property,property.example?property.example:{},schemaTypes,level+1);
+          object[property.name] = this.convertArray(property,
+                                                    property.example ? property.example : {}, schemaTypes,
+                                                    objectTypeCache,
+                                                    level + 1);
           break;
         default:
-          const subType= this.renderType({ref:property.ref},schemaTypes, level+1 );
-          object[property.name] =subType?.value;
+          const subType         = this.renderType({ref: property.ref}, schemaTypes, objectTypeCache, level + 1);
+          object[property.name] = subType?.value;
           break;
       }
 
@@ -569,38 +662,45 @@ export class InuOpenApiServices {
     return object;
   }
 
-  private convertArray(property: any, example:any,schemaTypes:OpenApiComponent | undefined, level:number): any[] {
-    const result:any = [];
-    const type = property.type ? property.type : 'object';
-    const sample =example[property.name];
+  private convertArray(property: any,
+                       example: any,
+                       schemaTypes: OpenApiComponent | undefined,
+                       objectTypeCache: ObjectTypeCache[],
+                       level: number): any[] {
+    const result: any = [];
+    const type        = property.type ? property.type : 'object';
+    const sample      = example[property.name];
     switch (type) {
       case 'string':
-        if('date' == property.format){
-          result.push(sample?sample:'yyyyMMdd');
-        }else if('date-time' == property.format){
-          result.push(sample?sample:'yyyyMMddTHH:mm:ss');
-        }else{
-          result.push(sample?sample:'string');
+        if ('date' == property.format) {
+          result.push(sample ? sample : 'yyyyMMdd');
+        } else if ('date-time' == property.format) {
+          result.push(sample ? sample : 'yyyyMMddTHH:mm:ss');
+        } else {
+          result.push(sample ? sample : 'string');
         }
         break
       case 'number':
         if ('float' == property.format || 'double' == property.format) {
-          result.push(sample?sample:0.0 );
+          result.push(sample ? sample : 0.0);
         } else {
-          result.push(sample?sample:0);
+          result.push(sample ? sample : 0);
         }
         break
       case 'integer':
-        result.push(sample?sample:0);
+        result.push(sample ? sample : 0);
         break
       case 'boolean':
         result.push(false);
         break;
       default:
-        const subType= this.renderType({ref:property.ref},schemaTypes, level+1 );
-        result.push(subType?subType.value:{});
+        const subType = this.renderType({ref: property.ref}, schemaTypes, objectTypeCache, level + 1);
+        result.push(subType ? subType.value : {});
         break;
     }
     return result;
   }
+
+
+
 }

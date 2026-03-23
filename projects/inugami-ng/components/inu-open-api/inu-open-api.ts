@@ -57,18 +57,19 @@ export class InuOpenApi {
     const cacheKey = CACHE_PREFIX + url;
     const pending: Observable<OpenApi> | undefined = this.cache.getPending(cacheKey);
     if (pending) {
-      pending.subscribe(res => this.initOpenApi(res));
+      pending.subscribe(res => this.initOpenApi(this.inuOpenApiService.convertToOpenApi(res)));
       return;
     }
 
     const request = this.http.get<any>(url)
-      .pipe(map(res => this.inuOpenApiService.convertToOpenApi(res)),
-        tap(data => this.cache.set(cacheKey, data)),
+      .pipe(tap(data => {
+        this.cache.set(cacheKey, data);
+        }),
         shareReplay(1)
       );
     this.cache.setPending(cacheKey, request);
     request.subscribe({
-      next: value => this.initOpenApi(value)
+      next: value => this.initOpenApi(this.inuOpenApiService.convertToOpenApi(value))
     });
 
   }
@@ -78,6 +79,12 @@ export class InuOpenApi {
   // PARSE
   //==================================================================================================================
   initOpenApi(openApi: OpenApi) {
+    openApi.paths?.sort((value, ref)=> {
+      if(value.url=== ref.url){
+        return `${value.verb}`.toLowerCase().localeCompare(`${ref.verb}`.toUpperCase());
+      }
+      return `${value.url}`.toLowerCase().localeCompare(`${ref.url}`.toUpperCase());
+    });
     this._value.set(openApi);
   }
 
