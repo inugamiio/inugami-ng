@@ -1,0 +1,57 @@
+<section>
+  <header>
+    <h1>Inugami-NG : InuErrorServices</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Usage</h2>
+      </header>
+
+      <p>
+        Exception handling is a critical aspect of any application. It is important to notify users whenever the server
+        encounters issues.
+      </p>
+
+      <inu-cite level="success" title="Granular management through error codes and RFC-9457">
+
+        <p>
+          Inugami-ng's error handling is built upon the core Inugami error management system. This logic relies on
+          unique error codes to track even the slightest anomalies.
+
+        </p>
+        <p>
+          To learn more about Inugami error management: <a href="https://inugami.io/inugami/framework/exception"
+                                                           target="_blank">Inugami Exception management</a>
+        </p>
+      </inu-cite>
+
+
+      <fieldset style="margin-bottom: 3rem; margin-top: 3rem;">
+        <inu-button label="Waring error" (click)="callFunctionalError()"></inu-button>
+      </fieldset>
+
+
+      <inu-code url="data/utils/inu_error_service_source_code.xml" tag="forkJoin"></inu-code>
+
+      <p>
+        Usage is straightforward via the <code>forkJoin</code> method, which wraps the standard <em>RxJS</em>
+        implementation. This method proactively handles potential error cases and automatically displays a toast
+        notification when an error occurs.
+        It returns an <code>Observable</code>, allowing you to retrieve either the successful response data or a <code>ProblemDTO</code>
+        object.
+      </p>
+
+      <inu-code url="data/utils/inu_error_service_source_code.xml" tag="problemDTO"></inu-code>
+    </article>
+
+
+  </main>
+
+
+</section>
