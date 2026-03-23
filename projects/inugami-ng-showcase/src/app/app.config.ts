@@ -11,8 +11,9 @@ import {routes} from './app.routes';
 import {NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule} from 'ngx-google-analytics';
 import {INUGAMI_DEFAULT_ICONS, InugamiIconsUtils} from 'inugami-icons';
 import {APP_BASE_HREF} from '@angular/common';
-import {provideCacheTracking, SVG_ASSETS, UuidUtils} from 'inugami-ng/services';
+import {provideCacheTracking, SVG_ASSETS} from 'inugami-ng/services';
 import {INUGAMI_SVG_ASSETS_DEFAULT} from 'inugami-svg-assets';
+import {UuidUtils} from 'inugami-ng/utils'
 
 const GOOGLE_ANALYICS = 'G-1683HZCMDJ';
 

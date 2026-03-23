@@ -1,7 +1,8 @@
 <xml>
   <src name="config" type="typescript" title="ApplicationConfig">
     <![CDATA[
-import {provideCacheTracking, UuidUtils} from 'inugami-ng/services';
+import {provideCacheTracking} from 'inugami-ng/services';
+import {UuidUtils} from 'inugami-ng/utils'
 
 const APPLICATION = signal<string>('inu-showcase');
 const ENV         = signal<string>('dev');
