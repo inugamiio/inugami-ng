@@ -307,8 +307,7 @@ export class InuOpenApiServices {
       let schemaData: any | undefined = this.extractSchema(value, contentType);
 
       const objectType = this.renderType(schemaData, schemaTypes, objectTypeCache);
-      console.log('request', objectType)
-      schema = {
+      schema           = {
         type : schemaData?.type,
         ref  : objectType?.value,
         array: objectType?.array,
@@ -365,10 +364,11 @@ export class InuOpenApiServices {
         const responseContent = response.content[contentType];
         const rawSchema: any  = responseContent.schema;
 
-
         if (responseContent.examples) {
           examples = this.unmarshallEndpointResponseExample(responseContent.examples);
         }
+
+
         if (rawSchema) {
           let type: string | undefined = rawSchema.type;
 
@@ -380,12 +380,13 @@ export class InuOpenApiServices {
 
           schema = objectTypeCache.find(v => v.name === ref);
 
+
           if (!schema) {
             let schemaData: any | undefined = this.extractSchema(value, contentType);
 
             const objectType = this.renderType(schemaData, schemaTypes, objectTypeCache);
 
-            schema           = {
+            schema = {
               type : type,
               ref  : this.extractObjectTypeValue(objectType?.value),
               array: objectType?.array,
@@ -401,6 +402,19 @@ export class InuOpenApiServices {
           }
 
 
+          if (examples.length == 0) {
+            let renderedType =   JSON.stringify(schema.array ? [schema.ref] : schema.ref, null, 2);
+            if('{}'==renderedType){
+              if(type=='string'){
+                renderedType = '""';
+              }
+            }
+
+            examples.push({
+                            name : 'nominal',
+                            value: renderedType
+                          });
+          }
         }
       }
 
@@ -412,35 +426,6 @@ export class InuOpenApiServices {
                     headers    : this.unmarshallEndpointResponseHeader(response.headers),
                     schema     : schema,
                     examples   : examples.length > 0 ? examples : undefined
-                  });
-    }
-
-    return result;
-  }
-
-  private extractObjectTypeValue(value: any) {
-    if(Array.isArray(value) && value.length>0){
-      return value[0];
-    }
-    return value;
-  }
-
-  private unmarshallEndpointResponseHeader(value: any): undefined | Header[] {
-    if (!value) {
-      return undefined;
-    }
-    const result: Header[] = [];
-
-    const keys: string[] = Object.keys(value);
-    keys.sort();
-
-    for (let key of keys) {
-      const item = value[key];
-      result.push({
-                    name        : key,
-                    description : item.description,
-                    externalDocs: item.externalDocs,
-                    style       : item.style
                   });
     }
 
@@ -471,6 +456,35 @@ export class InuOpenApiServices {
                     value        : valueContent,
                     externalValue: item.externalValue,
                     extensions   : this.extractExtension(item)
+                  });
+    }
+
+    return result;
+  }
+
+  private extractObjectTypeValue(value: any) {
+    if (Array.isArray(value) && value.length > 0) {
+      return value[0];
+    }
+    return value;
+  }
+
+  private unmarshallEndpointResponseHeader(value: any): undefined | Header[] {
+    if (!value) {
+      return undefined;
+    }
+    const result: Header[] = [];
+
+    const keys: string[] = Object.keys(value);
+    keys.sort();
+
+    for (let key of keys) {
+      const item = value[key];
+      result.push({
+                    name        : key,
+                    description : item.description,
+                    externalDocs: item.externalDocs,
+                    style       : item.style
                   });
     }
 
@@ -556,37 +570,58 @@ export class InuOpenApiServices {
     if (array) {
       if (schema.items) {
         type = schema.items['$ref'];
+        if (!type && schema.items.type) {
+          type = schema.items.type;
+        }
       }
     } else {
       type = schema.ref;
     }
 
     let currentType: any = undefined;
-    if (schemaTypes?.schemas) {
-      for (let item of schemaTypes?.schemas) {
-        if (type == item.id) {
-          currentType = item;
-          break;
+    let object: any      = {};
+
+    if (type) {
+      if (schemaTypes?.schemas) {
+        for (let item of schemaTypes?.schemas) {
+          if (type == item.id) {
+            currentType = item;
+            break;
+          }
         }
       }
-    }
 
-    if (currentType?.name) {
-      const cachedValue = objectTypeCache.find(v => v.name === currentType.name);
-      if (cachedValue) {
-        return cachedValue;
+      if (currentType?.name) {
+        const cachedValue = objectTypeCache.find(v => v.name === currentType.name);
+        if (cachedValue) {
+          return cachedValue;
+        }
+      }
+      if (currentType && currentType.properties) {
+        object = this.convertObjectPropertiesToObject(currentType.properties,
+                                                      currentType.example ? currentType.example : {},
+                                                      schemaTypes,
+                                                      objectTypeCache,
+                                                      level ? level + 1 : 0);
       }
     }
-
-
-    let object: any = {};
-    if (currentType && currentType.properties) {
-      object = this.convertObjectPropertiesToObject(currentType.properties,
-                                                    currentType.example ? currentType.example : {},
+    else if (schema.properties) {
+      object = this.convertObjectPropertiesToObject(Object
+                                                      .entries(schema.properties)
+                                                      .map(e => {
+                                                        const value = e[1] as any;
+                                                        return {
+                                                          name:e[0],
+                                                          format:value?.format,
+                                                          type:value?.type
+                                                        }
+                                                      }),
+                                                    {},
                                                     schemaTypes,
                                                     objectTypeCache,
                                                     level ? level + 1 : 0);
     }
+
 
     const result: ObjectType = {
       array: array,
@@ -700,7 +735,6 @@ export class InuOpenApiServices {
     }
     return result;
   }
-
 
 
 }
