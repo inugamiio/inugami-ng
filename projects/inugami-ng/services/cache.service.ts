@@ -36,7 +36,7 @@ export class InuCacheServices {
   private tracking             = signal<CacheServiceTracking>(this.cacheServiceTracking ?? new CacheServiceTracking(
     {
       sessionUid : signal<string>(UuidUtils.buildUid()),
-      env        : signal<string>('dev'),
+      env        : signal<string>('PRD'),
       application: signal<string>('inugami'),
       version    : signal<string>('0.0.0')
     }
