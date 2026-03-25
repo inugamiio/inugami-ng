@@ -8,6 +8,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {InuSiteLink, TARGET_BLANK, TARGET_PARENT, TARGET_SELF} from 'inugami-ng/models';
 import {InugamiNgAsideComponent} from './components/inugami-ng-aside/inugami-ng-aside.component';
 import {InuToast} from 'inugami-ng/components/inu-toast';
+import {InuFooter} from 'inugami-ng/components/inu-footer';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import {InuToast} from 'inugami-ng/components/inu-toast';
     RouterLink,
     RouterLinkActive,
     InugamiNgAsideComponent,
-    InuToast
+    InuToast,
+    InuFooter
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

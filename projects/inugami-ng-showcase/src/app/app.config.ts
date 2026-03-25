@@ -21,9 +21,9 @@ InugamiIconsUtils.register(INUGAMI_DEFAULT_ICONS);
 SVG_ASSETS.register(INUGAMI_SVG_ASSETS_DEFAULT)
 
 const APPLICATION = signal<string>('inu-showcase');
-const ENV         = signal<string>('dev');
+const ENV         = signal<string>('PRD');
 const SESSION_UID = signal<string>(UuidUtils.buildUid());
-const VERSION     = signal<string>('0.0.0');
+const VERSION     = signal<string>('0.0.18');
 
 export const appConfig: ApplicationConfig = {
   providers: [
