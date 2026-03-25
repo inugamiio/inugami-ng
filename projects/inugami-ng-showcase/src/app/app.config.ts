@@ -20,7 +20,7 @@ const GOOGLE_ANALYICS = 'G-1683HZCMDJ';
 InugamiIconsUtils.register(INUGAMI_DEFAULT_ICONS);
 SVG_ASSETS.register(INUGAMI_SVG_ASSETS_DEFAULT)
 
-const APPLICATION = signal<string>('inu-showcase');
+const APPLICATION = signal<string>('inugami-ng');
 const ENV         = signal<string>('PRD');
 const SESSION_UID = signal<string>(UuidUtils.buildUid());
 const VERSION     = signal<string>('0.0.18');
