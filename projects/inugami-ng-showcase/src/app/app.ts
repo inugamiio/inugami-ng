@@ -9,6 +9,7 @@ import {InuSiteLink, TARGET_BLANK, TARGET_PARENT, TARGET_SELF} from 'inugami-ng/
 import {InugamiNgAsideComponent} from './components/inugami-ng-aside/inugami-ng-aside.component';
 import {InuToast} from 'inugami-ng/components/inu-toast';
 import {InuFooter} from 'inugami-ng/components/inu-footer';
+import {InuMainHeader} from 'inugami-ng/components/inu-main-header';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import {InuFooter} from 'inugami-ng/components/inu-footer';
     RouterLinkActive,
     InugamiNgAsideComponent,
     InuToast,
+    InuMainHeader,
     InuFooter
   ],
   templateUrl: './app.html',
