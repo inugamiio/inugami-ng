@@ -1,0 +1,68 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-footer</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>
+          The inu-footer component is designed to display information related to your application, such as:
+        </p>
+        <ul>
+          <li>The application name</li>
+          <li>Its version</li>
+          <li>And its execution environment</li>
+        </ul>
+        <p>
+          This component is featured in the footer of this showcase.
+        </p>
+      </header>
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Usage</h2>
+      </header>
+      <main>
+        <p>
+          This component is designed to be defined directly in the main <code>app.html</code> file.
+        </p>
+        <inu-code url="data/layout/inu_footer_source_code.xml" tag="html"></inu-code>
+
+        <p>
+          As with any <em>standalone</em> component, it must be imported directly into the component that uses it.
+        </p>
+        <inu-code url="data/layout/inu_footer_source_code.xml" tag="app_ts"></inu-code>
+
+        Application information is provided through the provideCacheTracking provider, defined in the app.config.ts file.
+
+        <inu-code url="data/layout/inu_footer_source_code.xml" tag="app_config"></inu-code>
+
+        <inu-cite level="info" title="Simple success citation">
+          <p>
+            We use <em>Angular Signals</em> to manage application metadata (name, environment, version, and session UID).
+            These signals are then passed to the <code>provideCacheTracking</code> function, which registers them as
+            globally accessible providers.
+          </p>
+        </inu-cite>
+
+
+        <p>
+          It is also possible to add information inside the component.
+        </p>
+        <inu-code url="data/layout/inu_footer_source_code.xml" tag="add_content"></inu-code>
+      </main>
+    </article>
+
+  </main>
+
+
+</section>

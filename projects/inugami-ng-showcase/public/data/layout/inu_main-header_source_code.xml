@@ -1,0 +1,80 @@
+<xml>
+  <src name="html" type="html" title="app.html">
+    <![CDATA[
+<div class="page-content">
+  <section class="page-section">
+    <div class="page-section-content">
+      <div class="bd-content">
+        <router-outlet/>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+<inu-main-header icon="inugamiLogo" [links]="links()"></inu-main-header>
+
+<inu-toast></inu-toast>
+<inu-footer></inu-footer>
+]]>
+  </src>
+
+  <src name="app_ts" type="typescript" title="app.ts">
+    <![CDATA[
+import {InuMainHeader} from 'inugami-ng/components/inu-main-header';
+
+@Component({
+  selector: 'app-root',
+             imports: [
+               RouterOutlet,
+               InuMainHeader
+             ],
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
+})
+export class App {
+  links = signal<InuSiteLink[]>([
+    {
+      title   : 'Inugami Framework',
+      path    : 'https://inugami.io/inugami/framework',
+      external: true
+    }
+    // ...
+  ]);
+}
+]]>
+  </src>
+
+  <src name="InuSiteLink" type="typescript" title="InuSiteLink">
+    <![CDATA[
+export interface InuSiteLink{
+  title:string;
+  path:string;
+  icon?:string;
+  styleClass?:string;
+  external?:boolean;
+  target?:'_blank'|'_self'|'_parent',
+  children?: InuSiteLinkChildren[];
+  gaEvent?:string;
+  gaCategory?:string;
+}
+
+export interface  InuSiteLinkChildren{
+  links?: InuSiteLink[];
+  title?:string;
+}
+]]>
+  </src>
+
+  <src name="add_actions" type="html" title="Add actions">
+    <![CDATA[
+<inu-main-header icon="inugamiLogo" [links]="links()">
+  <div class="custom-actions">
+    <inu-icon icon="user" [size]="2" (click)="showProfile()"></inu-icon>
+  </div>
+</inu-main-header>
+]]>
+  </src>
+
+</xml>

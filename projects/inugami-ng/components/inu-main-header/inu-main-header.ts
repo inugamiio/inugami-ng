@@ -1,6 +1,4 @@
-import {Component, computed, inject, input, signal} from '@angular/core';
-import {CacheServiceTracking} from 'inugami-ng/services'
-import {InuStringUtils, UuidUtils} from 'inugami-ng/utils'
+import {Component, input, signal} from '@angular/core';
 import {InuIcon} from 'inugami-icons'
 import {RouterLink, RouterLinkActive} from '@angular/router'
 import {InuSiteLink} from 'inugami-ng/models'
@@ -21,9 +19,9 @@ export class InuMainHeader {
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  icon        = input<string>('');
-  disableIcon = input<boolean>(false);
-  links       = input<InuSiteLink[]>([]);
+  icon              = input<string>('');
+  disableIcon       = input<boolean>(false);
+  links             = input<InuSiteLink[]>([]);
   displayMenuBurger = signal<boolean>(false);
 
   protected toggleDisplay() {

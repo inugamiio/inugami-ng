@@ -1,0 +1,118 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-main-header</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>
+          A menu bar containing the application's primary links is a standard feature in many applications.
+          To meet this need, the <code>inu-main-header</code> component is available.
+        </p>
+        <p>
+          The showcase menu, which manages the various navigation links, is built using this component.
+        </p>
+      </header>
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Usage</h2>
+      </header>
+
+      <main>
+        <p>
+          This component is designed to be defined directly in the main <code>app.html</code> file.
+        </p>
+
+        <inu-code url="data/layout/inu_main-header_source_code.xml" tag="html"></inu-code>
+
+        <p>
+          As with any <em>standalone</em> component, it must be imported directly into the component that uses it.
+        </p>
+        <inu-code url="data/layout/inu_main-header_source_code.xml" tag="app_ts"></inu-code>
+
+        <p>
+          The <code>InuSiteLink</code> interface allows you to define the application's primary links.
+        </p>
+        <inu-code url="data/layout/inu_main-header_source_code.xml" tag="InuSiteLink"></inu-code>
+
+        <dl>
+          <dt>title & path</dt>
+          <dd>The display name and the corresponding Angular route.</dd>
+
+          <dt>target</dt>
+          <dd>Supports standard HTML targets, including _blank for external windows.</dd>
+
+          <dt>children</dt>
+          <dd>Enables multi-level navigation or dropdown menus via the InuSiteLinkChildren interface.</dd>
+
+          <dt>gaEvent & gaCategory</dt>
+          <dd>Built-in support for Google Analytics tracking on link clicks.</dd>
+        </dl>
+      </main>
+
+      <p>
+        The component is fully responsive. When the screen size becomes too small to display the full menu,
+        a <em>burger</em> button appears, allowing users to toggle the menu.
+      </p>
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Add actions</h2>
+      </header>
+
+      <p>
+        It is possible to add actions or content inside the component. These elements will be positioned on the right
+        side of the component.
+      </p>
+      <inu-code url="data/layout/inu_main-header_source_code.xml" tag="add_actions"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+   = PROPERTIES
+   =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disableIcon</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>icon</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Icon name from inu-icon component</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+
+    </article>
+  </main>
+
+
+</section>

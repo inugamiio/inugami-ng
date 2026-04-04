@@ -1,4 +1,4 @@
-<nav >
+<nav>
   <div class="inu-main-header">
     <div class="inu-main-header-nav-bar">
       <div class="inu-main-header-home-icon">
@@ -60,6 +60,30 @@
           } @else {
             <a [routerLink]="link.path" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: false }">{{ link.title }}</a>
+          }
+
+          @if (link.children) {
+            <ul class="child-links">
+              @for (childGrp of link.children; track childGrp) {
+                @if (childGrp.links) {
+                  @for (child of childGrp.links; track child) {
+                    <li>
+                      @if (child.external) {
+                        @if (child.target) {
+                          <a [target]="child.target" [href]="child.path">{{ child.title }}</a>
+                        } @else {
+                          <a [href]="child.path">{{ child.title }}</a>
+                        }
+                      } @else {
+                        <a [routerLink]="child.path" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: false }">{{ child.title }}</a>
+                      }
+                    </li>
+                  }
+                }
+              }
+            </ul>
+
           }
         </li>
       }
