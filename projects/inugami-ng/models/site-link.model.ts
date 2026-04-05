@@ -3,7 +3,7 @@ export const TARGET_SELF = '_self';
 export const TARGET_PARENT = '_parent';
 export interface InuSiteLink{
   title:string;
-  path:string;
+  path?:string;
   icon?:string;
   styleClass?:string;
   external?:boolean;

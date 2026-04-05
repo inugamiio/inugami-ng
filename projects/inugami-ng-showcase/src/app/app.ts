@@ -6,19 +6,19 @@ import {filter} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {InuSiteLink, TARGET_BLANK} from 'inugami-ng/models';
-import {InugamiNgAsideComponent} from './components/inugami-ng-aside/inugami-ng-aside.component';
 import {InuToast} from 'inugami-ng/components/inu-toast';
 import {InuFooter} from 'inugami-ng/components/inu-footer';
 import {InuMainHeader} from 'inugami-ng/components/inu-main-header';
+import {InuAsideMenu} from 'inugami-ng/components/inu-aside-menu';
 
 @Component({
              selector   : 'app-root',
-             imports: [
+             imports    : [
                RouterOutlet,
-               InugamiNgAsideComponent,
                InuToast,
                InuMainHeader,
-               InuFooter
+               InuFooter,
+               InuAsideMenu
              ],
              templateUrl: './app.html',
              styleUrl   : './app.scss'
@@ -80,6 +80,182 @@ export class App implements OnInit {
                                                             target    : TARGET_BLANK
                                                           }
                                                         ]);
+
+  protected asideLinks = signal<InuSiteLink[]>([
+                                                 {
+                                                   title   : 'GitHub',
+                                                   path    : 'https://github.com/inugamiio/inugami-ng',
+                                                   external: true,
+                                                   target  : TARGET_BLANK,
+                                                   icon    : 'git'
+                                                 },
+                                                 {
+                                                   title: 'Icons',
+                                                   path : '/icons',
+                                                   icon : 'image'
+                                                 },
+                                                 //--- ACTIONS ---------------------------------------------------------
+                                                 {
+                                                   title   : 'Actions',
+                                                   icon    : 'terminal',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-button',
+                                                           path : '/actions/inu-button'
+                                                         },
+                                                         {
+                                                           title: 'inu-copy',
+                                                           path : '/actions/inu-copy'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+                                                 //--- CHARTS ----------------------------------------------------------
+                                                 {
+                                                   title   : 'Charts',
+                                                   icon    : 'chart',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-svg-assets',
+                                                           path : '/charts/inu-svg-assets'
+                                                         },
+                                                         {
+                                                           title: 'inu-svg-utils',
+                                                           path : '/charts/inu-svg-utils'
+                                                         },
+                                                         {
+                                                           title: 'inu-svg-isometric',
+                                                           path : '/charts/inu-svg-isometric'
+                                                         },
+                                                         {
+                                                           title: 'inu-svg-switzerland',
+                                                           path : '/charts/inu-svg-switzerland'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+                                                 //--- DISPLAY ---------------------------------------------------------
+                                                 {
+                                                   title   : 'Display',
+                                                   icon    : 'eye',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-cite',
+                                                           path : '/display/inu-cite'
+                                                         },
+                                                         {
+                                                           title: 'inu-code',
+                                                           path : '/display/inu-code'
+                                                         },
+                                                         {
+                                                           title: 'inu-doc-item',
+                                                           path : '/display/inu-doc-item'
+                                                         },
+                                                         {
+                                                           title: 'inu-open-api',
+                                                           path : '/display/inu-open-api'
+                                                         },
+                                                         {
+                                                           title: 'inu-panel-tabs',
+                                                           path : '/display/inu-panel-tabs'
+                                                         },
+                                                         {
+                                                           title: 'inu-toast',
+                                                           path : '/display/inu-toast'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+
+                                                 //--- FORMS -----------------------------------------------------------
+                                                 {
+                                                   title   : 'Forms',
+                                                   icon    : 'tasks',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-checkbox-group',
+                                                           path : '/forms/inu-checkbox-group'
+                                                         },
+                                                         {
+                                                           title: 'inu-input-text',
+                                                           path : '/forms/inu-input-text'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+
+                                                 //--- LAYOUT ----------------------------------------------------------
+                                                 {
+                                                   title   : 'Layout',
+                                                   icon    : 'layoutTab',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-footer',
+                                                           path : '/layout/inu-footer'
+                                                         },
+                                                         {
+                                                           title: 'inu-main-header',
+                                                           path : '/layout/inu-main-header'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+
+                                                 //--- TABLES ----------------------------------------------------------
+                                                 {
+                                                   title   : 'Tables',
+                                                   icon    : 'kanban',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-table-flex',
+                                                           path : '/tables/inu-table-flex'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+
+                                                 //--- UTILS -----------------------------------------------------------
+                                                 {
+                                                   title   : 'Utils',
+                                                   icon    : 'tool',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-cache-service',
+                                                           path : '/utils/inu-cache-service'
+                                                         },
+                                                         {
+                                                           title: 'inu-error-service',
+                                                           path : '/utils/inu-error-service'
+                                                         },
+                                                         {
+                                                           title: 'inu-string-utils',
+                                                           path : '/utils/inu-string-utils'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 }
+                                               ]);
 
   //====================================================================================================================
   // INIT
