@@ -9,7 +9,7 @@ import {InuSiteLink, TARGET_BLANK} from 'inugami-ng/models';
 import {InuToast} from 'inugami-ng/components/inu-toast';
 import {InuFooter} from 'inugami-ng/components/inu-footer';
 import {InuMainHeader} from 'inugami-ng/components/inu-main-header';
-import {InuAsideMenu} from 'inugami-ng/components/inu-aside-menu';
+import {InuPageLayout} from 'inugami-ng/components/inu-page-layout';
 
 @Component({
              selector   : 'app-root',
@@ -18,7 +18,7 @@ import {InuAsideMenu} from 'inugami-ng/components/inu-aside-menu';
                InuToast,
                InuMainHeader,
                InuFooter,
-               InuAsideMenu
+               InuPageLayout
              ],
              templateUrl: './app.html',
              styleUrl   : './app.scss'
@@ -204,12 +204,20 @@ export class App implements OnInit {
                                                      {
                                                        links: [
                                                          {
+                                                           title: 'inu-aside-menu',
+                                                           path : '/layout/inu-aside-menu'
+                                                         },
+                                                         {
                                                            title: 'inu-footer',
                                                            path : '/layout/inu-footer'
                                                          },
                                                          {
                                                            title: 'inu-main-header',
                                                            path : '/layout/inu-main-header'
+                                                         },
+                                                         {
+                                                           title: 'inu-page-layout',
+                                                           path : '/layout/inu-page-layout'
                                                          }
                                                        ]
                                                      }
@@ -246,6 +254,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-error-service',
                                                            path : '/utils/inu-error-service'
+                                                         },
+                                                         {
+                                                           title: 'inu-forms-utils',
+                                                           path : '/utils/inu-forms-utils'
                                                          },
                                                          {
                                                            title: 'inu-string-utils',

@@ -1,16 +1,7 @@
-import {Component, signal} from '@angular/core';
-import {InuCode} from 'inugami-ng/components/inu-code';
-import {InuPanelTab, InuPanelTabs} from 'inugami-ng/components/inu-panel-tabs';
-import {InuInputText} from 'inugami-ng/components/inu-input-text';
-import {
-  InuTableFlex,
-  InuTableFlexCell,
-  InuTableFlexHeader,
-  InuTableFlexRow
-} from 'inugami-ng/components/inu-table-flex';
-import {FieldTree, form, FormField, required} from '@angular/forms/signals';
+<xml>
+  <src name="onChanged" type="typescript" title="InuFormsUtils.onChanged">
+    <![CDATA[
 import {InuFormsUtils} from 'inugami-ng/utils'
-
 
 interface UserForm {
   uid: string;
@@ -38,10 +29,6 @@ interface UserForm {
            })
 export class InuInputTextView {
 
-  //====================================================================================================================
-  // ATTRIBUTES
-  //====================================================================================================================
-  data                          = signal<string>('');
   userModel                     = signal<UserForm>({
                                                      uid      : '',
                                                      firstName: '',
@@ -52,9 +39,7 @@ export class InuInputTextView {
   userForm: FieldTree<UserForm> = form(this.userModel, (path) => {
     required(path.email);
   });
-  //====================================================================================================================
-  // INIT
-  //====================================================================================================================
+
   constructor() {
     InuFormsUtils.onChanged(this.userModel)
       .subscribe(value => {
@@ -62,9 +47,36 @@ export class InuInputTextView {
       });
   }
 
-
   private onChanged(value: UserForm) {
-    this.data.set(JSON.stringify(value, null, 4));
+    //... implementation
   }
 
+]]>
+  </src>
+
+  <src name="isValid" type="typescript" title="InuFormsUtils.isValid">
+    <![CDATA[
+const status = InuFormsUtils.isValid(this.userForm);
+if (!status.valid) {
+  console.warn('The following fields are invalid:', status.invalidFields);
 }
+]]>
+  </src>
+
+  <src name="ValidityChanges" type="typescript" title="ValidityChanges">
+    <![CDATA[
+export interface ValidityChanges {
+  valid: boolean;
+  invalidFields: InvalidField[];
+}
+
+export interface InvalidField {
+  field: string;
+  dirty: boolean;
+  disabled: boolean;
+  touched: boolean;
+  errors: any[];
+}
+]]>
+  </src>
+</xml>

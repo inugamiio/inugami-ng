@@ -1,16 +1,6 @@
-<div class="page-content">
-  <section class="page-section">
-    <div class="page-section-content">
-      <aside class="bd-sidebar">
-       <inu-aside-menu [links]="asideLinks()"></inu-aside-menu>
-      </aside>
-      <div class="bd-content">
-        <router-outlet/>
-      </div>
-    </div>
-  </section>
-</div>
-
+<inu-page-layout [links]="asideLinks()">
+  <router-outlet/>
+</inu-page-layout>
 
 <inu-main-header icon="inugamiLogo" [links]="links()"></inu-main-header>
 

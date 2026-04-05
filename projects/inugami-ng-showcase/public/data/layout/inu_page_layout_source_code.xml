@@ -1,0 +1,79 @@
+<xml>
+  <src name="html" type="html" title="app.html">
+    <![CDATA[
+<inu-page-layout [links]="asideLinks()">
+  <router-outlet/>
+</inu-page-layout>
+
+<inu-main-header icon="inugamiLogo" [links]="links()"></inu-main-header>
+
+<inu-toast></inu-toast>
+<inu-footer></inu-footer>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="Your angular controller">
+    <![CDATA[
+@Component({
+             selector   : 'app-root',
+             imports    : [
+               RouterOutlet,
+               InuToast,
+               InuMainHeader,
+               InuFooter,
+               InuPageLayout
+             ],
+             templateUrl: './app.html',
+             styleUrl   : './app.scss'
+           })
+export class App implements OnInit {
+  //...
+  protected links               = signal<InuSiteLink[]>([
+                                                          {
+                                                            title   : 'Inugami Framework',
+                                                            path    : 'https://inugami.io/inugami/framework',
+                                                            external: true
+                                                          }
+                                                          //...
+                                                        ]);
+
+  protected asideLinks = signal<InuSiteLink[]>([
+                                                 {
+                                                   title   : 'GitHub',
+                                                   path    : 'https://github.com/inugamiio/inugami-ng',
+                                                   external: true,
+                                                   target  : TARGET_BLANK,
+                                                   icon    : 'git'
+                                                 },
+                                                 {
+                                                   title: 'Icons',
+                                                   path : '/icons',
+                                                   icon : 'image'
+                                                 },
+                                                 //--- ACTIONS ---------------------------------------------------------
+                                                 {
+                                                   title   : 'Actions',
+                                                   icon    : 'terminal',
+                                                   children: [
+                                                     {
+                                                       links: [
+                                                         {
+                                                           title: 'inu-button',
+                                                           path : '/actions/inu-button'
+                                                         },
+                                                         {
+                                                           title: 'inu-copy',
+                                                           path : '/actions/inu-copy'
+                                                         }
+                                                       ]
+                                                     }
+                                                   ]
+                                                 },
+                                                 //...
+                                               ]);
+}
+]]>
+  </src>
+
+</xml>
+

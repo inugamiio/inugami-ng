@@ -1,17 +1,18 @@
-import {Component, signal} from '@angular/core';
-import {InuSiteLink, TARGET_BLANK} from 'inugami-ng/models'
-import {InuAsideMenu} from 'inugami-ng/components/inu-aside-menu';
-import {InuCode} from 'inugami-ng/components/inu-code';
-import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
+<xml>
+  <src name="html" type="html" title="app.html">
+    <![CDATA[
+<inu-aside-menu [links]="links()"></inu-aside-menu>
+]]>
+  </src>
 
+  <src name="ts" type="typescript" title="Your angular controller">
+    <![CDATA[
+import {InuAsideMenu} from 'inugami-ng/components/inu-aside-menu';
 @Component({
              templateUrl: './inu-aside-menu.view.html',
              styleUrls  : ['./inu-aside-menu.view.scss'],
              imports: [
-               InuAsideMenu,
-               InuCode,
-               InuPanelTab,
-               InuPanelTabs
+               InuAsideMenu
              ]
            })
 export class InuAsideMenuView {
@@ -51,3 +52,9 @@ export class InuAsideMenuView {
                                 ]);
 
 }
+
+]]>
+  </src>
+
+</xml>
+
