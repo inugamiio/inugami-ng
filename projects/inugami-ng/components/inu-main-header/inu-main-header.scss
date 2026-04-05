@@ -1,0 +1,127 @@
+nav {
+  top: 0rem;
+  position: fixed;
+  width: 100vw;
+  -webkit-box-shadow: 0px 0px 5px 0px var(--shadow-color);
+  box-shadow: 0px 0px 5px 0px var(--shadow-color);
+  background-color: #fbfbfe;
+  font-size: 130%;
+  display: flex;
+  align-items: center;
+}
+
+.inu-main-header {
+  width: 96%;
+  min-height: 3rem;
+  margin: 0;
+  padding: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+
+  .inu-main-header-nav-bar {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: center;
+  }
+
+
+  .inu-main-header-links-grp {
+    a {
+      text-decoration: none;
+      color: var(--main-header-title-color);
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      border-bottom: 0.15rem solid transparent;
+      transition: border 200ms;
+
+      &.active {
+        border-bottom: 0.15rem solid var(--primary-dark);
+      }
+
+      &:hover {
+        border-bottom: 0.15rem solid var(--primary);
+      }
+    }
+
+    .inu-main-header-links {
+      ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+      }
+    }
+  }
+
+
+}
+
+.inu-main-header-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 3rem;
+
+  .inu-main-header-actions-content{
+
+  }
+  .inu-main-header-burger{
+    .inu-main-header-burger-icon{
+      fill: var(--neutral);
+      &:hover{
+        fill: var(--neutral-dark-extra);
+      }
+    }
+  }
+}
+
+
+.inu-main-header-burger {
+  display: none;
+}
+
+.inu-main-header-links-burger {
+  display: none;
+
+}
+
+@media (max-width: 920px) {
+  .inu-main-header-links {
+    display: none;
+  }
+  .inu-main-header-burger {
+    display: flex;
+    align-items: center;
+  }
+  .inu-main-header-links-burger {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid var(--neutral);
+    position: fixed;
+    top: 3rem;
+    background-color: var(--background);
+    -webkit-box-shadow: 0px 0px 5px 0px var(--shadow-color);
+    box-shadow: 0px 0px 5px 0px var(--shadow-color);
+    a{
+      color: var(--neutral-dark-extra);
+      text-decoration: none;
+      &.active{
+        border-bottom: 0.15rem solid var(--primary-dark);
+      }
+      &:hover {
+        border-bottom: 0.15rem solid var(--primary);
+      }
+    }
+  }
+}
+
+.child-links{
+  list-style: square !important;
+}

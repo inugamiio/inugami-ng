@@ -1,0 +1,53 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-aside-menu</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>
+          The <code>inu-aside-menu</code> component allows you to create a sidebar navigation menu featuring both internal Angular
+          application routes and external links.
+        </p>
+      </header>
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <div style="height: 3rem"></div>
+
+      <inu-aside-menu [links]="links()"></inu-aside-menu>
+
+      <div style="height: 3rem"></div>
+
+      <inu-panel-tabs>
+        <inu-panel-tab name="html" label="HTML">
+          <inu-code url="data/layout/inu_aside_menu_source_code.xml" tag="html"></inu-code>
+        </inu-panel-tab>
+        <inu-panel-tab name="typescript" label="TypeScript">
+          <inu-code url="data/layout/inu_aside_menu_source_code.xml" tag="ts"></inu-code>
+        </inu-panel-tab>
+      </inu-panel-tabs>
+
+
+      <p>
+        The <code>inu-aside-menu</code> component uses the same interface as the <code>inu-main-header</code> to define navigation links:
+      </p>
+      <inu-code url="data/layout/inu_main-header_source_code.xml" tag="InuSiteLink"></inu-code>
+    </article>
+
+  </main>
+
+
+</section>

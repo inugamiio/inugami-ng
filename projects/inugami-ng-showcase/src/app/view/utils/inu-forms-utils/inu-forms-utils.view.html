@@ -1,0 +1,65 @@
+<section>
+  <header>
+    <h1>Inugami-NG : InuFormsUtils</h1>
+    <p>
+      This utility class is a great addition to the <em>Inugami-NG ecosystem</em>. It bridges the gap between
+      <strong>Angular Signals</strong> and <strong>Observables</strong> while providing a clean way to handle form validation states.
+    </p>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>onChanged</h2>
+      </header>
+
+      <p>
+        Converts a Signal-based model into an Observable stream to track value changes with built-in performance optimizations.
+      </p>
+      <p>
+        Ideal for triggering side effects (like API calls or logging) when a model changes.
+      </p>
+
+      <dl>
+        <dt>Debounce</dt>
+        <dd>Defaults to 50ms to prevent over-triggering during rapid input.</dd>
+
+        <dt>Filtering</dt>
+        <dd>Only emits when the value actually changes (distinctUntilChanged).</dd>
+
+        <dt>Memory Management</dt>
+        <dd>Automatically cleans up the subscription when the calling context is destroyed (takeUntilDestroyed).</dd>
+      </dl>
+
+
+      <inu-code url="data/utils/inu_forms_utils_source_code.xml" tag="onChanged"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>isValid</h2>
+      </header>
+      <p>Performs a comprehensive validation check on a <code>FieldTree</code> structure.</p>
+      <p>Quickly assess the health of a form and retrieve specific metadata for any failing fields.</p>
+      <p>
+        It iterates through the form keys, inspects the validationState of each signal-based field, and compiles a list
+        of failures including their nodeState (dirty, touched, etc.).
+      </p>
+      <inu-code url="data/utils/inu_forms_utils_source_code.xml" tag="isValid"></inu-code>
+
+      <p>
+        The validation process returns a <code>ValidityChanges</code> object:
+      </p>
+      <inu-code url="data/utils/inu_forms_utils_source_code.xml" tag="ValidityChanges"></inu-code>
+    </article>
+  </main>
+
+
+</section>

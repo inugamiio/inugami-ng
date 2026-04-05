@@ -1,0 +1,40 @@
+.inu-aside-menu-links{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap:0.25rem;
+
+  .inu-aside-menu-links-item{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+
+
+    &.with-children {
+      margin-top: 1rem;
+      > .inu-aside-menu-links-item-current-link {
+        background-color: var(--neutral-light);
+        border-bottom: 1px solid transparent;
+        &:hover{
+          border-bottom: 1px solid var(--neutral);
+        }
+      }
+    }
+
+
+    .inu-aside-menu-links-item-current-link{
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      .inu-aside-menu-link-icon{
+        width: 2rem;
+        height: 1.5rem;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,43 @@
+<aside class="inu-aside-menu">
+  @if (links()) {
+    <menu>
+
+      <ul class="inu-aside-menu-links">
+        @for (link of links(); track link) {
+          <li class="inu-aside-menu-links-item"
+              [ngClass]="{'with-children': link.children!=undefined && link.children.length>0}">
+            <div class="inu-aside-menu-links-item-current-link">
+              <div class="inu-aside-menu-link-icon">
+                @if (link.icon) {
+                  <inu-icon [icon]="link.icon" [size]="1.3"></inu-icon>
+                }
+              </div>
+              @if (link.path) {
+                @if (link.external) {
+                  @if (link.target) {
+                    <a [target]="link.target" [href]="link.path">{{ link.title! }}</a>
+                  } @else {
+                    <a [href]="link.path">{{ link.title }}</a>
+                  }
+                } @else {
+                  <a [routerLink]="link.path" routerLinkActive="active"
+                     [routerLinkActiveOptions]="{ exact: false }">{{ link.title! }}</a>
+                }
+              } @else {
+                <span>{{ link.title! }}</span>
+              }
+            </div>
+
+
+            <div class="inu-aside-menu-link-children">
+              @if (link.children) {
+                <inu-aside-menu-children [children]="link.children"></inu-aside-menu-children>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+
+    </menu>
+  }
+</aside>

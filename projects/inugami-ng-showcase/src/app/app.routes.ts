@@ -19,6 +19,11 @@ import {InuInputTextView} from './view/forms/inu-input-text/inu-input-text.view'
 import {InuCacheServiceView} from './view/utils/inu-cache-service/inu-cache-service.view'
 import {InuStringUtilsView} from './view/utils/inu-string-utils/inu-string-utils.view'
 import {InuErrorServiceView} from './view/utils/inu-error-service/inu-error-service.view'
+import {InuMainHeaderView} from './view/layout/inu-main-header/inu-main-header.view'
+import {InuFooterView} from './view/layout/inu-footer/inu-footer.view'
+import {InuAsideMenuView} from './view/layout/inu-aside-menu/inu-aside-menu.view'
+import {InuPageLayoutView} from './view/layout/inu-page-layout/inu-page-layout.view'
+import {InuFormsUtilsView} from './view/utils/inu-forms-utils/inu-forms-utils.view'
 
 
 export const routes: Routes = [
@@ -55,7 +60,14 @@ export const routes: Routes = [
       {path: "inu-input-text", component: InuInputTextView}
     ]
   },
-
+  {
+    path: "layout", children: [
+      {path: "inu-aside-menu", component: InuAsideMenuView},
+      {path: "inu-footer", component: InuFooterView},
+      {path: "inu-main-header", component: InuMainHeaderView},
+      {path: "inu-page-layout", component: InuPageLayoutView}
+    ]
+  },
   {
     path: "tables", children: [
       {path: "inu-table-flex", component: InuTableFlexView}
@@ -65,6 +77,7 @@ export const routes: Routes = [
     path: "utils", children: [
       {path: "inu-cache-service", component: InuCacheServiceView},
       {path: "inu-error-service", component: InuErrorServiceView},
+      {path: "inu-forms-utils", component: InuFormsUtilsView},
       {path: "inu-string-utils", component: InuStringUtilsView}
     ]
   },

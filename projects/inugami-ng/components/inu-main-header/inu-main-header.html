@@ -1,0 +1,92 @@
+<nav>
+  <div class="inu-main-header">
+    <div class="inu-main-header-nav-bar">
+      <div class="inu-main-header-home-icon">
+        <a routerLink="" routerLinkActive="active">
+          @if (icon()) {
+            <inu-icon [icon]="icon()" [size]="2.5"></inu-icon>
+          } @else {
+            <div class="inu-main-header-home-icon-content"></div>
+          }
+        </a>
+      </div>
+      <div class="inu-main-header-links-grp">
+        <div class="inu-main-header-links">
+          <ul>
+            @for (link of links(); track link.path; ) {
+              <li>
+                @if (link.external) {
+                  @if (link.target) {
+                    <a [target]="link.target" [href]="link.path">{{ link.title }}</a>
+                  } @else {
+                    <a [href]="link.path">{{ link.title }}</a>
+                  }
+                } @else {
+                  <a [routerLink]="link.path" routerLinkActive="active"
+                     [routerLinkActiveOptions]="{ exact: false }">{{ link.title }}</a>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="inu-main-header-actions">
+      <div class="inu-main-header-actions-content">
+        <ng-content/>
+      </div>
+      <div class="inu-main-header-burger">
+        <div class="inu-main-header-burger-icon">
+          <inu-icon icon="menu" [size]="2" (click)="toggleDisplay()"></inu-icon>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+@if (displayMenuBurger()) {
+  <div class="inu-main-header-links-burger">
+    <ul>
+      @for (link of links(); track link.path; ) {
+        <li>
+          @if (link.external) {
+            @if (link.target) {
+              <a [target]="link.target" [href]="link.path">{{ link.title }}</a>
+            } @else {
+              <a [href]="link.path">{{ link.title }}</a>
+            }
+          } @else {
+            <a [routerLink]="link.path" routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: false }">{{ link.title }}</a>
+          }
+
+          @if (link.children) {
+            <ul class="child-links">
+              @for (childGrp of link.children; track childGrp) {
+                @if (childGrp.links) {
+                  @for (child of childGrp.links; track child) {
+                    <li>
+                      @if (child.external) {
+                        @if (child.target) {
+                          <a [target]="child.target" [href]="child.path">{{ child.title }}</a>
+                        } @else {
+                          <a [href]="child.path">{{ child.title }}</a>
+                        }
+                      } @else {
+                        <a [routerLink]="child.path" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: false }">{{ child.title }}</a>
+                      }
+                    </li>
+                  }
+                }
+              }
+            </ul>
+
+          }
+        </li>
+      }
+    </ul>
+  </div>
+}

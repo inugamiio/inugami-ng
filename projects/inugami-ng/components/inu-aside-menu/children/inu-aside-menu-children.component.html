@@ -1,0 +1,52 @@
+@if (children()) {
+  <div [class]="currentStyleClass()">
+    <ul class="inu-aside-menu-children-grp">
+      @for (child of children(); track child) {
+        <li class="inu-aside-menu-children-item">
+          @if (child.title) {
+            <div class="inu-aside-menu-children-title">{{ child.title! }}</div>
+          }
+          @if (child.links) {
+            <ul  class="inu-aside-menu-children-links">
+              @for (childLink of child.links; track childLink) {
+                <li   class="inu-aside-menu-children-link">
+                  <div class="inu-aside-menu-link-current-link">
+                    <div class="inu-aside-menu-link-icon">
+                      @if (childLink.icon) {
+                        <inu-icon [icon]="childLink.icon" [size]="1.5"></inu-icon>
+                      }
+                    </div>
+
+                    @if (childLink.path) {
+                      @if (childLink.external) {
+                        @if (childLink.target) {
+                          <a [target]="childLink.target" [href]="childLink.path">{{ childLink.title! }}</a>
+                        } @else {
+                          <a [href]="childLink.path">{{ childLink.title! }}</a>
+                        }
+                      }
+                      @else {
+                        <a [routerLink]="childLink.path" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
+                      }
+                    }
+                    @else {
+                      <span>{{childLink.title!}}</span>
+                    }
+                  </div>
+
+                  <div class="inu-aside-menu-link-children">
+                    @if (childLink.children) {
+                      <inu-aside-menu-children [children]="childLink.children" [level]="level()+1"></inu-aside-menu-children>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+
+      }
+    </ul>
+  </div>
+}

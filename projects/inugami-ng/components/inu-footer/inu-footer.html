@@ -2,14 +2,15 @@
   <div class="inu-footer-border-top"></div>
   @if(displayVersion()){
     <div class="inu-footer-application-detail">
-      <div class="inu-footer-application-env">
-        <div>{{tracking().env()}}</div>
-      </div>
+
       <div class="inu-footer-application-name">
         <div>{{tracking().application()}}</div>
       </div>
       <div class="inu-footer-application-version">
         <div>{{tracking().version()}}</div>
+      </div>
+      <div class="inu-footer-application-env">
+        <div>{{tracking().env()}}</div>
       </div>
     </div>
   }
