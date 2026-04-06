@@ -32,6 +32,7 @@ export class InuErrorService {
   //====================================================================================================================
   public handlerError(error: any): ProblemDTO {
     let problem: ProblemDTO | undefined = undefined;
+
     if (this.isProblemDTO(error)) {
       problem = error as ProblemDTO;
     } else if (this.isHttpError(error)) {
@@ -39,6 +40,24 @@ export class InuErrorService {
     } else {
       problem = this.buildDefaultProblem();
     }
+
+    console.log('handlerError',problem)
+
+    if(problem.details){
+      if(problem.details.errorCode){
+        this.showMessageErrorCode(problem.details.errorCode, problem);
+      }
+      if(problem.details.fields){
+        for(let field of problem.details.fields){
+         if(!field.errorCode
+            || field.errorCode== problem.details.errorCode){
+           continue;
+         }
+          this.showMessageErrorCode(field.errorCode, problem);
+        }
+      }
+    }
+
 
     for (let param of (problem.parameters ?? [this.buildDefaultErrorParameter()])) {
       this.showMessage(param, problem);
@@ -107,5 +126,18 @@ export class InuErrorService {
 
   private resolveLevel(errorType: string) {
     return 'functional' == errorType.toLowerCase() ? 'warn' : 'error';
+  }
+
+  private showMessageErrorCode(errorCode: string, problem: ProblemDTO) {
+    const errorType = this.resolveErrorLevel(problem.status);
+
+    const errorCodeMessage      = this.inuLabelService.getMessage(errorCode);
+    const errorCodeTitleMessage = this.inuLabelService.getMessage(`${errorCode}_title`);
+    const genericTitle          = this.inuLabelService.getMessage(errorType);
+    this.inuToastServices.addMessage({
+                                       level  : this.resolveLevel(errorType),
+                                       title  : errorCodeTitleMessage ?? genericTitle ?? 'Undefined error occurs',
+                                       message: errorCodeMessage ?? 'some error occurs'
+                                     });
   }
 }
