@@ -30,7 +30,7 @@ export class InuErrorService {
   //====================================================================================================================
   // INTERNAL
   //====================================================================================================================
-  private handlerError(error: any): ProblemDTO {
+  public handlerError(error: any): ProblemDTO {
     let problem: ProblemDTO | undefined = undefined;
     if (this.isProblemDTO(error)) {
       problem = error as ProblemDTO;
@@ -48,7 +48,7 @@ export class InuErrorService {
   }
 
 
-  private isProblemDTO(obj: any): obj is ProblemDTO {
+  public isProblemDTO(obj: any): obj is ProblemDTO {
     return obj && obj.status !== undefined && obj.parameters !== undefined;
   }
 
@@ -56,7 +56,7 @@ export class InuErrorService {
     return !!(error && typeof error === 'object' && 'status' in error);
   }
 
-  private extractProblemFormHttpCall(httpError: HttpErrorResponse): ProblemDTO {
+  public extractProblemFormHttpCall(httpError: HttpErrorResponse): ProblemDTO {
     if (this.isProblemDTO(httpError.error)) {
       return httpError.error;
     }
@@ -85,7 +85,7 @@ export class InuErrorService {
     }
   }
 
-  private showMessage(param: ProblemParameterDTO, problem: ProblemDTO) {
+  public showMessage(param: ProblemParameterDTO, problem: ProblemDTO) {
     const errorType = param.errorType ?? this.resolveErrorLevel(problem.status);
 
     const errorCodeMessage      = this.inuLabelService.getMessage(param.errorCode);
