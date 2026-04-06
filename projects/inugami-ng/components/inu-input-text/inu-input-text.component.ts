@@ -38,6 +38,7 @@ export class InuInputText implements FormValueControl<string | number>,FormValue
   readonly label = input('');
   readonly icon = input('');
   readonly name = input('');
+  readonly debounce = input<number>(0);
   readonly type: InputSignal<string | 'text' | 'number' | 'email' | 'password'> = input('text');
   readonly _required = input(false, {alias: 'required'});
 
@@ -76,7 +77,7 @@ export class InuInputText implements FormValueControl<string | number>,FormValue
   //==================================================================================================================
   constructor() {
     this.debouncer.pipe(
-      debounceTime(50),
+      debounceTime(this.debounce()),
       takeUntilDestroyed()
     ).subscribe(val => {
       this.value.set(val);
