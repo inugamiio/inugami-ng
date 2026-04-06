@@ -74,6 +74,38 @@ export class App implements OnInit {
 }
 ]]>
   </src>
+  <src name="template" type="html" title="Custom menu template">
+    <![CDATA[
+<inu-page-layout >
+  <ng-template name="menu">
+    <ul>
+      <li>My custom menu</li>
+    </ul>
+  </ng-template>
 
+  <div class="my-custom-page-layout">
+    <router-outlet />
+  </div>
+
+</inu-page-layout>
+]]>
+  </src>
+
+  <src name="InugamiTemplateDirective" type="typescript" title="Import InugamiTemplateDirective">
+    <![CDATA[
+@Component({
+             templateUrl: './user-search.view.html',
+             styleUrls  : ['./user-search.view.scss'],
+             imports: [
+                InugamiTemplateDirective,
+                InuPageLayout,
+                RouterOutlet
+             ]
+           })
+export class UserSearchView {
+
+}
+]]>
+  </src>
 </xml>
 
