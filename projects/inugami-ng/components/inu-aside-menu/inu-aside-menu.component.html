@@ -15,27 +15,30 @@
               @if (link.path) {
                 @if (link.external) {
                   @if (link.target) {
-                    <a [target]="link.target" [href]="link.path">{{ link.title! }}</a>
+                    <a [target]="link.target" [href]="link.path" [class]="link.styleClass!">{{ link.title! }}</a>
                   } @else {
-                    <a [href]="link.path">{{ link.title }}</a>
+                    <a [href]="link.path" [class]="link.styleClass!">{{ link.title }}</a>
                   }
                 } @else {
                   @if(link.fragment){
                     <a [routerLink]="link.path"
                        routerLinkActive
                        #rla="routerLinkActive"
+                       [class]="link.styleClass!"
                        [class.active]="rla.isActive && activeFragment() === link.fragment"
                        [fragment]="link.fragment!"
                        [routerLinkActiveOptions]="{ exact: false }">{{ link.title! }}</a>
                   }
                   @else{
-                  <a [routerLink]="link.path" routerLinkActive="active"
+                  <a [routerLink]="link.path"
+                     routerLinkActive="active"
+                     [class]="link.styleClass!"
                      [routerLinkActiveOptions]="{ exact: false }">{{ link.title! }}</a>
                   }
 
                 }
               } @else {
-                <span>{{ link.title! }}</span>
+                <span [class]="link.styleClass!">{{ link.title! }}</span>
               }
             </div>
 

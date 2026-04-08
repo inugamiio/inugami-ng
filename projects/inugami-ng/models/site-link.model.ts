@@ -10,6 +10,7 @@ export interface InuSiteLink{
   external?:boolean;
   target?:'_blank'|'_self'|'_parent',
   children?: InuSiteLinkChildren[];
+  forceShowChildren?:boolean;
   gaEvent?:string;
   gaCategory?:string;
 }
