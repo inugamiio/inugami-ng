@@ -20,9 +20,9 @@
                     @if (childLink.path) {
                       @if (childLink.external) {
                         @if (childLink.target) {
-                          <a [target]="childLink.target" [href]="childLink.path">{{ childLink.title! }}</a>
+                          <a [target]="childLink.target" [href]="childLink.path"  [class]="childLink.styleClass!">{{ childLink.title! }}</a>
                         } @else {
-                          <a [href]="childLink.path">{{ childLink.title! }}</a>
+                          <a [href]="childLink.path" [class]="childLink.styleClass!">{{ childLink.title! }}</a>
                         }
                       }
                       @else {
@@ -30,23 +30,26 @@
                           <a [routerLink]="childLink.path"
                              routerLinkActive
                              #rla="routerLinkActive"
+                             [class]="childLink.styleClass!"
                              [class.active]="rla.isActive && activeFragment() === childLink.fragment"
                              [fragment]="childLink.fragment!"
                              [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
                         }
                         @else{
-                          <a [routerLink]="childLink.path" routerLinkActive="active"
+                          <a [routerLink]="childLink.path"
+                             routerLinkActive="active"
+                             [class]="childLink.styleClass!"
                              [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
                         }
                       }
                     }
                     @else {
-                      <span>{{childLink.title!}}</span>
+                      <span  [class]="childLink.styleClass!">{{childLink.title!}}</span>
                     }
                   </div>
 
                   <div class="inu-aside-menu-link-children">
-                    @if (childLink.children) {
+                    @if (childLink.children && showChildren(childLink)) {
                       <inu-aside-menu-children [children]="childLink.children" [level]="level()+1"></inu-aside-menu-children>
                     }
                   </div>
