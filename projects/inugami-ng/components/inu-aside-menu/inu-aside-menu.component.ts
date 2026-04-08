@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, computed, effect, input, signal} from '@angular/core';
+import {AfterViewInit, Component, computed, effect, inject, input, signal} from '@angular/core';
 import {InuIcon} from 'inugami-icons';
 import {NgClass} from '@angular/common';
 import {InuSiteLink} from 'inugami-ng/models'
-import {RouterLink, RouterLinkActive} from '@angular/router'
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router'
 import {InuAsideMenuChildren} from './children/inu-aside-menu-children.component'
+import {toSignal} from '@angular/core/rxjs-interop'
 
 @Component({
   selector: 'inu-aside-menu',
@@ -21,5 +22,5 @@ export class InuAsideMenu{
   // ATTRIBUTES
   //==================================================================================================================
   links             = input<InuSiteLink[]>([]);
-
+  activeFragment = toSignal(inject(ActivatedRoute).fragment);
 }

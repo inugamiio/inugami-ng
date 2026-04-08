@@ -27,7 +27,10 @@
                       }
                       @else {
                         @if(childLink.fragment){
-                          <a [routerLink]="childLink.path" routerLinkActive="active"
+                          <a [routerLink]="childLink.path"
+                             routerLinkActive
+                             #rla="routerLinkActive"
+                             [class.active]="rla.isActive && activeFragment() === childLink.fragment"
                              [fragment]="childLink.fragment!"
                              [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
                         }
