@@ -4,6 +4,7 @@ export const TARGET_PARENT = '_parent';
 export interface InuSiteLink{
   title:string;
   path?:string;
+  fragment?:string;
   icon?:string;
   styleClass?:string;
   external?:boolean;

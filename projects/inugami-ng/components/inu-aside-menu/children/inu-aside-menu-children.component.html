@@ -26,8 +26,15 @@
                         }
                       }
                       @else {
-                        <a [routerLink]="childLink.path" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
+                        @if(childLink.fragment){
+                          <a [routerLink]="childLink.path" routerLinkActive="active"
+                             [fragment]="childLink.fragment!"
+                             [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
+                        }
+                        @else{
+                          <a [routerLink]="childLink.path" routerLinkActive="active"
+                             [routerLinkActiveOptions]="{ exact: false }">{{ childLink.title! }}</a>
+                        }
                       }
                     }
                     @else {

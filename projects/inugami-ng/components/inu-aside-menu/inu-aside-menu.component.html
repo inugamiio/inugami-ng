@@ -20,8 +20,16 @@
                     <a [href]="link.path">{{ link.title }}</a>
                   }
                 } @else {
+                  @if(link.fragment){
+                    <a [routerLink]="link.path" routerLinkActive="active"
+                       [fragment]="link.fragment!"
+                       [routerLinkActiveOptions]="{ exact: false }">{{ link.title! }}</a>
+                  }
+                  @else{
                   <a [routerLink]="link.path" routerLinkActive="active"
                      [routerLinkActiveOptions]="{ exact: false }">{{ link.title! }}</a>
+                  }
+
                 }
               } @else {
                 <span>{{ link.title! }}</span>
