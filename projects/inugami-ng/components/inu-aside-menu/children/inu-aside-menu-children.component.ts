@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, computed, effect, input, signal} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
 import {InuIcon} from 'inugami-icons';
-import {NgClass} from '@angular/common';
-import {InuSiteLink, InuSiteLinkChildren} from 'inugami-ng/models'
-import {RouterLink, RouterLinkActive} from '@angular/router'
+import {InuSiteLinkChildren} from 'inugami-ng/models'
+import {ActivatedRoute, RouterLink, RouterLinkActive} from '@angular/router'
+import {toSignal} from '@angular/core/rxjs-interop'
 
 @Component({
              selector   : 'inu-aside-menu-children',
@@ -15,8 +15,9 @@ export class InuAsideMenuChildren {
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  children = input<InuSiteLinkChildren[]>([]);
-  level    = input<number>(0);
-  currentStyleClass = computed(()=> ['inu-aside-menu-children', `level level-${this.level()}`]
+  activeFragment = toSignal(inject(ActivatedRoute).fragment);
+  children          = input<InuSiteLinkChildren[]>([]);
+  level             = input<number>(0);
+  currentStyleClass = computed(() => ['inu-aside-menu-children', `level level-${this.level()}`]
     .join(' '));
 }
