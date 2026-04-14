@@ -1,6 +1,28 @@
-.inu-open-api{
+.inu-open-api {
+  .inu-open-api-main-header {
+    display: flex;
+    .inu-open-api-main-header-detail{
+      flex:1;
+    }
+    .inu-open-api-main-actions{
+      margin: 0;
+      padding: 0;
+      li{
+        list-style: none;
+        display: flex;
+        ::ng-deep{
+          svg{
+            cursor: pointer;
+            &:hover{
+              fill: var(--secondary);
+            }
+          }
+        }
+      }
+    }
+  }
 
-  .endpoints{
+  .endpoints {
     display: flex;
     flex-direction: column;
     gap: 1rem;

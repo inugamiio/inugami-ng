@@ -3,12 +3,22 @@
 
     <section>
       @if(_value()?.info){
-        <header>
-          <h2>{{_value()?.info?.title!}}</h2>
-          <h3>{{_value()?.info?.version!}}</h3>
-          <p>
-            {{_value()?.info?.description!}}
-          </p>
+        <header class="inu-open-api-main-header">
+          <div class="inu-open-api-main-header-detail">
+            <h2>{{_value()?.info?.title!}}</h2>
+            <h3>{{_value()?.info?.version!}}</h3>
+            <p>
+              {{_value()?.info?.description!}}
+            </p>
+          </div>
+
+          <ul class="inu-open-api-main-actions">
+            @if(url()){
+              <li>
+                <inu-icon [size]="1.5" icon="download" (click)="download()"></inu-icon>
+              </li>
+            }
+          </ul>
         </header>
       }
 
