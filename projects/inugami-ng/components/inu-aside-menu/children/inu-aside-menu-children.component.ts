@@ -33,7 +33,6 @@ export class InuAsideMenuChildren {
 
 
   showChildren(childLink: InuSiteLink): boolean {
-    console.log('showChildren',childLink)
     if (!childLink.children || childLink.children.length == 0) {
       return false;
     }

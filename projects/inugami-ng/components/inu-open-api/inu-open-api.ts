@@ -5,42 +5,44 @@ import {HttpClient} from "@angular/common/http";
 import {OpenApi} from './open-api.model';
 import {InuOpenApiServices} from './inu-open-api.service';
 import {InuOpenApiEndpoint} from './components/inu-open-api-endpoint/inu-open-api-endpoint';
+import {InuIcon} from 'inugami-icons'
 
 
 const CACHE_PREFIX = 'inu-open-api_';
 
 @Component({
-  selector: 'inu-open-api',
-  standalone: true,
-  imports: [
-    InuOpenApiEndpoint
-  ],
-  templateUrl: './inu-open-api.html',
-  styleUrl: './inu-open-api.scss',
-})
+             selector   : 'inu-open-api',
+             standalone : true,
+             imports    : [
+               InuOpenApiEndpoint,
+               InuIcon
+             ],
+             templateUrl: './inu-open-api.html',
+             styleUrl   : './inu-open-api.scss',
+           })
 export class InuOpenApi {
 
-  //==================================================================================================================
+  //====================================================================================================================
   // ATTRIBUTES
-  //==================================================================================================================
-  url = input<string | undefined | null>(undefined);
-  data = input<OpenApi | undefined | null>(undefined);
-  private readonly http = inject(HttpClient);
-  private readonly cache = inject(InuCacheServices);
+  //====================================================================================================================
+  url                                = input<string | undefined | null>(undefined);
+  data                               = input<OpenApi | undefined | null>(undefined);
+  private readonly http              = inject(HttpClient);
+  private readonly cache             = inject(InuCacheServices);
   private readonly inuOpenApiService = inject(InuOpenApiServices);
 
   _value: WritableSignal<OpenApi | null> = signal<OpenApi | null>(null);
 
-  //==================================================================================================================
+  //====================================================================================================================
   // INITIALIZE
-  //==================================================================================================================
+  //====================================================================================================================
   constructor() {
     effect(() => this.init());
   }
 
   init(): void {
     const data = this.data();
-    const url = this.url();
+    const url  = this.url();
     if (data) {
       this.initOpenApi(data)
     } else if (url) {
@@ -51,10 +53,10 @@ export class InuOpenApi {
   loadFormUrl(url: string) {
     const data: OpenApi | undefined = this.loadFormCache(url);
     if (data) {
-
+      this.initOpenApi(this.inuOpenApiService.convertToOpenApi(data));
       return;
     }
-    const cacheKey = CACHE_PREFIX + url;
+    const cacheKey                                 = CACHE_PREFIX + url;
     const pending: Observable<OpenApi> | undefined = this.cache.getPending(cacheKey);
     if (pending) {
       pending.subscribe(res => this.initOpenApi(this.inuOpenApiService.convertToOpenApi(res)));
@@ -63,24 +65,24 @@ export class InuOpenApi {
 
     const request = this.http.get<any>(url)
       .pipe(tap(data => {
-        this.cache.set(cacheKey, data);
-        }),
-        shareReplay(1)
+              this.cache.set(cacheKey, data);
+            }),
+            shareReplay(1)
       );
     this.cache.setPending(cacheKey, request);
     request.subscribe({
-      next: value => this.initOpenApi(this.inuOpenApiService.convertToOpenApi(value))
-    });
+                        next: value => this.initOpenApi(this.inuOpenApiService.convertToOpenApi(value))
+                      });
 
   }
 
 
-  //==================================================================================================================
+  //====================================================================================================================
   // PARSE
-  //==================================================================================================================
+  //====================================================================================================================
   initOpenApi(openApi: OpenApi) {
-    openApi.paths?.sort((value, ref)=> {
-      if(value.url=== ref.url){
+    openApi.paths?.sort((value, ref) => {
+      if (value.url === ref.url) {
         return `${value.verb}`.toLowerCase().localeCompare(`${ref.verb}`.toUpperCase());
       }
       return `${value.url}`.toLowerCase().localeCompare(`${ref.url}`.toUpperCase());
@@ -88,11 +90,45 @@ export class InuOpenApi {
     this._value.set(openApi);
   }
 
-  //==================================================================================================================
+
+  //====================================================================================================================
+  // ACTIONS
+  //====================================================================================================================
+  protected download() {
+    const urlOpenApi = this.url();
+    if (!urlOpenApi) {
+      return;
+    }
+
+    this.http.get<any>(urlOpenApi,{ responseType: 'json' })
+      .subscribe({
+                   next: data => this.saveFile(data)
+                 });
+  }
+
+  private saveFile(data: any) {
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+
+    const fileName = data?.info?.title
+      ? `${data.info.title.replace(/\s+/g, '_')}_openapi.json`
+      : 'openapi_definition.json';
+
+    link.download = fileName;
+    link.click();
+
+    window.URL.revokeObjectURL(url);
+    link.remove();
+  }
+  //====================================================================================================================
   // TOOLS
-  //==================================================================================================================
+  //====================================================================================================================
   loadFormCache(url: string): OpenApi | undefined {
-    const cacheKey = CACHE_PREFIX + url;
+    const cacheKey                    = CACHE_PREFIX + url;
     const result: OpenApi | undefined = this.cache.get(cacheKey);
     return result;
   }
@@ -103,5 +139,6 @@ export class InuOpenApi {
       this.cache.set(cacheKey, value);
     }
   }
+
 
 }

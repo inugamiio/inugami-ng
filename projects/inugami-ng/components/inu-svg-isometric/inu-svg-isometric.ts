@@ -399,7 +399,6 @@ export class InuSvgIsometric implements FormValueControl<SvgLayerDTO[]>, AfterVi
   // DOWNALOD
   //--------------------------------------------------------------------------------------------------------------------
   private download() {
-    console.log('download')
     const container = this.container()?.nativeElement;
     if (!container) {
       return;
