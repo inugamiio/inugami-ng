@@ -1,13 +1,12 @@
 import {
   Component,
-  computed, effect,
+  computed,
   ElementRef,
   HostListener,
   inject,
   input,
-  OnInit,
-  signal, viewChild,
-  WritableSignal
+  signal,
+  viewChild
 } from '@angular/core';
 import {InuIcon} from 'inugami-icons';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
@@ -29,7 +28,8 @@ export class InuToolTips {
   icon          = input<string>('info');
   message       = input<string>();
   timeout       = input<number>(1000);
-  margin        = input<number>(5);
+  marginY       = input<number>(-70);
+  marginX       = input<number>(15);
   autoClosable  = input<boolean>(true);
   closeDuration = input<number>(3000);
 
@@ -37,10 +37,7 @@ export class InuToolTips {
   contentNode = viewChild<ElementRef<HTMLElement>>('contentNode');
 
   display                              = signal<boolean>(false);
-  onComponent                          = signal<boolean>(false);
   position                             = signal<string>('');
-  componentPosition                    = computed<DOMRect | undefined>(() => this.contentNode()?.nativeElement?.getBoundingClientRect());
-  messagePosition                      = computed<DOMRect | undefined>(() => this.messageNode()?.nativeElement?.getBoundingClientRect());
   messageTemplate                      = computed(() => this.registry.getTemplate('message'));
   ctrlPressed                          = signal<boolean>(false);
   mouseOver                            = signal<boolean>(false);
@@ -49,21 +46,40 @@ export class InuToolTips {
 
   private closeTimer?: any;
   //====================================================================================================================
-  // EVENT
+  // ACTIONS
   //====================================================================================================================
-  protected toggleMessage() {
-    const nextState =  !this.display();
-    if (nextState === this.display()) return;
+  protected toggleMessage(state?: boolean) {
+    if (state === this.display()) return;
+
     const value = this.display();
     this.display.set(!value);
     this.position.set(`top:${-500}px; left:${-500}px`);
     setTimeout(() => this.refreshPosition(), 0);
   }
 
+
+  //====================================================================================================================
+  // EVENT
+  //====================================================================================================================
+  @HostListener('window:scroll')
+  onScroll() {
+    if (this.display()) {
+      this.refreshPosition();
+    }
+  }
+  @HostListener('window:resize')
+  onResize() {
+    if (this.display()) {
+      this.refreshPosition();
+    }
+  }
+
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
     if (event.ctrlKey) this.ctrlPressed.set(true);
-    this.openMessageIfRequired();
+    if (this.mouseOver()) {
+      this.openMessageIfRequired(true);
+    }
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -74,7 +90,7 @@ export class InuToolTips {
   @HostListener('mouseenter')
   onMouseEnter() {
     this.mouseOver.set(true);
-    this.openMessageIfRequired();
+    this.openMessageIfRequired(true);
   }
 
   @HostListener('mouseleave')
@@ -82,15 +98,16 @@ export class InuToolTips {
     this.mouseOver.set(false);
   }
 
-  openMessageIfRequired(){
+  openMessageIfRequired(state: boolean) {
     if (this.ctrlPressed() && this.mouseOver()) {
-      this.toggleMessage();
+      this.toggleMessage(state);
+
       if (this.display()) {
         if (this.autoClosable()) {
           if (this.autoClosable()) {
             this.clearAutoClose();
             this.closeTimer = setTimeout(() => {
-              this.toggleMessage();
+              this.toggleMessage(false);
             }, this.closeDuration());
           }
         }
@@ -100,15 +117,21 @@ export class InuToolTips {
 
   refreshPosition() {
     const display       = this.display();
-    const compoPosition = this.componentPosition();
-    const msgPosition   = this.messagePosition();
+
+    const compoPosition = this.contentNode()?.nativeElement?.getBoundingClientRect();
+    const msgPosition   = this.messageNode()?.nativeElement?.getBoundingClientRect();
     if (!display || !compoPosition || !msgPosition) {
       return;
     }
 
 
-    let y = compoPosition.y - (this.margin() + msgPosition.height);
-    let x = compoPosition.x + (compoPosition.width);
+    console.log('scroo', window.scrollY,window.scrollX)
+    const scrollTop  = window.scrollY || document.documentElement.scrollTop;
+    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+    let y = compoPosition.top + scrollTop + (this.marginY() + msgPosition.height);
+    let x = compoPosition.left + scrollLeft + (this.marginX() + compoPosition.width);
+
     this.position.set(`top:${y}px; left:${x}px`);
   }
 
