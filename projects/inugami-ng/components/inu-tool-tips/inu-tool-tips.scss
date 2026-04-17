@@ -1,0 +1,29 @@
+.inu-tool-tips {
+  display: flex;
+
+  .inu-tool-tips-button {
+    border-radius: 1rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 1px solid var(--secondary-dark);
+    fill: var(--secondary-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+}
+
+.inu-tool-tips-message {
+  display: none;
+  background-color: var(--neutral-dark-extra);
+  color: var(--secondary-light-extra);
+  padding: 0.5rem;
+  position: absolute;
+  z-index: 100;
+  white-space: nowrap;
+
+  &.display {
+    display: block;
+  }
+}

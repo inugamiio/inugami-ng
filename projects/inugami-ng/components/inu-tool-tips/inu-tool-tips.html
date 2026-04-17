@@ -1,0 +1,16 @@
+<span class="inu-tool-tips">
+  <div class="inu-tool-tips-message" [ngClass]="{'display':display()}" [style]="position()" #messageNode>
+    @if(messageTemplate()){
+      <ng-container *ngTemplateOutlet="messageTemplate()"></ng-container>
+    } @else if (message()){
+      {{message()}}
+    }
+  </div>
+  <span class="inu-tool-tips-content" #contentNode>
+    <ng-content />
+  </span>
+  <span class="inu-tool-tips-button" (click)="toggleMessage()">
+    <inu-icon [icon]="icon()" [size]="0.5"></inu-icon>
+  </span>
+</span>
+

@@ -10,33 +10,41 @@ import {map, shareReplay, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {SourceCode} from './code.model';
 import {InuHighlightDirective} from './inu-code.directive';
+import {InuButton} from 'inugami-ng/components/inu-button';
+import {InuCopyServices} from 'inugami-ng/components/inu-copy';
+import {InuToastServices} from 'inugami-ng/components/inu-toast';
 
 
 @Component({
-  selector: 'inu-code',
-  standalone: true,
-  imports: [InuHighlightDirective],
-  templateUrl: './inu-code.html',
-  styleUrl: './inu-code.scss',
-})
+             selector   : 'inu-code',
+             standalone : true,
+             imports    : [InuHighlightDirective, InuButton],
+             templateUrl: './inu-code.html',
+             styleUrl   : './inu-code.scss',
+           })
 export class InuCode {
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  source = input<string | undefined | null>(undefined);
-  url = input<string | undefined | null>(undefined);
-  tag = input<string | undefined | null>(undefined);
-  type = input<string | undefined | null>(undefined);
-  title = input<string | undefined | null>(undefined);
+  source              = input<string | undefined | null>(undefined);
+  url                 = input<string | undefined | null>(undefined);
+  tag                 = input<string | undefined | null>(undefined);
+  type                = input<string | undefined | null>(undefined);
+  title               = input<string | undefined | null>(undefined);
+  notificationLabel   = input<string>('Value copied to clipboard');
+  notificationMessage = input<string>('');
+  iconNotification    = input<string>('approval');
 
-
-  private readonly http = inject(HttpClient);
+  private readonly http  = inject(HttpClient);
   private readonly cache = inject(InuCacheServices);
 
   sourceCode = signal<string>('');
-  _title = signal<string>('');
-  _type = signal<string>('');
+  _title     = signal<string>('');
+  _type      = signal<string>('');
+
+  copyService   = inject(InuCopyServices);
+  toastServices = inject(InuToastServices);
 
   //==================================================================================================================
   // INITIALIZE
@@ -47,7 +55,7 @@ export class InuCode {
 
   init(): void {
     const url = this.url();
-    if(this.title()){
+    if (this.title()) {
       this._title.set(this.title()!);
     }
 
@@ -70,17 +78,17 @@ export class InuCode {
     }
 
     const cacheKey = `inu-code_${url}`;
-    const pending = this.cache.getPending(cacheKey);
+    const pending  = this.cache.getPending(cacheKey);
 
     if (pending) {
-      pending.subscribe(res =>this.initSourceCode(res));
+      pending.subscribe(res => this.initSourceCode(res));
       return;
     }
 
     const request = this.http.get(url, {responseType: 'text'})
       .pipe(map(res => this.parseData(res, url)),
-        tap(data => this.cache.set(cacheKey, data)),
-        shareReplay(1)
+            tap(data => this.cache.set(cacheKey, data)),
+            shareReplay(1)
       );
     this.cache.setPending(cacheKey, request);
     request.subscribe();
@@ -97,15 +105,15 @@ export class InuCode {
 
       const currentTitle = this.title();
 
-      if(this.title()){
+      if (this.title()) {
         this._title.set(this.title()!);
-      }else if (sourceCodeValue.title) {
+      } else if (sourceCodeValue.title) {
         this._title.set(sourceCodeValue.title);
       }
 
-      if(this.type()){
+      if (this.type()) {
         this._type.set(this.type()!);
-      }else if (sourceCodeValue.type) {
+      } else if (sourceCodeValue.type) {
         this._type.set(sourceCodeValue.type);
       }
     }
@@ -116,36 +124,54 @@ export class InuCode {
   // PARSE
   //==================================================================================================================
   parseData(response: string, url: string): SourceCode[] {
-    const parser = new DOMParser();
-    const node = parser.parseFromString(response, "text/xml");
+    const parser  = new DOMParser();
+    const node    = parser.parseFromString(response, "text/xml");
     const sources = node.getElementsByTagName("src");
 
     const result: SourceCode[] = [];
     for (let i = 0; i < sources.length; i++) {
-      let sourceNode = sources[i];
-      let sourceName: string = sourceNode.getAttribute('name') ?? '';
-      let sourceContent: string = this.cleanContent(sourceNode.textContent ?? '');
-      let type: string | undefined = sourceNode.getAttribute('type') ?? undefined;
+      let sourceNode                = sources[i];
+      let sourceName: string        = sourceNode.getAttribute('name') ?? '';
+      let sourceContent: string     = this.cleanContent(sourceNode.textContent ?? '');
+      let type: string | undefined  = sourceNode.getAttribute('type') ?? undefined;
       let title: string | undefined = sourceNode.getAttribute('title') ?? undefined;
 
       result.push({
-        name: sourceName,
-        content: sourceContent,
-        type: type,
-        title: title
-      })
+                    name   : sourceName,
+                    content: sourceContent,
+                    type   : type,
+                    title  : title
+                  })
     }
 
     this.initSourceCode(result);
     return result;
   }
 
+  //==================================================================================================================
+  // ACTION
+  //==================================================================================================================
+  protected copyContent() {
+    const content = this.sourceCode();
+    if (!content) {
+      return;
+    }
+    this.copyService.copy(content)
+      .subscribe({
+                   next: () => this.toastServices.addMessage({
+                                                               title  : this.notificationLabel(),
+                                                               message: this.notificationMessage(),
+                                                               icon   : this.iconNotification(),
+                                                               level  : "success"
+                                                             })
+                 });
+  }
 
   //==================================================================================================================
   // TOOLS
   //==================================================================================================================
   loadFormCache(url: string): SourceCode[] | undefined {
-    const cacheKey = `inu-code_${url}`;
+    const cacheKey                         = `inu-code_${url}`;
     const result: SourceCode[] | undefined = this.cache.get(cacheKey);
     return result;
   }
@@ -183,4 +209,6 @@ export class InuCode {
 
     return result.join('\n');
   }
+
+
 }

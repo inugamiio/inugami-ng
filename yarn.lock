@@ -3080,10 +3080,10 @@ injection-js@^2.4.0:
   dependencies:
     tslib "^2.0.0"
 
-inugami-icons@0.0.16:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.16.tgz#2a0b2764a1b5e7f5c34a1331b89ebe3fd633925c"
-  integrity sha512-6xSKmW4zKI7Zb9PoHtfek0iqn99ocXFVGwn9VUOunjeSK3+w32HVxXHI4R46g2oc+K/99fQk5CeR5hI+48VMtQ==
+inugami-icons@0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/inugami-icons/-/inugami-icons-0.0.17.tgz#93e4f84b02fa274052e13c4a6bf57c5b821fab94"
+  integrity sha512-8zQzHTCrNGDXlkv3c4dMP/AI4jUS8eASKEoMRj+5dr7aOdSv/y8JvyrWRXij1AEUTEX4AVsfFjt18kxDjngp4g==
   dependencies:
     tslib "^2.3.0"
 

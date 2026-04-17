@@ -1,0 +1,117 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-tool-tips</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        The InuToolTips component is a versatile, contextual help system designed to display additional
+        information—either raw text or complex custom templates—relative to a trigger element.
+      </header>
+
+      <strong>Key Features</strong>
+      <dl>
+        <dt>Template Support</dt>
+        <dd>Seamlessly injects rich HTML layouts using the <code>InuTemplateRegistryService</code>.</dd>
+
+        <dt>Expert Mode (Ctrl-Hover)</dt>
+        <dd>Supports conditional triggering. Users can reveal tooltips simply by holding the Ctrl key while hovering
+          over the component.
+        </dd>
+
+        <dt>Auto-dismiss Logic</dt>
+        <dd>Integrated timer management for automatic closing after a specific duration.</dd>
+      </dl>
+
+    </article>
+
+    <article>
+      <header>
+        <h2>Basic Usage</h2>
+      </header>
+
+      <inu-tool-tips message="Hello the world">Some Value</inu-tool-tips>
+
+      <inu-code url="data/display/inu_tool_tips_source_code.xml" tag="basic-usage"></inu-code>
+    </article>
+
+    <article>
+      <header>
+        <h2>Advanced Usage (Template Registry)</h2>
+      </header>
+
+      <inu-tool-tips>
+        Tool tips with template
+        <ng-template name="message">
+          <div class="template-message">
+            <inu-icon icon="approval" [size]="1"></inu-icon>
+            <span>Lorem ipsum</span>
+          </div>
+        </ng-template>
+      </inu-tool-tips>
+
+      <inu-code url="data/display/inu_tool_tips_source_code.xml" tag="advanced-usage"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.9fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>icon</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>info</inu-table-flex-cell>
+          <inu-table-flex-cell>The icon displayed on the trigger button.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>message</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Simple text to display (fallback if no template is found).</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>margin</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>5</inu-table-flex-cell>
+          <inu-table-flex-cell>Pixel gap between the component and the tooltip.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>autoClosable</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>If <code>true</code>, the tooltip closes automatically after a delay.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>closeDuration</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>3000</inu-table-flex-cell>
+          <inu-table-flex-cell>Delay (ms) before automatic closing.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+    </article>
+  </main>
+
+
+</section>
