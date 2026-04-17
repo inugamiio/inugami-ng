@@ -39,7 +39,16 @@ export class InuAsideMenuChildren {
     if (childLink.forceShowChildren != undefined && childLink.forceShowChildren) {
       return true;
     }
-    const url = this.currentUrlString();
-    return url === childLink.path;
+
+    const targetPath = childLink.path;
+
+    if (!targetPath) return false;
+
+    return this.router.isActive(targetPath, {
+      paths: 'exact',
+      queryParams: 'ignored',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    });
   }
 }

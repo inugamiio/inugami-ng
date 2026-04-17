@@ -15,15 +15,23 @@
 }
 
 .inu-tool-tips-message {
-  display: none;
+  position: absolute;
+  z-index: 1000;
   background-color: var(--neutral-dark-extra);
   color: var(--secondary-light-extra);
   padding: 0.5rem;
-  position: absolute;
-  z-index: 100;
-  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 
   &.display {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    max-width: 20rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }
