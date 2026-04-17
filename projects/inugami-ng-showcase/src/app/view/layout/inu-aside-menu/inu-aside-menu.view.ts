@@ -3,6 +3,7 @@ import {InuSiteLink, TARGET_BLANK} from 'inugami-ng/models'
 import {InuAsideMenu} from 'inugami-ng/components/inu-aside-menu';
 import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
+import {literal} from '@angular/compiler'
 
 @Component({
              templateUrl: './inu-aside-menu.view.html',
@@ -24,6 +25,7 @@ export class InuAsideMenuView {
                                     target  : TARGET_BLANK,
                                     icon    : 'git'
                                   },
+
                                   {
                                     title: 'Icons',
                                     path : '/icons',
@@ -43,7 +45,22 @@ export class InuAsideMenuView {
                                           {
                                             title: 'inu-copy',
                                             path : '/actions/inu-copy'
-                                          }
+                                          },
+                                          {
+                                            title: 'inu-aside-menu',
+                                            path : '/layout/inu-aside-menu',
+                                            children :[
+                                              {
+                                                links:[
+                                                  {
+                                                    title: 'partA',
+                                                    path : '/layout/inu-aside-menu',
+                                                    fragment : 'partA'
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
                                         ]
                                       }
                                     ]
