@@ -1,0 +1,22 @@
+<xml>
+  <src name="basic-usage" type="xml" title="Basic usage">
+    <![CDATA[
+<inu-tool-tips message="Hello the world">Some Value</inu-tool-tips>
+]]>
+  </src>
+
+  <src name="advanced-usage" type="xml" title="Advanced Usage">
+    <![CDATA[
+<inu-tool-tips>
+  Tool tips with template
+  <ng-template name="message">
+    <div class="template-message">
+      <inu-icon icon="approval" [size]="1"></inu-icon>
+      <span>Lorem ipsum</span>
+    </div>
+  </ng-template>
+</inu-tool-tips>
+]]>
+  </src>
+
+</xml>

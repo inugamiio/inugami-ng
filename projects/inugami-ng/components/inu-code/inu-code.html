@@ -1,8 +1,13 @@
 <div class="inu-code">
   <fieldset>
-    @if(_title()){
-      <legend>{{_title()}}</legend>
-    }
+      <legend>
+        <div class="inu-code-title">
+          {{_title()!}}
+        </div>
+        <div class="inu-code-copy">
+          <inu-button icon="copy" (click)="copyContent()"></inu-button>
+        </div>
+      </legend>
 
     @if(sourceCode()){
       <div class="source-code">

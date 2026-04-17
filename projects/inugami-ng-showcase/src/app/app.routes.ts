@@ -24,6 +24,7 @@ import {InuFooterView} from './view/layout/inu-footer/inu-footer.view'
 import {InuAsideMenuView} from './view/layout/inu-aside-menu/inu-aside-menu.view'
 import {InuPageLayoutView} from './view/layout/inu-page-layout/inu-page-layout.view'
 import {InuFormsUtilsView} from './view/utils/inu-forms-utils/inu-forms-utils.view'
+import {InuToolTipsView} from './view/display/inu-tool-tips/inu-tool-tips.view'
 
 
 export const routes: Routes = [
@@ -50,7 +51,8 @@ export const routes: Routes = [
       {path: "inu-doc-item", component: InuDocItemView},
       {path: "inu-open-api", component: InuOpenApiView},
       {path: "inu-panel-tabs", component: InuPanelTabsView},
-      {path: "inu-toast", component: InuToastView}
+      {path: "inu-toast", component: InuToastView},
+      {path: "inu-inu-tool-tips", component: InuToolTipsView}
 
     ]
   },

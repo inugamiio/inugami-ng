@@ -170,6 +170,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-toast',
                                                            path : '/display/inu-toast'
+                                                         },
+                                                         {
+                                                           title: 'inu-tool-tips',
+                                                           path : '/display/inu-inu-tool-tips'
                                                          }
                                                        ]
                                                      }
