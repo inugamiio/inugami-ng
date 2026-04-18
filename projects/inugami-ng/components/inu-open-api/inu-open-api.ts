@@ -6,7 +6,7 @@ import {OpenApi} from './open-api.model';
 import {InuOpenApiServices} from './inu-open-api.service';
 import {InuOpenApiEndpoint} from './components/inu-open-api-endpoint/inu-open-api-endpoint';
 import {InuIcon} from 'inugami-icons'
-
+import {InuJsonUtils} from 'inugami-ng/utils'
 
 const CACHE_PREFIX = 'inu-open-api_';
 
@@ -107,7 +107,7 @@ export class InuOpenApi {
   }
 
   private saveFile(data: any) {
-    const jsonString = JSON.stringify(data, null, 2);
+    const jsonString = InuJsonUtils.convertToJson(data);
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
 

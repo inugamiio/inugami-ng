@@ -9,7 +9,7 @@ import {InuOpenApiParameters} from '../inu-open-api-parameters/inu-open-api-para
 import {InuCode, InternalSourceCode} from 'inugami-ng/components/inu-code';
 import {InuOpenApiResponse} from '../inu-open-api-response/inu-open-api-response';
 import {InuIcon} from 'inugami-icons';
-
+import {InuJsonUtils} from 'inugami-ng/utils'
 const SPACE = ' ';
 
 @Component({
@@ -106,7 +106,7 @@ export class InuOpenApiEndpoint {
     if (data.requestBody?.schema) {
       const schema = data.requestBody.schema;
       if (schema?.ref) {
-        content = JSON.stringify(data.requestBody.schema?.ref, null, 4);
+        content = InuJsonUtils.convertToJson(data.requestBody.schema?.ref);
       }
 
       if (schema.name) {
@@ -146,7 +146,7 @@ export class InuOpenApiEndpoint {
       if (mainResponse.schema) {
         const schema = mainResponse.schema;
         if (schema?.ref) {
-          content = JSON.stringify(mainResponse.schema?.ref, null, 4);
+          content = InuJsonUtils.convertToJson(mainResponse.schema?.ref);
         }
 
         if (schema.name) {

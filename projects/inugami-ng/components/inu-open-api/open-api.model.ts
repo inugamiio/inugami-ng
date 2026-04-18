@@ -83,6 +83,7 @@ export interface ObjectType {
   array?: boolean;
   value?: any;
   name?: string;
+  circular?:boolean;
 }
 
 // ====================================================================================================================
