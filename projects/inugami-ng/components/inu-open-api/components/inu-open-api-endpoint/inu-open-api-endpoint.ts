@@ -246,6 +246,11 @@ export class InuOpenApiEndpoint {
     if (filter.uri && filter.uri.length > 0) {
       const regex = new RegExp(filter.uri + '.*');
       result      = regex.test(data.uri!);
+
+      if (!result) {
+        this.matchFilter.set(result);
+        return;
+      }
     }
 
     if (filter.verbs.length == 0) {
@@ -254,6 +259,6 @@ export class InuOpenApiEndpoint {
       result = filter.verbs.includes((data.verb ?? '').trim().toUpperCase())
     }
 
-     this.matchFilter.set(result);
+    this.matchFilter.set(result);
   }
 }
