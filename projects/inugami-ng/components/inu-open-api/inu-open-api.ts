@@ -2,11 +2,13 @@ import {Component, effect, inject, input, signal, WritableSignal} from '@angular
 import {InuCacheServices} from "inugami-ng/services";
 import {map, Observable, shareReplay, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {OpenApi} from './open-api.model';
+import {OpenApi, OpenApiFilter} from './open-api.model';
 import {InuOpenApiServices} from './inu-open-api.service';
 import {InuOpenApiEndpoint} from './components/inu-open-api-endpoint/inu-open-api-endpoint';
 import {InuIcon} from 'inugami-icons'
-
+import {InuJsonUtils, ObservableSubscriber} from 'inugami-ng/utils'
+import {InuOpenApiFilter} from './components/inu-open-api-filter/inu-open-api-filter'
+import {toObservable} from '@angular/core/rxjs-interop'
 
 const CACHE_PREFIX = 'inu-open-api_';
 
@@ -15,7 +17,8 @@ const CACHE_PREFIX = 'inu-open-api_';
              standalone : true,
              imports    : [
                InuOpenApiEndpoint,
-               InuIcon
+               InuIcon,
+               InuOpenApiFilter
              ],
              templateUrl: './inu-open-api.html',
              styleUrl   : './inu-open-api.scss',
@@ -32,7 +35,7 @@ export class InuOpenApi {
   private readonly inuOpenApiService = inject(InuOpenApiServices);
 
   _value: WritableSignal<OpenApi | null> = signal<OpenApi | null>(null);
-
+  filter                                = new ObservableSubscriber<OpenApiFilter>();
   //====================================================================================================================
   // INITIALIZE
   //====================================================================================================================
@@ -100,19 +103,19 @@ export class InuOpenApi {
       return;
     }
 
-    this.http.get<any>(urlOpenApi,{ responseType: 'json' })
+    this.http.get<any>(urlOpenApi, {responseType: 'json'})
       .subscribe({
                    next: data => this.saveFile(data)
                  });
   }
 
   private saveFile(data: any) {
-    const jsonString = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
+    const jsonString = InuJsonUtils.convertToJson(data);
+    const blob       = new Blob([jsonString], {type: 'application/json'});
+    const url        = window.URL.createObjectURL(blob);
 
     const link = document.createElement('a');
-    link.href = url;
+    link.href  = url;
 
     const fileName = data?.info?.title
       ? `${data.info.title.replace(/\s+/g, '_')}_openapi.json`
@@ -124,6 +127,7 @@ export class InuOpenApi {
     window.URL.revokeObjectURL(url);
     link.remove();
   }
+
   //====================================================================================================================
   // TOOLS
   //====================================================================================================================
@@ -141,4 +145,7 @@ export class InuOpenApi {
   }
 
 
+  protected onFilterChanged(event: OpenApiFilter) {
+    this.filter.next(event);
+  }
 }

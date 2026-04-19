@@ -19,6 +19,7 @@ import {
   OpenApiServer,
   Tags
 } from "./open-api.model";
+import {InuJsonUtils} from 'inugami-ng/utils'
 
 const VERBS: string[] = ['get', 'put', 'post', 'delete', 'options', 'patch', 'trace'];
 
@@ -403,9 +404,9 @@ export class InuOpenApiServices {
 
 
           if (examples.length == 0) {
-            let renderedType =   JSON.stringify(schema.array ? [schema.ref] : schema.ref, null, 2);
-            if('{}'==renderedType){
-              if(type=='string'){
+            let renderedType = InuJsonUtils.convertToJson(schema.array ? [schema.ref] : schema.ref);
+            if ('{}' == renderedType) {
+              if (type == 'string') {
                 renderedType = '""';
               }
             }
@@ -432,6 +433,7 @@ export class InuOpenApiServices {
     return result;
   }
 
+
   private unmarshallEndpointResponseExample(value: any): Example[] {
     const result: Example[] = [];
 
@@ -445,7 +447,7 @@ export class InuOpenApiServices {
         if (typeof item.value == 'string') {
           valueContent = item.value;
         } else {
-          valueContent = JSON.stringify(item.value, null, 2);
+          valueContent = InuJsonUtils.convertToJson(item.value);
         }
       }
 
@@ -556,83 +558,73 @@ export class InuOpenApiServices {
     return result;
   }
 
-
   private renderType(schema: any,
                      schemaTypes: OpenApiComponent | undefined,
                      objectTypeCache: ObjectTypeCache[],
-                     level?: number): ObjectType | undefined {
-    if (!schema || (level! > 5)) {
-      return undefined;
+                     level: number      = 0,
+                     stack: Set<string> = new Set()): ObjectType | undefined {
+
+    if (!schema || level > 20) return undefined;
+
+    const array          = schema.type === 'array';
+    let typePath: string = '';
+
+    if (array) {
+      typePath = schema.items?.['$ref'] || schema.items?.type || '';
+    } else {
+      typePath = schema.ref || schema.$ref || '';
     }
 
-    const array      = schema.type == 'array';
-    let type: string = '';
-    if (array) {
-      if (schema.items) {
-        type = schema.items['$ref'];
-        if (!type && schema.items.type) {
-          type = schema.items.type;
-        }
+    const typeName = typePath.includes('/') ? typePath.split('/').pop() : typePath;
+    if (typeName && stack.has(typeName)) {
+      return {array, name: typeName, value: "[Circular]"};
+    }
+
+    if (typeName) {
+      const cached = objectTypeCache.find(v => v.name === typeName);
+      if (cached) {
+        return JSON.parse(JSON.stringify(cached.value));
       }
-    } else {
-      type = schema.ref;
     }
 
     let currentType: any = undefined;
-    let object: any      = {};
-
-    if (type) {
-      if (schemaTypes?.schemas) {
-        for (let item of schemaTypes?.schemas) {
-          if (type == item.id) {
-            currentType = item;
-            break;
-          }
-        }
-      }
-
-      if (currentType?.name) {
-        const cachedValue = objectTypeCache.find(v => v.name === currentType.name);
-        if (cachedValue) {
-          return cachedValue;
-        }
-      }
-      if (currentType && currentType.properties) {
-        object = this.convertObjectPropertiesToObject(currentType.properties,
-                                                      currentType.example ? currentType.example : {},
-                                                      schemaTypes,
-                                                      objectTypeCache,
-                                                      level ? level + 1 : 0);
-      }
-    }
-    else if (schema.properties) {
-      object = this.convertObjectPropertiesToObject(Object
-                                                      .entries(schema.properties)
-                                                      .map(e => {
-                                                        const value = e[1] as any;
-                                                        return {
-                                                          name:e[0],
-                                                          format:value?.format,
-                                                          type:value?.type
-                                                        }
-                                                      }),
-                                                    {},
-                                                    schemaTypes,
-                                                    objectTypeCache,
-                                                    level ? level + 1 : 0);
+    if (typeName && schemaTypes?.schemas) {
+      currentType = schemaTypes.schemas.find(item => typeName === item.id || typeName === item.name);
     }
 
+    if (typeName) stack.add(typeName);
+
+    let object: any = {};
+
+    if (currentType && currentType.properties) {
+      object = this.convertObjectPropertiesToObject(
+        currentType.properties,
+        currentType.example || {},
+        schemaTypes,
+        objectTypeCache,
+        level + 1,
+        stack
+      );
+    } else if (schema.properties) {
+      const props = Object.entries(schema.properties).map(([key, val]: [string, any]) => ({
+        ...val,
+        name : key,
+        model: val.$ref || val.items?.$ref || val.additionalProperties?.$ref
+      }));
+      object      = this.convertObjectPropertiesToObject(props, {}, schemaTypes, objectTypeCache, level + 1, stack);
+    }
+
+
+    if (typeName) stack.delete(typeName);
 
     const result: ObjectType = {
       array: array,
-      name : currentType?.name,
+      name : typeName || currentType?.name,
       value: array ? [object] : object
-    }
-    if (currentType?.name) {
-      objectTypeCache.push({
-                             name : currentType.name,
-                             value: result
-                           });
+    };
+
+    if (typeName && !objectTypeCache.find(v => v.name === typeName)) {
+      objectTypeCache.push({name: typeName, value: result});
     }
 
     return result;
@@ -642,13 +634,16 @@ export class InuOpenApiServices {
                                           example: any,
                                           schemaTypes: OpenApiComponent | undefined,
                                           objectTypeCache: ObjectTypeCache[],
-                                          level: number): any {
+                                          level: number,
+                                          stack: Set<string> = new Set()): any {
+
     if (!properties) {
       return undefined;
     }
     if (level > 20) {
       return {};
     }
+
     const object: any = {};
     for (let property of properties) {
       if (!property.name) {
@@ -685,10 +680,10 @@ export class InuOpenApiServices {
           object[property.name] = this.convertArray(property,
                                                     property.example ? property.example : {}, schemaTypes,
                                                     objectTypeCache,
-                                                    level + 1);
+                                                    level + 1, stack);
           break;
         default:
-          const subType         = this.renderType({ref: property.ref}, schemaTypes, objectTypeCache, level + 1);
+          const subType         = this.renderType({ref: property.ref}, schemaTypes, objectTypeCache, level + 1, stack);
           object[property.name] = subType?.value;
           break;
       }
@@ -701,40 +696,42 @@ export class InuOpenApiServices {
                        example: any,
                        schemaTypes: OpenApiComponent | undefined,
                        objectTypeCache: ObjectTypeCache[],
-                       level: number): any[] {
+                       level: number,
+                       stack: Set<string>): any[] {
+
     const result: any = [];
-    const type        = property.type ? property.type : 'object';
-    const sample      = example[property.name];
+    const model       = property.model || property.items?.$ref || property.items?.['$ref'];
+    const type        = property.items?.type || 'object';
+
+    if (model || type === 'object') {
+      const subType = this.renderType(
+        {ref: model, type: type, items: property.items},
+        schemaTypes,
+        objectTypeCache,
+        level + 1,
+        stack
+      );
+
+      result.push(subType?.value || {});
+      return result;
+    }
+
+    const sample = example && example[property.name] ? example[property.name][0] : undefined;
     switch (type) {
       case 'string':
-        if ('date' == property.format) {
-          result.push(sample ? sample : 'yyyyMMdd');
-        } else if ('date-time' == property.format) {
-          result.push(sample ? sample : 'yyyyMMddTHH:mm:ss');
-        } else {
-          result.push(sample ? sample : 'string');
-        }
-        break
+        result.push(sample || (property.items?.format === 'date' ? 'yyyyMMdd' : 'string'));
+        break;
       case 'number':
-        if ('float' == property.format || 'double' == property.format) {
-          result.push(sample ? sample : 0.0);
-        } else {
-          result.push(sample ? sample : 0);
-        }
-        break
       case 'integer':
-        result.push(sample ? sample : 0);
-        break
+        result.push(sample || 0);
+        break;
       case 'boolean':
         result.push(false);
         break;
       default:
-        const subType = this.renderType({ref: property.ref}, schemaTypes, objectTypeCache, level + 1);
-        result.push(subType ? subType.value : {});
+        result.push({});
         break;
     }
     return result;
   }
-
-
 }

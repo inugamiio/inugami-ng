@@ -1,11 +1,23 @@
-filters
+<fieldset class="inu-open-api-filter">
+  <legend>Filters</legend>
+  <div class="form-row">
+
+    <div class="form-col">
+      <div class="form-cell w100">
+        <inu-input-text label="Uri"
+                        name="uri"
+                        [formField]="formFilter.uri!"></inu-input-text>
+      </div>
+    </div>
 
 
-<div>
-  <input type="text" [formField]="formFilter.uri!" />
+    <div class="form-col">
+      <div class="form-cell w100">
+        <inu-checkbox-group label="Verbs"
+                            [formField]="formFilter.verbs"
+                            [values]="verbs()"></inu-checkbox-group>
+      </div>
 
-
-
-  <inu-checkbox-group [formField]="formFilter.verb" [values]="verbs()"></inu-checkbox-group>
-
-</div>
+    </div>
+  </div>
+</fieldset>
