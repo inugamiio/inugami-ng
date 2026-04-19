@@ -1,33 +1,33 @@
-import {Component, effect, input, model, ModelSignal, OnInit, output, signal} from '@angular/core';
+import {AfterViewInit, Component, effect, input, model, ModelSignal, OnInit, output, signal} from '@angular/core';
 import {InuSelectItem} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {InuIcon} from 'inugami-icons';
 
 @Component({
-  selector: 'inu-checkbox-group',
-  standalone: true,
-  providers: [],
-  imports: [InuIcon],
-  templateUrl: './inu-checkbox-group.component.html',
-  styleUrl: './inu-checkbox-group.component.scss',
-})
-export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
+             selector   : 'inu-checkbox-group',
+             standalone : true,
+             providers  : [],
+             imports    : [InuIcon],
+             templateUrl: './inu-checkbox-group.component.html',
+             styleUrl   : './inu-checkbox-group.component.scss',
+           })
+export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit {
 
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
   // input
-  readonly disabled = input(false);
-  readonly label = input('');
+  readonly disabled  = input(false);
+  readonly label     = input('');
   readonly _required = input(false, {alias: 'required'});
-  readonly values = input<InuSelectItem<T>[]>([]);
-  readonly vertical = input(false);
-  changed = output<T[]>();
+  readonly values    = input<InuSelectItem<T>[]>([]);
+  readonly vertical  = input(false);
+  changed            = output<T[]>();
 
   // FormValueControl
   value: ModelSignal<T[]> = model(<T[]>[]);
-  _values = signal<InuSelectItem<T>[]>([]);
+  _values                 = signal<InuSelectItem<T>[]>([]);
   // internal
 
   styleClass = signal<string>('');
@@ -43,7 +43,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.initSelectItems();
   }
 
@@ -72,6 +72,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
       }
     }
     this._values.set(result);
+    this.sendChanged();
   }
 
   private initStyleClass() {
@@ -88,7 +89,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
 
     if (this._required()) {
       const values = this._values();
-      let found = false;
+      let found    = false;
 
       if (values) {
         for (let value of values) {
@@ -98,7 +99,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
           }
         }
       }
-      if(!found){
+      if (!found) {
         result.push('notValid');
       }
     }
@@ -120,8 +121,13 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
       value.selected = !value.selected;
     }
 
+    this.sendChanged();
+  }
+
+
+  private sendChanged() {
     const newSelectedValues: T[] = [];
-    const currentValues = this._values();
+    const currentValues          = this._values();
     if (currentValues) {
       for (let selectItem of currentValues) {
         if (selectItem.selected) {
@@ -136,7 +142,6 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
     this.changed.emit(newSelectedValues);
   }
 
-
   protected getItemClass(selectItem: InuSelectItem<T>): string {
     return selectItem.styleClass!;
   }
@@ -145,4 +150,6 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, OnInit {
   private match(valueItem: T, resultItem: InuSelectItem<T>) {
     return valueItem === resultItem.value;
   }
+
+
 }

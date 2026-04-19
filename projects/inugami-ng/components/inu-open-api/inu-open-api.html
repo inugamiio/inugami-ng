@@ -22,11 +22,13 @@
         </header>
       }
 
-      <!--<inu-open-api-filter></inu-open-api-filter>-->
+      <inu-open-api-filter [openApi]="_value()" (filterChanged)="onFilterChanged($event)"></inu-open-api-filter>
       <div class="endpoints">
         @if(_value()?.paths){
           @for (endpoint of _value()?.paths;track endpoint.uri;) {
-            <inu-open-api-endpoint [data]="endpoint" [schemas]="_value()?.components?.schemas"></inu-open-api-endpoint>
+            <inu-open-api-endpoint [data]="endpoint"
+                                   [filter]="filter.observable()"
+                                   [schemas]="_value()?.components?.schemas"></inu-open-api-endpoint>
           }
         }
       </div>

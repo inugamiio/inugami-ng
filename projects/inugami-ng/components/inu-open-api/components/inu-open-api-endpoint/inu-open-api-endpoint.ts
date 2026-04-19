@@ -1,6 +1,6 @@
 import {Component, effect, input, signal, WritableSignal} from '@angular/core';
 import {
-  OpenApiComponentSchema,
+  OpenApiComponentSchema, OpenApiFilter,
   OpenApiPathEndpoint,
   OpenApiPathEndpointParameter,
   OpenApiPathEndpointResponse
@@ -10,42 +10,51 @@ import {InuCode, InternalSourceCode} from 'inugami-ng/components/inu-code';
 import {InuOpenApiResponse} from '../inu-open-api-response/inu-open-api-response';
 import {InuIcon} from 'inugami-icons';
 import {InuJsonUtils} from 'inugami-ng/utils'
+import {Observable} from 'rxjs'
+
 const SPACE = ' ';
 
 @Component({
-  selector: 'inu-open-api-endpoint',
-  standalone: true,
-  providers: [],
-  imports: [InuOpenApiParameters, InuOpenApiResponse, InuCode, InuIcon],
-  templateUrl: './inu-open-api-endpoint.html',
-  styleUrl: './inu-open-api-endpoint.scss',
-})
+             selector   : 'inu-open-api-endpoint',
+             standalone : true,
+             providers  : [],
+             imports    : [InuOpenApiParameters, InuOpenApiResponse, InuCode, InuIcon],
+             templateUrl: './inu-open-api-endpoint.html',
+             styleUrl   : './inu-open-api-endpoint.scss',
+           })
 export class InuOpenApiEndpoint {
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  data = input<OpenApiPathEndpoint | undefined | null>(undefined);
-  schemas = input<OpenApiComponentSchema[] | undefined | null>(null);
-  styleClass: WritableSignal<string> = signal('');
-  display: WritableSignal<string> = signal('inu-open-api-endpoint-content-display hidden');
-
+  data                                                              = input<OpenApiPathEndpoint | undefined | null>(undefined);
+  schemas                                                           = input<OpenApiComponentSchema[] | undefined | null>(null);
+  filter                                                            = input<Observable<OpenApiFilter> | undefined>(undefined);
+  styleClass: WritableSignal<string>                                = signal('');
+  display: WritableSignal<string>                                   = signal('inu-open-api-endpoint-content-display hidden');
+  matchFilter                                                       = signal<boolean>(true);
   parameters: WritableSignal<OpenApiPathEndpointParameter[] | null> = signal(null);
-  headers: WritableSignal<OpenApiPathEndpointParameter[] | null> = signal(null);
-  options: WritableSignal<OpenApiPathEndpointParameter[] | null> = signal(null);
+  headers: WritableSignal<OpenApiPathEndpointParameter[] | null>    = signal(null);
+  options: WritableSignal<OpenApiPathEndpointParameter[] | null>    = signal(null);
 
 
-  request: WritableSignal<InternalSourceCode | null> = signal(null);
+  request: WritableSignal<InternalSourceCode | null>               = signal(null);
   responseMain: WritableSignal<OpenApiPathEndpointResponse | null> = signal(null);
-  response: WritableSignal<InternalSourceCode | null> = signal(null);
+  response: WritableSignal<InternalSourceCode | null>              = signal(null);
 
   //==================================================================================================================
   // INIT
   //==================================================================================================================
   constructor() {
     effect(() => {
-      this.init()
+      this.init();
+      this.filter()?.subscribe({
+                                 next: filter => {
+                                   this.resolveMatchFilter(filter)
+                                 }
+                               });
     });
+
   }
 
   private init() {
@@ -70,8 +79,8 @@ export class InuOpenApiEndpoint {
       return
     }
     const parameters: OpenApiPathEndpointParameter[] = [];
-    const options: OpenApiPathEndpointParameter[] = [];
-    const headers: OpenApiPathEndpointParameter[] = [];
+    const options: OpenApiPathEndpointParameter[]    = [];
+    const headers: OpenApiPathEndpointParameter[]    = [];
 
 
     for (let param of dataParameters) {
@@ -99,10 +108,10 @@ export class InuOpenApiEndpoint {
     if (!data) {
       return;
     }
-    const contentType = data.requestBody?.contentType ? data.requestBody.contentType : 'text'
+    const contentType               = data.requestBody?.contentType ? data.requestBody.contentType : 'text'
     let content: string | undefined = undefined;
-    let type: string = this.resolveType(contentType);
-    let name: string | undefined = undefined;
+    let type: string                = this.resolveType(contentType);
+    let name: string | undefined    = undefined;
     if (data.requestBody?.schema) {
       const schema = data.requestBody.schema;
       if (schema?.ref) {
@@ -117,10 +126,10 @@ export class InuOpenApiEndpoint {
 
     if (content) {
       this.request.set({
-        content: content,
-        title: name,
-        type: type
-      })
+                         content: content,
+                         title  : name,
+                         type   : type
+                       })
     }
   }
 
@@ -139,10 +148,10 @@ export class InuOpenApiEndpoint {
       const mainResponse = successResponse[0];
 
       this.responseMain.set(mainResponse);
-      const contentType = mainResponse.contentType ? mainResponse.contentType : 'text'
+      const contentType               = mainResponse.contentType ? mainResponse.contentType : 'text'
       let content: string | undefined = undefined;
-      let type: string = this.resolveType(contentType);
-      let name: string | undefined = undefined;
+      let type: string                = this.resolveType(contentType);
+      let name: string | undefined    = undefined;
       if (mainResponse.schema) {
         const schema = mainResponse.schema;
         if (schema?.ref) {
@@ -157,10 +166,10 @@ export class InuOpenApiEndpoint {
 
       if (content) {
         this.response.set({
-          content: content,
-          title: name,
-          type: type
-        })
+                            content: content,
+                            title  : name,
+                            type   : type
+                          })
       }
     }
 
@@ -212,20 +221,39 @@ export class InuOpenApiEndpoint {
     return result.join(SPACE);
   }
 
-  computeStatusStyleClass(status?:string): string {
+  computeStatusStyleClass(status?: string): string {
     const result = ['inu-endpoint-response-status'];
 
     const httpStatus = this.convertToNumber(status);
-    if(httpStatus<400){
+    if (httpStatus < 400) {
       result.push('success');
-    }
-    else if(httpStatus<500){
+    } else if (httpStatus < 500) {
       result.push('warning');
-    }
-    else{
+    } else {
       result.push('error');
     }
 
     return result.join(SPACE)
+  }
+
+  private resolveMatchFilter(filter: OpenApiFilter) {
+    const data = this.data();
+    if (!data) {
+      return;
+    }
+    let result = true;
+
+    if (filter.uri && filter.uri.length > 0) {
+      const regex = new RegExp(filter.uri + '.*');
+      result      = regex.test(data.uri!);
+    }
+
+    if (filter.verbs.length == 0) {
+      result = false;
+    } else {
+      result = filter.verbs.includes((data.verb ?? '').trim().toUpperCase())
+    }
+
+     this.matchFilter.set(result);
   }
 }

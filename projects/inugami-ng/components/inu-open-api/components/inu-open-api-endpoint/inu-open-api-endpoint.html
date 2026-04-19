@@ -1,4 +1,4 @@
-@if (data()) {
+@if (data() && matchFilter()) {
   <article [class]="styleClass()">
     <header>
       <h2 (click)="toggleDisplay()">

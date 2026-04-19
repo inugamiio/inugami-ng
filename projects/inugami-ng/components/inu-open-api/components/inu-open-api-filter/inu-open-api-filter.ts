@@ -1,48 +1,68 @@
-import {Component, computed, output, signal} from '@angular/core';
+import {Component, computed, input, output, signal} from '@angular/core';
 import {form, FormField, MaybeFieldTree} from '@angular/forms/signals';
-import {OpenApiFilter} from '../../open-api.model';
+import {OpenApi, OpenApiFilter} from '../../open-api.model';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
 import {InuCheckboxGroup} from 'inugami-ng/components/inu-checkbox-group';
 import {InuSelectItem} from 'inugami-ng/models';
+import {InuInputText} from 'inugami-ng/components/inu-input-text'
 
 @Component({
-  selector: 'inu-open-api-filter',
-  standalone: true,
-  providers: [],
-  imports: [
-    FormField,
-    InuCheckboxGroup
-  ],
-  templateUrl: './inu-open-api-filter.html',
-  styleUrl: './inu-open-api-filter.scss',
-})
+             selector   : 'inu-open-api-filter',
+             standalone : true,
+             providers  : [],
+             imports    : [
+               FormField,
+               InuCheckboxGroup,
+               InuInputText
+             ],
+             templateUrl: './inu-open-api-filter.html',
+             styleUrl   : './inu-open-api-filter.scss',
+           })
 export class InuOpenApiFilter {
 
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  filterChanged = output<OpenApiFilter>();
-  formModel = signal<OpenApiFilter>({
-    uri: '',
-    verb: []
-  });
+  openApi = input<OpenApi | undefined | null>();
+
+  filterChanged                             = output<OpenApiFilter>();
+  formModel                                 = signal<OpenApiFilter>({
+                                                                      uri  : '',
+                                                                      verbs: []
+                                                                    });
   formFilter: MaybeFieldTree<OpenApiFilter> = form(this.formModel);
 
-  verbs = computed<InuSelectItem<string>[]>(() => [
-    {value: 'GET', title: 'GET', styleClass: 'verb-get', selected:true},
-    {value: 'POST', title: 'POST', styleClass: 'verb-post', selected:true},
-    {value: 'PUT', title: 'PUT', styleClass: 'verb-put', selected:true}
-  ]);
 
+  verbs = computed<InuSelectItem<string>[]>(() => {
+    const paths                           = this.openApi()?.paths ?? [];
+    const result: InuSelectItem<string>[] = [];
+    const currentVerbs: string[]          = [];
+
+    for (let path of paths) {
+      if (!path.verb) {
+        continue;
+      }
+      const verb = path.verb.trim().toUpperCase();
+      if (!currentVerbs.includes(verb)) {
+        currentVerbs.push(verb);
+      }
+    }
+    currentVerbs.sort();
+    for (let verb of currentVerbs) {
+      result.push({id: verb, value: verb, title: verb, styleClass: `verb-${verb.toUpperCase()}`, selected: true});
+    }
+    return result;
+  });
   //==================================================================================================================
   // INIT
   //==================================================================================================================
+
   constructor() {
     toObservable(this.formModel)
       .pipe(
-        debounceTime(200),
+        debounceTime(1),
         distinctUntilChanged(),
         takeUntilDestroyed()
       )
@@ -50,7 +70,6 @@ export class InuOpenApiFilter {
         this.onValueChanged(value)
       });
   }
-
 
   private onValueChanged(value: OpenApiFilter) {
     this.filterChanged.emit(value);

@@ -60,7 +60,7 @@ export class InuCacheServices {
     this.setInSessionStorage(realKey, value)
 
     const pending = PENDING_REQUESTS.get(realKey);
-    pending?.subscriber()?.next(value);
+    pending?.next(value);
     PENDING_REQUESTS.delete(realKey);
   }
 
@@ -70,7 +70,7 @@ export class InuCacheServices {
     this.setInLocalStorage(realKey, value, valueTTL);
 
     const pending = PENDING_REQUESTS.get(realKey);
-    pending?.subscriber()?.next(value);
+    pending?.next(value);
     PENDING_REQUESTS.delete(realKey);
   }
 
@@ -120,7 +120,7 @@ export class InuCacheServices {
     PENDING_REQUESTS.set(realKey, subscriber);
 
     obs.subscribe({
-                    next: res => subscriber.subscriber()?.next(res)
+                    next: res => subscriber.next(res)
                   });
   }
 

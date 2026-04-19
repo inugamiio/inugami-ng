@@ -208,6 +208,6 @@ export interface OpenApi {
 
 
 export interface OpenApiFilter {
-  verb: string[];
+  verbs: string[];
   uri: string;
 }
