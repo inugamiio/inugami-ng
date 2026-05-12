@@ -40,7 +40,9 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(
       routes,
-      withInMemoryScrolling()
+      withInMemoryScrolling({
+                              anchorScrolling          : 'enabled'
+                            })
     ),
 
     importProvidersFrom(
