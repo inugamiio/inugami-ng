@@ -1,5 +1,5 @@
 import {computed, inject, Injectable, Provider, signal, Type} from '@angular/core'
-import {IInuLabelService, INU_LABEL_SERVICE, InuLabelAPI, InuLabelResponse} from '../models/label.model'
+import {IInuLabelService, INU_LABEL_SERVICE, InuLabelAPI, InuLabelResponse} from 'inugami-ng/models';
 import {HttpClient} from '@angular/common/http'
 import {InuCacheServices} from './cache.service'
 
