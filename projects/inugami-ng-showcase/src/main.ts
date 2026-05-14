@@ -1,7 +1,7 @@
 import {bootstrapApplication} from '@angular/platform-browser';
 import {appConfig} from './app/app.config';
 import {App} from './app/app';
-const baseHref = document.getElementsByTagName('base')[0]?.href || '/';
+const baseHref = document.getElementsByTagName('base')[0]?.getAttribute('href') || '/';
 
 async function prepareApp() {
   const { worker } = await import('./mock/browser');
