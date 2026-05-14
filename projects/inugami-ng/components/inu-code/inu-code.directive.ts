@@ -24,6 +24,7 @@ export class InuHighlightDirective {
         nativeElement.className = `language-${language}`;
       }
 
+      delete nativeElement.dataset.highlighted;
       hljs.highlightElement(nativeElement);
     });
   }

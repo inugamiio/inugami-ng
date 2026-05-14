@@ -25,6 +25,7 @@ import {InuAsideMenuView} from './view/layout/inu-aside-menu/inu-aside-menu.view
 import {InuPageLayoutView} from './view/layout/inu-page-layout/inu-page-layout.view'
 import {InuFormsUtilsView} from './view/utils/inu-forms-utils/inu-forms-utils.view'
 import {InuToolTipsView} from './view/display/inu-tool-tips/inu-tool-tips.view'
+import {InuInputPasswordView} from './view/forms/inu-input-password/inu-input-password.view'
 
 
 export const routes: Routes = [
@@ -59,6 +60,7 @@ export const routes: Routes = [
   {
     path: "forms", children: [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
+      {path: "inu-input-password", component: InuInputPasswordView},
       {path: "inu-input-text", component: InuInputTextView}
     ]
   },

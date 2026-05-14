@@ -192,6 +192,10 @@ export class App implements OnInit {
                                                            path : '/forms/inu-checkbox-group'
                                                          },
                                                          {
+                                                           title: 'inu-input-password',
+                                                           path : '/forms/inu-input-password'
+                                                         },
+                                                         {
                                                            title: 'inu-input-text',
                                                            path : '/forms/inu-input-text'
                                                          }

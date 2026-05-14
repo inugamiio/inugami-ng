@@ -12,8 +12,8 @@ interface UserForm {
 }
 
 @Component({
-             templateUrl: './inu-input-text.view.html',
-             styleUrls  : ['./inu-input-text.view.scss'],
+             templateUrl: './inu-input-password.view.html',
+             styleUrls  : ['./inu-input-password.view.scss'],
              imports    : [
                InuCode,
                InuInputText,
@@ -27,7 +27,7 @@ interface UserForm {
                FormField
              ]
            })
-export class InuInputTextView {
+export class InuInputPasswordView {
 
   userModel                     = signal<UserForm>({
                                                      uid      : '',
