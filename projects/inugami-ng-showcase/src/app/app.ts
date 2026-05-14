@@ -160,6 +160,10 @@ export class App implements OnInit {
                                                            path : '/display/inu-doc-item'
                                                          },
                                                          {
+                                                           title: 'inu-label',
+                                                           path : '/display/inu-label'
+                                                         },
+                                                         {
                                                            title: 'inu-open-api',
                                                            path : '/display/inu-open-api'
                                                          },
@@ -281,6 +285,7 @@ export class App implements OnInit {
   // INIT
   //====================================================================================================================
   constructor() {
+
     this.router.events.pipe(
       takeUntilDestroyed(),
       filter(event => event instanceof NavigationEnd)).subscribe({

@@ -1,8 +1,8 @@
 import {
   ApplicationConfig,
-  importProvidersFrom,
+  importProvidersFrom, inject,
   isDevMode,
-  provideBrowserGlobalErrorListeners,
+  provideBrowserGlobalErrorListeners, provideEnvironmentInitializer,
   signal
 } from '@angular/core';
 import {provideRouter, withInMemoryScrolling} from '@angular/router';
@@ -11,9 +11,11 @@ import {routes} from './app.routes';
 import {NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule} from 'ngx-google-analytics';
 import {INUGAMI_DEFAULT_ICONS, InugamiIconsUtils} from 'inugami-icons';
 import {APP_BASE_HREF} from '@angular/common';
-import {provideCacheTracking, SVG_ASSETS} from 'inugami-ng/services';
+import {provideCacheTracking, provideInuLabelService, SVG_ASSETS} from 'inugami-ng/services';
+import {INU_LABEL_SERVICE} from 'inugami-ng/models';
 import {INUGAMI_SVG_ASSETS_DEFAULT} from 'inugami-svg-assets';
 import {UuidUtils} from 'inugami-ng/utils'
+import {provideHttpClient} from '@angular/common/http'
 
 const GOOGLE_ANALYICS = 'G-1683HZCMDJ';
 
@@ -48,6 +50,11 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       NgxGoogleAnalyticsModule.forRoot(GOOGLE_ANALYICS),
       NgxGoogleAnalyticsRouterModule
-    )
+    ),
+    provideHttpClient(),
+    provideInuLabelService(),
+    provideEnvironmentInitializer(() => {
+      const labelService = inject(INU_LABEL_SERVICE);
+    })
   ]
 };

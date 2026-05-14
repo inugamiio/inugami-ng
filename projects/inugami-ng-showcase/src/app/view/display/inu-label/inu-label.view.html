@@ -1,0 +1,112 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-label</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>The label management system is built on a reactive architecture designed to handle asynchronous data loading
+          while providing an instantaneous user experience
+        </p>
+      </header>
+
+
+    </article>
+
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <dl>
+        <dt>With valid key</dt>
+        <dd>
+          <inu-label key="home"></inu-label>
+        </dd>
+
+        <dt>With default value</dt>
+        <dd>
+          <inu-label key="other_label" defaultValue="Some other value"></inu-label>
+        </dd>
+      </dl>
+
+      <inu-code url="data/display/inu_label_source_code.xml" tag="usage"></inu-code>
+      <inu-code url="data/display/inu_label_source_code.xml" tag="usage_generated"></inu-code>
+
+    </article>
+
+    <article>
+      <header>
+        <h2>Default HTTP API</h2>
+
+        <p>
+          The default implementation attempts to retrieve labels via an HTTP call to the URL <code>/api/label</code>.
+          Once the response is received, it is cached for <strong>1 hour</strong>.
+        </p>
+
+        <inu-code url="data/display/inu_label_source_code.xml" tag="response"></inu-code>
+      </header>
+    </article>
+
+    <article>
+      <header>
+        <h2>InuLabelService</h2>
+        <p>This service acts as the single source of truth for all application strings.</p>
+      </header>
+      <strong>Key Features:</strong>
+      <dl>
+        <dt>Decoupling</dt>
+        <dd>Implemented via the INU_LABEL_SERVICE Injection Token.</dd>
+
+        <dt>Eager Loading</dt>
+        <dd>Triggered at startup via provideEnvironmentInitializer to ensure labels are available as soon as possible.
+        </dd>
+
+        <dt>Smart Caching</dt>
+        <dd>Integrated with InuCacheServices using a 1-hour TTL (Time To Live) to minimize redundant network traffic.
+        </dd>
+
+        <dt>Language Detection</dt>
+        <dd>Automatically parses window.navigator.language. If the detected language is not found in the API response,
+          it fallbacks to EN.
+        </dd>
+      </dl>
+
+
+      <p>
+        The <code>IInuLabelService</code> is configured as a global provider within the appConfig. It follows a
+        decoupled
+        architecture using an Injection Token to allow for easy swapping of implementations (e.g., for testing or
+        different environments).
+      </p>
+      <inu-code url="data/display/inu_label_source_code.xml" tag="IInuLabelService"></inu-code>
+
+      <p>
+        The service is registered using a custom provider function <code>provideInuLabelService()</code>. This function
+        links the
+        <code>INU_LABEL_SERVICE</code> token to the InuLabelService class implementation.
+      </p>
+
+      <inu-code url="data/display/inu_label_source_code.xml" tag="app_config"></inu-code>
+
+      <p>
+        To prevent delays when components first request a label, the service is eagerly instantiated during the
+        application's bootstrap phase using provideEnvironmentInitializer.
+      </p>
+      <ul>
+        <li>Mechanism: The initializer explicitly calls inject(INU_LABEL_SERVICE).</li>
+        <li>Purpose: This triggers the service's constructor immediately, which in turn starts the HTTP fetch for the
+          labels (or retrieves them from cache) before the UI is fully rendered.
+        </li>
+      </ul>
+    </article>
+
+  </main>
+
+
+</section>

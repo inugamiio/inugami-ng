@@ -8,4 +8,6 @@ export * from './svg-options.model';
 export * from './svg-service.model';
 export * from './tree-wrapper.model';
 export * from './ttl.model';
+export * from './referential.model';
+export * from './label.model';
 

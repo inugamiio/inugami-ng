@@ -26,6 +26,7 @@ import {InuPageLayoutView} from './view/layout/inu-page-layout/inu-page-layout.v
 import {InuFormsUtilsView} from './view/utils/inu-forms-utils/inu-forms-utils.view'
 import {InuToolTipsView} from './view/display/inu-tool-tips/inu-tool-tips.view'
 import {InuInputPasswordView} from './view/forms/inu-input-password/inu-input-password.view'
+import {InuLabelView} from './view/display/inu-label/inu-label.view'
 
 
 export const routes: Routes = [
@@ -50,6 +51,7 @@ export const routes: Routes = [
       {path: "inu-cite", component: InuCiteView},
       {path: "inu-code", component: InuCodeView},
       {path: "inu-doc-item", component: InuDocItemView},
+      {path: "inu-label", component: InuLabelView},
       {path: "inu-open-api", component: InuOpenApiView},
       {path: "inu-panel-tabs", component: InuPanelTabsView},
       {path: "inu-toast", component: InuToastView},
