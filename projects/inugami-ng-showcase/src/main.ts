@@ -9,7 +9,7 @@ async function prepareApp() {
                         serviceWorker     : {
                           url: `${baseHref}mockServiceWorker.js`,
                           options: {
-                            scope: '/'
+                            scope: baseHref
                           }
                         },
                         onUnhandledRequest: 'bypass'
