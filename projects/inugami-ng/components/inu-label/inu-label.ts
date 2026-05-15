@@ -1,4 +1,4 @@
-import {Component, computed, inject, input} from '@angular/core';
+import {Component, computed, inject, input, signal} from '@angular/core';
 import {INU_LABEL_SERVICE} from 'inugami-ng/models'
 
 @Component({
@@ -17,9 +17,16 @@ export class InuLabel {
   //
   labelService = inject(INU_LABEL_SERVICE);
   //
-  _message     = computed<string | undefined>(() => {
+  _message    = computed<string | undefined>(() => {
     const label = this.labelService.getMessage(this.key() ?? undefined, this.defaultValue() ?? undefined);
     return label ?? undefined;
-  })
+  });
+  _styleClass = computed<string>(() => {
+    return [
+      'inu-label',
+      this.labelService.findLabel(this.key() ?? undefined) ? '' : 'label-not-defined'
+    ].join(' ');
+
+  });
 
 }

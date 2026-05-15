@@ -1,4 +1,4 @@
-<span class="inu-label" [attr.aria-key]="key()">
+<span [class]="_styleClass()" [attr.aria-key]="key()">
   @if(_message()){
     {{ _message() }}
   }
