@@ -1,9 +1,9 @@
 import {
   Component,
   computed,
-  ElementRef, inject,
+  ElementRef,
+  inject,
   input,
-  InputSignal,
   model,
   ModelSignal,
   output,
@@ -15,18 +15,20 @@ import {UuidUtils} from 'inugami-ng/utils';
 import {debounceTime, Subject} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {InuIcon} from 'inugami-icons';
+import {InuLabel} from 'inugami-ng/components/inu-label';
 
 @Component({
              selector   : 'inu-input-password',
              standalone : true,
              providers  : [],
-             imports    : [
-               InuIcon
+             imports: [
+               InuIcon,
+               InuLabel
              ],
              templateUrl: './inu-input-password.component.html',
              styleUrl   : './inu-input-password.component.scss',
            })
-export class InuInputPassword implements FormValueControl<string>{
+export class InuInputPassword implements FormValueControl<string> {
 
 
   //==================================================================================================================
@@ -35,6 +37,7 @@ export class InuInputPassword implements FormValueControl<string>{
   // input
   readonly disabled  = input(false);
   readonly label     = input('');
+  readonly labelKey  = input('');
   readonly icon      = input('');
   readonly name      = input('');
   readonly debounce  = input<number>(0);
@@ -42,9 +45,9 @@ export class InuInputPassword implements FormValueControl<string>{
 
 
   // FormValueControl
-  _formField                          = inject(FormField, {optional: true});
+  _formField                 = inject(FormField, {optional: true});
   value: ModelSignal<string> = model<string>('');
-  valid                               = computed(() => {
+  valid                      = computed(() => {
     const state = this._formField?.state()
     if (!state) return true;
     const isInvalid      = state.invalid();
@@ -52,8 +55,8 @@ export class InuInputPassword implements FormValueControl<string>{
     return !(isInvalid && hasBeenTouched);
   });
   // internal
-  changed                             = output<string | number>();
-  debouncer                           = new Subject<string | number>();
+  changed                    = output<string | number>();
+  debouncer                  = new Subject<string | number>();
 
   id          = computed<string>(() => UuidUtils.buildUid());
   input       = viewChild<ElementRef<HTMLInputElement>>('input');

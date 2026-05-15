@@ -2,6 +2,7 @@ import {computed, inject, Injectable, Provider, signal, Type} from '@angular/cor
 import {IInuLabelService, INU_LABEL_SERVICE, InuLabelAPI, InuLabelResponse} from 'inugami-ng/models';
 import {HttpClient} from '@angular/common/http'
 import {InuCacheServices} from './cache.service'
+import {Observable, of, tap, window} from 'rxjs'
 
 export function provideInuLabelService(implementation: Type<IInuLabelService> = InuLabelService): Provider {
   return {
@@ -24,28 +25,31 @@ export class InuLabelService implements IInuLabelService {
 
   labels             = signal<Record<string, Record<string, InuLabelAPI>>>({});
   supportedLanguages = signal<string[]>([]);
+  url                = signal<string>('api/label');
+  language           = signal<string>('EN');
   lang               = computed<string>(() => {
-    const lang = window.navigator.language.split('-')[0].toUpperCase();
-    return this.supportedLanguages().includes(lang) ? lang : 'EN';
+    const lang = navigator.language.split('-')[0].toUpperCase();
+    return this.supportedLanguages().includes(lang) ? lang : this.language();
   });
+
 
   //====================================================================================================================
   // CONSTRUCTOR
   //====================================================================================================================
-  constructor() {
-    const data: InuLabelResponse | undefined | null = this.cacheServices.getTTL('InuLabelService');
+  initialize(): Observable<any> {
+    const data: InuLabelResponse | undefined | null = this.cacheServices.getTTL(`InuLabelService_${this.url()}`);
     if (data) {
-      this.init(data)
+      this.init(data);
+      return of({});
     } else {
-      this.httpClient.get<InuLabelResponse>('api/label')
-        .subscribe({
-                     next: res => {
-                       this.cacheServices.setTTL('InuLabelService', res, TTL);
-                       this.init(res);
-                     }
-                   });
+      return this.httpClient.get<InuLabelResponse>(this.url())
+        .pipe(tap(res => {
+          this.cacheServices.setTTL(`InuLabelService_${this.url()}`, res, TTL);
+          this.init(res);
+        }));
     }
   }
+
 
   private init(res: InuLabelResponse) {
     const labels: Record<string, Record<string, InuLabelAPI>> = {};
@@ -66,10 +70,17 @@ export class InuLabelService implements IInuLabelService {
     this.supportedLanguages.set(Object.keys(res));
   }
 
+
   //====================================================================================================================
   // API
   //====================================================================================================================
-  getMessage(key?: string, defaultValue?: string): string | undefined {
+  setDefaultLanguage(language: string): void {
+    this.language.set(language);
+  }
+  setUrl(apiUrl:string){
+    this.url.set(apiUrl);
+  }
+  findLabel(key: string | undefined): InuLabelAPI | undefined {
     const currentLabels = this.labels();
     const currentLang   = this.lang();
 
@@ -78,11 +89,14 @@ export class InuLabelService implements IInuLabelService {
       labelsForLang = currentLabels[this.supportedLanguages()[0]];
     }
 
-    if (!key || !labelsForLang) return defaultValue;
+    if (!key || !labelsForLang) return undefined;
 
-    const label = labelsForLang[key];
-    return label?.message ?? defaultValue;
+    return labelsForLang[key];
   }
 
+  getMessage(key?: string, defaultValue?: string): string | undefined {
+    const label = this.findLabel(key);
+    return label?.message ?? defaultValue;
+  }
 
 }

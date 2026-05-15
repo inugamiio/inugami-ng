@@ -55,6 +55,9 @@ export const appConfig: ApplicationConfig = {
     provideInuLabelService(),
     provideEnvironmentInitializer(() => {
       const labelService = inject(INU_LABEL_SERVICE);
+      labelService.setDefaultLanguage('EN');
+      labelService.setUrl('api/label');
+      labelService.initialize().subscribe();
     })
   ]
 };

@@ -56,6 +56,10 @@
   <src name="IInuLabelService" type="typescript" title="IInuLabelService">
     <![CDATA[
 export interface IInuLabelService {
+  initialize: () => Observable<any>;
+  setDefaultLanguage: (language: string) => void;
+  setUrl: (apiUrl: string) => void;
+  findLabel: (key ?: string) => InuLabelAPI | undefined;
   getMessage: (key ?: string, defaultValue?: string) => string | undefined;
 }
 ]]>
@@ -74,6 +78,9 @@ export const appConfig: ApplicationConfig = {
     provideInuLabelService(),
     provideEnvironmentInitializer(() => {
       const labelService = inject(INU_LABEL_SERVICE);
+      labelService.setDefaultLanguage('EN');
+      labelService.setUrl('api/label');
+      labelService.initialize().subscribe();
     })
   ]
 };

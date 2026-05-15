@@ -2,8 +2,13 @@
 
   <div  class="inu-checkbox-group-label-grp">
     <div class="inu-checkbox-group-label">
-      @if (label()) {
-        {{ label() }}
+      @if (label() || labelKey()) {
+        @if(labelKey()){
+          <label ><inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label></label>
+        }
+        @else{
+          <label >{{ label()! }}</label>
+        }
       }
     </div>
     @if (_required()) {
