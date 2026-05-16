@@ -168,6 +168,10 @@ export class App implements OnInit {
                                                            path : '/display/inu-open-api'
                                                          },
                                                          {
+                                                           title: 'inu-panel',
+                                                           path : '/display/inu-panel'
+                                                         },
+                                                         {
                                                            title: 'inu-panel-tabs',
                                                            path : '/display/inu-panel-tabs'
                                                          },

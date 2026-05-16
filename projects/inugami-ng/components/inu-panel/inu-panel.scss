@@ -1,0 +1,89 @@
+.inu-panel {
+  border: 0.125rem solid var(--neutral-light);
+
+
+  header {
+    display: flex;
+    padding: 0.5rem;
+    background-color: var(--neutral-light);
+    border-bottom: 0.125rem solid var(--neutral-light);
+    font-weight: bold;
+    gap: 0.5rem;
+    align-items: center;
+
+    .inu-panel-title {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      label{
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .inu-panel-title-collapsible {
+      margin: 0;
+      padding: 0;
+      display: flex;
+
+      li {
+        list-style: none;
+      }
+    }
+  }
+
+  &.inu-panel-expanded {
+    main {
+      display: flex;
+    }
+  }
+
+  &.inu-panel-collapsed {
+    main {
+      visibility: hidden;
+      height: 0;
+    }
+  }
+
+  main {
+
+    .inu-panel-main{
+      padding: 0.5rem;
+    }
+    &.animated {
+      visibility: visible;
+      overflow: hidden;
+    }
+  }
+
+  ::ng-deep{
+    inu-button{
+      button{
+        background: transparent;
+        border: none;
+        &:hover {
+          border-color: transparent;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          fill: var(--secondary);
+        }
+        &.disabled {
+          background-color: transparent;
+          border: none !important;
+          -webkit-box-shadow:none;
+          box-shadow:none;
+          color: var(--neutral);
+          fill:var(--neutral);
+        }
+      }
+    }
+  }
+
+  footer{
+    border-top: 0.125rem solid var(--neutral-light);
+    padding: 0.5rem;
+  }
+
+}
+
+

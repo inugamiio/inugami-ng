@@ -20,7 +20,7 @@
                RouterOutlet,
                InuToast,
                InuMainHeader,
-               InuFooter,
+               InuPanel,
                InuPageLayout
              ],
              templateUrl: './app.html',

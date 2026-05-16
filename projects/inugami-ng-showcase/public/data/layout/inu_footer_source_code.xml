@@ -19,13 +19,13 @@
 
   <src name="app_ts" type="typescript" title="app.ts">
     <![CDATA[
-import {InuFooter} from 'inugami-ng/components/inu-footer';
+import {InuPanel} from 'inugami-ng/components/inu-footer';
 
 @Component({
   selector: 'app-root',
              imports: [
                RouterOutlet,
-               InuFooter
+               InuPanel
              ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
