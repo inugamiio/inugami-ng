@@ -1,0 +1,46 @@
+.inu-progress {
+  position: relative;
+  width: 100%;
+  height: 1.5rem;
+  background-color: var(--neutral-light);
+  border-radius: 0.25rem;
+  overflow: hidden;
+
+  .inu-progress-cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--secondary);
+    transform-origin: left;
+    will-change: transform;
+  }
+
+  .inu-progress-value-grp {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+    font-size: 0.85rem;
+    pointer-events: none;
+
+    &.text-under {
+      z-index: 1;
+      color: var(--secondary);
+    }
+
+    &.text-over {
+      z-index: 2;
+      color: var(--neutral-light-extra-plus);
+      clip-path: inset(0 calc(100% - var(--progress-pct, 0%)) 0 0);
+      will-change: clip-path;
+    }
+  }
+}

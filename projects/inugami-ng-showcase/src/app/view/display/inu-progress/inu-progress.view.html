@@ -1,0 +1,109 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-progress</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <p>
+        The <code>inu-progress</code> component is a high-performance, precision-engineered linear progress bar container
+        built for the <em>Inugami-NG</em> framework. It features native, frame-budgeted animation sequences, sub-pixel
+        text color splitting with no layout positioning shifts, and fully concurrent animation sequence tracking to
+        prevent stuttering or <strong>"jump-back"</strong> visual glitches.
+      </p>
+
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <inu-progress [value]="value()"></inu-progress>
+
+      <br/>
+      <inu-code url="data/display/inu_progress_source_code.xml" tag="usage"></inu-code>
+      <inu-code url="data/display/inu_progress_source_code.xml" tag="typescript"></inu-code>
+
+    </article>
+
+
+
+    <!--================================================================================================================
+     = PROPERTIES
+     =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>The current progress value. It will be safely clamped internally between <strong>min</strong> and <strong>max</strong></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>min</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>The minimum baseline boundary value representing 0% progress.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>max</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>1</inu-table-flex-cell>
+          <inu-table-flex-cell>The maximum baseline boundary value representing 100% progress.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>unit</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>%</inu-table-flex-cell>
+          <inu-table-flex-cell>The suffix string literal representing the unit metric appended after the value.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>showValue</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Toggles whether the computed center label numeric indicator is rendered.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>nbDigit</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>2</inu-table-flex-cell>
+          <inu-table-flex-cell>Controls the fixed fractional floating-point precision formatting decimals for the string value layout.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Optional arbitrary custom CSS class hooks to attach directly onto the host container shell element.</inu-table-flex-cell>
+        </inu-table-flex-row>
+      </inu-table-flex>
+    </article>
+
+
+  </main>
+
+
+</section>

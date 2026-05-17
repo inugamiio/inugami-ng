@@ -28,6 +28,7 @@ import {InuToolTipsView} from './view/display/inu-tool-tips/inu-tool-tips.view'
 import {InuInputPasswordView} from './view/forms/inu-input-password/inu-input-password.view'
 import {InuLabelView} from './view/display/inu-label/inu-label.view'
 import {InuPanelView} from './view/display/inu-panel/inu-panel.view'
+import {InuProgressView} from './view/display/inu-progress/inu-progress.view'
 
 
 export const routes: Routes = [
@@ -56,6 +57,7 @@ export const routes: Routes = [
       {path: "inu-open-api", component: InuOpenApiView},
       {path: "inu-panel", component: InuPanelView},
       {path: "inu-panel-tabs", component: InuPanelTabsView},
+      {path: "inu-progress", component: InuProgressView},
       {path: "inu-toast", component: InuToastView},
       {path: "inu-inu-tool-tips", component: InuToolTipsView}
 

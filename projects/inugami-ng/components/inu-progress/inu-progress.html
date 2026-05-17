@@ -1,0 +1,16 @@
+<div [class]="_styleClass()">
+  <div class="inu-progress-cursor" #cursor></div>
+  @if(showValue()){
+    <div class="inu-progress-value-grp text-under">
+      <div class="inu-progress-value">{{ _value() }}</div>
+      <div class="inu-progress-unit">{{ unit() }}</div>
+    </div>
+  }
+
+  @if(showValue()){
+    <div class="inu-progress-value-grp text-over" [style.--progress-pct.%]="_percentage()">
+      <div class="inu-progress-value">{{ _value() }}</div>
+      <div class="inu-progress-unit">{{ unit() }}</div>
+    </div>
+  }
+</div>

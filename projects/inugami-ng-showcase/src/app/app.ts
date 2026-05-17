@@ -176,6 +176,10 @@ export class App implements OnInit {
                                                            path : '/display/inu-panel-tabs'
                                                          },
                                                          {
+                                                           title: 'inu-progress',
+                                                           path : '/display/inu-progress'
+                                                         },
+                                                         {
                                                            title: 'inu-toast',
                                                            path : '/display/inu-toast'
                                                          },
