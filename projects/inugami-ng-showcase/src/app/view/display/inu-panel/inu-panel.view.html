@@ -1,0 +1,160 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-panel</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <p>
+        The <code>InuProgress</code> component is a lightweight, highly flexible, and performant container that supports
+        collapsible behavior, custom styling, and advanced content projection using a template registry system.
+        It features smooth, frame-budgeted native animations without relying on the <code>@angular/animations</code> module.
+      </p>
+    </article>
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <inu-panel title="My panel"
+                 icon="terminal"
+                 [duration]="500">
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+          <li>Fusce sollicitudin, quam eget maximus egestas, mi erat sodales magna</li>
+          <li>Quis lobortis mi quam sit amet magna. Nunc scelerisque viverra arcu nec cursus</li>
+          <li>Nunc et pharetra nulla. Nulla nec ullamcorper ligula</li>
+          <li>Id porta neque. Aliquam efficitur neque sit amet arcu aliquet elementum.</li>
+          <li>Sed velit odio, placerat id mi in, sollicitudin sollicitudin nulla.</li>
+          <li>Aenean efficitur, enim non ultricies congue, urna quam laoreet justo</li>
+          <li>sodales suscipit lectus tellus vel ex. Maecenas sodales lorem et tortor sollicitudin mollis</li>
+          <li>Aenean facilisis rhoncus malesuada. Ut aliquet vitae ligula a lacinia.</li>
+        </ul>
+        <ng-template name="footer">
+          If necessary, the footer can be defined via a template.
+        </ng-template>
+      </inu-panel>
+
+      <inu-code url="data/display/inu_panel_source_code.xml" tag="usage"></inu-code>
+    </article>
+
+    <article>
+      <header>
+        <h2>Example with header template</h2>
+      </header>
+
+      <inu-panel icon="terminal"
+                 [duration]="500">
+        <ng-template name="title">
+          Custom title with template
+        </ng-template>
+
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+          <li>Aenean efficitur, enim non ultricies congue, urna quam laoreet justo</li>
+          <li>sodales suscipit lectus tellus vel ex. Maecenas sodales lorem et tortor sollicitudin mollis</li>
+        </ul>
+
+      </inu-panel>
+
+      <inu-code url="data/display/inu_panel_source_code.xml" tag="panel_header"></inu-code>
+    </article>
+
+
+    <article>
+      <header>
+        <h2>Example not collapsible</h2>
+      </header>
+
+      <inu-panel title="My panel"
+                 icon="terminal"
+                 [collapsible]="false">
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+          <li>Fusce sollicitudin, quam eget maximus egestas, mi erat sodales magna</li>
+        </ul>
+      </inu-panel>
+
+      <inu-code url="data/display/inu_panel_source_code.xml" tag="panel_not_collapsible"></inu-code>
+    </article>
+
+
+    <!--================================================================================================================
+     = PROPERTIES
+     =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>duration</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>500</inu-table-flex-cell>
+          <inu-table-flex-cell>The animation duration in milliseconds for the expand/collapse transition.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>icon</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>The name of the icon to display in the panel header.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>title</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>A static string text for the panel title.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>titleKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>The localization key passed to the centralized label management system (<code>InuLabel</code>).</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>styleClass</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom CSS classes to append to the host component element.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>collapsible</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Determines whether the panel can be expanded or collapsed by the user.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>collapsed</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Sets the initial state of the panel (<code>true</code> for closed, <code>false</code> for open).</inu-table-flex-cell>
+        </inu-table-flex-row>
+      </inu-table-flex>
+    </article>
+
+
+  </main>
+
+
+</section>

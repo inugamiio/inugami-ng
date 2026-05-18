@@ -1,6 +1,22 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import {bootstrapApplication} from '@angular/platform-browser';
+import {appConfig} from './app/app.config';
+import {App} from './app/app';
+const baseHref = document.getElementsByTagName('base')[0]?.getAttribute('href') || '/';
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+async function prepareApp() {
+  const { worker } = await import('./mock/browser');
+  return worker.start({
+                        serviceWorker     : {
+                          url: `${baseHref}mockServiceWorker.js`,
+                          options: {
+                            scope: baseHref
+                          }
+                        },
+                        onUnhandledRequest: 'bypass'
+                      });
+}
+
+prepareApp().then(()=>{
+  bootstrapApplication(App, appConfig)
+    .catch((err) => console.error(err));
+})

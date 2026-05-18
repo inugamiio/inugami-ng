@@ -1,0 +1,39 @@
+<xml>
+  <src name="usage" type="html" title="Usage">
+    <![CDATA[
+<inu-progress [value]="value()"></inu-progress>
+]]>
+  </src>
+
+  <src name="typescript" type="typescript" title="TypeScript">
+    <![CDATA[
+import {InuProgress} from 'inugami-ng/components/inu-progress';
+
+@Component({
+             templateUrl: './inu-progress.view.html',
+             styleUrls  : ['./inu-progress.view.scss'],
+             imports: [
+               InuProgress
+             ]
+           })
+export class InuProgressView {
+
+  value = signal<number>(0.5);
+
+  constructor() {
+    setInterval(() => this.updateValue(), 1000);
+  }
+
+  private updateValue() {
+    let value = this.value() + 0.1;
+    if (value >= 1) {
+      value = 0;
+    }
+    this.value.set(value);
+  }
+}
+
+]]>
+  </src>
+
+</xml>

@@ -1,0 +1,90 @@
+<xml>
+  <src name="usage" type="html" title="Usage">
+    <![CDATA[
+<inu-label key="home"></inu-label>
+
+<inu-label key="other_label" defaultValue="Some other value"></inu-label>
+]]>
+  </src>
+
+  <src name="usage_generated" type="html" title="Generated HTML">
+    <![CDATA[
+<inu-label key="home">
+  <span class="inu-label" aria-key="home"> Home </span>
+</inu-label>
+
+<inu-label key="other_label" defaultvalue="Some other value">
+  <span class="inu-label" aria-key="other_label"> Some other value </span>
+</inu-label>
+]]>
+  </src>
+
+
+
+  <src name="response" type="json" title="[GET] /api/label">
+    <![CDATA[
+{
+  "EN": [
+    {
+      "id": "4dd95ab4-c3b8-4b65-b0ca-d9199257c949",
+      "key": "home",
+      "language": "EN",
+      "message": "Home",
+      "type": {
+        "id": "021eda9a-8767-43ef-8306-76a98bdc1195",
+        "label": "LABEL"
+      }
+    },
+
+    {
+      "id": "2525d093-798c-46d0-b888-db49073905fc",
+      "key": "USER-1_0",
+      "language": "EN",
+      "message": "Invalid user login",
+      "error": true,
+      "type": {
+        "id": "054298e3-496d-4860-b25d-e852df2ae89b",
+        "label": "FUNCTIONAL"
+      }
+    }
+  ]
+}
+]]>
+  </src>
+
+
+  <src name="IInuLabelService" type="typescript" title="IInuLabelService">
+    <![CDATA[
+export interface IInuLabelService {
+  initialize: () => Observable<any>;
+  setDefaultLanguage: (language: string) => void;
+  setUrl: (apiUrl: string) => void;
+  findLabel: (key ?: string) => InuLabelAPI | undefined;
+  getMessage: (key ?: string, defaultValue?: string) => string | undefined;
+}
+]]>
+  </src>
+
+  <src name="app_config" type="typescript" title="app.config.ts">
+    <![CDATA[
+import {provideInuLabelService} from 'inugami-ng/services';
+import {INU_LABEL_SERVICE} from 'inugami-ng/models';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // ...
+
+    provideHttpClient(),
+    provideInuLabelService(),
+    provideEnvironmentInitializer(() => {
+      const labelService = inject(INU_LABEL_SERVICE);
+      labelService.setDefaultLanguage('EN');
+      labelService.setUrl('api/label');
+      labelService.initialize().subscribe();
+    })
+  ]
+};
+
+]]>
+  </src>
+</xml>

@@ -160,12 +160,24 @@ export class App implements OnInit {
                                                            path : '/display/inu-doc-item'
                                                          },
                                                          {
+                                                           title: 'inu-label',
+                                                           path : '/display/inu-label'
+                                                         },
+                                                         {
                                                            title: 'inu-open-api',
                                                            path : '/display/inu-open-api'
                                                          },
                                                          {
+                                                           title: 'inu-panel',
+                                                           path : '/display/inu-panel'
+                                                         },
+                                                         {
                                                            title: 'inu-panel-tabs',
                                                            path : '/display/inu-panel-tabs'
+                                                         },
+                                                         {
+                                                           title: 'inu-progress',
+                                                           path : '/display/inu-progress'
                                                          },
                                                          {
                                                            title: 'inu-toast',
@@ -190,6 +202,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-checkbox-group',
                                                            path : '/forms/inu-checkbox-group'
+                                                         },
+                                                         {
+                                                           title: 'inu-input-password',
+                                                           path : '/forms/inu-input-password'
                                                          },
                                                          {
                                                            title: 'inu-input-text',
@@ -277,6 +293,7 @@ export class App implements OnInit {
   // INIT
   //====================================================================================================================
   constructor() {
+
     this.router.events.pipe(
       takeUntilDestroyed(),
       filter(event => event instanceof NavigationEnd)).subscribe({

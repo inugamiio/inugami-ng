@@ -106,7 +106,6 @@ export class InuErrorService {
 
   public showMessage(param: ProblemParameterDTO, problem: ProblemDTO) {
     const errorType = param.errorType ?? this.resolveErrorLevel(problem.status);
-
     const errorCodeMessage      = this.inuLabelService.getMessage(param.errorCode);
     const errorCodeTitleMessage = this.inuLabelService.getMessage(`${param.errorCode}_title`);
     const genericTitle          = this.inuLabelService.getMessage(param.errorType);

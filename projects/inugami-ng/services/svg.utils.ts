@@ -1,14 +1,19 @@
 import {
   CircleOption,
-  Dimension, Point,
+  Dimension,
   Position,
   RectOption,
   Size,
   SvgAnimationCallback,
   SvgAnimationOption,
   SvgAnimationParameters,
-  SvgAnimations, SvgAssetDTO, SvgAssetDTOOptions, SvgAssetElement, SvgAssets,
-  SvgBuilder, SvgDefsPatternOption, SvgFilterOption,
+  SvgAnimations,
+  SvgAssetDTOOptions,
+  SvgAssetElement,
+  SvgAssets,
+  SvgBuilder,
+  SvgDefsPatternOption,
+  SvgFilterOption,
   SvgMath,
   SvgOptionalOption,
   SvgStyle,
@@ -20,7 +25,6 @@ import {
 } from "inugami-ng/models";
 import {SvgAsset, SvgAssetSet} from 'inugami-svg-assets';
 import {SvgAssetUtils} from './svg.asset.utils';
-
 
 
 export const DEFAULT_FONT_SIZE = 12;
@@ -765,8 +769,11 @@ class AnimationHandler {
       const progress = timestamp / duration
       if (progress >= 1) {
         this.parameters.callback(this.parameters.timer(1));
-        if (this.parameters.onDone) {
-          this.parameters.onDone();
+        const doneFunction = this.parameters.onDone;
+        if (doneFunction !=undefined) {
+          setTimeout(()=> {
+            doneFunction();
+          });
         }
         if (this.animeId) {
           cancelAnimationFrame(this.animeId);

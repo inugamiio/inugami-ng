@@ -80,14 +80,9 @@ export class InuInputTextView {
 
 
   constructor() {
-    toObservable(this.userModel)
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-        takeUntilDestroyed()
-      )
-      .subscribe(value => {
-        this.onValueChanged(value)
+    InuFormsUtils.onChanged(this.userModel)
+                 .subscribe(value => {
+        this.onChanged(value)
       });
   }
 

@@ -1,0 +1,56 @@
+<xml>
+  <src name="usage" type="html" title="Usage">
+    <![CDATA[
+<inu-panel title="My panel"
+                 icon="terminal"
+                 [duration]="500">
+  <ul>
+    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+    <li>Fusce sollicitudin, quam eget maximus egestas, mi erat sodales magna</li>
+    <li>Quis lobortis mi quam sit amet magna. Nunc scelerisque viverra arcu nec cursus</li>
+    <li>Nunc et pharetra nulla. Nulla nec ullamcorper ligula</li>
+    <li>Id porta neque. Aliquam efficitur neque sit amet arcu aliquet elementum.</li>
+    <li>Sed velit odio, placerat id mi in, sollicitudin sollicitudin nulla.</li>
+    <li>Aenean efficitur, enim non ultricies congue, urna quam laoreet justo</li>
+    <li>sodales suscipit lectus tellus vel ex. Maecenas sodales lorem et tortor sollicitudin mollis</li>
+    <li>Aenean facilisis rhoncus malesuada. Ut aliquet vitae ligula a lacinia.</li>
+  </ul>
+  <ng-template name="footer">
+    If necessary, the footer can be defined via a template.
+  </ng-template>
+</inu-panel>
+]]>
+  </src>
+
+  <src name="panel_header" type="html" title="Usage">
+    <![CDATA[
+<inu-panel icon="terminal"
+                 [duration]="500">
+  <ng-template name="title">
+    Custom title with template
+  </ng-template>
+
+  <ul>
+    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+    <li>Aenean efficitur, enim non ultricies congue, urna quam laoreet justo</li>
+    <li>sodales suscipit lectus tellus vel ex. Maecenas sodales lorem et tortor sollicitudin mollis</li>
+  </ul>
+</inu-panel>
+]]>
+  </src>
+
+  <src name="panel_not_collapsible" type="html" title="Usage">
+    <![CDATA[
+<inu-panel title="My panel"
+                 icon="terminal"
+                 [collapsible]="false">
+  <ul>
+    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+    <li>Fusce sollicitudin, quam eget maximus egestas, mi erat sodales magna</li>
+  </ul>
+</inu-panel>
+]]>
+  </src>
+
+
+</xml>

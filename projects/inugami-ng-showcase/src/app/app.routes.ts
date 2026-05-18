@@ -25,6 +25,10 @@ import {InuAsideMenuView} from './view/layout/inu-aside-menu/inu-aside-menu.view
 import {InuPageLayoutView} from './view/layout/inu-page-layout/inu-page-layout.view'
 import {InuFormsUtilsView} from './view/utils/inu-forms-utils/inu-forms-utils.view'
 import {InuToolTipsView} from './view/display/inu-tool-tips/inu-tool-tips.view'
+import {InuInputPasswordView} from './view/forms/inu-input-password/inu-input-password.view'
+import {InuLabelView} from './view/display/inu-label/inu-label.view'
+import {InuPanelView} from './view/display/inu-panel/inu-panel.view'
+import {InuProgressView} from './view/display/inu-progress/inu-progress.view'
 
 
 export const routes: Routes = [
@@ -49,8 +53,11 @@ export const routes: Routes = [
       {path: "inu-cite", component: InuCiteView},
       {path: "inu-code", component: InuCodeView},
       {path: "inu-doc-item", component: InuDocItemView},
+      {path: "inu-label", component: InuLabelView},
       {path: "inu-open-api", component: InuOpenApiView},
+      {path: "inu-panel", component: InuPanelView},
       {path: "inu-panel-tabs", component: InuPanelTabsView},
+      {path: "inu-progress", component: InuProgressView},
       {path: "inu-toast", component: InuToastView},
       {path: "inu-inu-tool-tips", component: InuToolTipsView}
 
@@ -59,6 +66,7 @@ export const routes: Routes = [
   {
     path: "forms", children: [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
+      {path: "inu-input-password", component: InuInputPasswordView},
       {path: "inu-input-text", component: InuInputTextView}
     ]
   },

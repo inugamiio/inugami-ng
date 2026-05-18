@@ -15,19 +15,21 @@ import {UuidUtils} from 'inugami-ng/utils';
 import {debounceTime, Subject} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {InuIcon} from 'inugami-icons';
+import {InuLabel} from 'inugami-ng/components/inu-label';
 
 @Component({
   selector: 'inu-input-text',
   standalone: true,
   providers: [],
-  imports: [
-    InuIcon
+             imports: [
+               InuIcon,
+               InuLabel
 
-  ],
+             ],
   templateUrl: './inu-input-text.component.html',
   styleUrl: './inu-input-text.component.scss',
 })
-export class InuInputText implements FormValueControl<string | number>,FormValueControl<string | number> {
+export class InuInputText implements FormValueControl<string | number>{
 
 
   //==================================================================================================================
@@ -36,6 +38,7 @@ export class InuInputText implements FormValueControl<string | number>,FormValue
   // input
   readonly disabled = input(false);
   readonly label = input('');
+  readonly labelKey = input('');
   readonly icon = input('');
   readonly name = input('');
   readonly debounce = input<number>(0);

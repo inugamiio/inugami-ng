@@ -1,0 +1,44 @@
+<article [class]="_styleClass()">
+  <header (click)="toggleCollapse($event)">
+    @if(icon()){
+      <inu-icon [icon]="icon()" [size]="1.5"></inu-icon>
+    }
+
+    <div class="inu-panel-title">
+      @if(titleTemplate()){
+        <ng-container *ngTemplateOutlet="titleTemplate()"></ng-container>
+      }
+      @else{
+        @if (title() || titleKey()) {
+          @if (titleKey()) {
+            <label>
+              <inu-label [key]="titleKey()" [defaultValue]="title()!"></inu-label>
+            </label>
+          } @else {
+            <label>{{ title()! }}</label>
+          }
+        }
+      }
+
+    </div>
+    @if(collapsible()){
+      <ul class="inu-panel-title-collapsible">
+        <li>
+          <inu-button [icon]="_collapsed()?'chevron_down':'chevron_up'"
+                      [disabled]="_animeInProgress()"></inu-button>
+        </li>
+      </ul>
+    }
+  </header>
+  <main #main>
+    <div class="inu-panel-main">
+      <ng-content/>
+    </div>
+  </main>
+  @if(footerTemplate()){
+    <footer>
+      <ng-container *ngTemplateOutlet="footerTemplate()"></ng-container>
+    </footer>
+  }
+
+</article>

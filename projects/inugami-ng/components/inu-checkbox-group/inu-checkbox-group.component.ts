@@ -2,12 +2,13 @@ import {AfterViewInit, Component, effect, input, model, ModelSignal, OnInit, out
 import {InuSelectItem} from 'inugami-ng/models';
 import {FormValueControl} from '@angular/forms/signals';
 import {InuIcon} from 'inugami-icons';
+import {InuLabel} from 'inugami-ng/components/inu-label';
 
 @Component({
              selector   : 'inu-checkbox-group',
              standalone : true,
              providers  : [],
-             imports    : [InuIcon],
+             imports: [InuIcon, InuLabel],
              templateUrl: './inu-checkbox-group.component.html',
              styleUrl   : './inu-checkbox-group.component.scss',
            })
@@ -20,6 +21,7 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit
   // input
   readonly disabled  = input(false);
   readonly label     = input('');
+  readonly labelKey  = input('');
   readonly _required = input(false, {alias: 'required'});
   readonly values    = input<InuSelectItem<T>[]>([]);
   readonly vertical  = input(false);
