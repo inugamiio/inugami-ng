@@ -25,7 +25,7 @@ SVG_ASSETS.register(INUGAMI_SVG_ASSETS_DEFAULT)
 const APPLICATION = signal<string>('inugami-ng');
 const ENV         = signal<string>('PRD');
 const SESSION_UID = signal<string>(UuidUtils.buildUid());
-const VERSION     = signal<string>('0.0.30');
+const VERSION     = signal<string>('0.0.32');
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,15 +1,15 @@
 import {Component, computed, effect, ElementRef, inject, input, signal, viewChild} from '@angular/core';
-import {InuLabel} from '../inu-label/inu-label'
-import {InuButton} from 'inugami-ng/components/inu-button'
-import {SVG, SVG_MATH} from 'inugami-ng/services'
-import {InuTemplateRegistryService} from 'inugami-ng/directives'
-import {NgTemplateOutlet} from '@angular/common'
-import {InuIcon} from 'inugami-icons'
+import {InuLabel} from 'inugami-ng/components/inu-label';
+import {InuButton} from 'inugami-ng/components/inu-button';
+import {SVG, SVG_MATH} from 'inugami-ng/services';
+import {InuTemplateRegistryService} from 'inugami-ng/directives';
+import {NgTemplateOutlet} from '@angular/common';
+import {InuIcon} from 'inugami-icons';
 
 @Component({
              selector   : 'inu-panel',
              standalone : true,
-             imports: [
+             imports    : [
                InuLabel,
                InuButton,
                NgTemplateOutlet,
@@ -36,7 +36,7 @@ export class InuPanel {
   registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
   main                                 = viewChild<ElementRef<HTMLElement>>('main');
   footerTemplate                       = computed(() => this.registry.getTemplate('footer'));
-  titleTemplate                       = computed(() => this.registry.getTemplate('title'));
+  titleTemplate                        = computed(() => this.registry.getTemplate('title'));
   //
   _styleClass                          = computed<string>(() => [
     'inu-panel',

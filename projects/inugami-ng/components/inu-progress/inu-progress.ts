@@ -1,12 +1,10 @@
 import {Component, computed, effect, ElementRef, input, signal, viewChild} from '@angular/core';
 import {SVG} from 'inugami-ng/services'
-import {InuTemplateRegistryService} from 'inugami-ng/directives'
 
 @Component({
              selector   : 'inu-progress',
              standalone : true,
              imports    : [],
-             providers  : [InuTemplateRegistryService],
              templateUrl: './inu-progress.html',
              styleUrl   : './inu-progress.scss',
            })
