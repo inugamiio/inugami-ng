@@ -65,6 +65,7 @@ export class InuCacheServices {
   }
 
   public setTTL(key: string, value: any, ttl: number): void {
+    console.log('>>> ttl');
     const realKey  = this.buildKeyTTL(key);
     const valueTTL = ttl == TTL_UNLIMITED ? TTL_UNLIMITED : new Date().getTime() + ttl;
     this.setInLocalStorage(realKey, value, valueTTL);
@@ -178,7 +179,7 @@ export class InuCacheServices {
   }
 
   private setInLocalStorage(realKey: string, value: any, ttl: number) {
-    this.writeInStorage(realKey, value, ttl, this.sessionStorage());
+    this.writeInStorage(realKey, value, ttl, this.localStorage());
   }
 
   private writeInStorage(realKey: string, value: any, ttl: number, storage: Storage) {

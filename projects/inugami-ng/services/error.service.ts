@@ -32,7 +32,6 @@ export class InuErrorService {
   //====================================================================================================================
   public handlerError(error: any): ProblemDTO {
     let problem: ProblemDTO | undefined = undefined;
-
     if (this.isProblemDTO(error)) {
       problem = error as ProblemDTO;
     } else if (this.isHttpError(error)) {
@@ -41,7 +40,8 @@ export class InuErrorService {
       problem = this.buildDefaultProblem();
     }
 
-    console.log('handlerError',problem)
+
+
 
     if(problem.details){
       if(problem.details.errorCode){
