@@ -1,5 +1,4 @@
 import {Component, computed, signal} from '@angular/core';
-import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuPanelTab, InuPanelTabs} from 'inugami-ng/components/inu-panel-tabs';
 import {
   InuTableFlex,
@@ -10,37 +9,37 @@ import {
 import {InuSelectItem} from 'inugami-ng/models';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
-import {InuCheckboxGroup} from "inugami-ng/components/inu-checkbox-group";
+import {InuRadioGroup} from "inugami-ng/components/inu-radio-group";
 import {disabled, form, FormField, required,} from '@angular/forms/signals';
+import {InuCode} from 'inugami-ng/components/inu-code'
 
 
 interface MyFormModel {
-  verb: string[];
+  verb: string;
 }
 
 
 @Component({
-  templateUrl: './inu-checkbox-group.view.html',
-  styleUrls: ['./inu-checkbox-group.view.scss'],
-  imports: [
-    InuCode,
-    InuCheckboxGroup,
-    InuCode,
-    InuTableFlex,
-    InuTableFlexHeader,
-    InuTableFlexRow,
-    InuTableFlexCell,
-    InuPanelTabs,
-    InuPanelTab,
-    FormField
-  ]
-})
-export class InuCheckboxGroupView {
+             templateUrl: './inu-radio-group.view.html',
+             styleUrls  : ['./inu-radio-group.view.scss'],
+             imports: [
+               InuRadioGroup,
+               InuTableFlex,
+               InuTableFlexHeader,
+               InuTableFlexRow,
+               InuTableFlexCell,
+               InuPanelTabs,
+               InuPanelTab,
+               FormField,
+               InuCode
+             ]
+           })
+export class InuRadioGroupView {
   data = signal<string>('');
 
   formModel = signal<MyFormModel>({
-    verb: ['GET', 'PUT']
-  });
+                                    verb: 'GET'
+                                  });
 
   myForm = form(this.formModel, (path) => {
   });
@@ -60,7 +59,7 @@ export class InuCheckboxGroupView {
     {id: 'PUT', value: 'PUT', title: 'PUT', styleClass: 'verb-put', tooltips:'Updating value'}
   ]);
 
-  genericT = signal<string>('<T>')
+  genericT     = signal<string>('<T>')
   genericTList = signal<string>('<T>[]')
   //==================================================================================================================
   // INIT

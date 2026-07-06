@@ -1,6 +1,8 @@
 import {
+  AfterViewInit,
   Component,
   computed,
+  effect,
   ElementRef,
   HostListener,
   inject,
@@ -20,7 +22,8 @@ import {NgClass, NgTemplateOutlet} from '@angular/common';
              templateUrl: './inu-tool-tips.html',
              styleUrl   : './inu-tool-tips.scss',
            })
-export class InuToolTips {
+export class InuToolTips implements AfterViewInit {
+
 
   //====================================================================================================================
   // ATTRIBUTES
@@ -45,6 +48,29 @@ export class InuToolTips {
   el                                   = inject(ElementRef);
 
   private closeTimer?: any;
+
+  //====================================================================================================================
+  // INIT
+  //====================================================================================================================
+  constructor() {
+    effect(() => {
+      this.initAria();
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.initAria();
+  }
+
+  private initAria() {
+    const messageNode = this.messageNode();
+    const message     = this.message();
+    if (!messageNode || !message) {
+      return;
+    }
+    messageNode.nativeElement.setAttribute('aria-label', message);
+  }
+
   //====================================================================================================================
   // ACTIONS
   //====================================================================================================================
@@ -67,6 +93,7 @@ export class InuToolTips {
       this.refreshPosition();
     }
   }
+
   @HostListener('window:resize')
   onResize() {
     if (this.display()) {
@@ -116,7 +143,7 @@ export class InuToolTips {
   }
 
   refreshPosition() {
-    const display       = this.display();
+    const display = this.display();
 
     const compoPosition = this.contentNode()?.nativeElement?.getBoundingClientRect();
     const msgPosition   = this.messageNode()?.nativeElement?.getBoundingClientRect();
@@ -124,10 +151,8 @@ export class InuToolTips {
       return;
     }
 
-
-    console.log('scroo', window.scrollY,window.scrollX)
-    const scrollTop  = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+    const scrollTop  = globalThis.scrollY || document.documentElement.scrollTop;
+    const scrollLeft = globalThis.scrollX || document.documentElement.scrollLeft;
 
     let y = compoPosition.top + scrollTop + (this.marginY() + msgPosition.height);
     let x = compoPosition.left + scrollLeft + (this.marginX() + compoPosition.width);
@@ -141,4 +166,6 @@ export class InuToolTips {
       this.closeTimer = undefined;
     }
   }
+
+
 }

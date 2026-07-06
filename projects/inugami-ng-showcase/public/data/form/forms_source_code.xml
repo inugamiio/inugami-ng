@@ -1,3 +1,6 @@
+<xml>
+  <src name="InuSelectItem" type="typescript" title="InuSelectItem">
+    <![CDATA[
 export interface InuSelectItem<T>{
   title:string;
   value:T;
@@ -7,4 +10,7 @@ export interface InuSelectItem<T>{
   disabled?:boolean;
   selected?:boolean;
 }
-export type InuSelectItemMatcher = (selectItem: InuSelectItem<any>, value:any) => InuSelectItem<any>|undefined;
+]]>
+  </src>
+
+</xml>
