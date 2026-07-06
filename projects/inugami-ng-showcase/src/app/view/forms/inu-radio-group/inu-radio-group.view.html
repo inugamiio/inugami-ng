@@ -1,6 +1,6 @@
 <section>
   <header>
-    <h1>Inugami-NG : inu-checkbox-group</h1>
+    <h1>Inugami-NG : inu-radio-group</h1>
   </header>
 
 
@@ -10,20 +10,13 @@
     =================================================================================================================-->
     <article>
       <header>
-        <h2>Simplified checkbox usage</h2>
-        The <em>inu-checkbox-group</em> component is designed to simplify checkbox usage within <strong>Signal-based forms</strong>.
-
-        <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="import"></inu-code>
-
-        It leverages the <code>InuSelectItem{{genericT()}}</code> interface to provide a consistent and
-        <strong>type-safe</strong> way to manage selection lists.
-
-        <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="InuSelectItem"></inu-code>
-
+        <p>
+          The inu-radio-group component allows defining radio buttons within forms. This component uses a list of select
+          items to define the different possible values, thus providing a straightforward implementation of this type of
+          component in your forms.
+        </p>
       </header>
     </article>
-
-
 
 
     <!--================================================================================================================
@@ -37,25 +30,23 @@
       <div class="form-container">
         <div class="form-row-col">
           <div class="form-cell">
-            <inu-checkbox-group label="HTTP verb"
-                                [required]="true"
-                                [formField]="myForm.verb"
-                                [values]="verbs()"></inu-checkbox-group>
+            <inu-radio-group label="HTTP verb"
+                             [required]="true"
+                             [formField]="myForm.verb"
+                             [values]="verbs()"></inu-radio-group>
           </div>
           <div class="form-cell m-width-50p m-height-15">
             <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
               <inu-panel-tab name="html" label="HTML">
-                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="html"></inu-code>
+                <inu-code url="data/form/inu_radio_group_source_code.xml" tag="html"></inu-code>
               </inu-panel-tab>
 
               <inu-panel-tab name="ts" label="TypeScript">
-                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="ts"></inu-code>
+                <inu-code url="data/form/inu_radio_group_source_code.xml" tag="ts"></inu-code>
               </inu-panel-tab>
-
-              <inu-panel-tab name="example" label="Example">
-                <inu-code [source]="data()" type="json"></inu-code>
-              </inu-panel-tab>
-
             </inu-panel-tabs>
           </div>
         </div>
@@ -68,7 +59,8 @@
       </header>
       <p>
         The InuSelectItem interface allows defining an object that can be selected. This interface is designed for use
-        within forms. The concept of a <em>select item</em> is highly generic and can therefore be applied to radio buttons,
+        within forms. The concept of a <em>select item</em> is highly generic and can therefore be applied to radio
+        buttons,
         checkboxes, dropdown lists, etc.
       </p>
       <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItem"></inu-code>
@@ -82,19 +74,15 @@
       <div class="form-container">
         <div class="form-row-col">
           <div class="form-cell">
-            <inu-checkbox-group label="HTTP verb"
-                                [formField]="myForm.verb"
-                                [values]="verbs()"
-                                [vertical]="true"></inu-checkbox-group>
+            <inu-radio-group label="HTTP verb"
+                             [formField]="myForm.verb"
+                             [values]="verbs()"
+                             [vertical]="true"></inu-radio-group>
           </div>
           <div class="form-cell m-width-50p m-height-15">
             <inu-panel-tabs activeTab="ts">
               <inu-panel-tab name="html" label="HTML">
-                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="html"></inu-code>
-              </inu-panel-tab>
-
-              <inu-panel-tab name="example" label="Example">
-                <inu-code [source]="data()" type="json"></inu-code>
+                <inu-code url="data/form/inu_radio_group_source_code.xml" tag="html_vertical"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -117,19 +105,15 @@
               <code>required</code> attribute on the component to enforce validation.
             </p>
 
-            <inu-checkbox-group label="HTTP verb"
-                                [formField]="myFormRequired.verb"
-                                [values]="verbs()"
-                                [vertical]="true"></inu-checkbox-group>
+            <inu-radio-group label="HTTP verb"
+                             [formField]="myFormRequired.verb"
+                             [values]="verbs()"
+                             [vertical]="true"></inu-radio-group>
           </div>
           <div class="form-cell m-width-50p m-height-15">
             <inu-panel-tabs>
               <inu-panel-tab name="ts" label="TypeScript">
-                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="tsRequired"></inu-code>
-              </inu-panel-tab>
-
-              <inu-panel-tab name="example" label="Example">
-                <inu-code [source]="data()" type="json"></inu-code>
+                <inu-code url="data/form/inu_radio_group_source_code.xml" tag="ts_required"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -150,19 +134,15 @@
               Similarly to mandatory fields, disabled states are also defined via the Signal form.
             </p>
 
-            <inu-checkbox-group label="HTTP verb"
-                                [formField]="myFormDisabled.verb"
-                                [values]="verbs()"
-                                [vertical]="true"></inu-checkbox-group>
+            <inu-radio-group label="HTTP verb"
+                             [formField]="myFormDisabled.verb"
+                             [values]="verbs()"
+                             [vertical]="true"></inu-radio-group>
           </div>
           <div class="form-cell m-width-50p m-height-15">
             <inu-panel-tabs>
               <inu-panel-tab name="ts" label="TypeScript">
-                <inu-code url="data/display/inu_checkbox_group_source_code.xml" tag="tsDisabled"></inu-code>
-              </inu-panel-tab>
-
-              <inu-panel-tab name="example" label="Example">
-                <inu-code [source]="data()" type="json"></inu-code>
+                <inu-code url="data/form/inu_radio_group_source_code.xml" tag="ts_disabled"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -172,9 +152,9 @@
 
     </article>
 
-   <!--================================================================================================================
-   = PROPERTIES
-   =================================================================================================================-->
+    <!--================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
     <article>
       <header>
         <h2>Properties</h2>
@@ -189,7 +169,7 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>changed</inu-table-flex-cell>
-          <inu-table-flex-cell>OutputEmitterRes{{genericTList()}}</inu-table-flex-cell>
+          <inu-table-flex-cell>OutputEmitterRes{{ genericT() }}</inu-table-flex-cell>
           <inu-table-flex-cell></inu-table-flex-cell>
           <inu-table-flex-cell>Event emitted when the component value changes.</inu-table-flex-cell>
         </inu-table-flex-row>
@@ -213,7 +193,8 @@
           <inu-table-flex-cell>labelKey</inu-table-flex-cell>
           <inu-table-flex-cell>string</inu-table-flex-cell>
           <inu-table-flex-cell>undefined</inu-table-flex-cell>
-          <inu-table-flex-cell>Sets the label key used by the centralized label management service.</inu-table-flex-cell>
+          <inu-table-flex-cell>Sets the label key used by the centralized label management service.
+          </inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
@@ -243,6 +224,7 @@
           <inu-table-flex-cell>undefine</inu-table-flex-cell>
           <inu-table-flex-cell>Allows defining a function to identify values on complex objects</inu-table-flex-cell>
         </inu-table-flex-row>
+
       </inu-table-flex>
     </article>
   </main>

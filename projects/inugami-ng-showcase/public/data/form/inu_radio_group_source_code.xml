@@ -1,0 +1,72 @@
+<xml>
+  <src name="html" type="html" title="template">
+    <![CDATA[
+<inu-radio-group label="HTTP verb"
+                             [required]="true"
+                             [formField]="myForm.verb"
+                             [values]="verbs()"></inu-radio-group>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="template">
+    <![CDATA[
+interface MyFormModel {
+  verb: string;
+}
+
+@Component({
+             //...
+             imports: [
+               InuRadioGroup
+               FormField
+             ]
+           })
+export class MyView {
+  formModel = signal<MyFormModel>({
+                                    verb: 'GET'
+                                  });
+  myForm = form(this.formModel, (path) => { });
+
+  constructor() {
+    toObservable(this.formModel)
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(value => {
+        this.onValueChanged(value)
+      });
+  }
+  private onValueChanged(value: MyFormModel) {
+    // ...
+  }
+}
+]]>
+  </src>
+
+  <src name="html_vertical" type="html" title="template">
+    <![CDATA[
+<inu-radio-group label="HTTP verb"
+                             [formField]="myForm.verb"
+                             [values]="verbs()"
+                             [vertical]="true"></inu-radio-group>
+]]>
+  </src>
+
+  <src name="ts_required" type="typescript" title="template">
+    <![CDATA[
+myForm = form(this.formModel, (path) => {
+  required(path.verb);
+});
+]]>
+  </src>
+
+  <src name="ts_disabled" type="typescript" title="template">
+    <![CDATA[
+myForm = form(this.formModel, (path) => {
+  disabled(path.verb);
+});
+]]>
+  </src>
+</xml>

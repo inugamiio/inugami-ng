@@ -210,6 +210,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-input-text',
                                                            path : '/forms/inu-input-text'
+                                                         },
+                                                         {
+                                                           title: 'inu-radio-group',
+                                                           path : '/forms/inu-radio-group'
                                                          }
                                                        ]
                                                      }

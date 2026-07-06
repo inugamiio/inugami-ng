@@ -17,35 +17,36 @@ import {InuLabel} from 'inugami-ng/components/inu-label';
 import {InuToolTips} from 'inugami-ng/components/inu-tool-tips'
 
 @Component({
-             selector   : 'inu-checkbox-group',
+             selector   : 'inu-radio-group',
              standalone : true,
              providers  : [],
              imports    : [InuIcon, InuLabel, InuToolTips],
-             templateUrl: './inu-checkbox-group.component.html',
-             styleUrl   : './inu-checkbox-group.component.scss',
+             templateUrl: './inu-radio-group.component.html',
+             styleUrl   : './inu-radio-group.component.scss',
            })
-export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit {
+export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterViewInit {
 
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
   // input
-  readonly disabled       = input(false);
-  readonly label          = input('');
-  readonly labelKey       = input('');
-  readonly _required      = input(false, {alias: 'required'});
-  readonly values         = input<InuSelectItem<T>[]>([]);
-  readonly vertical       = input(false);
-  readonly matcher        = input<InuSelectItemMatcher | undefined>(undefined);
-  changed                 = output<T[]>();
-  checkboxItemsElements   = viewChildren<ElementRef<HTMLElement>>('checkboxItems');
-  // FormValueControl
-  value: ModelSignal<T[]> = model(<T[]>[]);
-  _values                 = signal<InuSelectItem<T>[]>([]);
-  // internal
+  readonly disabled           = input(false);
+  readonly label              = input('');
+  readonly labelKey           = input('');
+  readonly _required          = input(false, {alias: 'required'});
+  readonly values             = input<InuSelectItem<T>[]>([]);
+  readonly vertical           = input(false);
+  readonly matcher            = input<InuSelectItemMatcher | undefined>(undefined);
+  readonly radioItemsElements = viewChildren<ElementRef<HTMLElement>>('radioItems');
 
-  styleClass = signal<string>('');
+  changed = output<T | undefined>();
+
+  // FormValueControl
+  value: ModelSignal<T | undefined> = model<T | undefined>(undefined);
+  _values                           = signal<InuSelectItem<T>[]>([]);
+  // internal
+  styleClass                        = signal<string>('');
 
 
   //==================================================================================================================
@@ -63,7 +64,6 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit
   }
 
   private initSelectItems() {
-
     const values = this.values();
     if (!values) {
       return;
@@ -71,27 +71,29 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit
 
     const result: InuSelectItem<T>[] = [];
     for (let item of values) {
-      result.push(Object.assign({}, item));
+      const newItem    = Object.assign({}, item);
+      newItem.selected = false;
+      result.push(newItem);
     }
-    const currentValue = this.value();
+    const currentValue = this.getValue();
     if (!currentValue) {
       return;
     }
 
-    for (let valueItem of currentValue) {
-      for (let resultItem of result) {
-        if (this.match(valueItem, resultItem)) {
-          resultItem.selected = true;
-          break;
-        }
+
+    for (let resultItem of result) {
+      if (this.match(currentValue, resultItem)) {
+        resultItem.selected = true;
+        break;
       }
     }
+
     this._values.set(result);
     this.sendChanged();
   }
 
   private initStyleClass() {
-    const result: string[] = ['inu-checkbox-group'];
+    const result: string[] = ['inu-radio-group'];
     if (this.vertical()) {
       result.push('vertical');
     }
@@ -130,35 +132,30 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit
     if (this.disabled()) {
       return;
     }
-    if (value.selected == undefined) {
-      value.selected = true
-    } else {
-      value.selected = !value.selected;
-    }
 
+    for (let item of this._values()) {
+      item.selected = false;
+    }
+    value.selected = true;
     this.sendChanged();
   }
 
 
   private sendChanged() {
-    const newSelectedValues: T[] = [];
-    const currentValues          = this._values();
+    let newSelectedValues: T | undefined = undefined;
+    const currentValues                  = this._values();
     if (currentValues) {
       for (let selectItem of currentValues) {
         if (selectItem.selected) {
-          newSelectedValues.push(selectItem.value);
+          newSelectedValues = selectItem.value;
+          break;
         }
       }
       this.value.set(newSelectedValues);
     }
 
     this.initStyleClass();
-
     this.changed.emit(newSelectedValues);
-  }
-
-  protected getItemClass(selectItem: InuSelectItem<T>): string {
-    return selectItem.styleClass!;
   }
 
 
@@ -174,14 +171,66 @@ export class InuCheckboxGroup<T> implements FormValueControl<T[]>, AfterViewInit
   //==================================================================================================================
   // EVENTS
   //==================================================================================================================
-  protected onKeyDown(event: KeyboardEvent, item: InuSelectItem<T>) {
-    if (this.disabled()) {
-      return;
+  onKeyDown(event: KeyboardEvent, item: InuSelectItem<T>, index: number) {
+    const values = this._values();
+    if (!values || values.length <= 1) return;
+
+    let nextIndex = index;
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        nextIndex = (index + 1) % values.length;
+        event.preventDefault();
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        nextIndex = (index - 1 + values.length) % values.length;
+        event.preventDefault();
+        break;
+      case ' ':
+        this.toggle(item);
+        event.preventDefault();
+        return;
+      default:
+        return;
     }
 
-    if (event.key === ' ' || event.key === 'Spacebar') {
-      this.toggle(item);
-      event.preventDefault();
-    }
+    const nextItem = values[nextIndex];
+    this.toggle(nextItem);
+
+
+    setTimeout(() => {
+      const listItems = this.radioItemsElements();
+      if (listItems) {
+        listItems[nextIndex].nativeElement?.focus();
+      }
+    });
   }
+
+  //==================================================================================================================
+  // GETTERS
+  //==================================================================================================================
+  protected getItemClass(selectItem: InuSelectItem<T>): string {
+    return [selectItem.styleClass!,
+            selectItem.selected != undefined && selectItem.selected ? 'selected' : '']
+      .join(' ');
+  }
+
+  private getValue(): T | undefined {
+    let currentValue          = this.value();
+    let result: T | undefined = undefined;
+    if (Array.isArray(currentValue)) {
+      if (currentValue.length > 0) {
+        result = currentValue[0];
+      } else {
+        result = undefined;
+      }
+    } else {
+      result = currentValue;
+    }
+    return result;
+  }
+
+
 }
