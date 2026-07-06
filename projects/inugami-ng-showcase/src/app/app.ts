@@ -214,6 +214,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-radio-group',
                                                            path : '/forms/inu-radio-group'
+                                                         },
+                                                         {
+                                                           title: 'inu-select-list',
+                                                           path : '/forms/inu-select-list'
                                                          }
                                                        ]
                                                      }

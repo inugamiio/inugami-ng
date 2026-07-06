@@ -1,0 +1,160 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-select-list</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>
+
+        </p>
+      </header>
+    </article>
+
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Cantons"
+                             [formField]="myForm.cantons"
+                             [values]="cantons()"
+                             [matcher]="matcher()"
+                             [extractor]="extractor()"
+                             [multiSelect]="true"
+                             (onSelected)="onSelected($event)"
+                             (onUnSelected)="onUnSelected($event)">
+              <ng-template name="item" let-item>
+                <div class="item-canton">
+                  <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+                  <span>{{item.title}}</span>
+                </div>
+              </ng-template>
+            </inu-select-list>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+
+            <inu-panel-tabs>
+              <inu-panel-tab name="onSelected" label="onSelected">
+                <inu-code [source]="eventOnSelected()" type="json"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="onUnSelected" label="onUnSelected">
+                <inu-code [source]="eventOnUnSelected()" type="json"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article>
+      <header>
+        <h2>Model</h2>
+      </header>
+      <p>
+        The InuSelectItem interface allows defining an object that can be selected. This interface is designed for use
+        within forms. The concept of a <em>select item</em> is highly generic and can therefore be applied to radio
+        buttons,
+        checkboxes, dropdown lists, etc.
+      </p>
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItem"></inu-code>
+    </article>
+
+
+    <!--================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changed</inu-table-flex-cell>
+          <inu-table-flex-cell>OutputEmitterRes{{ genericT() }}</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Event emitted when the component value changes.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Sets the label key used by the centralized label management service.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>values</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItem{{ genericT() }}[]</inu-table-flex-cell>
+          <inu-table-flex-cell>[]</inu-table-flex-cell>
+          <inu-table-flex-cell>the list of values used for the different checkboxes</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>matcher</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemMatcher</inu-table-flex-cell>
+          <inu-table-flex-cell>undefine</inu-table-flex-cell>
+          <inu-table-flex-cell>Allows defining a function to identify values on complex objects</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+    </article>
+  </main>
+
+
+</section>

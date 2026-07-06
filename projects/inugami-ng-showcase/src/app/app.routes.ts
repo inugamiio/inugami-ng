@@ -30,6 +30,7 @@ import {InuLabelView} from './view/display/inu-label/inu-label.view'
 import {InuPanelView} from './view/display/inu-panel/inu-panel.view'
 import {InuProgressView} from './view/display/inu-progress/inu-progress.view'
 import {InuRadioGroupView} from './view/forms/inu-radio-group/inu-radio-group.view'
+import {InuSelectListView} from './view/forms/inu-select-list/inu-select-list.view'
 
 
 export const routes: Routes = [
@@ -69,7 +70,8 @@ export const routes: Routes = [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
       {path: "inu-input-password", component: InuInputPasswordView},
       {path: "inu-input-text", component: InuInputTextView},
-      {path: "inu-radio-group", component: InuRadioGroupView}
+      {path: "inu-radio-group", component: InuRadioGroupView},
+      {path: "inu-select-list", component: InuSelectListView}
     ]
   },
   {

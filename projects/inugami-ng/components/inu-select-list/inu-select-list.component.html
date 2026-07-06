@@ -1,0 +1,75 @@
+<div [class]="styleClass()">
+
+  <!--==================================================================================================================
+  = LABEL
+  ===================================================================================================================-->
+  <div class="inu-select-list-label-grp">
+    <div class="inu-select-list-label-label">
+      @if (label() || labelKey()) {
+        @if (labelKey()) {
+          <label>
+            <inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label>
+          </label>
+        } @else {
+          <label>{{ label()! }}</label>
+        }
+      }
+      @if (_required()) {
+        <div class="inu-radio-group-required">
+          <inu-icon icon="required" [size]="0.5"></inu-icon>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!--==================================================================================================================
+  = FILTER
+  ===================================================================================================================-->
+  <div class="inu-select-list-filter">
+    <fieldset>
+      <legend>
+        <inu-label [key]="labelFilterKey()" [defaultValue]="labelFilter()!"></inu-label>
+      </legend>
+      <div class="inu-select-list-filter-field">
+        <inu-input-text (changed)="onFilterChanged($event)"></inu-input-text>
+        <inu-icon icon="zoom" [size]="1"></inu-icon>
+      </div>
+    </fieldset>
+
+  </div>
+  <!--==================================================================================================================
+  = LIST
+  ===================================================================================================================-->
+  <div class="inu-select-list-values">
+    @if (data()) {
+      <ul>
+        @for (selectItem of data(); track selectItem.id; let i = $index) {
+          <li class="inu-select-list-value"
+              role="checkbox"
+              tabindex="0"
+              #items
+              [ngClass]="{selected:isSelected(selectItem)}"
+              [attr.aria-code]="selectItem.id"
+              [attr.aria-selected]="isSelected(selectItem)"
+              (click)="toggleSelect(selectItem)"
+              (keydown)="onKeyDown($event, selectItem)">
+
+            <span class="inu-select-list-value-selection" >
+              <inu-icon icon="check" [size]="0.9"></inu-icon>
+            </span>
+
+            @if (itemTemplate()) {
+              <ng-container
+                *ngTemplateOutlet="itemTemplate(); context: { $implicit: selectItem, index: i}"></ng-container>
+            }
+            @else {
+              {{ selectItem.title }}
+            }
+          </li>
+        }
+      </ul>
+    }
+
+  </div>
+
+</div>
