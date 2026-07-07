@@ -1,0 +1,33 @@
+.inu-paginator {
+  ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+
+    li {
+      display: flex;
+
+      button {
+        outline: none;
+        border: none;
+        background: none;
+
+        &:focus {
+          color: var(--focus);
+          fill: var(--focus) !important;
+        }
+      }
+
+      &.disabled {
+        color: var(--neutral) !important;
+        fill: var(--neutral) !important;
+
+        button {
+          cursor: default !important;
+        }
+      }
+    }
+  }
+}

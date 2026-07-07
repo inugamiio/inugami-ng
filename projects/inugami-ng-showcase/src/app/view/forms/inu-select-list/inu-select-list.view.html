@@ -11,7 +11,9 @@
     <article>
       <header>
         <p>
-
+          The <em>inu-select-list</em> component is a flexible, <strong>signal-driven</strong> selection list designed
+          to handle both simple list rendering and complex asynchronous (<strong>lazy</strong>) data streaming.
+          It seamlessly integrates with forms signals.
         </p>
       </header>
     </article>
@@ -23,6 +25,24 @@
     <article>
       <header>
         <h2>Example</h2>
+        <p>
+          The <code>inu-select-list</code> component uses <code>InuSelectItem</code> objects to display its list of
+          items.
+          By default, the title property of the <code>InuSelectItem</code> is used to render each item.
+        </p>
+        <p>
+          However, it can be highly useful to override this behavior. To do so, you can define a template named <code>item</code>
+          directly within the component. Once defined, your custom template will be used to handle the rendering of each
+          individual element.
+        </p>
+
+        <p>
+          By default, <code>inu-select-list</code> handles primitive values. However, when dealing with complex datasets
+          or enterprise APIs, your form model might only store an ID while your list needs to display full object
+          details.
+          To bridge this gap without cluttering your forms, the component provides two powerful hooks:
+          <code>matcher</code> and <code>extractor</code>
+        </p>
       </header>
 
       <div class="form-container">
@@ -39,7 +59,7 @@
               <ng-template name="item" let-item>
                 <div class="item-canton">
                   <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
-                  <span>{{item.title}}</span>
+                  <span>{{ item.title }}</span>
                 </div>
               </ng-template>
             </inu-select-list>
@@ -51,10 +71,10 @@
                 <inu-code [source]="data()" type="json"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="html" label="HTML">
-
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="html"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="ts"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
 
@@ -72,19 +92,167 @@
       </div>
     </article>
 
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
     <article>
       <header>
-        <h2>Model</h2>
+        <h2>Sample data</h2>
       </header>
+
       <p>
-        The InuSelectItem interface allows defining an object that can be selected. This interface is designed for use
-        within forms. The concept of a <em>select item</em> is highly generic and can therefore be applied to radio
-        buttons,
-        checkboxes, dropdown lists, etc.
+        For the purpose of this component's example, the list of Swiss cantons has been added to the Inugami icons
+        library. The icon library exposes a <code>SWITZERLAND_CANTONS</code> constant containing the list of cantons,
+        including
+        their code, icon, and name in multiple languages (English, French, German, Italian, and Romansh)
       </p>
-      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItem"></inu-code>
+
+      <inu-cite level="success">
+        <ng-template name="title">
+          <p>
+            While adding Swiss cantons to the icon library is highly opportunistic
+          </p>
+        </ng-template>
+
+        It serves as the perfect real-world
+        dataset for our examples. It clearly demonstrates how to map raw business data into InuSelectItem objects while
+        showcasing the component's custom templating capabilities.
+      </inu-cite>
+
+      <inu-code url="data/form/inu_select_list_source_code.xml" tag="cantons"></inu-code>
+      <p>
+        A utility class is also available to easily retrieve a canton's information using its <strong>FSO</strong>
+        (Federal Statistical Office) code
+      </p>
+      <inu-code url="data/form/inu_select_list_source_code.xml" tag="InugamiIconsSwitzerlandUtils"></inu-code>
+
+      <p>
+        As explained above, the component only handles objects of type InuSelectItem. Therefore, you need to convert
+        your data so the component can process it:
+      </p>
+      <inu-code url="data/form/inu_select_list_source_code.xml" tag="convert_select_item"></inu-code>
     </article>
 
+    <!--================================================================================================================
+    = EXAMPLE LAZY
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example lazy</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Lazy"
+                             loadingType="default"
+                             [formField]="myFormLazy.value"
+                             [lazy]="searchLazy"
+                             [multiSelect]="true">
+            </inu-select-list>
+          </div>
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="dataLazy()" type="json"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="lazy"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="searchLazy"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 2rem">
+        In more complex scenarios, fetching a list of values might require a server-side request. For these use cases,
+        you should adopt the lazy loading strategy. In this mode, you must provide a method that the component will use
+        to load the data.
+      </p>
+
+      <p>
+        In this example, the API call is simulated by generating an observable using the ObservableSubscriber class from
+        inugami-ng. This class allows us to directly manipulate the internal subscriber to push data through the
+        observer and notify the component.
+      </p>
+      <p>
+        To use it, simply pass this method to the component in your template
+      </p>
+
+    </article>
+
+
+    <!--================================================================================================================
+    = EXAMPLE DISABLED
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example disabled</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Disabled exemple"
+                             loadingType="default"
+                             [formField]="myFormDisabled.value"
+                             [lazy]="searchLazy"
+                             [multiSelect]="true">
+            </inu-select-list>
+          </div>
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="disabledExemple"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="disabledExemple_html"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+
+    <!--================================================================================================================
+    = EXAMPLE REQUIRED
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example required</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Required exemple"
+                             loadingType="default"
+                             [formField]="myFormRequired.value"
+                             [lazy]="searchLazy"
+                             [multiSelect]="true">
+            </inu-select-list>
+          </div>
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="requiredExemple"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="requiredExemple_html"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
 
     <!--================================================================================================================
     = PROPERTIES

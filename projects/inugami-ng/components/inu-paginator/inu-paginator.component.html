@@ -1,0 +1,40 @@
+<div [class]="_styleClass()">
+  @if (searchResponse()) {
+    <ul>
+      <!--==============================================================================================================
+      = PREVIOUS
+      ===============================================================================================================-->
+      <li [ngClass]="{disabled:!searchResponse()?.previous}">
+        <button [tabindex]="searchResponse()?.previous?0:-1" (click)="goFirst()" [disabled]="!searchResponse()?.previous">
+          <inu-icon icon="chevron_left_db" [size]="1"></inu-icon>
+        </button>
+      </li>
+      <li [ngClass]="{disabled:!searchResponse()?.previous}" >
+        <button [tabindex]="searchResponse()?.previous?0:-1" (click)="previous()" [disabled]="!searchResponse()?.previous">
+          <inu-icon icon="chevron_left" [size]="1"></inu-icon>
+        </button>
+      </li>
+
+      <!--==============================================================================================================
+      = CURRENT PAGE
+      ===============================================================================================================-->
+      <li>
+        {{ searchResponse()?.page!! + 1 }}
+      </li>
+
+      <!--==============================================================================================================
+      = NEXT
+      ===============================================================================================================-->
+      <li [ngClass]="{disabled:!searchResponse()?.next}">
+        <button [tabindex]="searchResponse()?.next?0:-1" (click)="next()" [disabled]="!searchResponse()?.next">
+          <inu-icon icon="chevron_right" [size]="1"></inu-icon>
+        </button>
+      </li>
+      <li [ngClass]="{disabled:!searchResponse()?.next}">
+        <button [tabindex]="searchResponse()?.next?0:-1" (click)="goLast()" [disabled]="!searchResponse()?.next">
+          <inu-icon icon="chevron_right_db" [size]="1"></inu-icon>
+        </button>
+      </li>
+    </ul>
+  }
+</div>
