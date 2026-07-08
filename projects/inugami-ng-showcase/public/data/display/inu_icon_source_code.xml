@@ -21,7 +21,7 @@
     "@angular/common": "^21.0.0",
     //...
 
-    "inugami-icons":"0.0.18"
+    "inugami-icons":"0.0.19"
   }
 }
 ]]>

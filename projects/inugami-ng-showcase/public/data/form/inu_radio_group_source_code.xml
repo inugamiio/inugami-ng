@@ -17,7 +17,7 @@ interface MyFormModel {
 @Component({
              //...
              imports: [
-               InuRadioGroup
+               InuRadioGroup,
                FormField
              ]
            })

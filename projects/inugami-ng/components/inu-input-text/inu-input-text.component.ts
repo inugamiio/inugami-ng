@@ -1,7 +1,9 @@
 import {
+  AfterViewInit,
   Component,
   computed,
-  ElementRef, inject,
+  ElementRef,
+  inject,
   input,
   InputSignal,
   model,
@@ -18,52 +20,52 @@ import {InuIcon} from 'inugami-icons';
 import {InuLabel} from 'inugami-ng/components/inu-label';
 
 @Component({
-  selector: 'inu-input-text',
-  standalone: true,
-  providers: [],
-             imports: [
+             selector   : 'inu-input-text',
+             standalone : true,
+             providers  : [],
+             imports    : [
                InuIcon,
                InuLabel
 
              ],
-  templateUrl: './inu-input-text.component.html',
-  styleUrl: './inu-input-text.component.scss',
-})
-export class InuInputText implements FormValueControl<string | number>{
+             templateUrl: './inu-input-text.component.html',
+             styleUrl   : './inu-input-text.component.scss',
+           })
+export class InuInputText implements FormValueControl<string | number>, AfterViewInit {
 
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
   // input
-  readonly disabled = input(false);
-  readonly label = input('');
-  readonly labelKey = input('');
-  readonly icon = input('');
-  readonly name = input('');
-  readonly debounce = input<number>(0);
+  readonly disabled                                                             = input(false);
+  readonly label                                                                = input('');
+  readonly labelKey                                                             = input('');
+  readonly icon                                                                 = input('');
+  readonly name                                                                 = input('');
+  readonly debounce                                                             = input<number>(0);
   readonly type: InputSignal<string | 'text' | 'number' | 'email' | 'password'> = input('text');
-  readonly _required = input(false, {alias: 'required'});
+  readonly _required                                                            = input(false, {alias: 'required'});
 
 
   // FormValueControl
-  _formField = inject(FormField, { optional: true });
+  _formField                          = inject(FormField, {optional: true});
   value: ModelSignal<string | number> = model<string | number>('');
-  valid = computed(() => {
+  valid                               = computed(() => {
     const state = this._formField?.state()
     if (!state) return true;
-    const isInvalid = state.invalid();
+    const isInvalid      = state.invalid();
     const hasBeenTouched = state.touched();
     return !(isInvalid && hasBeenTouched);
   });
   // internal
-  changed = output<string | number>();
-  debouncer = new Subject<string | number>();
+  changed                             = output<string | number>();
+  debouncer                           = new Subject<string | number>();
 
-  id = computed<string>(() => UuidUtils.buildUid());
-  input = viewChild<ElementRef<HTMLInputElement>>('input');
-  focus=signal<boolean>(false);
-  styleClass = input<string>('');
+  id          = computed<string>(() => UuidUtils.buildUid());
+  input       = viewChild<ElementRef<HTMLInputElement>>('input');
+  focus       = signal<boolean>(false);
+  styleClass  = input<string>('');
   _styleClass = computed<string>(() => {
     return [
       'inu-input',
@@ -73,22 +75,44 @@ export class InuInputText implements FormValueControl<string | number>{
       this.focus() ? 'focus' : '',
       this.styleClass()!
     ].join(' ');
-  })
+  });
 
+  hasContent = signal<boolean>(false);
   //==================================================================================================================
   // INIT
   //==================================================================================================================
-  constructor() {
-    this.debouncer.pipe(
-      debounceTime(this.debounce()),
-      takeUntilDestroyed()
-    ).subscribe(val => {
-      this.value.set(val);
-      this.changed.emit(val);
-    });
+  ngAfterViewInit(): void {
+    this.hasContent.set(('' + this.value()).length > 0);
+
+
+    if (this.debounce() > 0) {
+      this.debouncer.pipe(
+        debounceTime(this.debounce()),
+        takeUntilDestroyed()
+      ).subscribe(val => {
+        this.value.set(val);
+        this.changed.emit(val);
+      });
+    }
   }
 
-  protected onChanged(event: KeyboardEvent) {
+
+  //==================================================================================================================
+  // ACTIONS
+  //==================================================================================================================
+  protected clearContent() {
+    const input = this.input()?.nativeElement;
+    if (!input) {
+      return;
+    }
+    input.value = '';
+    this.onChanged();
+  }
+
+  //==================================================================================================================
+  // EVENTS
+  //==================================================================================================================
+  protected onChanged(event?: KeyboardEvent) {
     const input = this.input()?.nativeElement;
     if (!input) {
       return;
@@ -101,7 +125,13 @@ export class InuInputText implements FormValueControl<string | number>{
       }
     }
 
-    this.debouncer.next(value)
+    this.hasContent.set(('' + value).length > 0);
+    if (this.debounce() > 0) {
+      this.debouncer.next(value)
+    } else {
+      this.value.set(value);
+      this.changed.emit(value);
+    }
   }
 
   protected onFocus() {
@@ -112,4 +142,5 @@ export class InuInputText implements FormValueControl<string | number>{
     this.focus.set(false);
     this._formField?.state()?.markAsTouched();
   }
+
 }

@@ -164,6 +164,10 @@ export class App implements OnInit {
                                                            path : '/display/inu-label'
                                                          },
                                                          {
+                                                           title: 'inu-loading',
+                                                           path : '/display/inu-loading'
+                                                         },
+                                                         {
                                                            title: 'inu-open-api',
                                                            path : '/display/inu-open-api'
                                                          },
@@ -214,6 +218,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-radio-group',
                                                            path : '/forms/inu-radio-group'
+                                                         },
+                                                         {
+                                                           title: 'inu-select-list',
+                                                           path : '/forms/inu-select-list'
                                                          }
                                                        ]
                                                      }

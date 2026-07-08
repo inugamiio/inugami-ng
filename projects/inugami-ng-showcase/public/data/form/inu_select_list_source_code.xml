@@ -1,0 +1,210 @@
+<xml>
+  <src name="html" type="html" title="template">
+    <![CDATA[
+<inu-select-list label="Cantons"
+                 [formField]="myForm.cantons"
+                 [values]="cantons()"
+                 [matcher]="matcher()"
+                 [extractor]="extractor()"
+                 [multiSelect]="true"
+                 (onSelected)="onSelected($event)"
+                 (onUnSelected)="onUnSelected($event)">
+
+  <ng-template name="item" let-item>
+    <div class="item-canton">
+      <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+      <span>{{item.title}}</span>
+    </div>
+  </ng-template>
+
+</inu-select-list>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="template">
+    <![CDATA[
+import {InuSelectList} from 'inugami-ng/components/inu-select-list';
+
+interface MyFormModel {
+  cantons: string[];
+}
+
+@Component({
+             //...
+             imports: [
+               InuSelectList,
+               FormField
+             ]
+           })
+export class MyView {
+    extractor         = signal<InuSelectItemExtractor | undefined>(undefined);
+    matcher           = signal<InuSelectItemMatcher | undefined>(undefined);
+
+    formModel         = signal<MyFormModel>({
+                          cantons: ['VD', 'GE', 'VS']
+                        });
+
+    myForm = form(this.formModel, (path) => {
+    });
+
+    constructor() {
+        this.matcher.set((selectItem, value) => {
+          return selectItem.id.toUpperCase() == value ? selectItem : undefined;
+        });
+
+        this.extractor.set((v) => {
+          return v.id.toUpperCase();
+        });
+
+        toObservable(this.formModel)
+                    .pipe(
+                      debounceTime(200),
+                      distinctUntilChanged(),
+                      takeUntilDestroyed()
+                    )
+                    .subscribe(value => this.onValueChanged(value));
+    }
+}
+
+]]>
+  </src>
+
+
+
+
+  <src name="cantons" type="typescript" title="SWITZERLAND_CANTONS">
+    <![CDATA[
+
+export const SWITZERLAND_CANTONS: SwitzerlandCanton[] = [
+    //...
+    {
+        code  : 'vd',
+        icon  : 'swiss_canton_vd',
+        nameEn: 'Vaud',
+        nameFr: 'Vaud',
+        nameDe: 'Waadt',
+        nameIt: 'Vaud',
+        nameRm: 'Vad'
+    },
+    //...
+};
+]]>
+  </src>
+
+  <src name="InugamiIconsSwitzerlandUtils" type="typescript" title="InugamiIconsSwitzerlandUtils">
+    <![CDATA[
+
+export class InugamiIconsSwitzerlandUtils {
+    public static getCanton(code: string): SwitzerlandCanton {
+      //...
+    }
+}
+]]>
+  </src>
+
+
+  <src name="convert_select_item" type="typescript" title="Convert data to InuSelectItem">
+    <![CDATA[
+//...
+export class MyView {
+    // ...
+     cantons = computed<InuSelectItem<SwitzerlandCanton>[]>(() => SWITZERLAND_CANTONS
+          .filter(c => c.code != 'ch')
+          .map(c => <InuSelectItem<SwitzerlandCanton>>{
+            id   : c.code,
+            title: c.nameEn,
+            value: c
+          }));
+}
+]]>
+  </src>
+
+  <src name="searchLazy" type="typescript" title="Lazy loading method">
+    <![CDATA[
+searchLazy(request: InuSelectListSearchRequest): Observable<SearchResponse<InuSelectItem<string>>> {
+    const result = new ObservableSubscriber<SearchResponse<InuSelectItem<string>>>();
+
+    setTimeout(() => {
+      const page                          = request.page ?? 0;
+      const pageSize                      = request.pageSize ?? 10;
+      const data: InuSelectItem<string>[] = [];
+      for (let i = 0; i < pageSize; i++) {
+        const title = `${request.value ?? 'Value'} ${page}_${i}`;
+        data.push({
+                    id   : title,
+                    title: title,
+                    value: title
+                  });
+      }
+      result.next({
+                    page      : page,
+                    pageSize  : pageSize,
+                    previous  : page >= 1,
+                    next      : page < 9,
+                    totalPages: 10,
+                    data      : data
+                  })
+
+    }, 2000);
+
+    return result.observable();
+  }
+]]>
+  </src>
+
+  <src name="lazy" type="html" title="Lazy loading mode">
+    <![CDATA[
+<inu-select-list label="Lazy"
+                 loadingType="default"
+                 [formField]="myFormLazy.value"
+                 [lazy]="searchLazy"
+                 [multiSelect]="true">
+</inu-select-list>
+]]>
+  </src>
+
+  <src name="disabledExemple" type="typescript" title="Disabled exemple">
+    <![CDATA[
+formDisabledModel     = signal<MyFormLazyModel>({
+                                              value: ["Value 0_0",
+                                                      "Value 0_1",
+                                                      "Value 1_3"]
+                                            });
+
+myFormDisabled= form(this.formDisabledModel, (path) => {
+  disabled(path.value);
+});
+]]>
+  </src>
+
+
+  <src name="disabledExemple_html" type="html" title="HTML">
+    <![CDATA[
+<inu-select-list label="Disabled exemple"
+                 loadingType="default"
+                 [formField]="myFormDisabled.value"
+                 [lazy]="searchLazy"
+                 [multiSelect]="true">
+</inu-select-list>
+]]>
+  </src>
+
+  <src name="requiredExemple" type="typescript" title="Required exemple">
+    <![CDATA[
+myFormRequired = form(this.formDisabledModel, (path) => {
+  required(path.value);
+});
+]]>
+  </src>
+
+  <src name="requiredExemple_html" type="html" title="HTML">
+    <![CDATA[
+<inu-select-list label="Required exemple"
+                 loadingType="default"
+                 [formField]="myFormRequired.value"
+                 [lazy]="searchLazy"
+                 [multiSelect]="true">
+</inu-select-list>
+]]>
+  </src>
+</xml>
