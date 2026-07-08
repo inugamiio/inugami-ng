@@ -220,7 +220,6 @@
     </article>
 
 
-
     <!--================================================================================================================
     = EXAMPLE REQUIRED
     =================================================================================================================-->
@@ -253,7 +252,27 @@
       </div>
 
     </article>
+    <!--================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Models</h2>
+      </header>
 
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItem"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItemInitializer"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItemMatcher"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItemExtractor"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="SearchRequest"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="SearchProvider"></inu-code>
+
+    </article>
     <!--================================================================================================================
     = PROPERTIES
     =================================================================================================================-->
@@ -270,54 +289,164 @@
         <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
         <inu-table-flex-row>
-          <inu-table-flex-cell>changed</inu-table-flex-cell>
-          <inu-table-flex-cell>OutputEmitterRes{{ genericT() }}</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
-          <inu-table-flex-cell>Event emitted when the component value changes.</inu-table-flex-cell>
-        </inu-table-flex-row>
-
-
-        <inu-table-flex-row>
           <inu-table-flex-cell>disabled</inu-table-flex-cell>
           <inu-table-flex-cell>boolean</inu-table-flex-cell>
-          <inu-table-flex-cell>false</inu-table-flex-cell>
           <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Disables all user interactions, selections, and filters within the component. Note: When
+            linked to a form, this state is automatically driven by the formField signal.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>displayFilter</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Controls the visibility of the search/filter text input field.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>debounce</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>Specifies the delay (in milliseconds) before triggering the filter search input
+          </inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
           <inu-table-flex-cell>label</inu-table-flex-cell>
           <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>undefined</inu-table-flex-cell>
           <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>The text label displayed above the selection list.</inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
           <inu-table-flex-cell>labelKey</inu-table-flex-cell>
           <inu-table-flex-cell>string</inu-table-flex-cell>
-          <inu-table-flex-cell>undefined</inu-table-flex-cell>
-          <inu-table-flex-cell>Sets the label key used by the centralized label management service.
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>The localization key used by the label management service to translate the field label.
           </inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
-          <inu-table-flex-cell>values</inu-table-flex-cell>
-          <inu-table-flex-cell>InuSelectItem{{ genericT() }}[]</inu-table-flex-cell>
-          <inu-table-flex-cell>[]</inu-table-flex-cell>
-          <inu-table-flex-cell>the list of values used for the different checkboxes</inu-table-flex-cell>
+          <inu-table-flex-cell>labelFilter</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>Filter</inu-table-flex-cell>
+          <inu-table-flex-cell>The fallback text label displayed inside the filter input field.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelFilterKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>filter</inu-table-flex-cell>
+          <inu-table-flex-cell>The localization key used to translate the filter input field label.
+          </inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
           <inu-table-flex-cell>required</inu-table-flex-cell>
           <inu-table-flex-cell>boolean</inu-table-flex-cell>
           <inu-table-flex-cell>false</inu-table-flex-cell>
-          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Aliased internally as _required. Marks the field as mandatory. Note: When linked to a
+            form, this rule is automatically inferred and driven by the formField validation signal.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>multiSelect</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Allows selecting multiple items at once. If set to false, it acts as a single-choice
+            list.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>values</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItem{{ genericTList() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>The synchronous array of items available for choice when not using lazy loading.
+          </inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
           <inu-table-flex-cell>matcher</inu-table-flex-cell>
           <inu-table-flex-cell>InuSelectItemMatcher</inu-table-flex-cell>
-          <inu-table-flex-cell>undefine</inu-table-flex-cell>
-          <inu-table-flex-cell>Allows defining a function to identify values on complex objects</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom function to determine if a raw form model value matches a specific list item.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>extractor</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemExtractor</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom function to extract the specific primitive data or sub-property to be saved in the
+            form model from a selected item.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>initializer</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemInitializer{{ genericT() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom function used in lazy loading to rebuild an InuSelectItem object from initial raw
+            form model IDs values
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>lazy</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ genericSearchProvider() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>An asynchronous data provider function used to fetch items incrementally via remote
+            server requests.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>loadingType</inu-table-flex-cell>
+          <inu-table-flex-cell>LoadingType ('default' | 'circle')</inu-table-flex-cell>
+          <inu-table-flex-cell>default</inu-table-flex-cell>
+          <inu-table-flex-cell>Defines the visual style or animation type of the loader indicator when data is
+            fetching.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>pageSize</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>10</inu-table-flex-cell>
+          <inu-table-flex-cell>The number of items to request and display per page when pagination or lazy loading is
+            enabled.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changed</inu-table-flex-cell>
+          <inu-table-flex-cell>T[]</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the complete updated array of currently extracted values whenever the selection
+            changes.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>onSelected</inu-table-flex-cell>
+          <inu-table-flex-cell>T</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the specific inner value of the single item that has just been checked or
+            selected
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>onUnSelected</inu-table-flex-cell>
+          <inu-table-flex-cell>T</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the specific inner value of the single item that has just been unchecked or
+            deselected
+          </inu-table-flex-cell>
         </inu-table-flex-row>
 
       </inu-table-flex>

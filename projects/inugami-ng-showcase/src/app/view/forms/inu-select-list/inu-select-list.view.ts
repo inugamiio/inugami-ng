@@ -93,8 +93,11 @@ export class InuSelectListView {
       value: c
     }));
 
-  genericT     = signal<string>('<T>')
-  genericTList = signal<string>('<T>[]')
+  genericT     = signal<string>('<T>');
+  genericTList = signal<string>('<T>[]');
+  genericSearchProvider =  signal<string>('SearchProvider<InuSelectListSearchRequest, T>');
+
+
   //==================================================================================================================
   // INIT
   //==================================================================================================================

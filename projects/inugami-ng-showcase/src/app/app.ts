@@ -164,6 +164,10 @@ export class App implements OnInit {
                                                            path : '/display/inu-label'
                                                          },
                                                          {
+                                                           title: 'inu-loading',
+                                                           path : '/display/inu-loading'
+                                                         },
+                                                         {
                                                            title: 'inu-open-api',
                                                            path : '/display/inu-open-api'
                                                          },

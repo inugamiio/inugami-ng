@@ -30,6 +30,8 @@ export class InuLoading {
   loading    = input<boolean>(false);
   type       = input<LoadingType>('default');
   styleClass = signal<string>('');
+  offsetY    = input<number>(0);
+  offsetX    = input<number>(0);
   elementRef = inject(ElementRef);
 
   // internal
@@ -45,7 +47,7 @@ export class InuLoading {
 
   constructor() {
     effect(() => {
-      const isLoading = this.loading();
+      const isLoading   = this.loading();
       const currentType = this.type();
 
       const parent = this.elementRef.nativeElement.parentElement;
@@ -53,8 +55,8 @@ export class InuLoading {
         const rect = parent.getBoundingClientRect();
         this.parentWidth.set(`${rect.width}px`);
         this.parentHeight.set(`${rect.height}px`);
-        this.parentTop.set(`${rect.top + window.scrollY}px`);
-        this.parentLeft.set(`${rect.left + window.scrollX}px`);
+        this.parentTop.set(`${rect.top + window.scrollY + this.offsetY()}px`);
+        this.parentLeft.set(`${rect.left + window.scrollX + this.offsetX()}px`);
       }
     });
   }
