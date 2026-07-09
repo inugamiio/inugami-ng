@@ -13,7 +13,21 @@
     width: 1rem;
   }
 
+  .inu-input-text-value{
+    width: 100%;
+    display: flex;
+    .inu-input-text-value-clear{
+      display: flex;
+      width: 0rem;
+      height: 1rem;
+      position: relative;
+      left: -0.75rem;
+      align-self: center;
+    }
+  }
+
   input {
+    flex: 1;
     border: none;
     border-bottom: 2px solid var(--neutral);
     transition: border-bottom 250ms;

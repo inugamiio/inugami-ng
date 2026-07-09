@@ -1,0 +1,48 @@
+<div [class]="styleClass()"
+     role="radiogroup">
+  <div class="inu-radio-group-label-grp">
+    <div class="inu-radio-group-label">
+      @if (label() || labelKey()) {
+        @if (labelKey()) {
+          <label>
+            <inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label>
+          </label>
+        }
+        @else{
+          <label >{{ label()! }}</label>
+        }
+      }
+      @if (_required()) {
+        <div class="inu-radio-group-required">
+          <inu-icon icon="required" [size]="0.5"></inu-icon>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (_values()) {
+    <ul>
+      @for (selectItem of _values(); track selectItem.value; let i = $index) {
+        <li role="radio"
+            [class]="getItemClass(selectItem)"
+            [attr.tabindex]="selectItem.selected ? 0 : -1"
+            (keydown)="onKeyDown($event, selectItem, i)"
+            #radioItems>
+          <div class="inu-radio-group-item" (click)="toggle(selectItem)">
+            <div class="inu-radio-group-icon" >
+            <span class="inu-radio-group-border" [attr.arira-selected]="selectItem.selected">
+              <span class="inu-radio-group-content"></span>
+            </span>
+            </div>
+            <div class="inu-radio-group-label">
+              <span>{{ selectItem.title! }}</span>
+            </div>
+          </div>
+          @if(selectItem.tooltips){
+            <inu-tool-tips [message]="selectItem.tooltips"></inu-tool-tips>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

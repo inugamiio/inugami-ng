@@ -1,0 +1,457 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-select-list</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <p>
+          The <em>inu-select-list</em> component is a flexible, <strong>signal-driven</strong> selection list designed
+          to handle both simple list rendering and complex asynchronous (<strong>lazy</strong>) data streaming.
+          It seamlessly integrates with forms signals.
+        </p>
+      </header>
+    </article>
+
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+        <p>
+          The <code>inu-select-list</code> component uses <code>InuSelectItem</code> objects to display its list of
+          items.
+          By default, the title property of the <code>InuSelectItem</code> is used to render each item.
+        </p>
+        <p>
+          However, it can be highly useful to override this behavior. To do so, you can define a template named <code>item</code>
+          directly within the component. Once defined, your custom template will be used to handle the rendering of each
+          individual element.
+        </p>
+
+        <p>
+          By default, <code>inu-select-list</code> handles primitive values. However, when dealing with complex datasets
+          or enterprise APIs, your form model might only store an ID while your list needs to display full object
+          details.
+          To bridge this gap without cluttering your forms, the component provides two powerful hooks:
+          <code>matcher</code> and <code>extractor</code>
+        </p>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Cantons"
+                             [formField]="myForm.cantons"
+                             [values]="cantons()"
+                             [matcher]="matcher()"
+                             [extractor]="extractor()"
+                             [multiSelect]="true"
+                             (onSelected)="onSelected($event)"
+                             (onUnSelected)="onUnSelected($event)">
+              <ng-template name="item" let-item>
+                <div class="item-canton">
+                  <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+                  <span>{{ item.title }}</span>
+                </div>
+              </ng-template>
+            </inu-select-list>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="html"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="ts"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+
+            <inu-panel-tabs>
+              <inu-panel-tab name="onSelected" label="onSelected">
+                <inu-code [source]="eventOnSelected()" type="json"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="onUnSelected" label="onUnSelected">
+                <inu-code [source]="eventOnUnSelected()" type="json"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Sample data</h2>
+      </header>
+
+      <p>
+        For the purpose of this component's example, the list of Swiss cantons has been added to the Inugami icons
+        library. The icon library exposes a <code>SWITZERLAND_CANTONS</code> constant containing the list of cantons,
+        including
+        their code, icon, and name in multiple languages (English, French, German, Italian, and Romansh)
+      </p>
+
+      <inu-cite level="success">
+        <ng-template name="title">
+          <p>
+            While adding Swiss cantons to the icon library is highly opportunistic
+          </p>
+        </ng-template>
+
+        It serves as the perfect real-world
+        dataset for our examples. It clearly demonstrates how to map raw business data into InuSelectItem objects while
+        showcasing the component's custom templating capabilities.
+      </inu-cite>
+
+      <inu-code url="data/form/inu_select_list_source_code.xml" tag="cantons"></inu-code>
+      <p>
+        A utility class is also available to easily retrieve a canton's information using its <strong>FSO</strong>
+        (Federal Statistical Office) code
+      </p>
+      <inu-code url="data/form/inu_select_list_source_code.xml" tag="InugamiIconsSwitzerlandUtils"></inu-code>
+
+      <p>
+        As explained above, the component only handles objects of type InuSelectItem. Therefore, you need to convert
+        your data so the component can process it:
+      </p>
+      <inu-code url="data/form/inu_select_list_source_code.xml" tag="convert_select_item"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = EXAMPLE LAZY
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example lazy</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Lazy"
+                             loadingType="default"
+                             [formField]="myFormLazy.value"
+                             [lazy]="searchLazy"
+                             [multiSelect]="true">
+            </inu-select-list>
+          </div>
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="dataLazy()" type="json"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="lazy"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="searchLazy"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 2rem">
+        In more complex scenarios, fetching a list of values might require a server-side request. For these use cases,
+        you should adopt the lazy loading strategy. In this mode, you must provide a method that the component will use
+        to load the data.
+      </p>
+
+      <p>
+        In this example, the API call is simulated by generating an observable using the ObservableSubscriber class from
+        inugami-ng. This class allows us to directly manipulate the internal subscriber to push data through the
+        observer and notify the component.
+      </p>
+      <p>
+        To use it, simply pass this method to the component in your template
+      </p>
+
+    </article>
+
+
+    <!--================================================================================================================
+    = EXAMPLE DISABLED
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example disabled</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Disabled exemple"
+                             loadingType="default"
+                             [formField]="myFormDisabled.value"
+                             [lazy]="searchLazy"
+                             [multiSelect]="true">
+            </inu-select-list>
+          </div>
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="disabledExemple"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="disabledExemple_html"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!--================================================================================================================
+    = EXAMPLE REQUIRED
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example required</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p">
+            <inu-select-list label="Required exemple"
+                             loadingType="default"
+                             [formField]="myFormRequired.value"
+                             [lazy]="searchLazy"
+                             [multiSelect]="true">
+            </inu-select-list>
+          </div>
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="requiredExemple"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_select_list_source_code.xml" tag="requiredExemple_html"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+    <!--================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Models</h2>
+      </header>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItem"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItemInitializer"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItemMatcher"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="InuSelectItemExtractor"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="SearchRequest"></inu-code>
+
+      <inu-code url="data/form/forms_source_code.xml" tag="SearchProvider"></inu-code>
+
+    </article>
+    <!--================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Disables all user interactions, selections, and filters within the component. Note: When
+            linked to a form, this state is automatically driven by the formField signal.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>displayFilter</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Controls the visibility of the search/filter text input field.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>debounce</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>Specifies the delay (in milliseconds) before triggering the filter search input
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>The text label displayed above the selection list.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>The localization key used by the label management service to translate the field label.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelFilter</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>Filter</inu-table-flex-cell>
+          <inu-table-flex-cell>The fallback text label displayed inside the filter input field.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelFilterKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>filter</inu-table-flex-cell>
+          <inu-table-flex-cell>The localization key used to translate the filter input field label.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Aliased internally as _required. Marks the field as mandatory. Note: When linked to a
+            form, this rule is automatically inferred and driven by the formField validation signal.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>multiSelect</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Allows selecting multiple items at once. If set to false, it acts as a single-choice
+            list.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>values</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItem{{ genericTList() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>The synchronous array of items available for choice when not using lazy loading.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>matcher</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemMatcher</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom function to determine if a raw form model value matches a specific list item.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>extractor</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemExtractor</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom function to extract the specific primitive data or sub-property to be saved in the
+            form model from a selected item.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>initializer</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemInitializer{{ genericT() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom function used in lazy loading to rebuild an InuSelectItem object from initial raw
+            form model IDs values
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>lazy</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ genericSearchProvider() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>An asynchronous data provider function used to fetch items incrementally via remote
+            server requests.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>loadingType</inu-table-flex-cell>
+          <inu-table-flex-cell>LoadingType ('default' | 'circle')</inu-table-flex-cell>
+          <inu-table-flex-cell>default</inu-table-flex-cell>
+          <inu-table-flex-cell>Defines the visual style or animation type of the loader indicator when data is
+            fetching.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>pageSize</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>10</inu-table-flex-cell>
+          <inu-table-flex-cell>The number of items to request and display per page when pagination or lazy loading is
+            enabled.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changed</inu-table-flex-cell>
+          <inu-table-flex-cell>T[]</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the complete updated array of currently extracted values whenever the selection
+            changes.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>onSelected</inu-table-flex-cell>
+          <inu-table-flex-cell>T</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the specific inner value of the single item that has just been checked or
+            selected
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>onUnSelected</inu-table-flex-cell>
+          <inu-table-flex-cell>T</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the specific inner value of the single item that has just been unchecked or
+            deselected
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+    </article>
+  </main>
+
+
+</section>

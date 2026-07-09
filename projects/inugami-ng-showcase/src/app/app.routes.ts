@@ -29,6 +29,9 @@ import {InuInputPasswordView} from './view/forms/inu-input-password/inu-input-pa
 import {InuLabelView} from './view/display/inu-label/inu-label.view'
 import {InuPanelView} from './view/display/inu-panel/inu-panel.view'
 import {InuProgressView} from './view/display/inu-progress/inu-progress.view'
+import {InuRadioGroupView} from './view/forms/inu-radio-group/inu-radio-group.view'
+import {InuSelectListView} from './view/forms/inu-select-list/inu-select-list.view'
+import {InuLoadingView} from './view/display/inu-loading/inu-loading.view'
 
 
 export const routes: Routes = [
@@ -54,6 +57,7 @@ export const routes: Routes = [
       {path: "inu-code", component: InuCodeView},
       {path: "inu-doc-item", component: InuDocItemView},
       {path: "inu-label", component: InuLabelView},
+      {path: "inu-loading", component: InuLoadingView},
       {path: "inu-open-api", component: InuOpenApiView},
       {path: "inu-panel", component: InuPanelView},
       {path: "inu-panel-tabs", component: InuPanelTabsView},
@@ -67,7 +71,9 @@ export const routes: Routes = [
     path: "forms", children: [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
       {path: "inu-input-password", component: InuInputPasswordView},
-      {path: "inu-input-text", component: InuInputTextView}
+      {path: "inu-input-text", component: InuInputTextView},
+      {path: "inu-radio-group", component: InuRadioGroupView},
+      {path: "inu-select-list", component: InuSelectListView}
     ]
   },
   {

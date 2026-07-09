@@ -1,4 +1,4 @@
-import {Component, contentChildren, effect, input, signal, viewChildren} from '@angular/core';
+import {Component, contentChildren, effect, input, signal} from '@angular/core';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
 import {InuTableFlexHeader} from './header/inu-table-flex-header';
 

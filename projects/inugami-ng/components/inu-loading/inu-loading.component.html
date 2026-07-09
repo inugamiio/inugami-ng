@@ -1,0 +1,39 @@
+@if(loading()){
+  <div [class]="_styleClass()"
+       [style.width]="parentWidth()"
+       [style.height]="parentHeight()"
+       [style.top]="parentTop()"
+       [style.left]="parentLeft()">
+    @switch (type()) {
+      @case ('circle') {
+        <ng-container *ngTemplateOutlet="circleTpl" />
+      }
+      @default {
+        <ng-container *ngTemplateOutlet="defaultTpl" />
+      }
+    }
+  </div>
+}
+<!--====================================================================================================================
+= DEFAULT
+====================================================================================================================-->
+<ng-template #defaultTpl>
+  <div class="wave-spinner">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</ng-template>
+
+<!--====================================================================================================================
+= CIRCLE
+====================================================================================================================-->
+<ng-template #circleTpl>
+  <div class="circle-spinner">
+    <svg viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="20" fill="none" stroke-width="3"></circle>
+    </svg>
+  </div>
+</ng-template>

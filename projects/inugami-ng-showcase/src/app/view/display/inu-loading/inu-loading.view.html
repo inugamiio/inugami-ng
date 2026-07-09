@@ -1,0 +1,151 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-loading</h1>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example default</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p d-flex-column">
+            <div>
+              <inu-button (click)="toggleDefault()" label="Toggle default loading"></inu-button>
+            </div>
+
+            <div style="border:1px solid var(--neutral)">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus ante vel suscipit congue. Sed eros
+                massa, vestibulum vel lectus ut, egestas pretium eros. Quisque molestie dui eget tempor molestie. Donec
+                rhoncus quam risus, quis aliquam urna facilisis a. Suspendisse quis diam eget mauris eleifend aliquam.
+                Nulla porta enim eu orci interdum, in cursus velit cursus. Interdum et malesuada fames ac ante ipsum
+                primis in faucibus.
+              </p>
+              <p>
+                Donec fringilla, eros eget dictum pharetra, libero elit commodo mi, a elementum nulla velit venenatis
+                nisi. Sed vestibulum porttitor ipsum, eget eleifend arcu pretium quis. Maecenas quis ante elit. Nam
+                congue lacus id mi ultrices tristique. Etiam at suscipit tellus. Curabitur faucibus nisl metus, sed
+                cursus leo luctus quis. Donec ut nibh rutrum, pharetra nisi ornare, vulputate ipsum. Morbi turpis purus,
+                feugiat eu sem at, sollicitudin iaculis libero. Etiam pharetra sit amet nisl eu ultricies. Nulla
+                pharetra lacus sed quam ultricies pellentesque. Nam sollicitudin neque sed velit viverra volutpat. Nunc
+                fermentum, eros pretium pulvinar facilisis, elit ante pulvinar lacus, feugiat pellentesque lorem magna
+                vel arcu. Phasellus imperdiet magna ut mollis aliquam.
+              </p>
+              <inu-loading [loading]="defaultLoading()" type="default" [offsetY]="31"></inu-loading>
+            </div>
+
+
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+
+    </article>
+
+
+    <!--================================================================================================================
+    =
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example circle</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p d-flex-column">
+            <div>
+              <inu-button (click)="toggleCircle()" label="Toggle default loading"></inu-button>
+            </div>
+
+            <div style="border:1px solid var(--neutral)">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus ante vel suscipit congue. Sed eros
+                massa, vestibulum vel lectus ut, egestas pretium eros. Quisque molestie dui eget tempor molestie. Donec
+                rhoncus quam risus, quis aliquam urna facilisis a. Suspendisse quis diam eget mauris eleifend aliquam.
+                Nulla porta enim eu orci interdum, in cursus velit cursus. Interdum et malesuada fames ac ante ipsum
+                primis in faucibus.
+              </p>
+              <p>
+                Donec fringilla, eros eget dictum pharetra, libero elit commodo mi, a elementum nulla velit venenatis
+                nisi. Sed vestibulum porttitor ipsum, eget eleifend arcu pretium quis. Maecenas quis ante elit. Nam
+                congue lacus id mi ultrices tristique. Etiam at suscipit tellus. Curabitur faucibus nisl metus, sed
+                cursus leo luctus quis. Donec ut nibh rutrum, pharetra nisi ornare, vulputate ipsum. Morbi turpis purus,
+                feugiat eu sem at, sollicitudin iaculis libero. Etiam pharetra sit amet nisl eu ultricies. Nulla
+                pharetra lacus sed quam ultricies pellentesque. Nam sollicitudin neque sed velit viverra volutpat. Nunc
+                fermentum, eros pretium pulvinar facilisis, elit ante pulvinar lacus, feugiat pellentesque lorem magna
+                vel arcu. Phasellus imperdiet magna ut mollis aliquam.
+              </p>
+              <inu-loading [loading]="circleLoading()" type="circle" [offsetY]="63"></inu-loading>
+            </div>
+
+
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+
+    </article>
+
+    <!--================================================================================================================
+     = PROPERTIES
+     =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>The current progress value. It will be safely clamped internally between
+            <strong>min</strong> and <strong>max</strong></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+    </article>
+
+
+  </main>
+
+
+</section>

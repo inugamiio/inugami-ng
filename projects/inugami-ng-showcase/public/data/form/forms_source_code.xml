@@ -1,0 +1,73 @@
+<xml>
+  <src name="InuSelectItem" type="typescript" title="InuSelectItem">
+    <![CDATA[
+export interface InuSelectItem<T>{
+  title:string;
+  value:T;
+  id:string;
+  tooltips?:string;
+  styleClass?:string;
+  disabled?:boolean;
+  selected?:boolean;
+}
+]]>
+  </src>
+
+  <src name="InuSelectItemInitializer" type="typescript" title="InuSelectItemInitializer">
+    <![CDATA[
+export type InuSelectItemInitializer<T> = (value: T) => InuSelectItem<T>;
+]]>
+  </src>
+
+  <src name="InuSelectItemMatcher" type="typescript" title="InuSelectItemMatcher">
+    <![CDATA[
+export type InuSelectItemMatcher = (selectItem: InuSelectItem<any>, value: any) => InuSelectItem<any> | undefined;
+]]>
+  </src>
+
+  <src name="InuSelectItemExtractor" type="typescript" title="InuSelectItemExtractor">
+    <![CDATA[
+export type InuSelectItemExtractor = (selectItem: InuSelectItem<any>) => any | undefined;
+]]>
+  </src>
+
+  <src name="SearchRequest" type="typescript" title="SearchRequest">
+    <![CDATA[
+export interface SearchRequest {
+  page?: number;
+  pageSize?: number;
+  sortFields?: number;
+  sortOrder?: 'ASC' | 'DESC';
+  createdBy?: string[];
+  createdDate?: string[];
+  lastModifiedBy?: string[];
+  lastModifiedDate?: string[];
+}
+]]>
+  </src>
+
+  <src name="SearchResponse" type="typescript" title="SearchResponse">
+    <![CDATA[
+export interface SearchResponse<T> {
+  page: number;
+  pageSize: number;
+  previous: boolean;
+  next: boolean;
+  totalPages?: number;
+  sortFields?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  nbFoundItems?: number;
+  filters?: any;
+  data?: T[];
+}
+]]>
+  </src>
+
+
+  <src name="SearchProvider" type="typescript" title="SearchProvider">
+    <![CDATA[
+export type SearchProvider<R extends SearchRequest, T> = (request: R) => Observable<SearchResponse<T>>;
+]]>
+  </src>
+
+</xml>

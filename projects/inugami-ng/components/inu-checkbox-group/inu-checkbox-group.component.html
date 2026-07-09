@@ -19,17 +19,26 @@
   </div>
   <ul>
     @if (_values()) {
-      @for (selectItem of _values(); track selectItem.value; ) {
-        <li (click)="toggle(selectItem)" [class]="getItemClass(selectItem)">
-          <div class="inu-checkbox-group-icon">
-            @if (selectItem.selected) {
-              <inu-icon icon="check" [size]="0.9" tabindex="0"></inu-icon>
-            }
-          </div>
-          <div class="inu-checkbox-group-label">
-            <span>{{ selectItem.title! }}</span>
+      @for (selectItem of _values(); track selectItem.value; let i = $index) {
+        <li role="checkbox"
+            tabindex="0"
+            #checkboxItems
+            [class]="getItemClass(selectItem)"
+            (keydown)="onKeyDown($event, selectItem)">
+          <div (click)="toggle(selectItem)" class="inu-checkbox-group-item">
+            <div class="inu-checkbox-group-icon">
+              @if (selectItem.selected) {
+                <inu-icon icon="check" [size]="0.9" ></inu-icon>
+              }
+            </div>
+            <div class="inu-checkbox-group-label">
+              <span>{{ selectItem.title! }}</span>
+            </div>
           </div>
 
+          @if(selectItem.tooltips){
+            <inu-tool-tips [message]="selectItem.tooltips"></inu-tool-tips>
+          }
         </li>
       }
     }

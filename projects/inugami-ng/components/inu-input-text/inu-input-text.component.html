@@ -1,13 +1,14 @@
 <div [class]="_styleClass()">
   <div class="inu-input-text-label">
-    @if(icon()){
+    @if (icon()) {
       <inu-icon [icon]="icon()!" [size]="1"></inu-icon>
     }
     @if (label() || labelKey()) {
-      @if(labelKey()){
-        <label [for]="id()"><inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label></label>
-      }
-      @else{
+      @if (labelKey()) {
+        <label [for]="id()">
+          <inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label>
+        </label>
+      } @else {
         <label [for]="id()">{{ label()! }}</label>
       }
     }
@@ -15,15 +16,21 @@
       <inu-icon icon="required" [size]="0.5"></inu-icon>
     }
   </div>
-
-  <input [id]="id()"
-         [name]="name()!"
-         [type]="type()"
-         [value]="value()"
-         [disabled]="disabled()"
-         (focusin)="onFocus()"
-         (focusout)="onFocusOut()"
-         (blur)="_formField?.state()?.markAsTouched()"
-         (keyup)="onChanged($event)" #input
-         [attr.aria-invalid]="!valid()">
+  <div class="inu-input-text-value">
+    <input [id]="id()"
+           [name]="name()!"
+           [type]="type()"
+           [value]="value()"
+           [disabled]="disabled()"
+           (focusin)="onFocus()"
+           (focusout)="onFocusOut()"
+           (blur)="_formField?.state()?.markAsTouched()"
+           (keyup)="onChanged($event)" #input
+           [attr.aria-invalid]="!valid()"/>
+    @if (hasContent()) {
+      <span class="inu-input-text-value-clear">
+        <inu-icon icon="close" [size]="0.75" (click)="clearContent()"></inu-icon>
+      </span>
+    }
+  </div>
 </div>

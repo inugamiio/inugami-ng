@@ -22,6 +22,7 @@ export class ObservableSubscriber<T> {
     for(let handler of this.handlers){
       try{
         handler.next(value);
+        handler.complete();
       }catch (e){
         console.error(e);
       }

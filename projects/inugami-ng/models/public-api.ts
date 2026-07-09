@@ -2,6 +2,7 @@ export * from './audit.model';
 export * from './error-code.model';
 export * from './search.model';
 export * from './select-item.model';
+export * from './select-list.model';
 export * from './site-link.model';
 export * from './svg.models';
 export * from './svg-options.model';
