@@ -18,14 +18,14 @@ import {
   SearchProvider, SearchRequest, SearchResponse
 } from 'inugami-ng/models';
 import {FormField, FormValueControl} from '@angular/forms/signals';
-import {InuIcon} from 'inugami-icons'
-import {InuStringUtils} from 'inugami-ng/utils'
-import {InuTemplateRegistryService} from 'inugami-ng/directives'
-import {NgClass, NgTemplateOutlet} from '@angular/common'
-import {InuInputText} from 'inugami-ng/components/inu-input-text'
-import {InuLabel} from 'inugami-ng/components/inu-label'
-import {InuLoading, LoadingType} from 'inugami-ng/components/inu-loading'
-import {InuPaginator} from '../inu-paginator/inu-paginator.component'
+import {InuIcon} from 'inugami-icons';
+import {InuStringUtils} from 'inugami-ng/utils';
+import {InuTemplateRegistryService} from 'inugami-ng/directives';
+import {NgClass, NgTemplateOutlet} from '@angular/common';
+import {InuInputText} from 'inugami-ng/components/inu-input-text';
+import {InuLabel} from 'inugami-ng/components/inu-label';
+import {InuLoading, LoadingType} from 'inugami-ng/components/inu-loading';
+import {InuPaginator} from 'inugami-ng/components/inu-paginator';
 
 
 @Component({
@@ -90,8 +90,8 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
     const hasBeenTouched = state.touched();
     const currentValue   = this.value();
 
-    const isEmptyArray   = Array.isArray(currentValue) && currentValue.length === 0;
-    const isRequired     = this._required();
+    const isEmptyArray = Array.isArray(currentValue) && currentValue.length === 0;
+    const isRequired   = this._required();
 
     if (isEmptyArray && isRequired && hasBeenTouched) {
       return false;
