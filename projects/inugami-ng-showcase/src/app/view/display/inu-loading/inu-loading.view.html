@@ -39,7 +39,7 @@
                 fermentum, eros pretium pulvinar facilisis, elit ante pulvinar lacus, feugiat pellentesque lorem magna
                 vel arcu. Phasellus imperdiet magna ut mollis aliquam.
               </p>
-              <inu-loading [loading]="defaultLoading()" type="default" [offsetY]="31"></inu-loading>
+              <inu-loading [loading]="defaultLoading()" type="default"></inu-loading>
             </div>
 
 
@@ -48,10 +48,10 @@
           <div class="form-cell m-width-50p m-height-15 d-flex-column">
             <inu-panel-tabs>
               <inu-panel-tab name="html" label="HTML">
-
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="usage"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="typescript"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -96,7 +96,7 @@
                 fermentum, eros pretium pulvinar facilisis, elit ante pulvinar lacus, feugiat pellentesque lorem magna
                 vel arcu. Phasellus imperdiet magna ut mollis aliquam.
               </p>
-              <inu-loading [loading]="circleLoading()" type="circle" [offsetY]="63"></inu-loading>
+              <inu-loading [loading]="circleLoading()" type="circle" ></inu-loading>
             </div>
 
 
@@ -105,10 +105,7 @@
           <div class="form-cell m-width-50p m-height-15 d-flex-column">
             <inu-panel-tabs>
               <inu-panel-tab name="html" label="HTML">
-
-              </inu-panel-tab>
-              <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="circle"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -134,11 +131,17 @@
         <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
         <inu-table-flex-row>
-          <inu-table-flex-cell>value</inu-table-flex-cell>
-          <inu-table-flex-cell>number</inu-table-flex-cell>
-          <inu-table-flex-cell>0</inu-table-flex-cell>
-          <inu-table-flex-cell>The current progress value. It will be safely clamped internally between
-            <strong>min</strong> and <strong>max</strong></inu-table-flex-cell>
+          <inu-table-flex-cell>loading</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>LoadingType</inu-table-flex-cell>
+          <inu-table-flex-cell>LoadingType ('default' | 'circle')</inu-table-flex-cell>
+          <inu-table-flex-cell>default</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
         </inu-table-flex-row>
 
       </inu-table-flex>

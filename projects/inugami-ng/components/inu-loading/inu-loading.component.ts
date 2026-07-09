@@ -3,7 +3,7 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
+  ElementRef, HostListener,
   inject,
   input,
   InputSignal,
@@ -23,10 +23,10 @@ export type LoadingType = 'default' | 'circle';
              templateUrl: './inu-loading.component.html',
              styleUrl   : './inu-loading.component.scss',
            })
-export class InuLoading {
-  //==================================================================================================================
+export class InuLoading implements AfterViewInit{
+  //====================================================================================================================
   // ATTRIBUTES
-  //==================================================================================================================
+  //====================================================================================================================
   loading    = input<boolean>(false);
   type       = input<LoadingType>('default');
   styleClass = signal<string>('');
@@ -50,14 +50,31 @@ export class InuLoading {
       const isLoading   = this.loading();
       const currentType = this.type();
 
-      const parent = this.elementRef.nativeElement.parentElement;
-      if (parent) {
-        const rect = parent.getBoundingClientRect();
-        this.parentWidth.set(`${rect.width}px`);
-        this.parentHeight.set(`${rect.height}px`);
-        this.parentTop.set(`${rect.top + window.scrollY + this.offsetY()}px`);
-        this.parentLeft.set(`${rect.left + window.scrollX + this.offsetX()}px`);
-      }
+      this.resize()
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.resize();
+    }
+
+
+  private resize() {
+    const parent = this.elementRef.nativeElement.parentElement;
+    if (parent) {
+      const rect = parent.getBoundingClientRect();
+      this.parentWidth.set(`${rect.width}px`);
+      this.parentHeight.set(`${rect.height}px`);
+      this.parentTop.set(`${rect.top + window.scrollY + this.offsetY()}px`);
+      this.parentLeft.set(`${rect.left + window.scrollX + this.offsetX()}px`);
+    }
+  }
+
+//====================================================================================================================
+  // EVENTS
+  //====================================================================================================================
+  @HostListener('window:resize')
+  onResize() {
+    this.resize();
   }
 }

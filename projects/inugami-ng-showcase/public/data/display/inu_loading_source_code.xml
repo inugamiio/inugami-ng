@@ -1,0 +1,45 @@
+<xml>
+  <src name="usage" type="html" title="Usage">
+    <![CDATA[
+<div>
+  <p>
+    <!-- .... -->
+  </p>
+  <p>
+    <!-- .... -->
+  </p>
+  <inu-loading [loading]="defaultLoading()" type="default"></inu-loading>
+</div>
+]]>
+  </src>
+
+  <src name="typescript" type="typescript" title="TypeScript">
+    <![CDATA[
+import {InuLoading} from 'inugami-ng/components/inu-loading';
+
+@Component({
+     templateUrl: './inu-loading.view.html',
+     styleUrls  : ['./inu-loading.view.scss'],
+     imports: [
+       InuLoading
+     ]
+   })
+export class MyView {
+
+  defaultLoading = signal<boolean>(true);
+
+}
+
+]]>
+  </src>
+
+
+  <src name="circle" type="html" title="Circle">
+    <![CDATA[
+<div>
+  <!-- ... -->
+  <inu-loading [loading]="circleLoading()" type="circle" ></inu-loading>
+</div>
+]]>
+  </src>
+</xml>
