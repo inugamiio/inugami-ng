@@ -4,14 +4,21 @@
        [style.height]="parentHeight()"
        [style.top]="parentTop()"
        [style.left]="parentLeft()">
-    @switch (type()) {
-      @case ('circle') {
-        <ng-container *ngTemplateOutlet="circleTpl" />
-      }
-      @default {
-        <ng-container *ngTemplateOutlet="defaultTpl" />
+
+    @if(content()){
+      <ng-container *ngTemplateOutlet="content()"></ng-container>
+    }
+    @else{
+      @switch (type()) {
+        @case ('circle') {
+          <ng-container *ngTemplateOutlet="circleTpl" />
+        }
+        @default {
+          <ng-container *ngTemplateOutlet="defaultTpl" />
+        }
       }
     }
+
   </div>
 }
 <!--====================================================================================================================

@@ -9,6 +9,7 @@ import {InuCode} from 'inugami-ng/components/inu-code'
 import {InuPanelTab, InuPanelTabs} from 'inugami-ng/components/inu-panel-tabs';
 import {InuLoading} from 'inugami-ng/components/inu-loading';
 import {InuButton} from 'inugami-ng/components/inu-button'
+import {InugamiTemplateDirective} from 'inugami-ng/directives'
 
 @Component({
              templateUrl: './inu-loading.view.html',
@@ -22,7 +23,8 @@ import {InuButton} from 'inugami-ng/components/inu-button'
                InuPanelTab,
                InuPanelTabs,
                InuLoading,
-               InuButton
+               InuButton,
+               InugamiTemplateDirective
              ]
            })
 export class InuLoadingView {
@@ -32,6 +34,7 @@ export class InuLoadingView {
   //==================================================================================================================
   defaultLoading = signal<boolean>(true);
   circleLoading = signal<boolean>(true);
+  customLoading = signal<boolean>(true);
   //==================================================================================================================
   // ACTIONS
   //==================================================================================================================
@@ -40,5 +43,8 @@ export class InuLoadingView {
   }
   toggleCircle(){
     this.circleLoading.set(!this.circleLoading());
+  }
+  toggleCustom(){
+    this.customLoading.set(!this.customLoading());
   }
 }

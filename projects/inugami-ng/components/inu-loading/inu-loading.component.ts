@@ -3,47 +3,50 @@ import {
   Component,
   computed,
   effect,
-  ElementRef, HostListener,
+  ElementRef,
+  HostListener,
   inject,
   input,
-  InputSignal,
   signal
 } from '@angular/core';
-import {InuIcon} from 'inugami-icons';
-import {NgClass, NgTemplateOutlet} from '@angular/common';
+import {NgTemplateOutlet} from '@angular/common';
+import {InuTemplateRegistryService} from 'inugami-ng/directives'
 
 export type LoadingType = 'default' | 'circle';
 
 @Component({
              selector   : 'inu-loading',
              standalone : true,
+             providers  : [InuTemplateRegistryService],
              imports    : [
                NgTemplateOutlet
              ],
              templateUrl: './inu-loading.component.html',
              styleUrl   : './inu-loading.component.scss',
            })
-export class InuLoading implements AfterViewInit{
+export class InuLoading implements AfterViewInit {
   //====================================================================================================================
   // ATTRIBUTES
   //====================================================================================================================
-  loading    = input<boolean>(false);
-  type       = input<LoadingType>('default');
-  styleClass = signal<string>('');
-  offsetY    = input<number>(0);
-  offsetX    = input<number>(0);
-  elementRef = inject(ElementRef);
-
+  loading                              = input<boolean>(false);
+  type                                 = input<LoadingType>('default');
+  styleClass                           = signal<string>('');
+  offsetY                              = input<number>(0);
+  offsetX                              = input<number>(0);
+  //
+  elementRef                           = inject(ElementRef);
+  registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
   // internal
-  _styleClass  = computed<string>(() => [
+  content                              = computed(() => this.registry.getTemplate('content'));
+  _styleClass                          = computed<string>(() => [
     'inu-loading',
     this.styleClass(),
     this.type()
   ].join(' '));
-  parentWidth  = signal<string>('0px');
-  parentHeight = signal<string>('0px');
-  parentTop    = signal<string>('0px');
-  parentLeft   = signal<string>('0px');
+  parentWidth                          = signal<string>('0px');
+  parentHeight                         = signal<string>('0px');
+  parentTop                            = signal<string>('0px');
+  parentLeft                           = signal<string>('0px');
 
   constructor() {
     effect(() => {
@@ -56,7 +59,7 @@ export class InuLoading implements AfterViewInit{
 
   ngAfterViewInit(): void {
     this.resize();
-    }
+  }
 
 
   private resize() {
