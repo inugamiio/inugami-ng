@@ -1,0 +1,36 @@
+<span [class]="_styleClass()"
+      [tabindex]="disabled()?-1:0"
+      (click)="toggleValue()"
+      (keydown)="onKeyDown($event)">
+  @if (left()) {
+    <ng-container *ngTemplateOutlet="labelTpl"/>
+  }
+
+  <span class="inu-toggle-button-border">
+    <span class="inu-toggle-button-cursor"></span>
+  </span>
+
+  @if (!left()) {
+    <ng-container *ngTemplateOutlet="labelTpl"/>
+  }
+</span>
+
+<!--====================================================================================================================
+= LABEL
+====================================================================================================================-->
+<ng-template #labelTpl>
+  <label>
+    @if (label() || labelKey()) {
+      @if (labelKey()) {
+        <inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label>
+      } @else {
+        {{ label()! }}
+      }
+    }
+    @if (_required()) {
+      <span class="required">
+      <inu-icon icon="required" [size]="0.5"></inu-icon>
+    </span>
+    }
+  </label>
+</ng-template>
