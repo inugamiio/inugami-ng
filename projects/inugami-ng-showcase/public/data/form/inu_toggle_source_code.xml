@@ -70,5 +70,34 @@ export class MyView {
 ]]>
   </src>
 
+  <src name="left" type="html" title="template">
+    <![CDATA[
+<inu-toggle label="Email"
+          labelKey="notification_email"
+          [left]="true"
+          [formField]="myForm.email">
+</inu-toggle>
 
+<inu-toggle label="In application"
+          labelKey="notification_in_app"
+          type="secondary"
+          [left]="true"
+          [formField]="myForm.inApp">
+</inu-toggle>
+
+<inu-toggle label="Sms"
+          labelKey="notification_sms"
+          type="danger"
+          [left]="true"
+          [formField]="myForm.sms">
+</inu-toggle>
+
+<inu-toggle label="Mail"
+          labelKey="notification_mail"
+          type="neutral"
+          [left]="true"
+          [formField]="myForm.mail">
+</inu-toggle>
+]]>
+  </src>
 </xml>
