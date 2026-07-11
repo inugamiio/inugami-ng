@@ -3,7 +3,6 @@ import {NgTemplateOutlet} from '@angular/common';
 import {FormValueControl} from '@angular/forms/signals'
 import {InuLabel} from '../inu-label/inu-label'
 import {InuIcon} from 'inugami-icons'
-import {InuSelectItem} from 'inugami-ng/models'
 
 
 @Component({

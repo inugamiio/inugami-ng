@@ -3,7 +3,9 @@
     <h1>Inugami-NG : inu-toggle</h1>
 
     <p>
-
+      The InuToggle component is a lightweight, fully accessible standalone binary switch designed for seamless
+      integration with Signals Forms . It acts as a visual alternative to a native checkbox, supporting localization,
+      thematic styling variations, disabled states, and full keyboard navigation.
     </p>
   </header>
 
@@ -45,10 +47,15 @@
 
           <div class="form-cell m-width-50p m-height-15 d-flex-column">
             <inu-panel-tabs>
-              <inu-panel-tab name="html" label="HTML">
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
 
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_toggle_source_code.xml" tag="html"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_toggle_source_code.xml" tag="ts"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -130,13 +137,60 @@
         <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
         <inu-table-flex-row>
-          <inu-table-flex-cell>loading</inu-table-flex-cell>
+          <inu-table-flex-cell>value</inu-table-flex-cell>
           <inu-table-flex-cell>boolean</inu-table-flex-cell>
           <inu-table-flex-cell>false</inu-table-flex-cell>
-          <inu-table-flex-cell>Controls the visibility of the loading overlay</inu-table-flex-cell>
+          <inu-table-flex-cell>Two-way bindable model. Represents the checked (true) or unchecked (false) state.</inu-table-flex-cell>
         </inu-table-flex-row>
 
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Prevents user interaction, removes focus availability</inu-table-flex-cell>
+        </inu-table-flex-row>
 
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Static fallback plain-text string for the toggle field description</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Dynamic dictionary lookup key passed downstream to an internal inu-label utility component</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Appends a mandatory required visual flag</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>left</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Moves the label to the left of the switch track instead of the default right-hand alignment</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>type</inu-table-flex-cell>
+          <inu-table-flex-cell>'primary' | 'secondary' | 'danger' | 'neutral'</inu-table-flex-cell>
+          <inu-table-flex-cell>primary</inu-table-flex-cell>
+          <inu-table-flex-cell>Dictates the active highlight overlay theme configuration when checked</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changed</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventType() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the new state boolean every time the toggle switch resolves a valid state mutation even</inu-table-flex-cell>
+        </inu-table-flex-row>
       </inu-table-flex>
     </article>
 

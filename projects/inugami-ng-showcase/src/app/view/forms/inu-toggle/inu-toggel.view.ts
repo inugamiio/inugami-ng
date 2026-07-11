@@ -51,9 +51,7 @@ export class InuToggleView {
   });
 
 
-  genericT              = signal<string>('<T>');
-  genericTList          = signal<string>('<T>[]');
-  genericSearchProvider = signal<string>('SearchProvider<InuSelectListSearchRequest, T>');
+  eventType = signal<string>('EventEmitter<boolean>');
 
 
   //==================================================================================================================
