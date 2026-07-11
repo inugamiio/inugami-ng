@@ -222,6 +222,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-select-list',
                                                            path : '/forms/inu-select-list'
+                                                         },
+                                                         {
+                                                           title: 'inu-toggle',
+                                                           path : '/forms/inu-toggle'
                                                          }
                                                        ]
                                                      }

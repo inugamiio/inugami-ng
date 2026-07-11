@@ -32,6 +32,7 @@ import {InuProgressView} from './view/display/inu-progress/inu-progress.view'
 import {InuRadioGroupView} from './view/forms/inu-radio-group/inu-radio-group.view'
 import {InuSelectListView} from './view/forms/inu-select-list/inu-select-list.view'
 import {InuLoadingView} from './view/display/inu-loading/inu-loading.view'
+import {InuToggleView} from './view/forms/inu-toggle/inu-toggel.view'
 
 
 export const routes: Routes = [
@@ -73,7 +74,8 @@ export const routes: Routes = [
       {path: "inu-input-password", component: InuInputPasswordView},
       {path: "inu-input-text", component: InuInputTextView},
       {path: "inu-radio-group", component: InuRadioGroupView},
-      {path: "inu-select-list", component: InuSelectListView}
+      {path: "inu-select-list", component: InuSelectListView},
+      {path: "inu-toggle", component: InuToggleView}
     ]
   },
   {
