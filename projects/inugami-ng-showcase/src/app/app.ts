@@ -208,6 +208,10 @@ export class App implements OnInit {
                                                            path : '/forms/inu-checkbox-group'
                                                          },
                                                          {
+                                                           title: 'inu-dropdown',
+                                                           path : '/forms/inu-dropdown'
+                                                         },
+                                                         {
                                                            title: 'inu-input-password',
                                                            path : '/forms/inu-input-password'
                                                          },

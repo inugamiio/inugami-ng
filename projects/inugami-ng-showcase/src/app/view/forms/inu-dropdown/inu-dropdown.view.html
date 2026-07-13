@@ -1,0 +1,92 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-dropdown</h1>
+
+    <p>
+
+    </p>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    = DEFAULT
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example default</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p  form-line">
+
+            <inu-dropdown label="Cantons"
+                          [formField]="myForm.cantons"
+                          [values]="cantons()"
+                          [matcher]="matcher()"
+                          [extractor]="extractor()"
+                          (onSelected)="onSelected($event)"
+                          (onUnSelected)="onUnSelected($event)"
+                          [multiSelect]="true">
+              <ng-template name="item" let-item>
+                <div class="item-canton">
+                  <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+                  <span>{{ item.title }}</span>
+                </div>
+              </ng-template>
+            </inu-dropdown>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_driopdown_source_code.xml" tag="html"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_driopdown_source_code.xml" tag="ts"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!--================================================================================================================
+     = PROPERTIES
+     =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Two-way bindable model. Represents the checked (true) or unchecked (false) state.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+
+      </inu-table-flex>
+    </article>
+
+
+  </main>
+
+
+</section>

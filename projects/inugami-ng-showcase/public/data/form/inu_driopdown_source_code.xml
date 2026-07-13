@@ -1,0 +1,14 @@
+<xml>
+  <src name="html" type="html" title="template">
+    <![CDATA[
+
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="template">
+    <![CDATA[
+
+]]>
+  </src>
+
+</xml>

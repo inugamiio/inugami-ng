@@ -8,7 +8,7 @@ import {
   model,
   ModelSignal,
   output,
-  signal
+  signal, TemplateRef
 } from '@angular/core';
 import {
   InuSelectItem,
@@ -70,11 +70,12 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
   //
   registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
   //
-  itemTemplate                         = computed(() => this.registry.getTemplate('item'));
+  itemTemplate                         = signal<TemplateRef<any> | undefined>(undefined);
   //
   changed                              = output<T[]>();
   onSelected                           = output<T>();
   onUnSelected                         = output<T>();
+  onValidityChanged                    = output<boolean>();
 
   // FormValueControl
 
@@ -112,6 +113,7 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
   );
   page                    = signal<number>(0);
   _pageSize               = signal<number>(10);
+  previousValidity        = signal<boolean | undefined>(undefined);
   request                 = computed<InuSelectListSearchRequest>(() => <InuSelectListSearchRequest>{
     page     : this.page(),
     pageSize : this._pageSize(),
@@ -133,6 +135,10 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => this.sendChanged());
+
+    if (!this.itemTemplate()) {
+      this.itemTemplate.set(this.registry.getTemplate('item'));
+    }
 
 
     this.preloadSelectedValueForLazy();
