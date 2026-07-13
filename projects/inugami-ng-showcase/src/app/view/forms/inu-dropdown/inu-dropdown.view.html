@@ -180,7 +180,7 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>values</inu-table-flex-cell>
-          <inu-table-flex-cell>{{ valuesType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ valuesType() }}</inu-table-flex-cell>
           <inu-table-flex-cell>[]</inu-table-flex-cell>
           <inu-table-flex-cell>Local static list of options to display</inu-table-flex-cell>
         </inu-table-flex-row>
@@ -229,7 +229,7 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>lazy</inu-table-flex-cell>
-          <inu-table-flex-cell>{{ searchType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ searchType() }}</inu-table-flex-cell>
           <inu-table-flex-cell>undefined</inu-table-flex-cell>
           <inu-table-flex-cell>Asynchronous data provider for on-demand loading (API/Backend)</inu-table-flex-cell>
         </inu-table-flex-row>
@@ -259,21 +259,21 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>changed</inu-table-flex-cell>
-          <inu-table-flex-cell>{{ eventChangedType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventChangedType() }}</inu-table-flex-cell>
           <inu-table-flex-cell>undefined</inu-table-flex-cell>
           <inu-table-flex-cell>Emits the new array of selected values whenever a change occurs.</inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
           <inu-table-flex-cell>onSelected</inu-table-flex-cell>
-          <inu-table-flex-cell>{{ eventSelectType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventSelectType() }}</inu-table-flex-cell>
           <inu-table-flex-cell>undefined</inu-table-flex-cell>
           <inu-table-flex-cell>Emits the specific value that was just selected.</inu-table-flex-cell>
         </inu-table-flex-row>
 
         <inu-table-flex-row>
           <inu-table-flex-cell>onUnSelected</inu-table-flex-cell>
-          <inu-table-flex-cell>{{ eventSelectType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventSelectType() }}</inu-table-flex-cell>
           <inu-table-flex-cell>undefined</inu-table-flex-cell>
           <inu-table-flex-cell>Emits the specific value that was just unselected.</inu-table-flex-cell>
         </inu-table-flex-row>

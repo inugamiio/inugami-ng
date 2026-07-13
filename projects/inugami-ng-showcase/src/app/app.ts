@@ -94,6 +94,11 @@ export class App implements OnInit {
                                                    path : '/icons',
                                                    icon : 'image'
                                                  },
+                                                 {
+                                                   title: 'Themes',
+                                                   path : '/themes',
+                                                   icon : 'layer'
+                                                 },
                                                  //--- ACTIONS ---------------------------------------------------------
                                                  {
                                                    title   : 'Actions',

@@ -34,11 +34,13 @@ import {InuSelectListView} from './view/forms/inu-select-list/inu-select-list.vi
 import {InuLoadingView} from './view/display/inu-loading/inu-loading.view'
 import {InuToggleView} from './view/forms/inu-toggle/inu-toggel.view'
 import {InuDropdownView} from './view/forms/inu-dropdown/inu-dropdown.view'
+import {ThemesView} from './view/themes/themes.view'
 
 
 export const routes: Routes = [
   {path: "", component: HomeView},
   {path: "icons", component: IconsView},
+  {path: "themes", component: ThemesView},
   {
     path: "actions", children: [
       {path: "inu-button", component: InuButtonView},
