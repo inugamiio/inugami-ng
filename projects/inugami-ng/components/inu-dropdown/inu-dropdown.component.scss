@@ -18,6 +18,9 @@
     font-weight: bold;
   }
 
+  inu-select-list {
+    width: 100%;
+  }
 
   .inu-dropdown-values-grp {
     display: flex;
@@ -49,22 +52,35 @@
     border-bottom: 2px solid var(--neutral);
     transition: border-bottom 250ms;
     outline: none;
+    align-items: end;
+
     &:focus {
       border-bottom: 2px solid var(--secondary-light);
     }
+
     &.disabled {
       border-bottom: 2px solid var(--neutral-light);
     }
+
+    .inu-dropdown-input-selected {
+      border: 0.125rem solid var(--neutral);
+      border-radius: 1rem;
+      padding: 0.25rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
     ul {
       flex: 1;
+      flex-wrap: wrap;
       margin: 0;
       padding: 0;
+      padding-bottom: 0.25rem;
       display: flex;
       flex-direction: row;
       list-style: none;
       gap: 1rem;
       min-height: 1rem;
-
     }
 
     button {

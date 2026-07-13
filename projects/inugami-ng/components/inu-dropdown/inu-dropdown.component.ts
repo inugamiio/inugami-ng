@@ -2,13 +2,16 @@ import {
   AfterViewInit,
   Component,
   computed,
-  effect, ElementRef,
+  effect,
+  ElementRef,
+  HostListener,
   inject,
   input,
   model,
   ModelSignal,
   output,
-  signal, viewChild, viewChildren
+  signal,
+  viewChild
 } from '@angular/core';
 import {NgClass, NgTemplateOutlet} from '@angular/common';
 import {FormValueControl} from '@angular/forms/signals'
@@ -24,17 +27,18 @@ import {
 } from 'inugami-ng/models'
 import {LoadingType} from '../inu-loading/inu-loading.component'
 import {InuSelectList} from '../inu-select-list/inu-select-list.component'
-import {InugamiTemplateDirective, InuTemplateRegistryService} from 'inugami-ng/directives'
+import {InuTemplateRegistryService} from 'inugami-ng/directives'
 
 
 @Component({
              selector   : 'inu-dropdown',
              standalone : true,
-             imports: [
+             imports    : [
                InuLabel,
                InuIcon,
                InuSelectList,
-               NgClass
+               NgClass,
+               NgTemplateOutlet
              ],
              templateUrl: './inu-dropdown.component.html',
              styleUrl   : './inu-dropdown.component.scss',
@@ -66,8 +70,10 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
   onSelected                           = output<T>();
   onUnSelected                         = output<T>();
   // inject
+  elementRef                           = inject(ElementRef);
   registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
   itemTemplate                         = computed(() => this.registry.getTemplate('item'));
+  selectedValueTemplate                = computed(() => this.registry.getTemplate('selectedValue'));
   selectListComponent                  = viewChild<InuSelectList<T>>('selectList');
   // FormValueControl
   value: ModelSignal<T[]>              = model(<T[]>[]);
@@ -79,9 +85,11 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
     this.disabled() ? 'disabled' : '',
     this._required() ? 'required' : ''
   ].join(' '));
+  width                                = signal<string>('0px');
 
   constructor() {
     effect(() => {
+      this.resize()
     });
   }
 
@@ -92,10 +100,18 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
   ngAfterViewInit(): void {
     const itemTemplate = this.itemTemplate();
     const selectList   = this.selectListComponent();
-    console.log('ngAfterViewInit')
+    this.resize();
     if (itemTemplate && selectList) {
       selectList.itemTemplate.set(this.itemTemplate());
 
+    }
+  }
+
+  private resize() {
+    const current = this.elementRef.nativeElement;
+    if (current) {
+      const rect = current.getBoundingClientRect();
+      this.width.set(`${rect.width}px`);
     }
   }
 
@@ -125,7 +141,26 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
     }
   }
 
-  protected onFocusOut() {
+  @HostListener('document:click', ['$event'])
+  protected onDocumentClick(event: MouseEvent) {
+    if (!this.display()) {
+      return;
+    }
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.display.set(false);
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  protected onEscape() {
+    if (!this.display()) {
+      return;
+    }
     this.display.set(false);
+  }
+
+  protected onChangedSelectItems(event: InuSelectItem<T>[]) {
+    this.data.set(event);
   }
 }

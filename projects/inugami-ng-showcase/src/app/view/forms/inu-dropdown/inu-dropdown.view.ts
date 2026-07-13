@@ -102,6 +102,9 @@ export class InuDropdownView {
   // GETTERS
   //==================================================================================================================
   protected getCantonIcon(id: string): string {
-    return InugamiIconsSwitzerlandUtils.getCanton(id).icon;
+    return InugamiIconsSwitzerlandUtils.getCanton(id??'ch').icon;
+  }
+  protected getCantonTitle(id: string): string {
+    return InugamiIconsSwitzerlandUtils.getCanton(id??'ch').nameEn;
   }
 }

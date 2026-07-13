@@ -30,12 +30,21 @@
                           (onSelected)="onSelected($event)"
                           (onUnSelected)="onUnSelected($event)"
                           [multiSelect]="true">
+              <ng-template name="selectedValue" let-v>
+                <div class="item-canton">
+
+                  <inu-icon [icon]="getCantonIcon(v.id)" [size]="1.5"></inu-icon>
+                  <span>{{ v.title }}</span>
+                </div>
+              </ng-template>
+
               <ng-template name="item" let-item>
                 <div class="item-canton">
                   <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
                   <span>{{ item.title }}</span>
                 </div>
               </ng-template>
+
             </inu-dropdown>
           </div>
 

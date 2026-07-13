@@ -73,6 +73,7 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
   itemTemplate                         = signal<TemplateRef<any> | undefined>(undefined);
   //
   changed                              = output<T[]>();
+  changedSelectItems                   = output<InuSelectItem<T>[]>();
   onSelected                           = output<T>();
   onUnSelected                         = output<T>();
   onValidityChanged                    = output<boolean>();
@@ -297,13 +298,15 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
 
 
   private sendChanged() {
-    const newSelectedValues: T[] = [];
-    const selected               = this.selected();
-    const keys                   = Object.keys(selected);
+    const selectItems: InuSelectItem<T>[] = [];
+    const newSelectedValues: T[]          = [];
+    const selected                        = this.selected();
+    const keys                            = Object.keys(selected);
     keys.sort();
 
     if (keys.length > 0) {
       for (let key of keys) {
+        selectItems.push(selected[key]);
         const selectedValue = this.getExtractor()(selected[key]);
         if (selectedValue) {
           newSelectedValues.push(selectedValue);
@@ -314,6 +317,7 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
     this.value.set(newSelectedValues);
     this.nbSelected.set(keys.length);
     this.changed.emit(newSelectedValues);
+    this.changedSelectItems.emit(selectItems);
   }
 
   protected onPaginatorChanged(event: SearchRequest) {

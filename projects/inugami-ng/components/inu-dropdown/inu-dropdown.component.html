@@ -23,8 +23,15 @@
   </div>
   <div class="inu-dropdown-input-grp" (click)="toggleDisplay()">
     <ul>
-      @for (value of value(); track value) {
-        <li>{{value}}</li>
+      @for (selectedValue of data(); track selectedValue; let j = $index) {
+        <li class="inu-dropdown-input-selected">
+          @if (selectedValueTemplate()) {
+            <ng-container *ngTemplateOutlet="selectedValueTemplate(); context: { $implicit: selectedValue, index: j}"></ng-container>
+          }
+          @else{
+            {{selectedValue.title}}
+          }
+        </li>
       }
     </ul>
     <button (click)="toggleDisplay()" [ngClass]="{isDisplay:display()}">
@@ -32,7 +39,8 @@
     </button>
   </div>
   <div class="inu-dropdown-values-grp"
-       [ngClass]="{display:display()}" >
+       [ngClass]="{display:display()}"
+       [style.width]="width()">
     <inu-select-list #selectList
                      [disabled]="disabled()"
                      [displayFilter]="displayFilter()"
@@ -47,7 +55,8 @@
                      [lazy]="lazy()"
                      [loadingType]="loadingType()"
                      [pageSize]="pageSize()"
-                     (changed)="onChanged($event)">
+                     (changed)="onChanged($event)"
+                     (changedSelectItems)="onChangedSelectItems($event)">
     </inu-select-list>
   </div>
 </div>
