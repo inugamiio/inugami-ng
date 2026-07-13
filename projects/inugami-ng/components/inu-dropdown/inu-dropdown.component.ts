@@ -103,7 +103,7 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
     this.resize();
     if (itemTemplate && selectList) {
       selectList.itemTemplate.set(this.itemTemplate());
-
+      selectList.value.set(this.value());
     }
   }
 
