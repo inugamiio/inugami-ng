@@ -14,7 +14,7 @@ import {
   viewChild
 } from '@angular/core';
 import {NgClass, NgTemplateOutlet} from '@angular/common';
-import {FormValueControl} from '@angular/forms/signals'
+import {FormField, FormValueControl} from '@angular/forms/signals'
 import {InuLabel} from '../inu-label/inu-label'
 import {InuIcon} from 'inugami-icons'
 import {
@@ -70,6 +70,7 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
   onSelected                           = output<T>();
   onUnSelected                         = output<T>();
   // inject
+  _formField                           = inject(FormField, {optional: true});
   elementRef                           = inject(ElementRef);
   registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
   itemTemplate                         = computed(() => this.registry.getTemplate('item'));
@@ -80,12 +81,32 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
   // internal
   data                                 = signal<InuSelectItem<T>[]>([]);
   display                              = signal<boolean>(false);
-  _styleClass                          = computed<string>(() => [
+
+  valid = computed(() => {
+    const state = this._formField?.state();
+    if (!state) return true;
+
+    const isInvalid      = state.invalid();
+    const hasBeenTouched = state.touched();
+    const currentValue   = this.value();
+
+    const isEmptyArray = Array.isArray(currentValue) && currentValue.length === 0;
+    const isRequired   = this._required();
+
+    if (isEmptyArray && isRequired && hasBeenTouched) {
+      return false;
+    }
+
+    return !(isInvalid && hasBeenTouched);
+  });
+
+  _styleClass = computed<string>(() => [
     'inu-dropdown',
+    !this.valid() ? 'invalid' : '',
     this.disabled() ? 'disabled' : '',
     this._required() ? 'required' : ''
   ].join(' '));
-  width                                = signal<string>('0px');
+  width       = signal<string>('0px');
 
   constructor() {
     effect(() => {
@@ -119,6 +140,10 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
   // INIT
   //====================================================================================================================
   toggleDisplay() {
+    if (this.disabled()) {
+      this.display.set(false);
+      return;
+    }
     this.display.set(!this.display());
   }
 
@@ -131,6 +156,11 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
   }
 
   protected onKeyDown(event: KeyboardEvent) {
+    if (this.disabled()) {
+      this.display.set(false);
+      return;
+    }
+
     if (!this.display() && event.key === ' ' || event.key === 'Spacebar' || event.key === 'ArrowDown') {
       this.display.set(true);
       event.preventDefault();
@@ -143,6 +173,10 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
 
   @HostListener('document:click', ['$event'])
   protected onDocumentClick(event: MouseEvent) {
+    if (this.disabled()) {
+      this.display.set(false);
+      return;
+    }
     if (!this.display()) {
       return;
     }
@@ -154,6 +188,11 @@ export class InuDropdown<T> implements FormValueControl<T[]>, AfterViewInit {
 
   @HostListener('document:keydown.escape')
   protected onEscape() {
+    if (this.disabled()) {
+      this.display.set(false);
+      return;
+    }
+
     if (!this.display()) {
       return;
     }

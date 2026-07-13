@@ -34,29 +34,32 @@
         </li>
       }
     </ul>
-    <button (click)="toggleDisplay()" [ngClass]="{isDisplay:display()}">
-      <inu-icon icon="chevron_down" [size]="1"></inu-icon>
-    </button>
+    @if(!this.disabled()){
+      <button (click)="toggleDisplay()" [ngClass]="{isDisplay:display()}">
+        <inu-icon icon="chevron_down" [size]="1"></inu-icon>
+      </button>
+    }
   </div>
-  <div class="inu-dropdown-values-grp"
-       [ngClass]="{display:display()}"
-       [style.width]="width()">
-    <inu-select-list #selectList
-                     [disabled]="disabled()"
-                     [displayFilter]="displayFilter()"
-                     [debounce]="debounce()"
-                     [labelFilter]="labelFilter()"
-                     [labelFilterKey]="labelFilterKey()"
-                     [multiSelect]="multiSelect()"
-                     [values]="values()"
-                     [matcher]="matcher()"
-                     [extractor]="extractor()"
-                     [initializer]="initializer()"
-                     [lazy]="lazy()"
-                     [loadingType]="loadingType()"
-                     [pageSize]="pageSize()"
-                     (changed)="onChanged($event)"
-                     (changedSelectItems)="onChangedSelectItems($event)">
-    </inu-select-list>
-  </div>
+    <div class="inu-dropdown-values-grp"
+         [ngClass]="{display:display()}"
+         [style.width]="width()">
+      <inu-select-list #selectList
+                       [disabled]="disabled()"
+                       [displayFilter]="displayFilter()"
+                       [debounce]="debounce()"
+                       [labelFilter]="labelFilter()"
+                       [labelFilterKey]="labelFilterKey()"
+                       [multiSelect]="multiSelect()"
+                       [values]="values()"
+                       [matcher]="matcher()"
+                       [extractor]="extractor()"
+                       [initializer]="initializer()"
+                       [lazy]="lazy()"
+                       [loadingType]="loadingType()"
+                       [pageSize]="pageSize()"
+                       (changed)="onChanged($event)"
+                       (changedSelectItems)="onChangedSelectItems($event)">
+      </inu-select-list>
+    </div>
+
 </div>

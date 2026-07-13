@@ -8,12 +8,12 @@ import {
 } from 'inugami-ng/components/inu-table-flex';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
-import {form, FormField, required,} from '@angular/forms/signals';
+import {disabled, form, FormField, required,} from '@angular/forms/signals';
 import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuDropdown} from 'inugami-ng/components/inu-dropdown';
 import {InuSelectItem, InuSelectItemExtractor, InuSelectItemMatcher} from 'inugami-ng/models'
 import {InugamiIconsSwitzerlandUtils, InuIcon, SWITZERLAND_CANTONS, SwitzerlandCanton} from 'inugami-icons'
-import {InugamiTemplateDirective} from 'inugami-ng/directives'
+import {InugamiTemplateDirective} from 'inugami-ng/directives';
 
 
 interface MyFormModel {
@@ -23,7 +23,7 @@ interface MyFormModel {
 @Component({
              templateUrl: './inu-dropdown.view.html',
              styleUrls  : ['./inu-dropdown.view.scss'],
-             imports: [
+             imports    : [
                InuTableFlex,
                InuTableFlexHeader,
                InuTableFlexRow,
@@ -38,7 +38,11 @@ interface MyFormModel {
              ]
            })
 export class InuDropdownView {
-
+  modeSignalType    = signal('ModelSignal<T[]>');
+  valuesType        = signal('InuSelectItem<T>[]');
+  searchType        = signal('SearchProvider<InuSelectListSearchRequest, T>');
+  eventChangedType  = signal('EventEmitter<T[]>');
+  eventSelectType   = signal('EventEmitter<T>');
   data              = signal<string>('');
   eventOnSelected   = signal<string>('');
   eventOnUnSelected = signal<string>('');
@@ -50,6 +54,13 @@ export class InuDropdownView {
 
   myForm = form(this.formModel, (path) => {
     required(path.cantons);
+  });
+
+  formModelDisabled         = signal<MyFormModel>({
+                                            cantons: ['GE', 'VD']
+                                          });
+  myFormDisabled = form(this.formModelDisabled, (path) => {
+    disabled(path.cantons);
   });
 
   cantons = computed<InuSelectItem<SwitzerlandCanton>[]>(() => SWITZERLAND_CANTONS
@@ -102,9 +113,10 @@ export class InuDropdownView {
   // GETTERS
   //==================================================================================================================
   protected getCantonIcon(id: string): string {
-    return InugamiIconsSwitzerlandUtils.getCanton(id??'ch').icon;
+    return InugamiIconsSwitzerlandUtils.getCanton(id ?? 'ch').icon;
   }
+
   protected getCantonTitle(id: string): string {
-    return InugamiIconsSwitzerlandUtils.getCanton(id??'ch').nameEn;
+    return InugamiIconsSwitzerlandUtils.getCanton(id ?? 'ch').nameEn;
   }
 }

@@ -12,6 +12,18 @@
     fill: var(--danger);
   }
 
+  &.disabled{
+    label{
+      color:var(--neutral);
+    }
+    .inu-dropdown-input-grp{
+      border-bottom: 2px solid var(--neutral-light) ;
+    }
+
+    .inu-dropdown-input-selected{
+      border: 0.125rem solid var(--neutral-light) !important;
+    }
+  }
   .inu-dropdown-label-label {
     display: flex;
     flex-direction: row;
@@ -58,9 +70,6 @@
       border-bottom: 2px solid var(--secondary-light);
     }
 
-    &.disabled {
-      border-bottom: 2px solid var(--neutral-light);
-    }
 
     .inu-dropdown-input-selected {
       border: 0.125rem solid var(--neutral);

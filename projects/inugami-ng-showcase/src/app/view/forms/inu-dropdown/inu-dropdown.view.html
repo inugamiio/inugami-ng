@@ -3,7 +3,11 @@
     <h1>Inugami-NG : inu-dropdown</h1>
 
     <p>
-
+      The <code>inu-dropdown</code> component is an extended, highly configurable dropdown menu designed for seamless
+      integration with
+      Angular Signals Forms (FormValueControl). It wraps an InuSelectList and supports single or multiple selection,
+      filtering, pagination, on-demand
+      loading (lazy loading), and graphic customization via templates.
     </p>
   </header>
 
@@ -32,7 +36,6 @@
                           [multiSelect]="true">
               <ng-template name="selectedValue" let-v>
                 <div class="item-canton">
-
                   <inu-icon [icon]="getCantonIcon(v.id)" [size]="1.5"></inu-icon>
                   <span>{{ v.title }}</span>
                 </div>
@@ -55,10 +58,59 @@
               </inu-panel-tab>
 
               <inu-panel-tab name="html" label="HTML">
-                <inu-code url="data/form/inu_driopdown_source_code.xml" tag="html"></inu-code>
+                <inu-code url="data/form/inu_dropdown_source_code.xml" tag="html"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
-                <inu-code url="data/form/inu_driopdown_source_code.xml" tag="ts"></inu-code>
+                <inu-code url="data/form/inu_dropdown_source_code.xml" tag="ts"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+    <!--================================================================================================================
+    = DISABLED
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example disabled</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p  form-line">
+
+            <inu-dropdown label="Cantons"
+                          [formField]="myFormDisabled.cantons"
+                          [values]="cantons()"
+                          [matcher]="matcher()"
+                          [extractor]="extractor()"
+                          (onSelected)="onSelected($event)"
+                          (onUnSelected)="onUnSelected($event)"
+                          [multiSelect]="true">
+              <ng-template name="selectedValue" let-v>
+                <div class="item-canton">
+                  <inu-icon [icon]="getCantonIcon(v.id)" [size]="1.5"></inu-icon>
+                  <span>{{ v.title }}</span>
+                </div>
+              </ng-template>
+            </inu-dropdown>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/form/inu_dropdown_source_code.xml" tag="disabledHtml"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/form/inu_dropdown_source_code.xml" tag="disabledTs"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -85,9 +137,145 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ modeSignalType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>[]</inu-table-flex-cell>
+          <inu-table-flex-cell>Two-way binding model containing the array of selected values.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
           <inu-table-flex-cell>boolean</inu-table-flex-cell>
           <inu-table-flex-cell>false</inu-table-flex-cell>
-          <inu-table-flex-cell>Two-way bindable model. Represents the checked (true) or unchecked (false) state.</inu-table-flex-cell>
+          <inu-table-flex-cell>Adds a mandatory visual indicator and configures form validity</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Disables the component and blocks interactions.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Plain text label for the dropdown.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Translation key passed to the inu-label dictionary component</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>multiSelect</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Allows selecting multiple items simultaneously</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>values</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ valuesType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>[]</inu-table-flex-cell>
+          <inu-table-flex-cell>Local static list of options to display</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>displayFilter</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Shows or hides the search bar inside the dropdown panel.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelFilter</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>Filter</inu-table-flex-cell>
+          <inu-table-flex-cell>Text label for the search field.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelFilterKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>filter</inu-table-flex-cell>
+          <inu-table-flex-cell>Translation key for the search field.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>debounce</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>Wait time (ms) before applying the search filter.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>pageSize</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>10</inu-table-flex-cell>
+          <inu-table-flex-cell>Number of items displayed per page in the list sub-component</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>loadingType</inu-table-flex-cell>
+          <inu-table-flex-cell>LoadingType('default' | 'circle')</inu-table-flex-cell>
+          <inu-table-flex-cell>default</inu-table-flex-cell>
+          <inu-table-flex-cell>Style of the loading indicator (inu-loading)</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>lazy</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ searchType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Asynchronous data provider for on-demand loading (API/Backend)</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>matcher</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemMatcher</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Optional function to customize element comparison logic.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>extractor</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemExtractor</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Optional function to extract the real value from an InuSelectItem object.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>initializer</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemInitializer</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Function to convert a raw value into a structured InuSelectItem object.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changed</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventChangedType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the new array of selected values whenever a change occurs.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>onSelected</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventSelectType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the specific value that was just selected.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>onUnSelected</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventSelectType }}</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the specific value that was just unselected.</inu-table-flex-cell>
         </inu-table-flex-row>
 
 
