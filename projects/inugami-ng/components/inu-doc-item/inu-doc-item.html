@@ -11,7 +11,7 @@
           @if(data()?.level==1){
             <h1 class="title">{{data()?.title}}</h1>
           }
-          @if(data()?.level==2){
+          @else if(data()?.level==2){
             <h2 class="title">{{data()?.title}}</h2>
           }
           @else if (data()?.level==3) {
@@ -23,7 +23,7 @@
           @else if (data()?.level==5) {
             <h5 class="title">{{data()?.title}}</h5>
           }
-          @else {
+          @else if (data()?.level??0 >5) {
             <h6 class="title">{{data()?.title}}</h6>
           }
           <div class="anchor-icon">

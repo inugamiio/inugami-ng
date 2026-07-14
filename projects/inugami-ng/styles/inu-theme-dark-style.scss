@@ -1,0 +1,88 @@
+/**
+* INUGAMI-NG DARK MODE
+*/
+html[data-theme="dark"] {
+  --main-header-title-color: #efefef;
+  --main-header-title-background: #202021;
+  --background-color: #151517;
+  --background-color-transparent: rgba(35, 34, 34, 0.75);
+  --shadow-color: #262626;
+  --text-color-light: #3a3a3a;
+  --text-color: #e7e7e7;
+  --primary-dark: #b20505;
+  --primary: #cc0000;
+  --primary-light: #afcf2c;
+  --secondary-dark-extra: #0a203d;
+  --secondary-dark: #1b3c67;
+  --secondary: #1f5294;
+  --secondary-light: #2c73cf;
+  --secondary-light-extra: #1b5bc3;
+  --neutral-light-extra-plus: #191a1c;
+  --neutral-light-extra: #2b2d30;
+  --neutral-light: #404142;
+  --neutral-dark: #f0f0f5;
+  --neutral-dark-extra: #fbfbfe;
+  --neutral: #eff3f7;
+  --info: #1f5294;
+  --info-light: #6094d7;
+  --success-dark: #0f621d;
+  --success: #1f812f;
+  --success-light-extra: #007b00;
+  --success-light: #4aa659;
+  --danger-dark: #6e1008;
+  --danger: #da4134;
+  --danger-light: #e5766c;
+  --danger-light-extra: #960b02;
+  --danger-light-extra-extra: #5e0700;
+  --warning-dark: #a8700f;
+  --warning: #efad32;
+  --warning-light: #e0b971;
+  --warning-light-extra: #9c6e01;
+  --background: #ffffff;
+  --endpoint-font-color: #3b4151;
+  --endpoint-verb-font-color: #3b4151;
+  --focus-dark-extra: #023267;
+  --focus-dark: #195ba6;
+  --focus: #3774b9;
+  --focus-light: #6299da;
+  --focus-light-extra: #9dc2f1;
+  /** GET---------------------------------------*/
+  --endpoint-get-background: #1c1a36;
+  --endpoint-get-background-darker: #7e75f3;
+  --endpoint-get-detail-background: #121124;
+
+  /** HEAD-------------------------------------*/
+  --endpoint-head-background: #24211a;
+  --endpoint-head-background-darker: #d0b25a;
+  --endpoint-head-detail-background: #161410;
+
+  /** POST---------------------------------------*/
+  --endpoint-post-background: #122516;
+  --endpoint-post-background-darker: #4ade80;
+  --endpoint-post-detail-background: #0b170e;
+
+  /** PUT----------------------------------------*/
+  --endpoint-put-background: #292216;
+  --endpoint-put-background-darker: #f59e0b;
+  --endpoint-put-detail-background: #1a150e;
+
+  /** PATCH-------------------------------------*/
+  --endpoint-patch-background: #112927;
+  --endpoint-patch-background-darker: #2dd4bf;
+  --endpoint-patch-detail-background: #0b1a19;
+
+  /** DELETE-----------------------------------*/
+  --endpoint-delete-background: #321614;
+  --endpoint-delete-background-darker: #f87171;
+  --endpoint-delete-detail-background: #1f0e0d;
+
+  /** OPTIONS----------------------------------*/
+  --endpoint-option-background: #321420;
+  --endpoint-option-background-darker: #f472b6;
+  --endpoint-option-detail-background: #1f0c14;
+
+  /** TRACE-----------------------------------*/
+  --endpoint-trace-background: #20242c;
+  --endpoint-trace-background-darker: #94a3b8;
+  --endpoint-trace-detail-background: #15181e;
+}

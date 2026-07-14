@@ -94,6 +94,11 @@ export class App implements OnInit {
                                                    path : '/icons',
                                                    icon : 'image'
                                                  },
+                                                 {
+                                                   title: 'Themes',
+                                                   path : '/themes',
+                                                   icon : 'layer'
+                                                 },
                                                  //--- ACTIONS ---------------------------------------------------------
                                                  {
                                                    title   : 'Actions',
@@ -206,6 +211,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-checkbox-group',
                                                            path : '/forms/inu-checkbox-group'
+                                                         },
+                                                         {
+                                                           title: 'inu-dropdown',
+                                                           path : '/forms/inu-dropdown'
                                                          },
                                                          {
                                                            title: 'inu-input-password',

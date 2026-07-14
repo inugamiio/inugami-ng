@@ -32,12 +32,14 @@ export class InuToggle implements FormValueControl<boolean> {
   changed                     = output<boolean>();
   // FormValueControl
   value: ModelSignal<boolean> = model(false);
+  isInvalid                   = computed(() => this._required() && !this.value());
   // internal
   _styleClass                 = computed<string>(() => [
     'inu-toggle',
     this.value() ? 'selected' : '',
     this.disabled() ? 'disabled' : '',
     this._required() ? 'required' : '',
+    this.isInvalid() ? 'invalid' : '',
     this.left() ? 'left' : '',
     this.type()
   ].join(' '));

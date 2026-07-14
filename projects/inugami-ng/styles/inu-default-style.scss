@@ -4,7 +4,17 @@
 @use 'inu-default-style-form';
 @use 'inu-default-style-flex';
 @use 'inu-default-style-svg';
+@use 'inu-theme-dark-style.scss';
 
+body{
+  background-color: var(--background-color);
+}
+svg{
+  fill:var(--text-color);
+}
+.inu-black{
+  fill:var(--text-color) !important;
+}
 .inu-red{
   fill: #cc0000ff ;
 }
@@ -16,6 +26,11 @@ table {
       border-bottom: 0.15rem solid var(--neutral-dark);
     }
   }
+}
+
+input{
+  background-color: var(--background-color);
+  color:var(--text-color);
 }
 figure {
   display: flex;
@@ -53,7 +68,7 @@ dl {
     font-weight: bold;
     color: var(--secondary);
     padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--shadow-color);
     &:hover {
       color: var(--primary); /* Ton rouge d'emphase à 3% */
     }
@@ -62,8 +77,8 @@ dl {
   dd {
     margin-left: 0;
     padding: 10px 0;
-    color: #333333;
-    border-bottom: 1px solid #f0f0f0;
+    color: var(--neutral-dark-extra);
+    border-bottom: 1px solid var(--shadow-color);
   }
 }
 

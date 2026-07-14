@@ -1,13 +1,13 @@
 import {
   AfterViewInit,
-  Component,
+  Component, computed,
   effect,
   ElementRef,
   input,
   model,
   ModelSignal,
   output,
-  signal,
+  signal, untracked,
   viewChildren
 } from '@angular/core';
 import {InuSelectItem, InuSelectItemMatcher} from 'inugami-ng/models';
@@ -15,12 +15,13 @@ import {FormValueControl} from '@angular/forms/signals';
 import {InuIcon} from 'inugami-icons';
 import {InuLabel} from 'inugami-ng/components/inu-label';
 import {InuToolTips} from 'inugami-ng/components/inu-tool-tips'
+import {JsonPipe} from '@angular/common'
 
 @Component({
              selector   : 'inu-radio-group',
              standalone : true,
              providers  : [],
-             imports    : [InuIcon, InuLabel, InuToolTips],
+             imports    : [InuIcon, InuLabel, InuToolTips, JsonPipe],
              templateUrl: './inu-radio-group.component.html',
              styleUrl   : './inu-radio-group.component.scss',
            })
@@ -46,7 +47,19 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
   value: ModelSignal<T | undefined> = model<T | undefined>(undefined);
   _values                           = signal<InuSelectItem<T>[]>([]);
   // internal
-  styleClass                        = signal<string>('');
+
+  styleClass = computed<string>(() => {
+                                  //const isValid = untracked(() => this.valid());
+                                  return [
+                                    'inu-radio-group',
+                                    //!isValid ? 'notValid' : '',
+                                  //  this.vertical() ? 'vertical' : '',
+                                  //  this.disabled() ? 'disabled' : '',
+                                  //  this._required() ? 'required' : ''
+                                  ]
+                                    .join(' ')
+                                }
+  );
 
 
   //==================================================================================================================
@@ -55,7 +68,6 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
 
   constructor() {
     effect(() => {
-      this.initStyleClass();
     });
   }
 
@@ -69,59 +81,23 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
       return;
     }
 
+
     const result: InuSelectItem<T>[] = [];
     for (let item of values) {
       const newItem    = Object.assign({}, item);
       newItem.selected = false;
       result.push(newItem);
     }
-    const currentValue = this.getValue();
-    if (!currentValue) {
-      return;
-    }
-
-
-    for (let resultItem of result) {
-      if (this.match(currentValue, resultItem)) {
-        resultItem.selected = true;
-        break;
-      }
-    }
-
     this._values.set(result);
-    this.sendChanged();
-  }
-
-  private initStyleClass() {
-    const result: string[] = ['inu-radio-group'];
-    if (this.vertical()) {
-      result.push('vertical');
-    }
-    if (this._required()) {
-      result.push('required');
-    }
-    if (this.disabled()) {
-      result.push('disabled');
-    }
-
-    if (this._required()) {
-      const values = this._values();
-      let found    = false;
-
-      if (values) {
-        for (let value of values) {
-          found = value.selected != undefined && value.selected;
-          if (found) {
-            break;
-          }
+    const currentValue = this.getValue();
+    if (currentValue) {
+      for (let resultItem of result) {
+        if (this.match(currentValue, resultItem)) {
+          resultItem.selected = true;
+          break;
         }
       }
-      if (!found) {
-        result.push('notValid');
-      }
     }
-
-    this.styleClass.set(result.join(' '));
   }
 
 
@@ -142,6 +118,9 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
 
 
   private sendChanged() {
+    if (this.disabled()) {
+      return;
+    }
     let newSelectedValues: T | undefined = undefined;
     const currentValues                  = this._values();
     if (currentValues) {
@@ -153,8 +132,6 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
       }
       this.value.set(newSelectedValues);
     }
-
-    this.initStyleClass();
     this.changed.emit(newSelectedValues);
   }
 
@@ -233,4 +210,12 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
   }
 
 
+  private valid(): boolean {
+    if (!this._required()) {
+      return true;
+    }
+    const values          = this._values();
+    const selectedElement = values.find((v) => v.selected);
+    return selectedElement != undefined && selectedElement != null;
+  }
 }

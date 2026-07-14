@@ -27,7 +27,7 @@
         @if(_value()?.paths){
           @for (endpoint of _value()?.paths;track endpoint.uri;) {
             <inu-open-api-endpoint [data]="endpoint"
-                                   [filter]="filter.observable()"
+                                   [filter]="filter()"
                                    [schemas]="_value()?.components?.schemas"></inu-open-api-endpoint>
           }
         }

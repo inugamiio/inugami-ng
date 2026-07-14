@@ -8,7 +8,7 @@ import {
   model,
   ModelSignal,
   output,
-  signal
+  signal, TemplateRef
 } from '@angular/core';
 import {
   InuSelectItem,
@@ -70,11 +70,13 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
   //
   registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
   //
-  itemTemplate                         = computed(() => this.registry.getTemplate('item'));
+  itemTemplate                         = signal<TemplateRef<any> | undefined>(undefined);
   //
   changed                              = output<T[]>();
+  changedSelectItems                   = output<InuSelectItem<T>[]>();
   onSelected                           = output<T>();
   onUnSelected                         = output<T>();
+  onValidityChanged                    = output<boolean>();
 
   // FormValueControl
 
@@ -112,6 +114,7 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
   );
   page                    = signal<number>(0);
   _pageSize               = signal<number>(10);
+  previousValidity        = signal<boolean | undefined>(undefined);
   request                 = computed<InuSelectListSearchRequest>(() => <InuSelectListSearchRequest>{
     page     : this.page(),
     pageSize : this._pageSize(),
@@ -133,6 +136,10 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => this.sendChanged());
+
+    if (!this.itemTemplate()) {
+      this.itemTemplate.set(this.registry.getTemplate('item'));
+    }
 
 
     this.preloadSelectedValueForLazy();
@@ -291,13 +298,15 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
 
 
   private sendChanged() {
-    const newSelectedValues: T[] = [];
-    const selected               = this.selected();
-    const keys                   = Object.keys(selected);
+    const selectItems: InuSelectItem<T>[] = [];
+    const newSelectedValues: T[]          = [];
+    const selected                        = this.selected();
+    const keys                            = Object.keys(selected);
     keys.sort();
 
     if (keys.length > 0) {
       for (let key of keys) {
+        selectItems.push(selected[key]);
         const selectedValue = this.getExtractor()(selected[key]);
         if (selectedValue) {
           newSelectedValues.push(selectedValue);
@@ -308,6 +317,7 @@ export class InuSelectList<T> implements FormValueControl<T[]>, AfterViewInit {
     this.value.set(newSelectedValues);
     this.nbSelected.set(keys.length);
     this.changed.emit(newSelectedValues);
+    this.changedSelectItems.emit(selectItems);
   }
 
   protected onPaginatorChanged(event: SearchRequest) {
