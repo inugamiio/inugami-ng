@@ -49,13 +49,13 @@ export class InuRadioGroup<T> implements FormValueControl<T | undefined>, AfterV
   // internal
 
   styleClass = computed<string>(() => {
-                                  //const isValid = untracked(() => this.valid());
+                                  const isValid = untracked(() => this.valid());
                                   return [
                                     'inu-radio-group',
-                                    //!isValid ? 'notValid' : '',
-                                  //  this.vertical() ? 'vertical' : '',
-                                  //  this.disabled() ? 'disabled' : '',
-                                  //  this._required() ? 'required' : ''
+                                    !isValid ? 'notValid' : '',
+                                    this.vertical() ? 'vertical' : '',
+                                    this.disabled() ? 'disabled' : '',
+                                    this._required() ? 'required' : ''
                                   ]
                                     .join(' ')
                                 }
