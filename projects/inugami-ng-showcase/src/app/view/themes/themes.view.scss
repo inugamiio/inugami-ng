@@ -1,1 +1,49 @@
 /**/
+section {
+  header {
+    margin-bottom: 2rem;
+  }
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.list-in-line {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 1rem;
+}
+
+.block-in-line {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.loading-blocks {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  flex-wrap: wrap;
+
+
+  .loading-block {
+    min-width: 9rem;
+    max-width: 15rem;
+    border: 1px solid var(--neutral);
+  }
+
+
+}
+
+.item-canton{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}

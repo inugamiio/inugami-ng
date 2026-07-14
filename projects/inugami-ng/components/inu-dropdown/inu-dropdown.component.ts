@@ -40,6 +40,7 @@ import {InuTemplateRegistryService} from 'inugami-ng/directives'
                NgClass,
                NgTemplateOutlet
              ],
+             providers: [InuTemplateRegistryService],
              templateUrl: './inu-dropdown.component.html',
              styleUrl   : './inu-dropdown.component.scss',
            })

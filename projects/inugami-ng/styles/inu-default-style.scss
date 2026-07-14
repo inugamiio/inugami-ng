@@ -4,6 +4,7 @@
 @use 'inu-default-style-form';
 @use 'inu-default-style-flex';
 @use 'inu-default-style-svg';
+@use 'inu-theme-dark-style.scss';
 
 body{
   background-color: var(--background-color);
@@ -25,6 +26,11 @@ table {
       border-bottom: 0.15rem solid var(--neutral-dark);
     }
   }
+}
+
+input{
+  background-color: var(--background-color);
+  color:var(--text-color);
 }
 figure {
   display: flex;

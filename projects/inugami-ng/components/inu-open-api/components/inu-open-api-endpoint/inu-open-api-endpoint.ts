@@ -29,7 +29,7 @@ export class InuOpenApiEndpoint {
   //==================================================================================================================
   data                                                              = input<OpenApiPathEndpoint | undefined | null>(undefined);
   schemas                                                           = input<OpenApiComponentSchema[] | undefined | null>(null);
-  filter                                                            = input<Observable<OpenApiFilter> | undefined>(undefined);
+  filter                                                            = input<OpenApiFilter | undefined>(undefined);
   styleClass: WritableSignal<string>                                = signal('');
   display: WritableSignal<string>                                   = signal('inu-open-api-endpoint-content-display hidden');
   matchFilter                                                       = signal<boolean>(true);
@@ -48,11 +48,10 @@ export class InuOpenApiEndpoint {
   constructor() {
     effect(() => {
       this.init();
-      this.filter()?.subscribe({
-                                 next: filter => {
-                                   this.resolveMatchFilter(filter)
-                                 }
-                               });
+      const filter = this.filter();
+      if(filter){
+        this.resolveMatchFilter(filter);
+      }
     });
 
   }

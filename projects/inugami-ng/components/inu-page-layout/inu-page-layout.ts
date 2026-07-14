@@ -7,7 +7,7 @@ import {NgTemplateOutlet} from '@angular/common'
 @Component({
              selector   : 'inu-page-layout',
              standalone : true,
-             providers  : [InuTemplateRegistryService],
+             providers: [InuTemplateRegistryService],
              imports: [InuAsideMenu, NgTemplateOutlet],
              templateUrl: './inu-page-layout.html',
              styleUrl   : './inu-page-layout.scss',

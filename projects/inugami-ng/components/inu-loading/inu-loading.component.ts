@@ -17,7 +17,7 @@ export type LoadingType = 'default' | 'circle';
 @Component({
              selector   : 'inu-loading',
              standalone : true,
-             providers  : [InuTemplateRegistryService],
+             providers: [InuTemplateRegistryService],
              imports    : [
                NgTemplateOutlet
              ],
@@ -43,6 +43,7 @@ export class InuLoading implements AfterViewInit {
     this.styleClass(),
     this.type()
   ].join(' '));
+  initialized                          = signal<boolean>(false);
   parentWidth                          = signal<string>('0px');
   parentHeight                         = signal<string>('0px');
   parentTop                            = signal<string>('0px');
@@ -71,6 +72,7 @@ export class InuLoading implements AfterViewInit {
       this.parentTop.set(`${rect.top + window.scrollY + this.offsetY()}px`);
       this.parentLeft.set(`${rect.left + window.scrollX + this.offsetX()}px`);
     }
+
   }
 
 //====================================================================================================================
@@ -78,6 +80,11 @@ export class InuLoading implements AfterViewInit {
   //====================================================================================================================
   @HostListener('window:resize')
   onResize() {
+    this.resize();
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  protected onWindowScroll(event: Event) {
     this.resize();
   }
 }

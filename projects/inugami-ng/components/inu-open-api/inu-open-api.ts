@@ -35,7 +35,7 @@ export class InuOpenApi {
   private readonly inuOpenApiService = inject(InuOpenApiServices);
 
   _value: WritableSignal<OpenApi | null> = signal<OpenApi | null>(null);
-  filter                                = new ObservableSubscriber<OpenApiFilter>();
+  filter                                 = signal<OpenApiFilter | undefined>(undefined);
   //====================================================================================================================
   // INITIALIZE
   //====================================================================================================================
@@ -146,6 +146,6 @@ export class InuOpenApi {
 
 
   protected onFilterChanged(event: OpenApiFilter) {
-    this.filter.next(event);
+    this.filter.set(event);
   }
 }

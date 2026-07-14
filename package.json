@@ -20,7 +20,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start": "ng serve --port 4300",
-    "compile-css": "sh compile-css.sh"
+    "compile-css": "sass projects/inugami-ng/styles/inu-default-style.scss dist/inugami-ng/styles/inu-default-style.css --no-source-map --style=compressed"
   },
   "prettier": {
     "printWidth": 100,

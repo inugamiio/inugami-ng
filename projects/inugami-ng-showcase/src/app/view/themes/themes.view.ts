@@ -1,19 +1,95 @@
-import {Component, DOCUMENT, inject, signal} from '@angular/core';
+import {Component, computed, DOCUMENT, inject, signal, viewChildren} from '@angular/core';
 import {InuDropdown} from 'inugami-ng/components/inu-dropdown';
-import {InuSelectItem} from 'inugami-ng/models'
+import {InuSelectItem, InuSelectItemExtractor, InuSelectItemMatcher, SvgLayerDTO} from 'inugami-ng/models'
 import {InuFormsUtils} from 'inugami-ng/utils'
-import {form, FormField} from '@angular/forms/signals'
+import {disabled, form, FormField, required} from '@angular/forms/signals'
+import {BUTTON_TYPES, InuButton} from 'inugami-ng/components/inu-button';
+import {InuToastServices} from 'inugami-ng/components/inu-toast';
+import {InuCopy} from 'inugami-ng/components/inu-copy'
+import {CITE_LEVELS, InuCite} from 'inugami-ng/components/inu-cite'
+import {InuCode} from 'inugami-ng/components/inu-code';
+import {InuDocItem, InuDocSummary} from 'inugami-ng/components/inu-doc-item';
+import {InuLoading} from 'inugami-ng/components/inu-loading'
+import {InuOpenApi} from 'inugami-ng/components/inu-open-api'
+import {InugamiTemplateDirective} from 'inugami-ng/directives'
+import {InuPanel} from 'inugami-ng/components/inu-panel';
+import {InuPanelTab, InuPanelTabs} from "inugami-ng/components/inu-panel-tabs";
+import {InuProgress} from 'inugami-ng/components/inu-progress';
+import {InuToolTips} from 'inugami-ng/components/inu-tool-tips';
+import {InugamiIconsSwitzerlandUtils, InuIcon, SWITZERLAND_CANTONS, SwitzerlandCanton} from 'inugami-icons'
+import {InuCheckboxGroup} from "inugami-ng/components/inu-checkbox-group";
+import {InuInputText} from 'inugami-ng/components/inu-input-text';
+import {InuInputPassword} from 'inugami-ng/components/inu-input-password';
+import {InuRadioGroup} from "inugami-ng/components/inu-radio-group";
+import {InuSelectList} from 'inugami-ng/components/inu-select-list';
+import {InuToggle} from 'inugami-ng/components/inu-toggle';
+import {
+  InuTableFlex,
+  InuTableFlexCell,
+  InuTableFlexHeader,
+  InuTableFlexRow
+} from 'inugami-ng/components/inu-table-flex';
+import {InuSvgSwitzerland} from 'inugami-ng/components/inu-svg-switzerland';
+import {InuSvgIsometric} from 'inugami-ng/components/inu-svg-isometric';
 
 interface ThemeModel {
   themes: string[];
 }
 
+interface MyFormModel {
+  verb: string[];
+  verbRequired: string[];
+  verbDisabled: string[];
+  cantons: string[];
+  login: string;
+  password: string;
+  value: string;
+  passphrase: string;
+  sms: boolean;
+  email: boolean;
+  mail: boolean;
+  inApp: boolean;
+}
+
+
+interface IsometricFormModel {
+  layers: SvgLayerDTO[];
+}
+
 @Component({
              templateUrl: './themes.view.html',
              styleUrls  : ['./themes.view.scss'],
-             imports    : [
+             imports: [
                InuDropdown,
-               FormField
+               FormField,
+               InuButton,
+               InuCopy,
+               InuCite,
+               InuCode,
+               InuDocItem,
+               InuDocSummary,
+               InuLoading,
+               InuOpenApi,
+               InuOpenApi,
+               InuPanel,
+               InugamiTemplateDirective,
+               InuPanelTab,
+               InuPanelTabs,
+               InuProgress,
+               InuToolTips,
+               InuIcon,
+               InuCheckboxGroup,
+               InuInputText,
+               InuInputPassword,
+               InuRadioGroup,
+               InuSelectList,
+               InuToggle,
+               InuTableFlex,
+               InuTableFlexCell,
+               InuTableFlexHeader,
+               InuTableFlexRow,
+               InuSvgSwitzerland,
+               InuSvgIsometric
              ]
            })
 export class ThemesView {
@@ -22,16 +98,139 @@ export class ThemesView {
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  private document  = inject(DOCUMENT);
-  formModel         = signal<ThemeModel>({
-                                           themes: ['default']
-                                         });
+  private document    = inject(DOCUMENT);
+  toastServices       = inject(InuToastServices);
+  readonly buttonType = signal<string[]>(BUTTON_TYPES);
+  readonly citeLevels = signal<string[]>(CITE_LEVELS);
+  readonly children   = viewChildren(InuDocItem);
+  progressValue       = signal<number>(0.5);
+  loading             = signal<boolean>(true);
+  extractor           = signal<InuSelectItemExtractor | undefined>(undefined);
+  matcher             = signal<InuSelectItemMatcher | undefined>(undefined);
+
+
+  formModel = signal<ThemeModel>({
+                                   themes: ['default']
+                                 });
+
+
   themeForm         = form(this.formModel, (path) => {
   });
   themesSelectItems = signal<InuSelectItem<string>[]>([
                                                         {title: 'Default', id: 'default', value: 'default'},
                                                         {title: 'Dark', id: 'dark', value: 'dark'}
                                                       ]);
+
+  verbs = computed<InuSelectItem<string>[]>(() => [
+    {id: 'GET', value: 'GET', title: 'GET', styleClass: 'verb-get', tooltips: 'Read'},
+    {id: 'POST', value: 'POST', title: 'POST', styleClass: 'verb-post', tooltips: 'Write, adding new value'},
+    {id: 'PUT', value: 'PUT', title: 'PUT', styleClass: 'verb-put', tooltips: 'Updating value'}
+  ]);
+
+  cantons = computed<InuSelectItem<SwitzerlandCanton>[]>(() => SWITZERLAND_CANTONS
+    .filter(c => c.code != 'ch')
+    .map(c => <InuSelectItem<SwitzerlandCanton>>{
+      id   : c.code,
+      title: c.nameEn,
+      value: c
+    }));
+
+  myFormModel = signal<MyFormModel>({
+                                      verb        : ['GET', 'PUT'],
+                                      verbRequired: [],
+                                      verbDisabled: ['GET', 'PUT'],
+                                      cantons     : ['GE', 'VD'],
+                                      login       : '',
+                                      password    : '',
+                                      value       : 'some value',
+                                      passphrase  : 'some passphrase',
+                                      sms         : false,
+                                      email       : true,
+                                      inApp       : false,
+                                      mail        : false
+                                    });
+
+  myForm = form(this.myFormModel, (path) => {
+    required(path.verbRequired);
+    required(path.login);
+    required(path.password);
+    required(path.email);
+    //
+    disabled(path.verbDisabled);
+    disabled(path.value);
+    disabled(path.passphrase);
+    disabled(path.sms);
+  });
+
+  isometricModel                      = signal<IsometricFormModel>({
+                                                         layers: [
+                                                           {
+                                                             name   : 'root',
+                                                             asserts: [
+                                                               {
+                                                                 name     : 'desktop_1',
+                                                                 assetSet : 'isometric',
+                                                                 assetName: 'desktop',
+                                                                 x        : 0,
+                                                                 y        : 0,
+                                                                 size     : 2,
+                                                                 title    : 'Desktop'
+                                                               },
+                                                               {
+                                                                 name     : 'desktop_2',
+                                                                 assetSet : 'isometric',
+                                                                 assetName: 'desktop',
+                                                                 type     : '90',
+                                                                 x        : 200,
+                                                                 y        : 100,
+                                                                 size     : 2,
+                                                                 title    : 'Desktop 2'
+                                                               },
+                                                               {
+                                                                 name     : 'box_1',
+                                                                 assetSet : 'isometric',
+                                                                 assetName: 'box',
+                                                                 x        : -100,
+                                                                 y        : -100,
+                                                                 size     : 2,
+                                                                 title    : 'Box 1'
+                                                               },
+                                                               {
+                                                                 name     : 'router_1',
+                                                                 assetSet : 'isometric',
+                                                                 assetName: 'router',
+                                                                 type     : '90',
+                                                                 x        : -300,
+                                                                 y        : 0,
+                                                                 size     : 2,
+                                                                 title    : 'router 1'
+                                                               },
+                                                               {
+                                                                 name     : 'router_2',
+                                                                 title    : 'router 2',
+                                                                 assetSet : 'isometric',
+                                                                 assetName: 'router',
+                                                                 type     : '90',
+                                                                 x        : -200,
+                                                                 y        : 100,
+                                                                 size     : 2
+                                                               },
+                                                               {
+                                                                 name     : 'router_3',
+                                                                 title    : 'router 3',
+                                                                 assetSet : 'isometric',
+                                                                 assetName: 'router',
+                                                                 type     : 'default',
+                                                                 x        : 50,
+                                                                 y        : 200,
+                                                                 size     : 1
+                                                               }
+                                                             ]
+                                                           }
+                                                         ]
+                                                       });
+  isometricForm = form(this.isometricModel, (path) => {
+  });
 
   //==================================================================================================================
   // INIT
@@ -42,6 +241,13 @@ export class ThemesView {
       .subscribe(value => {
         this.onThemeChanged(value)
       });
+    setInterval(() => this.updateProgressValue(), 1000);
+    this.matcher.set((selectItem, value) => {
+      return selectItem.id.toUpperCase() == value ? selectItem : undefined;
+    });
+    this.extractor.set((v) => {
+      return v.id.toUpperCase();
+    });
   }
 
   private onThemeChanged(value: ThemeModel) {
@@ -49,5 +255,70 @@ export class ThemesView {
     const theme   = value.themes.find(() => true);
     htmlTag.removeAttribute('data-theme');
     htmlTag.setAttribute('data-theme', theme ?? 'default');
+  }
+
+  //==================================================================================================================
+  // BUTTONS
+  //==================================================================================================================
+  protected addMessage(type: string) {
+    this.toastServices.addMessage({
+                                    title  : 'Hello',
+                                    message: 'some message',
+                                    level  : this.resolveLevel(type),
+                                    icon   : 'idea'
+                                  })
+  }
+
+  protected resolveButtonIcon(type: string) {
+    switch (type) {
+      case 'success':
+        return 'approval';
+      case 'primary':
+        return 'check';
+      case 'secondary':
+        return 'download';
+      case 'warn':
+        return 'warning';
+      case 'danger':
+        return 'danger';
+      case 'error':
+        return 'bug';
+      default:
+        return 'bug';
+    }
+  }
+
+  private resolveLevel(type: string) {
+    switch (type) {
+      case 'success':
+        return 'success';
+      case 'primary':
+        return 'info';
+      case 'secondary':
+        return 'debug';
+      case 'warn':
+        return 'warn';
+      default:
+        return 'error';
+    }
+  }
+
+  //==================================================================================================================
+  // PROGRESS
+  //==================================================================================================================
+  private updateProgressValue() {
+
+    let value = this.progressValue() + 0.1;
+    if (value >= 1) {
+      value = 0;
+    }
+    this.progressValue.set(value);
+  }
+
+  //==================================================================================================================
+  // DROPDOWN
+  //==================================================================================================================
+  protected getCantonIcon(id: string): string {
+    return InugamiIconsSwitzerlandUtils.getCanton(id ?? 'ch').icon;
   }
 }
