@@ -42,10 +42,10 @@ interface MyFormModel {
 export class InuMultiStateView {
   matcher                  = signal<InuSelectItemMatcher | undefined>(undefined);
   data                     = signal<string>('');
-  formModel                = signal<MyFormModel>({
-                                                   logLevels: ['info', 'warn'],
-                                                   logLevel : 'info'
-                                                 });
+    formModel                = signal<MyFormModel>({
+                                                     logLevels: ['info', 'warn'],
+                                                     logLevel : 'info'
+                                                   });
   logLevelSelectItemsBasic = signal<InuSelectItem<string>[]>([
                                                                {
                                                                  id   : 'debug',
@@ -97,7 +97,7 @@ export class InuMultiStateView {
                                                         ]);
 
   myForm = form(this.formModel, (path) => {
-    required(path.logLevels);
+   // required(path.logLevels);
   });
 
 

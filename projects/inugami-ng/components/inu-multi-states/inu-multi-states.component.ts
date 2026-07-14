@@ -6,11 +6,11 @@ import {
   inject,
   input,
   model,
-  ModelSignal,
+  ModelSignal, OnInit,
   output,
   signal
 } from '@angular/core';
-import {FormValueControl} from '@angular/forms/signals'
+import {FormField, FormValueControl} from '@angular/forms/signals'
 import {InuSelectItem, InuSelectItemMatcher} from 'inugami-ng/models'
 import {NgClass, NgTemplateOutlet} from '@angular/common'
 import {InuTemplateRegistryService} from 'inugami-ng/directives'
@@ -19,7 +19,7 @@ import {InuTemplateRegistryService} from 'inugami-ng/directives'
 @Component({
              selector   : 'inu-multi-states',
              standalone : true,
-             imports: [
+             imports    : [
                NgClass,
                NgTemplateOutlet
              ],
@@ -27,24 +27,25 @@ import {InuTemplateRegistryService} from 'inugami-ng/directives'
              templateUrl: './inu-multi-states.component.html',
              styleUrl   : './inu-multi-states.component.scss',
            })
-class InuMultiStates<T> implements FormValueControl<T[] | T | undefined>, AfterViewInit {
+class InuMultiStates<T> implements FormValueControl<T[] | T | null>, OnInit {
   //====================================================================================================================
   // ATTRIBUTES
   //====================================================================================================================
   // input
-  readonly disabled  = input(false);
-  readonly label     = input('');
-  readonly labelKey  = input('');
-  readonly _required = input(false, {alias: 'required'});
-  readonly values    = input<InuSelectItem<T>[]>([]);
-  readonly multi     = input(true);
-  readonly matcher   = input<InuSelectItemMatcher | undefined>(undefined);
+  protected readonly formField = inject(FormField, {optional: true});
+  readonly disabled            = input(false);
+  readonly label               = input('');
+  readonly labelKey            = input('');
+  readonly _required           = input(false, {alias: 'required'});
+  readonly values              = input<InuSelectItem<T>[]>([]);
+  readonly multi               = input(true);
+  readonly matcher             = input<InuSelectItemMatcher | undefined>(undefined);
 
   // output
   changed                                 = output<T[]>();
   changedSelectItems                      = output<InuSelectItem<T>[]>();
   // FormValueControl
-  value: ModelSignal<T[] | T | undefined> = model<T[] | T | undefined>(undefined);
+  value: ModelSignal<T[] | T | null> = model<T[] | T | null>(null);
   // inject
   registry: InuTemplateRegistryService    = inject(InuTemplateRegistryService);
   itemTemplate                            = computed(() => this.registry.getTemplate('item'));
@@ -67,7 +68,7 @@ class InuMultiStates<T> implements FormValueControl<T[] | T | undefined>, AfterV
   //====================================================================================================================
   // INIT
   //====================================================================================================================
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.initValues();
   }
 
@@ -117,21 +118,32 @@ class InuMultiStates<T> implements FormValueControl<T[] | T | undefined>, AfterV
   //====================================================================================================================
   // ACTIONS
   //====================================================================================================================
-  protected toggleSelection(selectItem: InuSelectItem<T>) {
+  protected toggleSelection(selectItem: InuSelectItem<T>, id: string) {
     if (this.disabled() || selectItem.disabled) {
       return;
     }
 
 
     if (!this.multi()) {
+      const currentSelected = this.value();
       this.unSelectAll();
+      if (currentSelected == id) {
+        selectItem.selected = false;
+      } else {
+        selectItem.selected = !selectItem.selected;
+      }
+    } else {
+      selectItem.selected = !selectItem.selected;
     }
-    selectItem.selected = !selectItem.selected;
+
+
     this.sendChanged();
   }
 
   private unSelectAll() {
-    this.data().forEach(s => s.selected = false);
+    for (let item of this.data()) {
+      item.selected = false;
+    }
   }
 
   //====================================================================================================================
@@ -145,7 +157,7 @@ class InuMultiStates<T> implements FormValueControl<T[] | T | undefined>, AfterV
       if (currentValues.length > 0) {
         this.value.set(currentValues[0]);
       } else {
-        this.value.set(undefined);
+        this.value.set(null);
       }
     }
 

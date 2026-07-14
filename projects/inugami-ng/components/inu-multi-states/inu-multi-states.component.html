@@ -6,7 +6,7 @@
       @for (selectItem of data(); track selectItem.id; let i = $index) {
         <li [class]="computeItemStyleClass(selectItem)"
             [ngClass]="{selected:selectItem.selected}"
-            (click)="toggleSelection(selectItem)">
+            (click)="toggleSelection(selectItem, selectItem.id)">
 
           <div class="inu-multi-states-item-content">
             @if (itemTemplate()) {
