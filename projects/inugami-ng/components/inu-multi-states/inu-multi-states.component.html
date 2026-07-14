@@ -1,0 +1,25 @@
+<div [class]="_styleClass()">
+
+  @if (data().length > 0) {
+    <ul>
+      <li class="inu-multi-states-item first-item"></li>
+      @for (selectItem of data(); track selectItem.id; let i = $index) {
+        <li [class]="computeItemStyleClass(selectItem)"
+            [ngClass]="{selected:selectItem.selected}"
+            (click)="toggleSelection(selectItem)">
+
+          <div class="inu-multi-states-item-content">
+            @if (itemTemplate()) {
+              <ng-container
+                *ngTemplateOutlet="itemTemplate(); context: { $implicit: selectItem, index: i}"></ng-container>
+            } @else {
+              {{ selectItem.title }}
+            }
+          </div>
+
+        </li>
+      }
+      <li class="inu-multi-states-item last-item"></li>
+    </ul>
+  }
+</div>

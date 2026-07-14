@@ -1,0 +1,54 @@
+.inu-multi-states {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  ul {
+    user-select: none;
+    outline: none;
+    height: 2rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    list-style: none;
+    align-items: end;
+    width: 100%;
+    li {
+      cursor: pointer;
+      padding: 0rem;
+      height: 1rem;
+      display: flex;
+      width: 100%;
+      background-color: var(--neutral-light);
+      justify-content: center;
+      font-size: 80%;
+      transition: height 250ms, font-size 250ms, background-color 250ms,color 250ms;
+      .inu-multi-states-item-content {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+      }
+
+      &.first-item,
+      &.last-item{
+        width: 4rem;
+      }
+
+      &.selected{
+        height: 2rem;
+        font-size: 100%;
+        background-color: var(--secondary);
+        color: var(--text-color-light);
+      }
+      &:hover{
+        height: 1.5rem;
+        background-color: var(--focus);
+        color: var(--focus-light-extra);
+      }
+
+      &:disabled{
+        background-color: var(--neutral);
+        color: var(--neutral-light);
+      }
+    }
+  }
+}

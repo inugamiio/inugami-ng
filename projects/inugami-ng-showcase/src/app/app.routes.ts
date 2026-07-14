@@ -35,6 +35,7 @@ import {InuLoadingView} from './view/display/inu-loading/inu-loading.view'
 import {InuToggleView} from './view/forms/inu-toggle/inu-toggel.view'
 import {InuDropdownView} from './view/forms/inu-dropdown/inu-dropdown.view'
 import {ThemesView} from './view/themes/themes.view'
+import {InuMultiStateView} from './view/forms/inu-multi-states/inu-multi-states.view'
 
 
 export const routes: Routes = [
@@ -77,6 +78,7 @@ export const routes: Routes = [
       {path: "inu-dropdown", component: InuDropdownView},
       {path: "inu-input-password", component: InuInputPasswordView},
       {path: "inu-input-text", component: InuInputTextView},
+      {path: "inu-multi-states", component: InuMultiStateView},
       {path: "inu-radio-group", component: InuRadioGroupView},
       {path: "inu-select-list", component: InuSelectListView},
       {path: "inu-toggle", component: InuToggleView}

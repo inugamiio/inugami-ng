@@ -1,0 +1,210 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-multi-states</h1>
+
+    <p>
+    </p>
+  </header>
+
+
+  <main>
+    <!--================================================================================================================
+    = DEFAULT
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example default</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p  form-line">
+
+            <inu-multi-states label="Log levels"
+                              labelKey="log_levels"
+                              [values]="logLevelSelectItemsBasic()"
+                              [matcher]="matcher()"
+                              [formField]="myForm.logLevels">
+            </inu-multi-states>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+    <!--================================================================================================================
+    = DEFAULT
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>With custom styleclass</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p  form-line">
+
+            <inu-multi-states label="Log levels"
+                              labelKey="log_levels"
+                              [values]="logLevelSelectItems()"
+                              [matcher]="matcher()"
+                              [formField]="myForm.logLevels">
+            </inu-multi-states>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+    <!--================================================================================================================
+    = Single select
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Single select</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p  form-line">
+
+            <inu-multi-states label="Log levels"
+                              labelKey="log_levels"
+                              [multi]="false"
+                              [values]="logLevelSelectItemsBasic()"
+                              [matcher]="matcher()"
+                              [formField]="myForm.logLevel">
+            </inu-multi-states>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!--================================================================================================================
+    = With template
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>With tempalte</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p  form-line">
+
+            <inu-multi-states label="Log levels"
+                              labelKey="log_levels"
+                              [multi]="false"
+                              [values]="logLevelSelectItems()"
+                              [matcher]="matcher()"
+                              [formField]="myForm.logLevel">
+              <ng-template name="item" let-item>
+                <div class="log-level-template"
+                     [ngClass]="{selected:item.selected}">
+                  <inu-icon [icon]="resolveIcon(item)" [size]="1"></inu-icon>
+                  <div class="log-level-template-title">
+                    {{ item.title }}
+                  </div>
+                </div>
+              </ng-template>
+            </inu-multi-states>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="data()" type="json"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="html" label="HTML">
+
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!--================================================================================================================
+     = PROPERTIES
+     =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>T</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Two-way bindable model. Represents the checked (true) or unchecked (false) state.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+      </inu-table-flex>
+    </article>
+
+
+  </main>
+
+
+</section>
