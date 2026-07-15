@@ -23,6 +23,7 @@ import {InuInputPassword} from 'inugami-ng/components/inu-input-password';
 import {InuRadioGroup} from "inugami-ng/components/inu-radio-group";
 import {InuSelectList} from 'inugami-ng/components/inu-select-list';
 import {InuToggle} from 'inugami-ng/components/inu-toggle';
+import {InuMultiStates} from 'inugami-ng/components/inu-multi-states';
 import {
   InuTableFlex,
   InuTableFlexCell,
@@ -50,7 +51,10 @@ interface MyFormModel {
   mail: boolean;
   inApp: boolean;
 }
-
+interface MultiStatesFormModel {
+  logLevels: string[];
+  logLevel: string;
+}
 
 interface IsometricFormModel {
   layers: SvgLayerDTO[];
@@ -59,7 +63,7 @@ interface IsometricFormModel {
 @Component({
              templateUrl: './themes.view.html',
              styleUrls  : ['./themes.view.scss'],
-             imports: [
+             imports    : [
                InuDropdown,
                FormField,
                InuButton,
@@ -89,7 +93,8 @@ interface IsometricFormModel {
                InuTableFlexHeader,
                InuTableFlexRow,
                InuSvgSwitzerland,
-               InuSvgIsometric
+               InuSvgIsometric,
+               InuMultiStates
              ]
            })
 export class ThemesView {
@@ -107,7 +112,7 @@ export class ThemesView {
   loading             = signal<boolean>(true);
   extractor           = signal<InuSelectItemExtractor | undefined>(undefined);
   matcher             = signal<InuSelectItemMatcher | undefined>(undefined);
-
+  matcherMultiStates  = signal<InuSelectItemMatcher | undefined>(undefined);
 
   formModel = signal<ThemeModel>({
                                    themes: ['default']
@@ -162,76 +167,105 @@ export class ThemesView {
     disabled(path.sms);
   });
 
-  isometricModel                      = signal<IsometricFormModel>({
-                                                         layers: [
-                                                           {
-                                                             name   : 'root',
-                                                             asserts: [
-                                                               {
-                                                                 name     : 'desktop_1',
-                                                                 assetSet : 'isometric',
-                                                                 assetName: 'desktop',
-                                                                 x        : 0,
-                                                                 y        : 0,
-                                                                 size     : 2,
-                                                                 title    : 'Desktop'
-                                                               },
-                                                               {
-                                                                 name     : 'desktop_2',
-                                                                 assetSet : 'isometric',
-                                                                 assetName: 'desktop',
-                                                                 type     : '90',
-                                                                 x        : 200,
-                                                                 y        : 100,
-                                                                 size     : 2,
-                                                                 title    : 'Desktop 2'
-                                                               },
-                                                               {
-                                                                 name     : 'box_1',
-                                                                 assetSet : 'isometric',
-                                                                 assetName: 'box',
-                                                                 x        : -100,
-                                                                 y        : -100,
-                                                                 size     : 2,
-                                                                 title    : 'Box 1'
-                                                               },
-                                                               {
-                                                                 name     : 'router_1',
-                                                                 assetSet : 'isometric',
-                                                                 assetName: 'router',
-                                                                 type     : '90',
-                                                                 x        : -300,
-                                                                 y        : 0,
-                                                                 size     : 2,
-                                                                 title    : 'router 1'
-                                                               },
-                                                               {
-                                                                 name     : 'router_2',
-                                                                 title    : 'router 2',
-                                                                 assetSet : 'isometric',
-                                                                 assetName: 'router',
-                                                                 type     : '90',
-                                                                 x        : -200,
-                                                                 y        : 100,
-                                                                 size     : 2
-                                                               },
-                                                               {
-                                                                 name     : 'router_3',
-                                                                 title    : 'router 3',
-                                                                 assetSet : 'isometric',
-                                                                 assetName: 'router',
-                                                                 type     : 'default',
-                                                                 x        : 50,
-                                                                 y        : 200,
-                                                                 size     : 1
-                                                               }
-                                                             ]
-                                                           }
-                                                         ]
-                                                       });
-  isometricForm = form(this.isometricModel, (path) => {
+  isometricModel = signal<IsometricFormModel>({
+                                                layers: [
+                                                  {
+                                                    name   : 'root',
+                                                    asserts: [
+                                                      {
+                                                        name     : 'desktop_1',
+                                                        assetSet : 'isometric',
+                                                        assetName: 'desktop',
+                                                        x        : 0,
+                                                        y        : 0,
+                                                        size     : 2,
+                                                        title    : 'Desktop'
+                                                      },
+                                                      {
+                                                        name     : 'desktop_2',
+                                                        assetSet : 'isometric',
+                                                        assetName: 'desktop',
+                                                        type     : '90',
+                                                        x        : 200,
+                                                        y        : 100,
+                                                        size     : 2,
+                                                        title    : 'Desktop 2'
+                                                      },
+                                                      {
+                                                        name     : 'box_1',
+                                                        assetSet : 'isometric',
+                                                        assetName: 'box',
+                                                        x        : -100,
+                                                        y        : -100,
+                                                        size     : 2,
+                                                        title    : 'Box 1'
+                                                      },
+                                                      {
+                                                        name     : 'router_1',
+                                                        assetSet : 'isometric',
+                                                        assetName: 'router',
+                                                        type     : '90',
+                                                        x        : -300,
+                                                        y        : 0,
+                                                        size     : 2,
+                                                        title    : 'router 1'
+                                                      },
+                                                      {
+                                                        name     : 'router_2',
+                                                        title    : 'router 2',
+                                                        assetSet : 'isometric',
+                                                        assetName: 'router',
+                                                        type     : '90',
+                                                        x        : -200,
+                                                        y        : 100,
+                                                        size     : 2
+                                                      },
+                                                      {
+                                                        name     : 'router_3',
+                                                        title    : 'router 3',
+                                                        assetSet : 'isometric',
+                                                        assetName: 'router',
+                                                        type     : 'default',
+                                                        x        : 50,
+                                                        y        : 200,
+                                                        size     : 1
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              });
+  isometricForm  = form(this.isometricModel, (path) => {
   });
 
+  logLevelSelectItemsBasic = signal<InuSelectItem<string>[]>([
+                                                               {
+                                                                 id   : 'debug',
+                                                                 title: 'Debug',
+                                                                 value: 'debug'
+                                                               },
+                                                               {
+                                                                 id   : 'info',
+                                                                 title: 'Info',
+                                                                 value: 'info'
+                                                               },
+                                                               {
+                                                                 id   : 'warn',
+                                                                 title: 'Warn',
+                                                                 value: 'warn'
+                                                               },
+                                                               {
+                                                                 id   : 'error',
+                                                                 title: 'Error',
+                                                                 value: 'error'
+                                                               }
+                                                             ]);
+  formMultiStatesModel                = signal<MultiStatesFormModel>({
+                                                   logLevels: ['info', 'warn'],
+                                                   logLevel : 'info'
+                                                 });
+  formMultiStates = form(this.formMultiStatesModel, (path) => {
+    // required(path.logLevels);
+  });
   //==================================================================================================================
   // INIT
   //==================================================================================================================
@@ -247,6 +281,9 @@ export class ThemesView {
     });
     this.extractor.set((v) => {
       return v.id.toUpperCase();
+    });
+    this.matcherMultiStates.set((selectItem, value) => {
+      return selectItem.id.toUpperCase() == ('' + value).toUpperCase() ? selectItem : undefined;
     });
   }
 

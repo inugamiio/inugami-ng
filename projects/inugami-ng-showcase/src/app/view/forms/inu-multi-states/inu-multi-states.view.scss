@@ -1,0 +1,43 @@
+/**/
+::ng-deep {
+  .log-level-template {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+
+    svg {
+      fill: var(--neutral) !important;
+    }
+
+    &.selected {
+      svg {
+        fill: var(--neutral-light) !important;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .inu-multi-states {
+    ul {
+      li {
+        &.log-level-debug {
+          background-color: var(--neutral-dark) !important;
+        }
+
+        &.log-level-info {
+          background-color: var(--success-light) !important;
+        }
+
+        &.log-level-warn {
+          background-color: var(--warning) !important;
+        }
+
+        &.log-level-error {
+          background-color: var(--danger) !important;
+        }
+      }
+    }
+  }
+}
+

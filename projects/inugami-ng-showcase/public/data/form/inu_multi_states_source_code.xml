@@ -1,0 +1,188 @@
+<xml>
+  <src name="html" type="html" title="HTML">
+    <![CDATA[
+<inu-multi-states label="Log levels"
+                  labelKey="log_levels"
+                  [values]="logLevelSelectItemsBasic()"
+                  [matcher]="matcher()"
+                  [formField]="myForm.logLevels">
+</inu-multi-states>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="TypeScript">
+    <![CDATA[
+import {InugamiTemplateDirective} from 'inugami-ng/directives'
+import {InuMultiStates} from 'inugami-ng/components/inu-multi-states';
+
+interface MyFormModel {
+  logLevels: string[];
+  logLevel: string;
+}
+
+@Component({
+             templateUrl: './inu-multi-states.view.html',
+             styleUrls  : ['./inu-multi-states.view.scss'],
+             imports    : [
+               InuMultiStates,
+               InugamiTemplateDirective
+             ]
+           })
+export class MyView {
+  matcher                  = signal<InuSelectItemMatcher | undefined>(undefined);
+  logLevelSelectItemsBasic = signal<InuSelectItem<string>[]>(
+    [
+       {
+         id   : 'debug',
+         title: 'Debug',
+         value: 'debug'
+       },
+       {
+         id   : 'info',
+         title: 'Info',
+         value: 'info'
+       },
+       {
+         id   : 'warn',
+         title: 'Warn',
+         value: 'warn'
+       },
+       {
+         id   : 'error',
+         title: 'Error',
+         value: 'error'
+       }
+     ]);
+    formModel                = signal<MyFormModel>({
+                                                 logLevels: ['info', 'warn'],
+                                                 logLevel : 'info'
+                                               });
+    myForm = form(this.formModel, (path) => {
+      // required(path.logLevels);
+    });
+
+    constructor() {
+      this.matcher.set((selectItem, value) => {
+        return selectItem.id.toUpperCase() == ('' + value).toUpperCase() ? selectItem : undefined;
+      });
+
+      InuFormsUtils.onChanged(this.formModel).subscribe(value => {
+        //...
+      });
+    }
+}
+]]>
+  </src>
+
+
+  <src name="customStyleHtml" type="html" title="HTML">
+    <![CDATA[
+<inu-multi-states label="Log levels"
+                  labelKey="log_levels"
+                  [values]="logLevelSelectItems()"
+                  [matcher]="matcher()"
+                  [formField]="myForm.logLevels">
+</inu-multi-states>
+]]>
+  </src>
+
+  <src name="customStyleTs" type="typescript" title="TypeScript">
+    <![CDATA[
+logLevelSelectItems = signal<InuSelectItem<string>[]>(
+  [
+    {
+      id        : 'debug',
+      title     : 'Debug',
+      value     : 'debug',
+      styleClass: 'log-level-debug'
+    },
+    {
+      id        : 'info',
+      title     : 'Info',
+      value     : 'info',
+      styleClass: 'log-level-info'
+    },
+    {
+      id        : 'warn',
+      title     : 'Warn',
+      value     : 'warn',
+      styleClass: 'log-level-warn'
+    },
+    {
+      id        : 'error',
+      title     : 'Error',
+      value     : 'error',
+      styleClass: 'log-level-error'
+    }
+  ]);
+]]>
+  </src>
+
+
+
+  <src name="customStyleCss" type="css" title="CSS">
+    <![CDATA[
+::ng-deep {
+  .inu-multi-states {
+    ul {
+      li {
+        &.log-level-debug {
+          background-color: var(--neutral-dark) !important;
+        }
+
+        &.log-level-info {
+          background-color: var(--success-light) !important;
+        }
+
+        &.log-level-warn {
+          background-color: var(--warning) !important;
+        }
+
+        &.log-level-error {
+          background-color: var(--danger) !important;
+        }
+      }
+    }
+  }
+}
+
+]]>
+  </src>
+
+  <src name="single" type="html" title="template">
+    <![CDATA[
+<inu-multi-states label="Log levels"
+                  labelKey="log_levels"
+                  [multi]="false"
+                  [values]="logLevelSelectItemsBasic()"
+                  [matcher]="matcher()"
+                  [formField]="myForm.logLevel">
+</inu-multi-states>
+]]>
+  </src>
+
+
+
+  <src name="withTemplate" type="html" title="HTML">
+    <![CDATA[
+<inu-multi-states label="Log levels"
+                  labelKey="log_levels"
+                  [multi]="false"
+                  [values]="logLevelSelectItems()"
+                  [matcher]="matcher()"
+                  [formField]="myForm.logLevel">
+
+  <ng-template name="item" let-item>
+    <div class="log-level-template"
+         [ngClass]="{selected:item.selected}">
+      <inu-icon [icon]="resolveIcon(item)" [size]="1"></inu-icon>
+      <div class="log-level-template-title">
+        {{ item.title }}
+      </div>
+    </div>
+  </ng-template>
+
+</inu-multi-states>
+]]>
+  </src>
+</xml>

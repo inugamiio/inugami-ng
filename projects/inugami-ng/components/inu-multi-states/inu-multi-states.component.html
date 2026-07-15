@@ -1,0 +1,28 @@
+<div [class]="_styleClass()">
+
+  @if (data().length > 0) {
+    <ul [attr.role]="multi()?'group' :'radiogroup'">
+      <li class="inu-multi-states-item first-item"></li>
+      @for (selectItem of data(); track selectItem.id; let i = $index) {
+        <li #items
+            [class]="computeItemStyleClass(selectItem)"
+            [ngClass]="{selected:selectItem.selected}"
+            [tabindex]="disabled()?-1:0"
+            (click)="toggleSelection(selectItem, selectItem.id)"
+            (keydown)="onKeyDown($event, selectItem, selectItem.id,i)">
+
+          <div class="inu-multi-states-item-content">
+            @if (itemTemplate()) {
+              <ng-container
+                *ngTemplateOutlet="itemTemplate(); context: { $implicit: selectItem, index: i}"></ng-container>
+            } @else {
+              {{ selectItem.title }}
+            }
+          </div>
+
+        </li>
+      }
+      <li class="inu-multi-states-item last-item"></li>
+    </ul>
+  }
+</div>
