@@ -68,9 +68,8 @@ dl {
     font-weight: bold;
     color: var(--secondary);
     padding: 10px 0;
-    border-bottom: 1px solid var(--shadow-color);
     &:hover {
-      color: var(--primary); /* Ton rouge d'emphase à 3% */
+      color: var(--primary);
     }
   }
 
@@ -78,7 +77,6 @@ dl {
     margin-left: 0;
     padding: 10px 0;
     color: var(--neutral-dark-extra);
-    border-bottom: 1px solid var(--shadow-color);
   }
 }
 

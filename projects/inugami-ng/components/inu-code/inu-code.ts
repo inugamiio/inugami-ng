@@ -27,21 +27,22 @@ export class InuCode {
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  source              = input<string | undefined | null>(undefined);
-  url                 = input<string | undefined | null>(undefined);
-  tag                 = input<string | undefined | null>(undefined);
-  type                = input<string | undefined | null>(undefined);
-  title               = input<string | undefined | null>(undefined);
-  notificationLabel   = input<string>('Value copied to clipboard');
-  notificationMessage = input<string>('');
-  iconNotification    = input<string>('approval');
-
+  source                 = input<string | undefined | null>(undefined);
+  url                    = input<string | undefined | null>(undefined);
+  tag                    = input<string | undefined | null>(undefined);
+  type                   = input<string | undefined | null>(undefined);
+  title                  = input<string | undefined | null>(undefined);
+  notificationLabel      = input<string>('Value copied to clipboard');
+  notificationMessage    = input<string>('');
+  iconNotification       = input<string>('approval');
+  collapsed              = input<boolean>(false);
   private readonly http  = inject(HttpClient);
   private readonly cache = inject(InuCacheServices);
 
   sourceCode = signal<string>('');
   _title     = signal<string>('');
   _type      = signal<string>('');
+  display    = signal<boolean>(true);
 
   copyService   = inject(InuCopyServices);
   toastServices = inject(InuToastServices);
@@ -55,6 +56,7 @@ export class InuCode {
 
   init(): void {
     const url = this.url();
+    this.display.set(!this.collapsed());
     if (this.title()) {
       this._title.set(this.title()!);
     }
@@ -165,6 +167,10 @@ export class InuCode {
                                                                level  : "success"
                                                              })
                  });
+  }
+
+  protected toogleDisplay() {
+    this.display.set(!this.display());
   }
 
   //==================================================================================================================

@@ -140,6 +140,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-svg-switzerland',
                                                            path : '/charts/inu-svg-switzerland'
+                                                         },
+                                                         {
+                                                           title: 'inu-svg-timeline',
+                                                           path : '/charts/inu-svg-timeline'
                                                          }
                                                        ]
                                                      }

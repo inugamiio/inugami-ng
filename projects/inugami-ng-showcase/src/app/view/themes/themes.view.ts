@@ -1,6 +1,14 @@
 import {Component, computed, DOCUMENT, inject, signal, viewChildren} from '@angular/core';
 import {InuDropdown} from 'inugami-ng/components/inu-dropdown';
-import {InuSelectItem, InuSelectItemExtractor, InuSelectItemMatcher, SvgLayerDTO} from 'inugami-ng/models'
+import {
+  BucketTimed,
+  BucketTimedLoader,
+  InuSelectItem,
+  InuSelectItemExtractor,
+  InuSelectItemMatcher,
+  SvgLayerDTO,
+  TimeLineRenderer, TimeLineRendererBuilder
+} from 'inugami-ng/models'
 import {InuFormsUtils} from 'inugami-ng/utils'
 import {disabled, form, FormField, required} from '@angular/forms/signals'
 import {BUTTON_TYPES, InuButton} from 'inugami-ng/components/inu-button';
@@ -32,6 +40,10 @@ import {
 } from 'inugami-ng/components/inu-table-flex';
 import {InuSvgSwitzerland} from 'inugami-ng/components/inu-svg-switzerland';
 import {InuSvgIsometric} from 'inugami-ng/components/inu-svg-isometric';
+import {InuSvgTimeline, InuSvgTimelineHistogram, InuSvgTimelineLine} from 'inugami-ng/components/inu-svg-timeline';
+import {Observable} from 'rxjs'
+import {HttpClient, HttpParams} from '@angular/common/http'
+
 
 interface ThemeModel {
   themes: string[];
@@ -51,6 +63,7 @@ interface MyFormModel {
   mail: boolean;
   inApp: boolean;
 }
+
 interface MultiStatesFormModel {
   logLevels: string[];
   logLevel: string;
@@ -94,7 +107,8 @@ interface IsometricFormModel {
                InuTableFlexRow,
                InuSvgSwitzerland,
                InuSvgIsometric,
-               InuMultiStates
+               InuMultiStates,
+               InuSvgTimeline
              ]
            })
 export class ThemesView {
@@ -103,6 +117,7 @@ export class ThemesView {
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
+  http                = inject(HttpClient);
   private document    = inject(DOCUMENT);
   toastServices       = inject(InuToastServices);
   readonly buttonType = signal<string[]>(BUTTON_TYPES);
@@ -259,13 +274,32 @@ export class ThemesView {
                                                                  value: 'error'
                                                                }
                                                              ]);
-  formMultiStatesModel                = signal<MultiStatesFormModel>({
-                                                   logLevels: ['info', 'warn'],
-                                                   logLevel : 'info'
-                                                 });
-  formMultiStates = form(this.formMultiStatesModel, (path) => {
+  formMultiStatesModel     = signal<MultiStatesFormModel>({
+                                                            logLevels: ['info', 'warn'],
+                                                            logLevel : 'info'
+                                                          });
+  formMultiStates          = form(this.formMultiStatesModel, (path) => {
     // required(path.logLevels);
   });
+
+  // inu-svg-switzerland
+  renderer      = signal<TimeLineRendererBuilder>(() => new InuSvgTimelineHistogram());
+  rendererTypes = signal<InuSelectItem<TimeLineRenderer>[]>([
+                                                              {
+                                                                id      : 'InuSvgTimelineHistogram',
+                                                                title   : 'Histograme',
+                                                                value   : new InuSvgTimelineHistogram(),
+                                                                selected: true
+                                                              },
+                                                              {
+                                                                id   : 'InuSvgTimelineLine',
+                                                                title: 'Line',
+                                                                value: new InuSvgTimelineLine()
+                                                              }
+                                                            ]);
+  from          = signal<Date>(new Date('2026-08-06T00:00:00.000+02:00'));
+  until         = signal<Date>(new Date('2026-08-06T23:59:00.000+02:00'));
+  loadData      = signal<BucketTimedLoader<number> | undefined>(undefined);
   //==================================================================================================================
   // INIT
   //==================================================================================================================
@@ -285,6 +319,7 @@ export class ThemesView {
     this.matcherMultiStates.set((selectItem, value) => {
       return selectItem.id.toUpperCase() == ('' + value).toUpperCase() ? selectItem : undefined;
     });
+    this.loadData.set(this.processLoadingData.bind(this));
   }
 
   private onThemeChanged(value: ThemeModel) {
@@ -357,5 +392,28 @@ export class ThemesView {
   //==================================================================================================================
   protected getCantonIcon(id: string): string {
     return InugamiIconsSwitzerlandUtils.getCanton(id ?? 'ch').icon;
+  }
+
+  //==================================================================================================================
+  // inu-svg-timeline
+  //==================================================================================================================
+  protected rendererChange(event: TimeLineRenderer | undefined) {
+    if (event) {
+      this.renderer.set(() => event);
+    }
+  }
+
+  private processLoadingData(from: Date,
+                             until: Date,
+                             resolution: number): Observable<BucketTimed<number>[]> {
+    const currentRequest: any = {
+      from      : from.getTime(),
+      until     : until.getTime(),
+      resolution: resolution
+    };
+    const params              = new HttpParams({fromObject: currentRequest});
+
+    return this.http.get<BucketTimed<number>[]>(`api/svg/timeline`, {params})
+
   }
 }
