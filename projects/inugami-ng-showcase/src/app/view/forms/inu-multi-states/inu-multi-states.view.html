@@ -3,6 +3,9 @@
     <h1>Inugami-NG : inu-multi-states</h1>
 
     <p>
+      The <code>inu-multi-states</code> component is a flexible, highly customizable segment control designed to handle
+      multi-selection or single-selection across multiple options. It fully integrates with Angular Signals and the
+      FormValueControl API
     </p>
   </header>
 
@@ -36,10 +39,10 @@
               </inu-panel-tab>
 
               <inu-panel-tab name="html" label="HTML">
-
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="html"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="ts"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -54,6 +57,10 @@
     <article>
       <header>
         <h2>With custom styleclass</h2>
+        <p>
+          Custom colors can be defined for individual items using the styleClass property inside the InuSelectItem
+          object.
+        </p>
       </header>
 
 
@@ -72,10 +79,13 @@
           <div class="form-cell m-width-50p m-height-15 d-flex-column">
             <inu-panel-tabs>
               <inu-panel-tab name="html" label="HTML">
-
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="customStyleHtml"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="customStyleTs"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="css" label="Css">
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="customStyleCss"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -90,6 +100,10 @@
     <article>
       <header>
         <h2>Single select</h2>
+        <p>
+          Functions like a radio group or toggle switch but keeps the segmented layout. Selecting a state unselects any
+          active state. Clicking an already selected state will deselect it (returning null).
+        </p>
       </header>
 
 
@@ -113,10 +127,7 @@
               </inu-panel-tab>
 
               <inu-panel-tab name="html" label="HTML">
-
-              </inu-panel-tab>
-              <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="single"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -132,6 +143,9 @@
     <article>
       <header>
         <h2>With tempalte</h2>
+        <p>
+          Using InuTemplateRegistryService, custom icons or markup can be integrated inside the state components.
+        </p>
       </header>
 
 
@@ -164,10 +178,7 @@
               </inu-panel-tab>
 
               <inu-panel-tab name="html" label="HTML">
-
-              </inu-panel-tab>
-              <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/form/inu_multi_states_source_code.xml" tag="withTemplate"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -194,9 +205,81 @@
 
         <inu-table-flex-row>
           <inu-table-flex-cell>value</inu-table-flex-cell>
-          <inu-table-flex-cell>T</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ valuesType() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>[]</inu-table-flex-cell>
+          <inu-table-flex-cell>List of items to display in the selector.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>multi</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Enables multi-selection when true, single-selection when false
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
           <inu-table-flex-cell>false</inu-table-flex-cell>
-          <inu-table-flex-cell>Two-way bindable model. Represents the checked (true) or unchecked (false) state.
+          <inu-table-flex-cell>Disables user interaction.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>''</inu-table-flex-cell>
+          <inu-table-flex-cell>Field label text
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell>''</inu-table-flex-cell>
+          <inu-table-flex-cell>Translation key for the label.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Appends validation classes if required
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>matcher</inu-table-flex-cell>
+          <inu-table-flex-cell>InuSelectItemMatcher</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Custom matcher function to compare selected items.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ valueType() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>null</inu-table-flex-cell>
+          <inu-table-flex-cell>Two-way bindable model signal compatible with Signal Forms.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changed</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ changedType() }}</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits an array of selected raw values when selection changes.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>changedSelectItems</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ changedSelectItemsType() }}</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emits the complete selected items list when selection changes
           </inu-table-flex-cell>
         </inu-table-flex-row>
 

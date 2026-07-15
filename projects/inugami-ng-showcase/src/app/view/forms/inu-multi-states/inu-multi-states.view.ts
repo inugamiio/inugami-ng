@@ -7,7 +7,7 @@ import {
   InuTableFlexRow
 } from 'inugami-ng/components/inu-table-flex';
 import {NgClass} from '@angular/common'
-import {form, FormField, required,} from '@angular/forms/signals';
+import {form, FormField,} from '@angular/forms/signals';
 import {InuCode} from 'inugami-ng/components/inu-code';
 import {InuMultiStates} from 'inugami-ng/components/inu-multi-states';
 import {InuFormsUtils} from 'inugami-ng/utils'
@@ -41,11 +41,15 @@ interface MyFormModel {
            })
 export class InuMultiStateView {
   matcher                  = signal<InuSelectItemMatcher | undefined>(undefined);
+  valuesType               = signal<string>('InuSelectItem<T>[]');
+  valueType                = signal<string>('ModelSignal<T[] T | null>');
+  changedType              = signal<string>('EventEmitter<T[]>');
+  changedSelectItemsType   = signal<string>('EventEmitter<InuSelectItem<T>[]>');
   data                     = signal<string>('');
-    formModel                = signal<MyFormModel>({
-                                                     logLevels: ['info', 'warn'],
-                                                     logLevel : 'info'
-                                                   });
+  formModel                = signal<MyFormModel>({
+                                                   logLevels: ['info', 'warn'],
+                                                   logLevel : 'info'
+                                                 });
   logLevelSelectItemsBasic = signal<InuSelectItem<string>[]>([
                                                                {
                                                                  id   : 'debug',
@@ -97,7 +101,7 @@ export class InuMultiStateView {
                                                         ]);
 
   myForm = form(this.formModel, (path) => {
-   // required(path.logLevels);
+    // required(path.logLevels);
   });
 
 

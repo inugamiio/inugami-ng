@@ -2,13 +2,13 @@ import {
   AfterViewInit,
   Component,
   computed,
-  effect,
+  effect, ElementRef,
   inject,
   input,
   model,
   ModelSignal, OnInit,
   output,
-  signal
+  signal, viewChildren
 } from '@angular/core';
 import {FormField, FormValueControl} from '@angular/forms/signals'
 import {InuSelectItem, InuSelectItemMatcher} from 'inugami-ng/models'
@@ -27,7 +27,7 @@ import {InuTemplateRegistryService} from 'inugami-ng/directives'
              templateUrl: './inu-multi-states.component.html',
              styleUrl   : './inu-multi-states.component.scss',
            })
-class InuMultiStates<T> implements FormValueControl<T[] | T | null>, OnInit {
+export class InuMultiStates<T> implements FormValueControl<T[] | T | null>, OnInit {
   //====================================================================================================================
   // ATTRIBUTES
   //====================================================================================================================
@@ -42,16 +42,17 @@ class InuMultiStates<T> implements FormValueControl<T[] | T | null>, OnInit {
   readonly matcher             = input<InuSelectItemMatcher | undefined>(undefined);
 
   // output
-  changed                                 = output<T[]>();
-  changedSelectItems                      = output<InuSelectItem<T>[]>();
+  changed                              = output<T[]>();
+  changedSelectItems                   = output<InuSelectItem<T>[]>();
   // FormValueControl
-  value: ModelSignal<T[] | T | null> = model<T[] | T | null>(null);
+  value: ModelSignal<T[] | T | null>   = model<T[] | T | null>(null);
   // inject
-  registry: InuTemplateRegistryService    = inject(InuTemplateRegistryService);
-  itemTemplate                            = computed(() => this.registry.getTemplate('item'));
+  itemsElements                        = viewChildren<ElementRef<HTMLElement>>('items');
+  registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
+  itemTemplate                         = computed(() => this.registry.getTemplate('item'));
   // internal
-  data                                    = signal<InuSelectItem<T>[]>([]);
-  _styleClass                             = computed<string>(() => [
+  data                                 = signal<InuSelectItem<T>[]>([]);
+  _styleClass                          = computed<string>(() => [
     'inu-multi-states',
     this.value() ? 'selected' : '',
     this.disabled() ? 'disabled' : '',
@@ -118,6 +119,37 @@ class InuMultiStates<T> implements FormValueControl<T[] | T | null>, OnInit {
   //====================================================================================================================
   // ACTIONS
   //====================================================================================================================
+  protected onKeyDown(event: KeyboardEvent, selectItem: InuSelectItem<T>, id: string, index: number) {
+    if (this.disabled()) {
+      return;
+    }
+    console.log('event.key', event.key)
+    const itemsElements = this.itemsElements() ?? [];
+    const length = itemsElements.length;
+
+    let stopPropagation = false;
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      this.toggleSelection(selectItem, id);
+      stopPropagation = true;
+    } else if (event.key === 'ArrowLeft' ) {
+      const targetIndex = index === 0 ? length - 1 : index - 1;
+      itemsElements[targetIndex].nativeElement.focus();
+      stopPropagation = true;
+    } else if (event.key === 'ArrowRight' ) {
+      const targetIndex = index === length - 1 ? 0 : index + 1;
+      console.log('targetIndex',targetIndex)
+      itemsElements[targetIndex].nativeElement.focus();
+      stopPropagation = true;
+    }
+
+    if (stopPropagation) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    //ArrowLeft
+    //ArrowRight
+  }
+
   protected toggleSelection(selectItem: InuSelectItem<T>, id: string) {
     if (this.disabled() || selectItem.disabled) {
       return;
@@ -188,5 +220,3 @@ class InuMultiStates<T> implements FormValueControl<T[] | T | null>, OnInit {
 
 
 }
-
-export default InuMultiStates

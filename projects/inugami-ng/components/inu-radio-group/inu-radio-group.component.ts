@@ -1,13 +1,15 @@
 import {
   AfterViewInit,
-  Component, computed,
+  Component,
+  computed,
   effect,
   ElementRef,
   input,
   model,
   ModelSignal,
   output,
-  signal, untracked,
+  signal,
+  untracked,
   viewChildren
 } from '@angular/core';
 import {InuSelectItem, InuSelectItemMatcher} from 'inugami-ng/models';
@@ -15,13 +17,12 @@ import {FormValueControl} from '@angular/forms/signals';
 import {InuIcon} from 'inugami-icons';
 import {InuLabel} from 'inugami-ng/components/inu-label';
 import {InuToolTips} from 'inugami-ng/components/inu-tool-tips'
-import {JsonPipe} from '@angular/common'
 
 @Component({
              selector   : 'inu-radio-group',
              standalone : true,
              providers  : [],
-             imports    : [InuIcon, InuLabel, InuToolTips, JsonPipe],
+             imports: [InuIcon, InuLabel, InuToolTips],
              templateUrl: './inu-radio-group.component.html',
              styleUrl   : './inu-radio-group.component.scss',
            })

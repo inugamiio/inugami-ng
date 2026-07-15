@@ -3,6 +3,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
+  outline: none !important;
   ul {
     user-select: none;
     outline: none;
@@ -22,7 +23,11 @@
       background-color: var(--neutral-light);
       justify-content: center;
       font-size: 80%;
-      transition: height 250ms, font-size 250ms, background-color 250ms,color 250ms;
+      transition: height 250ms, font-size 250ms, background-color 250ms,color 250ms, border-top 250ms;
+      outline: none !important;
+      border-top: 2px solid transparent;
+      overflow: hidden;
+
       .inu-multi-states-item-content {
         padding-right: 0.5rem;
         padding-left: 0.5rem;
@@ -41,6 +46,11 @@
       }
       &:hover{
         height: 1.5rem;
+        background-color: var(--focus);
+        color: var(--focus-light-extra);
+      }
+      &:focus{
+        border-top: 2px solid var(--focus-light-extra);
         background-color: var(--focus);
         color: var(--focus-light-extra);
       }
