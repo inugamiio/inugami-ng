@@ -2,37 +2,42 @@ import {AfterViewInit, Component, computed, effect, input, signal} from '@angula
 import {InuIcon} from 'inugami-icons';
 import {NgClass} from '@angular/common';
 
+export type ButtonType = 'primary' | 'success' | 'secondary' | 'warn' | 'danger' | 'error';
+export const BUTTON_TYPES = [
+  'primary', 'success', 'secondary', 'warn', 'danger', 'error'
+];
+
 @Component({
-  selector: 'inu-button',
-  standalone: true,
-  imports: [InuIcon],
-  templateUrl: './inu-button.component.html',
-  styleUrl: './inu-button.component.scss',
-})
-export class InuButton implements AfterViewInit{
+             selector   : 'inu-button',
+             standalone : true,
+             imports    : [InuIcon],
+             templateUrl: './inu-button.component.html',
+             styleUrl   : './inu-button.component.scss',
+           })
+export class InuButton implements AfterViewInit {
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  label = input<string | undefined | null>('');
-  icon = input<string | null>(null);
-  iconSize = input<number>(1.2);
-  type = input<string>('');
-  link = input<boolean>(false);
-  disabled = input<boolean>(false);
-  processing = input<boolean>(false);
+  label          = input<string | undefined | null>('');
+  icon           = input<string | null>(null);
+  iconSize       = input<number>(1.2);
+  type           = input<string | ButtonType>('');
+  link           = input<boolean>(false);
+  disabled       = input<boolean>(false);
+  processing     = input<boolean>(false);
   processingIcon = input<string | null>(null);
 
-  _processIcon = computed<string|null>(()=>{
+  _processIcon = computed<string | null>(() => {
     const result = this.processingIcon();
-    return result?result: this.icon();
-  } )
-  _styleClass = computed<string>(() => {
+    return result ? result : this.icon();
+  })
+  _styleClass  = computed<string>(() => {
     return [
       'inu-button',
       this.type() ? this.type() : '',
       this.link() ? 'link' : '',
-      this.disabled()? 'disabled' : ''
+      this.disabled() ? 'disabled' : ''
     ].join(' ');
   })
 
@@ -40,20 +45,20 @@ export class InuButton implements AfterViewInit{
 
   constructor() {
     effect(() => {
-     this.iconStyleClass.set(this.computeIconStyleClass());
+      this.iconStyleClass.set(this.computeIconStyleClass());
     });
   }
+
   ngAfterViewInit(): void {
     this.iconStyleClass.set(this.computeIconStyleClass());
   }
 
-  computeIconStyleClass(){
+  computeIconStyleClass() {
     return [
       'inu-button-icon',
       this.processing() ? 'rotate' : ''
     ].join(' ');
   }
-
 
 
 }

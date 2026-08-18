@@ -1,0 +1,51 @@
+<div [class]="_styleClassLabel()">
+  @if (icon()) {
+    <inu-icon [icon]="icon()!" [size]="1"></inu-icon>
+  }
+  @if (label() || labelKey()) {
+    @if (labelKey()) {
+      <label [for]="id()">
+        <inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label>
+      </label>
+    } @else {
+      <label [for]="id()">{{ label()! }}</label>
+    }
+  }
+  @if (_required()) {
+    <inu-icon icon="required" [size]="0.5"></inu-icon>
+  }
+</div>
+<div [class]="_styleClass()"
+     (mousedown)="onMouseDown($event)"
+     (mouseup)="onMouseUp($event)"
+     (mousemove)="onMouseMove($event)"
+     (mouseleave)="onMouseLeave()"
+     #component>
+  <svg #container xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+
+@if (tooltipData()){
+ <div [class]="tooltipsClass()"
+      [style.left.px]="tooltipX()"
+      [style.top.px]="tooltipY()">
+
+   @if (tooltipsTemplate()) {
+     <ng-container
+       *ngTemplateOutlet="tooltipsTemplate(); context: { $implicit: tooltipData()}"></ng-container>
+   } @else {
+
+     <div class="tooltip-header">{{ tooltipData()?.bucket?.name }}</div>
+     <div class="tooltip-content">
+       <dl>
+         <dt>{{ tooltipData()?.resource?.uri }}</dt>
+         <dd>{{ tooltipData()?.point?.value }} {{ tooltipData()?.resource?.unit ?? '' }}</dd>
+
+         <dt>Date</dt>
+         <dd>{{ tooltipData()?.point?.time }}</dd>
+       </dl>
+     </div>
+
+    }
+  </div>
+
+}

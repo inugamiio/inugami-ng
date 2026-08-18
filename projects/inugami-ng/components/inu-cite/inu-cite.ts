@@ -3,34 +3,36 @@ import {InuIcon} from 'inugami-icons';
 import {InuTemplateRegistryService} from 'inugami-ng/directives';
 import {NgTemplateOutlet} from '@angular/common';
 
+export type CiteLevel = 'info' | 'success' | 'danger' | 'warning';
+export const CITE_LEVELS = ['info', 'success', 'danger', 'warning'];
+
 @Component({
-  selector: 'inu-cite',
-  standalone: true,
-  providers: [InuTemplateRegistryService],
-  imports: [InuIcon,NgTemplateOutlet],
-  templateUrl: './inu-cite.html',
-  styleUrl: './inu-cite.scss',
-})
+             selector   : 'inu-cite',
+             standalone : true,
+             providers  : [InuTemplateRegistryService],
+             imports    : [InuIcon, NgTemplateOutlet],
+             templateUrl: './inu-cite.html',
+             styleUrl   : './inu-cite.scss',
+           })
 export class InuCite implements OnInit {
 
   //==================================================================================================================
   // ATTRIBUTES
   //==================================================================================================================
-  title = input<string | undefined | null>('');
-  level = input<string | undefined | null>('');
-
-  icon: WritableSignal<string | null> = signal<string | null>(null);
+  title                                     = input<string | undefined | null>('');
+  level                                     = input<string | CiteLevel | undefined | null>('');
+  icon: WritableSignal<string | null>       = signal<string | null>(null);
   styleClass: WritableSignal<string | null> = signal<string | null>(null);
-  titleTemplate = computed(() => this.registry.getTemplate('title'));
-  registry: InuTemplateRegistryService = inject(InuTemplateRegistryService);
+  titleTemplate                             = computed(() => this.registry.getTemplate('title'));
+  registry: InuTemplateRegistryService      = inject(InuTemplateRegistryService);
 
   ngOnInit(): void {
     this.level();
-    const level = this.level()?.toLowerCase() || '';
+    const level                         = this.level()?.toLowerCase() || '';
     const icons: Record<string, string> = {
       success: 'approval',
       warning: 'warning',
-      danger: 'danger',
+      danger : 'danger',
     };
 
     this.icon.set(icons[level] || 'idea');

@@ -1,0 +1,95 @@
+<xml>
+  <src name="usage" type="html" title="Usage">
+    <![CDATA[
+<div>
+  <p>
+    <!-- .... -->
+  </p>
+  <p>
+    <!-- .... -->
+  </p>
+  <inu-loading [loading]="defaultLoading()" type="default"></inu-loading>
+</div>
+]]>
+  </src>
+
+  <src name="typescript" type="typescript" title="TypeScript">
+    <![CDATA[
+import {InuLoading} from 'inugami-ng/components/inu-loading';
+
+@Component({
+     templateUrl: './inu-loading.view.html',
+     styleUrls  : ['./inu-loading.view.scss'],
+     imports: [
+       InuLoading
+     ]
+   })
+export class MyView {
+
+  defaultLoading = signal<boolean>(true);
+
+}
+]]>
+  </src>
+
+
+  <src name="circle" type="html" title="Circle">
+    <![CDATA[
+<div>
+  <!-- ... -->
+  <inu-loading [loading]="circleLoading()" type="circle" ></inu-loading>
+</div>
+]]>
+  </src>
+
+
+  <src name="custom" type="html" title="Circle">
+    <![CDATA[
+<div style="border:1px solid var(--neutral)">
+  <p style="height: 15rem">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus ante vel suscipit congue. Sed eros
+    massa, vestibulum vel lectus ut, egestas pretium eros. Quisque molestie dui eget tempor molestie. Donec
+    rhoncus quam risus, quis aliquam urna facilisis a. Suspendisse quis diam eget mauris eleifend aliquam.
+    Nulla porta enim eu orci interdum, in cursus velit cursus. Interdum et malesuada fames ac ante ipsum
+    primis in faucibus.
+  </p>
+
+  <inu-loading [loading]="customLoading()">
+    <ng-template name="content">
+      <div class="bloc-spinner">
+        <div class="bloc"></div>
+        <div class="bloc"></div>
+        <div class="bloc"></div>
+        <div class="bloc"></div>
+        <div class="bloc"></div>
+      </div>
+    </ng-template>
+  </inu-loading>
+
+</div>
+]]>
+  </src>
+
+
+
+  <src name="custom_ts" type="html" title="Typescript">
+    <![CDATA[
+import {InuLoading} from 'inugami-ng/components/inu-loading';
+import {InugamiTemplateDirective} from 'inugami-ng/directives'
+
+@Component({
+     templateUrl: './inu-loading.view.html',
+     styleUrls  : ['./inu-loading.view.scss'],
+     imports: [
+       InuLoading,
+       InugamiTemplateDirective
+     ]
+   })
+export class MyView {
+
+  customLoading = signal<boolean>(true);
+
+}
+]]>
+  </src>
+</xml>

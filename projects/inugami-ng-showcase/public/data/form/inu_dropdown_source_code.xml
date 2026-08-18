@@ -1,0 +1,121 @@
+<xml>
+  <src name="html" type="html" title="template">
+    <![CDATA[
+<inu-dropdown label="Cantons"
+                          [formField]="myForm.cantons"
+                          [values]="cantons()"
+                          [matcher]="matcher()"
+                          [extractor]="extractor()"
+                          (onSelected)="onSelected($event)"
+                          (onUnSelected)="onUnSelected($event)"
+                          [multiSelect]="true">
+
+  <ng-template name="selectedValue" let-v>
+    <div class="item-canton">
+      <inu-icon [icon]="getCantonIcon(v.id)" [size]="1.5"></inu-icon>
+      <span>{{ v.title }}</span>
+    </div>
+  </ng-template>
+
+  <ng-template name="item" let-item>
+    <div class="item-canton">
+      <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+      <span>{{ item.title }}</span>
+    </div>
+  </ng-template>
+
+</inu-dropdown>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="template">
+    <![CDATA[
+import {InuDropdown} from 'inugami-ng/components/inu-dropdown';
+import {InugamiTemplateDirective} from 'inugami-ng/directives';
+
+interface MyFormModel {
+  cantons: string[];
+}
+
+
+@Component({
+             imports    : [
+               //...
+               InuDropdown,
+               InugamiTemplateDirective
+             ]
+           })
+export class MyView {
+  extractor         = signal<InuSelectItemExtractor | undefined>(undefined);
+  matcher           = signal<InuSelectItemMatcher | undefined>(undefined);
+  formModel         = signal<MyFormModel>({
+                                            cantons: ['GE', 'VD']
+                                          });
+
+  myForm = form(this.formModel, (path) => {
+    required(path.cantons);
+  });
+
+  cantons = computed<InuSelectItem<SwitzerlandCanton>[]>(() => SWITZERLAND_CANTONS
+    .filter(c => c.code != 'ch')
+    .map(c => <InuSelectItem<SwitzerlandCanton>>{
+      id   : c.code,
+      title: c.nameEn,
+      value: c
+    }));
+
+  constructor() {
+    this.matcher.set((selectItem, value) => {
+      return selectItem.id.toUpperCase() == value ? selectItem : undefined;
+    });
+    this.extractor.set((v) => {
+      return v.id.toUpperCase();
+    });
+
+    toObservable(this.formModel)
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(value => {
+        this.onValueChanged(value)
+      });
+  }
+}
+]]>
+  </src>
+
+
+
+  <src name="disabledHtml" type="html" title="template">
+    <![CDATA[
+<inu-dropdown label="Cantons"
+              [formField]="myFormDisabled.cantons"
+              [values]="cantons()"
+              [matcher]="matcher()"
+              [extractor]="extractor()"
+              (onSelected)="onSelected($event)"
+              (onUnSelected)="onUnSelected($event)"
+              [multiSelect]="true">
+  <ng-template name="selectedValue" let-v>
+    <div class="item-canton">
+      <inu-icon [icon]="getCantonIcon(v.id)" [size]="1.5"></inu-icon>
+      <span>{{ v.title }}</span>
+    </div>
+  </ng-template>
+</inu-dropdown>
+]]>
+  </src>
+
+  <src name="disabledTs" type="typescript" title="template">
+    <![CDATA[
+formModelDisabled         = signal<MyFormModel>({
+                                          cantons: ['GE', 'VD']
+                                        });
+myFormDisabled = form(this.formModelDisabled, (path) => {
+  disabled(path.cantons);
+});
+]]>
+  </src>
+</xml>

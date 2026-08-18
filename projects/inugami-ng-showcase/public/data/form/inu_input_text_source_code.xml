@@ -51,15 +51,7 @@ interface UserForm {
   templateUrl: './inu-input-text.view.html',
   styleUrls: ['./inu-input-text.view.scss'],
   imports: [
-    InuCode,
     InuInputText,
-    InuCode,
-    InuTableFlex,
-    InuTableFlexHeader,
-    InuTableFlexRow,
-    InuTableFlexCell,
-    InuPanelTabs,
-    InuPanelTab,
     FormField
   ]
 })

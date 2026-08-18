@@ -1,0 +1,103 @@
+<xml>
+  <src name="html" type="html" title="template">
+    <![CDATA[
+<inu-toggle label="Email"
+            labelKey="notification_email"
+            [formField]="myForm.email">
+</inu-toggle>
+
+<inu-toggle label="In application"
+            labelKey="notification_in_app"
+            [formField]="myForm.inApp">
+</inu-toggle>
+
+<inu-toggle label="Sms"
+            labelKey="notification_sms"
+            [formField]="myForm.sms">
+</inu-toggle>
+
+<inu-toggle label="Mail"
+            labelKey="notification_mail"
+            [formField]="myForm.mail">
+</inu-toggle>
+]]>
+  </src>
+
+  <src name="ts" type="typescript" title="template">
+    <![CDATA[
+import {InuToggle} from 'inugami-ng/components/inu-toggle';
+
+interface MyFormModel {
+  sms: boolean;
+  email: boolean;
+  mail: boolean;
+  inApp: boolean;
+}
+
+
+@Component({
+//...
+ imports: [
+   InuToggle,
+   FormField
+ ]
+})
+export class MyView {
+
+ formModel = signal<MyFormModel>({
+                                    sms: false,
+                                    email: true,
+                                    inApp: false,
+                                    mail: false
+                                  });
+
+  myForm = form(this.formModel, (path) => {
+    required(path.sms);
+  });
+
+  constructor() {
+    toObservable(this.formModel)
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe(value => {
+        this.onValueChanged(value)
+      });
+  }
+}
+]]>
+  </src>
+
+  <src name="left" type="html" title="template">
+    <![CDATA[
+<inu-toggle label="Email"
+          labelKey="notification_email"
+          [left]="true"
+          [formField]="myForm.email">
+</inu-toggle>
+
+<inu-toggle label="In application"
+          labelKey="notification_in_app"
+          type="secondary"
+          [left]="true"
+          [formField]="myForm.inApp">
+</inu-toggle>
+
+<inu-toggle label="Sms"
+          labelKey="notification_sms"
+          type="danger"
+          [left]="true"
+          [formField]="myForm.sms">
+</inu-toggle>
+
+<inu-toggle label="Mail"
+          labelKey="notification_mail"
+          type="neutral"
+          [left]="true"
+          [formField]="myForm.mail">
+</inu-toggle>
+]]>
+  </src>
+</xml>

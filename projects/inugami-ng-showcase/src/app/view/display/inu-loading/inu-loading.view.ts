@@ -9,11 +9,12 @@ import {InuCode} from 'inugami-ng/components/inu-code'
 import {InuPanelTab, InuPanelTabs} from 'inugami-ng/components/inu-panel-tabs';
 import {InuLoading} from 'inugami-ng/components/inu-loading';
 import {InuButton} from 'inugami-ng/components/inu-button'
+import {InugamiTemplateDirective} from 'inugami-ng/directives'
 
 @Component({
              templateUrl: './inu-loading.view.html',
              styleUrls  : ['./inu-loading.view.scss'],
-             imports: [
+             imports    : [
                InuTableFlex,
                InuTableFlexCell,
                InuTableFlexHeader,
@@ -22,23 +23,30 @@ import {InuButton} from 'inugami-ng/components/inu-button'
                InuPanelTab,
                InuPanelTabs,
                InuLoading,
-               InuButton
+               InuButton,
+               InugamiTemplateDirective
              ]
            })
 export class InuLoadingView {
 
-  //==================================================================================================================
+  //====================================================================================================================
   // ATTRIBUTES
-  //==================================================================================================================
+  //====================================================================================================================
   defaultLoading = signal<boolean>(true);
-  circleLoading = signal<boolean>(true);
-  //==================================================================================================================
+  circleLoading  = signal<boolean>(true);
+  customLoading  = signal<boolean>(true);
+  //====================================================================================================================
   // ACTIONS
-  //==================================================================================================================
-  toggleDefault(){
+  //====================================================================================================================
+  toggleDefault() {
     this.defaultLoading.set(!this.defaultLoading());
   }
-  toggleCircle(){
+
+  toggleCircle() {
     this.circleLoading.set(!this.circleLoading());
+  }
+
+  toggleCustom() {
+    this.customLoading.set(!this.customLoading());
   }
 }

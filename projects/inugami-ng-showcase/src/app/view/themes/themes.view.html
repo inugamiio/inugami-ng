@@ -1,0 +1,606 @@
+<section>
+  <header>
+    <h1>Inugami-NG : Themes</h1>
+    <inu-dropdown label="Themes"
+                  [formField]="themeForm.themes"
+                  [values]="themesSelectItems()"
+                  [multiSelect]="false">
+    </inu-dropdown>
+  </header>
+
+  <!--================================================================================================================
+  = ACTIONS
+  =================================================================================================================-->
+  <section>
+    <header>
+      <h2>Actions</h2>
+    </header>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-button
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-button & inu-toast</h3>
+      </header>
+
+      <div class="d-flex-column gap-2">
+        <ul class="list-in-line">
+          @for (type of buttonType(); track type) {
+            <li>
+              <inu-button [icon]="resolveButtonIcon(type)" [label]="type" [type]="type"
+                          (click)="addMessage(type)"></inu-button>
+            </li>
+          }
+        </ul>
+
+        <ul class="list-in-line">
+          @for (type of buttonType(); track type) {
+            <li>
+              <inu-button [icon]="resolveButtonIcon(type)" [label]="type" [type]="type" (click)="addMessage(type)"
+                          [link]="true"></inu-button>
+            </li>
+          }
+        </ul>
+      </div>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-copy
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-copy</h3>
+      </header>
+
+      <div class="d-flex-column gap-2">
+        <ul class="list-in-line">
+          <li>
+            <inu-copy label="Copy element"
+                      type="success"
+                      content="Some content"
+                      notificationMessage="value copied : 'Some content'"></inu-copy>
+          </li>
+          <li>
+            <inu-copy icon="upload" label="Copy element without content" type="success"></inu-copy>
+          </li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!--================================================================================================================
+  = ACTIONS
+  =================================================================================================================-->
+  <section>
+    <header>
+      <h2>Display</h2>
+    </header>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-cite
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-cite</h3>
+      </header>
+
+      <div class="block-in-line">
+        @for (level of citeLevels(); track level) {
+          <inu-cite [level]="level" title="Simple success citation" style="max-width: 15rem; min-width: 8rem">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lobortis orci odio, ac auctor tortor
+              laoreet
+              quis. Fusce dui justo
+            </p>
+          </inu-cite>
+        }
+      </div>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-code
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-code</h3>
+      </header>
+      <inu-code url="data/form/inu_input_text_source_code.xml" tag="ts"></inu-code>
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-doc-item
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-doc-item</h3>
+      </header>
+      <inu-doc-item icon="layer"
+                    title="level1"
+                    [level]="1"
+                    href="themes"
+                    id="level1">
+
+        <inu-doc-item icon="layer"
+                      title="level2"
+                      [level]="2"
+                      href="themes"
+                      id="level2">
+
+          <inu-doc-item icon="layer"
+                        title="level3"
+                        [level]="3"
+                        href="themes"
+                        id="level3">
+            <inu-doc-item icon="layer"
+                          title="level4"
+                          [level]="4"
+                          href="themes"
+                          id="level4">
+              <inu-doc-item icon="layer"
+                            title="level5"
+                            [level]="5"
+                            href="themes"
+                            id="level5">
+                <inu-doc-item icon="layer"
+                              title="level6"
+                              [level]="6"
+                              href="themes"
+                              id="level6">
+                </inu-doc-item>
+              </inu-doc-item>
+            </inu-doc-item>
+          </inu-doc-item>
+        </inu-doc-item>
+      </inu-doc-item>
+    </article>
+
+    <article>
+      <header>
+        <h3>inu-doc-summary</h3>
+      </header>
+      <inu-doc-summary [children]="children()"></inu-doc-summary>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-code
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-loading</h3>
+      </header>
+
+      <div class="loading-blocks">
+        <div class="loading-block">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus ante vel suscipit congue. Sed eros
+            massa, vestibulum vel lectus ut, egestas pretium eros.
+          </p>
+          <inu-loading [loading]="loading()" type="default"></inu-loading>
+        </div>
+
+        <div class="loading-block">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus ante vel suscipit congue. Sed eros
+            massa, vestibulum vel lectus ut, egestas pretium eros.
+          </p>
+          <inu-loading [loading]="loading()" type="circle"></inu-loading>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-open-api
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-open-api</h3>
+      </header>
+
+      <inu-open-api url="data/display/inu_open_api_content.json"></inu-open-api>
+
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-panel
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-panel</h3>
+      </header>
+
+      <inu-panel title="My panel"
+                 icon="terminal"
+                 [duration]="500">
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+          <li>Fusce sollicitudin, quam eget maximus egestas, mi erat sodales magna</li>
+          <li>Quis lobortis mi quam sit amet magna. Nunc scelerisque viverra arcu nec cursus</li>
+          <li>Nunc et pharetra nulla. Nulla nec ullamcorper ligula</li>
+          <li>Id porta neque. Aliquam efficitur neque sit amet arcu aliquet elementum.</li>
+          <li>Sed velit odio, placerat id mi in, sollicitudin sollicitudin nulla.</li>
+          <li>Aenean efficitur, enim non ultricies congue, urna quam laoreet justo</li>
+          <li>sodales suscipit lectus tellus vel ex. Maecenas sodales lorem et tortor sollicitudin mollis</li>
+          <li>Aenean facilisis rhoncus malesuada. Ut aliquet vitae ligula a lacinia.</li>
+        </ul>
+        <ng-template name="footer">
+          If necessary, the footer can be defined via a template.
+        </ng-template>
+      </inu-panel>
+
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-panel-tabs
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-panel-tabs</h3>
+      </header>
+
+      <inu-panel-tabs activeTab="tab2">
+
+        <inu-panel-tab name="tab1" label="Tab 1" icon="image">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Quisque in mollis nunc, vitae aliquet turpis. Proin feugiat arcu
+            vitae quam vehicula venenatis. In pulvinar tincidunt felis, et dapibus
+            arcu laoreet ut.
+          </p>
+
+
+        </inu-panel-tab>
+        <inu-panel-tab name="tab2" label="Tab 2" icon="layer">
+          <p>
+            Suspendisse molestie neque lobortis mi dignissim luctus. Aenean massa tellus,
+            tempus aliquet tincidunt eu, semper eu eros. Praesent eu est non velit iaculis
+            scelerisque
+          </p>
+
+        </inu-panel-tab>
+
+        <inu-panel-tab name="tab3" label="Tab 3" [valid]="false" icon="layout_grid">
+          <p>
+            Pellentesque fermentum pretium dui, a maximus neque blandit non. Aliquam sapien mi,
+            porttitor nec lectus et, consequat cursus ligula.
+          </p>
+        </inu-panel-tab>
+
+        <inu-panel-tab name="tab4" label="Tab 4" [hasAccess]="false" icon="package">
+          <p>
+            Vivamus gravida blandit ante, commodo sollicitudin quam imperdiet at. Sed posuere eleifend nisl
+            quis viverra. Fusce non erat nec eros euismod vulputate sed vel neque.
+          </p>
+        </inu-panel-tab>
+
+      </inu-panel-tabs>
+
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-progress
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-progress</h3>
+      </header>
+      <inu-progress [value]="progressValue()"></inu-progress>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     ~ inu-progress
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-progress</h3>
+      </header>
+      <inu-tool-tips message="Hello the world">Some Value</inu-tool-tips>
+
+      <inu-tool-tips>
+        Tool tips with template
+        <ng-template name="message">
+          <div class="template-message">
+            <inu-icon icon="approval" [size]="1"></inu-icon>
+            <span>Lorem ipsum</span>
+          </div>
+        </ng-template>
+      </inu-tool-tips>
+    </article>
+  </section>
+
+
+  <!--================================================================================================================
+  = FORM
+  =================================================================================================================-->
+  <section>
+    <header>
+      <h2>Forms</h2>
+    </header>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-checkbox-group
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-checkbox-group</h3>
+      </header>
+      <div class="d-flex-column gap-4">
+        <inu-checkbox-group label="HTTP verb"
+                            [formField]="myForm.verb"
+                            [values]="verbs()"></inu-checkbox-group>
+
+
+        <inu-checkbox-group label="HTTP verb required"
+                            [formField]="myForm.verbRequired"
+                            [values]="verbs()"></inu-checkbox-group>
+
+        <inu-checkbox-group label="HTTP verb disabled"
+                            [formField]="myForm.verbDisabled"
+                            [values]="verbs()"></inu-checkbox-group>
+      </div>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-dropdown
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-dropdown</h3>
+      </header>
+
+      <inu-dropdown label="Cantons"
+                    [formField]="myForm.cantons"
+                    [values]="cantons()"
+                    [matcher]="matcher()"
+                    [extractor]="extractor()"
+                    [multiSelect]="true">
+        <ng-template name="selectedValue" let-v>
+          <div class="item-canton">
+            <inu-icon [icon]="getCantonIcon(v.id)" [size]="1.5"></inu-icon>
+            <span>{{ v.title }}</span>
+          </div>
+        </ng-template>
+
+        <ng-template name="item" let-item>
+          <div class="item-canton">
+            <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+            <span>{{ item.title }}</span>
+          </div>
+        </ng-template>
+
+      </inu-dropdown>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-dropdown
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-input</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-input-text label="inu-input-text"
+                        name="login"
+                        [formField]="myForm.login"></inu-input-text>
+
+        <inu-input-text label="inu-input-text disabled"
+                        name="value"
+                        [formField]="myForm.value"></inu-input-text>
+
+        <inu-input-password label="inu-input-password"
+                            name="password"
+                            [formField]="myForm.password"></inu-input-password>
+
+        <inu-input-password label="inu-input-password disabled"
+                            name="passphrase"
+                            [formField]="myForm.passphrase"></inu-input-password>
+      </div>
+
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-multi-states
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-multi-states</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-multi-states label="Log levels"
+                          labelKey="log_levels"
+                          [values]="logLevelSelectItemsBasic()"
+                          [matcher]="matcherMultiStates()"
+                          [formField]="formMultiStates.logLevels">
+        </inu-multi-states>
+      </div>
+
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-dropdown
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-radio-group</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-radio-group label="HTTP verb"
+                         [formField]="myForm.verb"
+                         [vertical]="true"
+                         [values]="verbs()"></inu-radio-group>
+
+
+        <inu-radio-group label="verbRequired"
+                         [formField]="myForm.verbRequired"
+                         [values]="verbs()"></inu-radio-group>
+
+        <inu-radio-group label="disabled"
+                         [formField]="myForm.verbDisabled"
+                         [values]="verbs()"></inu-radio-group>
+
+      </div>
+
+    </article>
+
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-select-list
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-select-list</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-select-list label="Cantons"
+                         [formField]="myForm.cantons"
+                         [values]="cantons()"
+                         [matcher]="matcher()"
+                         [extractor]="extractor()"
+                         [multiSelect]="true">
+          <ng-template name="item" let-item>
+            <div class="item-canton">
+              <inu-icon [icon]="getCantonIcon(item.id)" [size]="1.5"></inu-icon>
+              <span>{{ item.title }}</span>
+            </div>
+          </ng-template>
+        </inu-select-list>
+
+      </div>
+
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-toggle
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-toggle</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-toggle label="Email"
+                    [formField]="myForm.email">
+        </inu-toggle>
+
+        <inu-toggle label="In application"
+                    [formField]="myForm.inApp">
+        </inu-toggle>
+
+        <inu-toggle label="Sms"
+                    [formField]="myForm.sms">
+        </inu-toggle>
+
+        <inu-toggle label="Mail"
+                    [formField]="myForm.mail">
+        </inu-toggle>
+
+      </div>
+    </article>
+  </section>
+
+
+  <!--================================================================================================================
+  = TABLE
+  =================================================================================================================-->
+  <section>
+    <header>
+      <h2>Table</h2>
+    </header>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-table-flex
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-table-flex</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-table-flex>
+          <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+          <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+          <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>values</inu-table-flex-cell>
+            <inu-table-flex-cell>InuSelectItem</inu-table-flex-cell>
+            <inu-table-flex-cell>[]</inu-table-flex-cell>
+            <inu-table-flex-cell>the list of values used for the different checkboxes</inu-table-flex-cell>
+          </inu-table-flex-row>
+
+          <inu-table-flex-row>
+            <inu-table-flex-cell>disabled</inu-table-flex-cell>
+            <inu-table-flex-cell>boolean</inu-table-flex-cell>
+            <inu-table-flex-cell>false</inu-table-flex-cell>
+            <inu-table-flex-cell></inu-table-flex-cell>
+          </inu-table-flex-row>
+        </inu-table-flex>
+
+      </div>
+    </article>
+  </section>
+
+
+  <!--================================================================================================================
+  = Charts
+  =================================================================================================================-->
+  <section>
+    <header>
+      <h2>Charts</h2>
+    </header>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ inu-svg-switzerland
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-svg-switzerland</h3>
+      </header>
+
+      <div class="d-flex-column gap-4">
+        <inu-svg-switzerland></inu-svg-switzerland>
+
+      </div>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     ~ inu-svg-switzerland
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-svg-timeline</h3>
+      </header>
+
+
+      <div class="d-flex-row d-gap-2">
+        <inu-radio-group label="Renderer"
+                         [values]="rendererTypes()"
+                         [vertical]="false"
+                         (changed)="rendererChange($event)"></inu-radio-group>
+      </div>
+
+
+      <div class="timeline-container" style="height: 300px">
+        <inu-svg-timeline label="Time line graph"
+                          [lazy]="loadData()"
+                          [from]="from()"
+                          [until]="until()"
+                          [resolution]="100"
+                          [renderer]="renderer()">
+        </inu-svg-timeline>
+      </div>
+
+    </article>
+
+  </section>
+
+</section>

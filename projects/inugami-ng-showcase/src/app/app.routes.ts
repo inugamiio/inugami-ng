@@ -32,11 +32,17 @@ import {InuProgressView} from './view/display/inu-progress/inu-progress.view'
 import {InuRadioGroupView} from './view/forms/inu-radio-group/inu-radio-group.view'
 import {InuSelectListView} from './view/forms/inu-select-list/inu-select-list.view'
 import {InuLoadingView} from './view/display/inu-loading/inu-loading.view'
+import {InuToggleView} from './view/forms/inu-toggle/inu-toggel.view'
+import {InuDropdownView} from './view/forms/inu-dropdown/inu-dropdown.view'
+import {ThemesView} from './view/themes/themes.view'
+import {InuMultiStateView} from './view/forms/inu-multi-states/inu-multi-states.view'
+import {InuSvgTimelineView} from './view/charts/inu-svg-timeline/inu-svg-timeline.view'
 
 
 export const routes: Routes = [
   {path: "", component: HomeView},
   {path: "icons", component: IconsView},
+  {path: "themes", component: ThemesView},
   {
     path: "actions", children: [
       {path: "inu-button", component: InuButtonView},
@@ -48,7 +54,8 @@ export const routes: Routes = [
       {path: "inu-svg-assets", component: InuSvgAssetView},
       {path: "inu-svg-utils", component: InuSvgUtilsView},
       {path: "inu-svg-isometric", component: InuSvgIsometricView},
-      {path: "inu-svg-switzerland", component: InuSvgSwitzerlandView}
+      {path: "inu-svg-switzerland", component: InuSvgSwitzerlandView},
+      {path: "inu-svg-timeline", component: InuSvgTimelineView}
     ]
   },
   {
@@ -70,10 +77,13 @@ export const routes: Routes = [
   {
     path: "forms", children: [
       {path: "inu-checkbox-group", component: InuCheckboxGroupView},
+      {path: "inu-dropdown", component: InuDropdownView},
       {path: "inu-input-password", component: InuInputPasswordView},
       {path: "inu-input-text", component: InuInputTextView},
+      {path: "inu-multi-states", component: InuMultiStateView},
       {path: "inu-radio-group", component: InuRadioGroupView},
-      {path: "inu-select-list", component: InuSelectListView}
+      {path: "inu-select-list", component: InuSelectListView},
+      {path: "inu-toggle", component: InuToggleView}
     ]
   },
   {

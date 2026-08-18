@@ -1,6 +1,6 @@
 {
   "name": "inugami-ng",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "license": "GPL-3.0-only",
   "description": "Inugami project angular library",
   "keywords": ["inugami",  "angular", "components"],

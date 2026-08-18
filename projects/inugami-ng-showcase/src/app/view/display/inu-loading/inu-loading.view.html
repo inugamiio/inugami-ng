@@ -1,6 +1,13 @@
 <section>
   <header>
     <h1>Inugami-NG : inu-loading</h1>
+
+    <p>
+      The <code>inu-loading</code> component is a flexible, standalone loader designed to overlay its parent element
+      during
+      asynchronous operations. It supports preset layout types ('default' and 'circle') as well as fully customizable
+      template injection using a declarative template registry pattern.
+    </p>
   </header>
 
 
@@ -39,7 +46,7 @@
                 fermentum, eros pretium pulvinar facilisis, elit ante pulvinar lacus, feugiat pellentesque lorem magna
                 vel arcu. Phasellus imperdiet magna ut mollis aliquam.
               </p>
-              <inu-loading [loading]="defaultLoading()" type="default" [offsetY]="31"></inu-loading>
+              <inu-loading [loading]="defaultLoading()" type="default"></inu-loading>
             </div>
 
 
@@ -48,10 +55,10 @@
           <div class="form-cell m-width-50p m-height-15 d-flex-column">
             <inu-panel-tabs>
               <inu-panel-tab name="html" label="HTML">
-
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="usage"></inu-code>
               </inu-panel-tab>
               <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="typescript"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -96,7 +103,7 @@
                 fermentum, eros pretium pulvinar facilisis, elit ante pulvinar lacus, feugiat pellentesque lorem magna
                 vel arcu. Phasellus imperdiet magna ut mollis aliquam.
               </p>
-              <inu-loading [loading]="circleLoading()" type="circle" [offsetY]="63"></inu-loading>
+              <inu-loading [loading]="circleLoading()" type="circle"></inu-loading>
             </div>
 
 
@@ -105,10 +112,7 @@
           <div class="form-cell m-width-50p m-height-15 d-flex-column">
             <inu-panel-tabs>
               <inu-panel-tab name="html" label="HTML">
-
-              </inu-panel-tab>
-              <inu-panel-tab name="ts" label="TypeScript">
-
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="circle"></inu-code>
               </inu-panel-tab>
             </inu-panel-tabs>
           </div>
@@ -118,6 +122,57 @@
 
     </article>
 
+
+    <!--================================================================================================================
+    = Custom
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example custom</h2>
+      </header>
+
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p d-flex-column">
+            <div>
+              <inu-button (click)="toggleCustom()" label="Toggle loading"></inu-button>
+            </div>
+
+            <div style="border:1px solid var(--neutral)">
+              <p style="height: 15rem">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus ante vel suscipit congue. Sed eros
+                massa, vestibulum vel lectus ut, egestas pretium eros. Quisque molestie dui eget tempor molestie. Donec
+                rhoncus quam risus, quis aliquam urna facilisis a. Suspendisse quis diam eget mauris eleifend aliquam.
+                Nulla porta enim eu orci interdum, in cursus velit cursus. Interdum et malesuada fames ac ante ipsum
+                primis in faucibus.
+              </p>
+              <inu-loading [loading]="customLoading()">
+                <ng-template name="content">
+                  <div class="bloc-spinner">
+                    <div class="bloc"></div>
+                    <div class="bloc"></div>
+                    <div class="bloc"></div>
+                    <div class="bloc"></div>
+                    <div class="bloc"></div>
+                  </div>
+                </ng-template>
+              </inu-loading>
+            </div>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/display/inu_loading_source_code.xml" tag="custom"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+
+
+    </article>
     <!--================================================================================================================
      = PROPERTIES
      =================================================================================================================-->
@@ -134,11 +189,31 @@
         <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
 
         <inu-table-flex-row>
-          <inu-table-flex-cell>value</inu-table-flex-cell>
+          <inu-table-flex-cell>loading</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Controls the visibility of the loading overlay</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>LoadingType</inu-table-flex-cell>
+          <inu-table-flex-cell>LoadingType ('default' | 'circle')</inu-table-flex-cell>
+          <inu-table-flex-cell>default</inu-table-flex-cell>
+          <inu-table-flex-cell>Determines which pre-built visual style to render if no custom template is provided.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>offsetX</inu-table-flex-cell>
           <inu-table-flex-cell>number</inu-table-flex-cell>
           <inu-table-flex-cell>0</inu-table-flex-cell>
-          <inu-table-flex-cell>The current progress value. It will be safely clamped internally between
-            <strong>min</strong> and <strong>max</strong></inu-table-flex-cell>
+          <inu-table-flex-cell>Adjusts the horizontal pixel position offset of the overlay</inu-table-flex-cell>
+        </inu-table-flex-row>
+        <inu-table-flex-row>
+          <inu-table-flex-cell>offsetY</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0</inu-table-flex-cell>
+          <inu-table-flex-cell>Adjusts the vertical pixel position offset of the overlay</inu-table-flex-cell>
         </inu-table-flex-row>
 
       </inu-table-flex>

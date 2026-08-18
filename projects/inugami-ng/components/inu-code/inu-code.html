@@ -1,20 +1,24 @@
 <div class="inu-code">
   <fieldset>
-      <legend>
-        <div class="inu-code-title">
-          {{_title()!}}
-        </div>
-        <div class="inu-code-copy">
-          <inu-button icon="copy" (click)="copyContent()"></inu-button>
-        </div>
-      </legend>
-
-    @if(sourceCode()){
-      <div class="source-code">
-<pre [inuHighlight]="sourceCode()" lang="java" >
-</pre>
+    <legend>
+      <div class="inu-code-title">
+        {{ _title()! }}
       </div>
+      <div class="inu-code-actions">
+          <inu-button icon="copy" (click)="copyContent()"></inu-button>
+          <inu-button [icon]="display()? 'chevron_up':'chevron_down'" (click)="toogleDisplay()"></inu-button>
+      </div>
+    </legend>
+
+    @if (display()) {
+      @if (sourceCode()) {
+        <div class="source-code">
+<pre [inuHighlight]="sourceCode()" lang="java">
+</pre>
+        </div>
+      }
     }
+
 
   </fieldset>
 

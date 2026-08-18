@@ -94,6 +94,11 @@ export class App implements OnInit {
                                                    path : '/icons',
                                                    icon : 'image'
                                                  },
+                                                 {
+                                                   title: 'Themes',
+                                                   path : '/themes',
+                                                   icon : 'layer'
+                                                 },
                                                  //--- ACTIONS ---------------------------------------------------------
                                                  {
                                                    title   : 'Actions',
@@ -135,6 +140,10 @@ export class App implements OnInit {
                                                          {
                                                            title: 'inu-svg-switzerland',
                                                            path : '/charts/inu-svg-switzerland'
+                                                         },
+                                                         {
+                                                           title: 'inu-svg-timeline',
+                                                           path : '/charts/inu-svg-timeline'
                                                          }
                                                        ]
                                                      }
@@ -208,6 +217,10 @@ export class App implements OnInit {
                                                            path : '/forms/inu-checkbox-group'
                                                          },
                                                          {
+                                                           title: 'inu-dropdown',
+                                                           path : '/forms/inu-dropdown'
+                                                         },
+                                                         {
                                                            title: 'inu-input-password',
                                                            path : '/forms/inu-input-password'
                                                          },
@@ -216,12 +229,20 @@ export class App implements OnInit {
                                                            path : '/forms/inu-input-text'
                                                          },
                                                          {
+                                                           title: 'inu-multi-states',
+                                                           path : '/forms/inu-multi-states'
+                                                         },
+                                                         {
                                                            title: 'inu-radio-group',
                                                            path : '/forms/inu-radio-group'
                                                          },
                                                          {
                                                            title: 'inu-select-list',
                                                            path : '/forms/inu-select-list'
+                                                         },
+                                                         {
+                                                           title: 'inu-toggle',
+                                                           path : '/forms/inu-toggle'
                                                          }
                                                        ]
                                                      }
