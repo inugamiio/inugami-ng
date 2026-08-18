@@ -28,6 +28,8 @@ export interface CircleOption extends SvgOptionalOption{
   height?: number;
   width?:number;
   round?: number;
+  x?:number;
+  y?:number;
 }
 
 export interface TextOption extends SvgOptionalOption{

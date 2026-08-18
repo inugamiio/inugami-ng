@@ -1,0 +1,235 @@
+.inu-svg-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--neutral);
+  margin-bottom: 1rem;
+
+  ::ng-deep {
+    svg {
+      background-color: var(--background-color);
+      stroke: var(--text-color);
+      stroke-width: 0.565;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      stroke-opacity: 1;
+      stroke-dasharray: none;
+      user-select: none;
+      -webkit-user-select: none;
+
+      .error {
+        fill: var(--danger);
+        stroke: transparent;
+        stroke-width: 0;
+
+        .bucket-resource-line {
+          stroke: var(--danger);
+        }
+      }
+
+      .bucket-resource-value {
+        transition: fill-opacity 250ms;
+      }
+
+      .warn {
+        fill: var(--warning);
+        stroke: transparent;
+        stroke-width: 0;
+
+        .bucket-resource-line {
+          stroke: var(--warning);
+        }
+      }
+
+      .success {
+        fill: var(--success);
+        stroke: transparent;
+        stroke-width: 0;
+
+        .bucket-resource-line {
+          stroke: var(--success);
+        }
+      }
+
+      .bucket {
+        &.not-hover {
+          .bucket-resource-value {
+            fill-opacity: 0.4;
+          }
+        }
+
+        &.hover {
+          .bucket-resource-value {
+            fill-opacity: 0.8;
+
+            &.hover {
+              fill-opacity: 1;
+            }
+          }
+        }
+      }
+
+      .bucket-line {
+        .bucket-resource-line {
+          transition: stroke-opacity 250ms;
+        }
+
+        &.not-hover {
+          .bucket-resource-line {
+            stroke-opacity: 0.4;
+          }
+        }
+
+        &.hover {
+          .bucket-resource-line {
+            stroke-opacity: 0.8;
+          }
+        }
+
+      }
+
+      .bucket-resource-line {
+        fill: transparent !important;
+        stroke-width: 3;
+      }
+
+      .bucket-resource-line {
+        pointer-events: none;
+      }
+
+      .bucket-resource-point {
+        r: 5px;
+        fill-opacity: 0;
+
+        &.hover {
+          fill-opacity: 1;
+        }
+      }
+
+      .axis-tick-label {
+        fill: var(--neutral-dark);
+        stroke: transparent;
+
+        &.major {
+          fill: var(--neutral-dark-extra);
+          stroke: var(--neutral-dark-extra);
+        }
+      }
+
+
+      .cursor-grp {
+        .cursor {
+          stroke-width: 0;
+          stroke: var(--neutral-dark-extra);
+          stroke-opacity: 0;
+        }
+
+        &.display {
+          .cursor {
+            stroke-width: 1;
+            stroke-opacity: 0.7;
+          }
+        }
+
+      }
+
+
+      .selector {
+        fill: var(--focus);
+        fill-opacity: 0.2;
+        stroke-opacity: 0;
+
+        &.hidden {
+          display: none;
+          fill-opacity: 0;
+        }
+      }
+    }
+  }
+
+  &.disabled {
+    ::ng-deep {
+      .selector {
+        fill: var(--neutral);
+      }
+    }
+  }
+}
+
+
+.inu-svg-timeline-tooltip {
+  position: absolute;
+  z-index: 100;
+  pointer-events: none;
+  background: var(--neutral-dark-extra-transparent);
+  color: var(--text-color-light);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  box-shadow: 0 4px 6px var(--neutral-dark-extra-transparent);
+  white-space: nowrap;
+  transform: translate(10%, -100%);
+
+  .tooltip-header {
+    font-weight: bold;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--neutral-dark-extra-transparent);
+    padding-bottom: 2px;
+    color: var(--neutral-light);
+  }
+
+  .tooltip-content {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    .res-uri {
+      color: var(--text-color-light);
+    }
+
+    dl {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+
+      dt {
+        color: var(--secondary-light);
+        width: 5rem;
+        border-bottom: none;
+      }
+
+      dd {
+        color: var(--neutral-light);
+        flex: 1;
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.inu-svg-timeline-label {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 0.5rem;
+
+  label {
+    font-weight: bold;
+    font-size: 90%;
+    width: auto;
+    transition: color 250ms;
+  }
+
+  inu-icon {
+    width: 1rem;
+  }
+
+  &.invalid {
+    color: var(--danger);
+    fill: var(--danger);
+  }
+}

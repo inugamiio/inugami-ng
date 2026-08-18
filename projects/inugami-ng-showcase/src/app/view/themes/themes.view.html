@@ -437,8 +437,6 @@
                          [values]="verbs()"></inu-radio-group>
 
 
-
-
         <inu-radio-group label="verbRequired"
                          [formField]="myForm.verbRequired"
                          [values]="verbs()"></inu-radio-group>
@@ -509,7 +507,6 @@
   </section>
 
 
-
   <!--================================================================================================================
   = TABLE
   =================================================================================================================-->
@@ -553,8 +550,6 @@
   </section>
 
 
-
-
   <!--================================================================================================================
   = Charts
   =================================================================================================================-->
@@ -575,6 +570,35 @@
         <inu-svg-switzerland></inu-svg-switzerland>
 
       </div>
+    </article>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     ~ inu-svg-switzerland
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <article>
+      <header>
+        <h3>inu-svg-timeline</h3>
+      </header>
+
+
+      <div class="d-flex-row d-gap-2">
+        <inu-radio-group label="Renderer"
+                         [values]="rendererTypes()"
+                         [vertical]="false"
+                         (changed)="rendererChange($event)"></inu-radio-group>
+      </div>
+
+
+      <div class="timeline-container" style="height: 300px">
+        <inu-svg-timeline label="Time line graph"
+                          [lazy]="loadData()"
+                          [from]="from()"
+                          [until]="until()"
+                          [resolution]="100"
+                          [renderer]="renderer()">
+        </inu-svg-timeline>
+      </div>
+
     </article>
 
   </section>

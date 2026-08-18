@@ -18,12 +18,26 @@ export class ObservableSubscriber<T> {
     return this.handlers;
   }
 
+  unsubscribe() {
+    this.handlers.map(s => s.unsubscribe());
+  }
+
+  onNextValue(value: T): void {
+    for (let handler of this.handlers) {
+      try {
+        handler.next(value);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+
   next(value: T): void {
-    for(let handler of this.handlers){
-      try{
+    for (let handler of this.handlers) {
+      try {
         handler.next(value);
         handler.complete();
-      }catch (e){
+      } catch (e) {
         console.error(e);
       }
     }

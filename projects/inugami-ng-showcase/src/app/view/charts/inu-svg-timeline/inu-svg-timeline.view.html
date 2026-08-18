@@ -1,0 +1,546 @@
+<section>
+  <header>
+    <h1>Inugami-NG : inu-svg-timeline</h1>
+    <p>
+      The <em>inu-svg-timeline</em> component is a robust, interactive, and high-performance time-series visualization
+      tool built
+      for Angular. It supports lazy-loaded data, smooth zooming, pan/selection modes, and seamless integration with
+      Angular forms.
+    </p>
+    <strong>Key Features</strong>
+    <dl>
+      <dt>Dynamic SVG Rendering</dt>
+      <dd>
+        High-performance vector rendering with scoped management.Asynchronous Lazy Loading: Optimized via the
+        <code>BucketTimedLoader</code> service to fetch data based on the current viewport and resolution.
+      </dd>
+
+      <dt>Interactive Modes</dt>
+      <dd>
+        <ul>
+          <li><strong>Pan:</strong> Navigate through time (Ctrl + Drag).</li>
+          <li><strong>Zoom & Reset:</strong> Smooth zooming via the mouse wheel, with an instant reset back to the
+            original time interval using a simple mouse wheel double-click.
+          </li>
+          <li><strong>Selection:</strong> Precise range selection (Drag).</li>
+        </ul>
+      </dd>
+
+      <dt>Responsive Design</dt>
+      <dd>Built-in <code>ResizeObserver</code> ensures the component adapts perfectly to container size changes.</dd>
+
+      <dt>Angular Signal Forms Integration</dt>
+      <dd>Full support for the <code>FormValueControl</code> interface, allowing bidirectional model synchronization.
+      </dd>
+      rendererForTemplate
+    </dl>
+  </header>
+
+
+  <main>
+
+    <!--================================================================================================================
+    = EXAMPLE
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Example</h2>
+      </header>
+
+      <div class="form-container">
+        <div class="form-row-col">
+          <div class="form-cell m-width-50p d-flex-column">
+            <div class="d-flex-row d-gap-2">
+              <inu-radio-group label="Renderer"
+                               [values]="rendererTypes()"
+                               [vertical]="false"
+                               (changed)="rendererChange($event)"></inu-radio-group>
+
+              <inu-radio-group label="Resolution"
+                               [values]="resolutionTypes()"
+                               [vertical]="false"
+                               (changed)="resolutionChange($event)"></inu-radio-group>
+            </div>
+
+
+            <div class="timeline-container">
+              <inu-svg-timeline label="Time line graph"
+                                [lazy]="loadData()"
+                                [from]="from()"
+                                [until]="until()"
+                                [resolution]="resolution()"
+                                [renderer]="renderer()"
+                                [formField]="currentTimeForm.dates"
+                                (hover)="onHover($event)">
+              </inu-svg-timeline>
+            </div>
+          </div>
+
+          <div class="form-cell m-width-50p m-height-15 d-flex-column">
+            <inu-panel-tabs>
+
+              <inu-panel-tab name="data" label="Data">
+                <inu-code [source]="formData()"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="html" label="HTML">
+                <inu-code url="data/charts/inu-svg-timeline.xml" tag="html"></inu-code>
+              </inu-panel-tab>
+              <inu-panel-tab name="ts" label="TypeScript">
+                <inu-code url="data/charts/inu-svg-timeline.xml" tag="ts"></inu-code>
+              </inu-panel-tab>
+
+              <inu-panel-tab name="hover" label="Event hover">
+                <inu-code [source]="hoverJson()"></inu-code>
+              </inu-panel-tab>
+            </inu-panel-tabs>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!--================================================================================================================
+    = MODEL
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Model</h2>
+      </header>
+
+      <p>
+        The component uses a unified data model designed to describe temporally ordered data hierarchically:
+      </p>
+      <dl>
+        <dt>BucketTimed</dt>
+        <dd>Represents a time bucket container. The component fetches a list of these objects (e.g., success, warning,
+          and error levels act as buckets in our implementation).
+        </dd>
+
+        <dt>ResourceTimed</dt>
+        <dd>Each bucket can contain multiple resources, allowing you to distinguish between different entities or error
+          codes within the same category.
+        </dd>
+
+        <dt>PointTimed</dt>
+        <dd>The leaf nodes containing the actual measurements. Each point consists of a numerical value associated with
+          its specific timestamp.
+        </dd>
+      </dl>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="BucketTimed"></inu-code>
+
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="ResourceTimed"></inu-code>
+
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="PointTimed"></inu-code>
+
+    </article>
+
+    <!--================================================================================================================
+    = Lazy loading
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Lazy loading</h2>
+      </header>
+
+      <p>
+        A recurring challenge in data visualization is managing large volumes of data. To keep the SVG rendering
+        optimized and performant, the inu-svg-timeline component is designed around a fixed resolution approach.
+      </p>
+      <ul>
+        <li><strong>Optimized Rendering</strong>
+          <p>
+            By relying on a fixed resolution per view, the DOM remains lightweight and responsive.
+          </p>
+        </li>
+
+        <li><strong>Asynchronous Lazy Loading</strong>
+          <p>
+            Data fetching is fully delegated via lazy loading, passing both the precise time interval (from / until) and
+            the active resolution to load only the required data slice dynamically.
+          </p>
+        </li>
+      </ul>
+      <p>
+        Data lazy-loading is defined and handled via the BucketTimedLoader type, which supplies the time bounds and
+        resolution to fetch data asynchronously:
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="BucketTimedLoader"></inu-code>
+
+      <p>
+        If you define processLoadingData as a class property using an arrow function, it preserves this automatically
+        without needing .bind(this)
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="BucketTimedLoaderUsage"></inu-code>
+
+      <p>
+        The server collecting the data is responsible for aggregating the data and returning it while adhering to this
+        JSON format:
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="BucketTimedLoaderResponse"></inu-code>
+
+      <inu-cite level="success" title="Dynamic Lazy Loading Triggers">
+        The component automatically invokes the lazy-loading loader method during interactive user actions and state
+        changes:
+        <dl>
+          <dt>Resizing</dt>
+          <dd>Triggered whenever the component dimensions change to adjust the data granularity.</dd>
+
+          <dt>Panning & Zooming</dt>
+          <dd>Invoked dynamically as the user navigates across different time windows.</dd>
+
+          <dt>Rendering Changes</dt>
+          <dd>Called when switching views or rendering modes that require a different data slice or resolution.</dd>
+        </dl>
+      </inu-cite>
+
+    </article>
+
+
+    <!--================================================================================================================
+    = RENDERING
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Data Rendering</h2>
+      </header>
+
+      <p>
+        The component is designed by cleanly separating its global state and lifecycle management from data rendering.
+        This architecture supports multiple built-in renderers—such as bar charts and line charts—while also allowing
+        developers to implement custom, domain-specific renderers via the <code>TimeLineRenderer</code> interface.
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="TimeLineRenderer"></inu-code>
+
+      <p>
+        The rendering type is defined directly via the renderer attribute of the component and can be changed
+        dynamically. To ensure smooth transitions and correct visualization, all custom renderer implementations must
+        adhere to the following lifecycle contract:
+      </p>
+      <dl>
+        <dt>init</dt>
+        <dd>Initializes the renderer layout. The main component provides the SVG graph node, the available dimensions
+          for rendering, and the resolution.
+        </dd>
+
+        <dt>updateContext</dt>
+        <dd>Called after data is received to specify the rendering area dimensions and resolution. This method is also
+          invoked whenever the display area is resized.
+        </dd>
+
+        <dt>isCumulative</dt>
+        <dd>Returns a boolean indicating whether the renderer is cumulative, which is required to correctly compute
+          maximum value boundaries.
+        </dd>
+
+        <dt>setMaxValue</dt>
+        <dd>Sets the maximum data value to scale and normalize the visualization properly.</dd>
+
+        <dt>updateValues</dt>
+        <dd>Passes the fetched dataset from the main component into the renderer.</dd>
+
+        <dt>destroy</dt>
+        <dd>Invoked by the parent component during renderer switches to allow the current renderer to animate out and
+          properly clean up its SVG DOM nodes.
+        </dd>
+      </dl>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="html"></inu-code>
+
+
+      <inu-cite level="warning" title="SVG Rendering & Technical Note">
+        Rendering the data is a delicate task, and a solid understanding of SVG is essential to master custom renderer
+        implementations and visual customizations.
+      </inu-cite>
+
+      <inu-cite level="warning" title="TimeLineRendererBuilder">
+        Each instance of the <code>inu-svg-timeline</code> component must have its own <strong>dedicated renderer
+        instance</strong>. Renderer
+        definitions must be handled via a <strong>factory function</strong> that creates a new instance for each
+        component.
+      </inu-cite>
+
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="InuSvgTimelineHistogram" [collapsed]="true"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = RENDERING
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>SVG Service</h2>
+      </header>
+      <p>
+        While low-level rendering involves directly manipulating SVG DOM nodes for optimal performance, several helper
+        utilities are provided to simplify element design and construction:
+      </p>
+      <dl>
+        <dt>SVG_ANIMATION</dt>
+        <dd>Helps manage SVG transitions and animations.</dd>
+
+        <dt>SVG_BUILDER</dt>
+        <dd>Simplifies programmatic creation and structuring of SVG elements.</dd>
+
+        <dt>SVG_TRANSFORM</dt>
+        <dd>Eases matrix and coordinate transformations.</dd>
+
+        <dt>SVG_MATH</dt>
+        <dd>To assist with trigonometric calculations and coordinate positioning required for advanced visual
+          representations (such as angular gauges, polar charts, or specialized curves), the SVG_MATH utility provides a
+          dedicated collection of trigonometric helper methods.
+        </dd>
+      </dl>
+
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="svg_services"></inu-code>
+
+      <p>
+        Various TypeScript models and interfaces are provided out-of-the-box to easily interact with the SVG service
+        APIs and structure your data payloads seamlessly.
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="svg_services_models"></inu-code>
+    </article>
+
+    <!--================================================================================================================
+    = SIGNAL FORM
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Signal Form</h2>
+      </header>
+
+      <p>
+        The <code>inu-svg-timeline</code> component is designed to be integrated into signal forms. It is easily
+        integrated by
+        binding the component to the signal form (via the <code>formField</code> attribute).
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="html"></inu-code>
+      <p>
+        On the TypeScript controller side, we declare our signal form to manage the component's state and validation:
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="signal_form"></inu-code>
+
+    </article>
+
+
+    <!--================================================================================================================
+    = TOOL TIPS custom template
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Tooltips custom template</h2>
+      </header>
+
+      <div class="timeline-container">
+        <inu-svg-timeline label="Time line graph"
+                          icon="processor"
+                          [lazy]="loadData()"
+                          [from]="from()"
+                          [until]="until()"
+                          [resolution]="100"
+                          [renderer]="rendererForTemplate()">
+
+          <ng-template name="tooltips" let-data>
+            <ul class="tooltips-custom">
+              <li>
+                <strong>Bucket :</strong>
+                <span>{{ data?.bucket?.name }}</span>
+              </li>
+              <li>
+                <strong>Hits :</strong>
+                <span>{{ data?.point?.value }}</span>
+              </li>
+            </ul>
+          </ng-template>
+
+        </inu-svg-timeline>
+
+      </div>
+
+      <p style="margin-top: 3rem">
+        To allow specifying a custom template for tooltips, it is possible to define a template directly inside the
+        component.
+      </p>
+      <inu-code url="data/charts/inu-svg-timeline.xml" tag="tooltips_custom_template"></inu-code>
+    </article>
+
+
+    <!--=================================================================================================================
+    = PROPERTIES
+    =================================================================================================================-->
+    <article>
+      <header>
+        <h2>Properties</h2>
+      </header>
+
+
+      <inu-table-flex>
+        <inu-table-flex-header size="0.7fr">Property</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Type</inu-table-flex-header>
+        <inu-table-flex-header size="2fr">Default value</inu-table-flex-header>
+        <inu-table-flex-header size="4fr">Description</inu-table-flex-header>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>disabled</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Disables user interactions on the timeline component.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>label</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Defines the accessible label or title displayed for the timeline component.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>labelKey</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Internationalization key for the timeline component label.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>icon</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Optional icon identifier displayed alongside the component.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>bottomMargin</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>30</inu-table-flex-cell>
+          <inu-table-flex-cell>Bottom margin space (in pixels) reserved within the SVG layout.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>from</inu-table-flex-cell>
+          <inu-table-flex-cell>Date | undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>The starting date/time of the currently displayed viewport.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>lazy</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ lazyType() }} | undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>Asynchronous loader function responsible for fetching time-series data chunks based on
+            bounds and resolution.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>leftMargin</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>100</inu-table-flex-cell>
+          <inu-table-flex-cell>Left margin space (in pixels) reserved within the SVG layout.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>padding</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0.99</inu-table-flex-cell>
+          <inu-table-flex-cell>Padding factor applied to scale or space out the rendered elements.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>renderer</inu-table-flex-cell>
+          <inu-table-flex-cell>TimeLineRendererBuilder</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ defaultRenderer() }}</inu-table-flex-cell>
+          <inu-table-flex-cell>Factory function returning an independent instance of a renderer (e.g., histogram, line)
+            for the component.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>resolution</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>100</inu-table-flex-cell>
+          <inu-table-flex-cell>The time resolution step used to aggregate or fetch bucket data.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>rightMargin</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>20</inu-table-flex-cell>
+          <inu-table-flex-cell>Right margin space (in pixels) reserved within the SVG layout.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>showCursor</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Toggles the visibility of the interactive time/position cursor.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>styleclass</inu-table-flex-cell>
+          <inu-table-flex-cell>string</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Custom CSS style class applied to the component container.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>topMargin</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>20</inu-table-flex-cell>
+          <inu-table-flex-cell>Top margin space (in pixels) reserved within the SVG layout.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>until</inu-table-flex-cell>
+          <inu-table-flex-cell>Date | undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>undefined</inu-table-flex-cell>
+          <inu-table-flex-cell>The ending date/time of the currently displayed viewport.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>zoomRatio</inu-table-flex-cell>
+          <inu-table-flex-cell>number</inu-table-flex-cell>
+          <inu-table-flex-cell>0.1</inu-table-flex-cell>
+          <inu-table-flex-cell>Step multiplier used when zooming in or out on the timeline.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>showTooltips</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>true</inu-table-flex-cell>
+          <inu-table-flex-cell>Enables or disables the display of interactive tooltips on hover.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>required</inu-table-flex-cell>
+          <inu-table-flex-cell>boolean</inu-table-flex-cell>
+          <inu-table-flex-cell>false</inu-table-flex-cell>
+          <inu-table-flex-cell>Marks the component field as required for validation purposes.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>hover</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventResourceTimedSelected() }}</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emitted when the user hovers over a specific resource point on the timeline.
+          </inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>leave</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventResourceTimedSelected() }}</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emitted when the cursor leaves a hovered resource point.</inu-table-flex-cell>
+        </inu-table-flex-row>
+
+        <inu-table-flex-row>
+          <inu-table-flex-cell>selected</inu-table-flex-cell>
+          <inu-table-flex-cell>{{ eventBoundedTime() }}</inu-table-flex-cell>
+          <inu-table-flex-cell></inu-table-flex-cell>
+          <inu-table-flex-cell>Emitted when a specific time range is selected by the user.</inu-table-flex-cell>
+        </inu-table-flex-row>
+      </inu-table-flex>
+
+
+    </article>
+  </main>
+
+
+</section>

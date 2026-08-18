@@ -35,4 +35,9 @@
     background-color: var(--background-color)!important;
     color:var(--text-color);
   }
+  .inu-code-actions{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
 }
