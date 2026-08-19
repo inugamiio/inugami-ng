@@ -1,0 +1,20 @@
+<div [class]="_styleClassLabel()">
+  @if (icon()) {
+    <inu-icon [icon]="icon()!" [size]="1"></inu-icon>
+  }
+  @if (label() || labelKey()) {
+    @if (labelKey()) {
+      <label [for]="id()">
+        <inu-label [key]="labelKey()" [defaultValue]="label()!"></inu-label>
+      </label>
+    } @else {
+      <label [for]="id()">{{ label()! }}</label>
+    }
+  }
+  @if (_required()) {
+    <inu-icon icon="required" [size]="0.5"></inu-icon>
+  }
+</div>
+<div [class]="_styleClass()"  #component>
+  <svg #container xmlns="http://www.w3.org/2000/svg"></svg>
+</div>

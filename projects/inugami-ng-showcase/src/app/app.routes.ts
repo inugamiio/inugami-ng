@@ -37,6 +37,7 @@ import {InuDropdownView} from './view/forms/inu-dropdown/inu-dropdown.view'
 import {ThemesView} from './view/themes/themes.view'
 import {InuMultiStateView} from './view/forms/inu-multi-states/inu-multi-states.view'
 import {InuSvgTimelineView} from './view/charts/inu-svg-timeline/inu-svg-timeline.view'
+import {InuSvgValueView} from './view/charts/inu-svg-value/inu-svg-value.view'
 
 
 export const routes: Routes = [
@@ -55,7 +56,8 @@ export const routes: Routes = [
       {path: "inu-svg-utils", component: InuSvgUtilsView},
       {path: "inu-svg-isometric", component: InuSvgIsometricView},
       {path: "inu-svg-switzerland", component: InuSvgSwitzerlandView},
-      {path: "inu-svg-timeline", component: InuSvgTimelineView}
+      {path: "inu-svg-timeline", component: InuSvgTimelineView},
+      {path: "inu-svg-value", component: InuSvgValueView}
     ]
   },
   {
