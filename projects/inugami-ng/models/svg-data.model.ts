@@ -1,4 +1,12 @@
 import {Observable} from 'rxjs'
+export const NOT_HOVER = 'not-hover'
+export const HOVER     = 'hover'
+export const DATA_TIME           = 'data-date'
+export const DATA_VALUE          = 'data-value'
+export const DATA_BUCKET_INDEX   = 'data-bucket-index'
+export const DATA_RESOURCE_INDEX = 'data-resource-index'
+export const DATA_VALUE_INDEX    = 'data-value-index'
+
 
 export interface BoundedTime{
   from?:Date;
@@ -78,4 +86,14 @@ export interface TimeLineRenderer {
   setMaxValue : (value:number)=> void;
   hover : ()=> Observable<ResourceTimedSelected>;
   leave : ()=> Observable<ResourceTimedSelected>;
+}
+
+
+export type ValueRendererBuilder = () => ValueRenderer;
+export interface ValueRenderer {
+  init: (context: TimeLineRendererContext) => void;
+  updateContext: (height: number, width: number, resolution: number) => void;
+  updateValues: (data: BucketTimed<number>[], animate?: boolean) => void;
+  updateLayout: () => void;
+  destroy: () => Observable<any>;
 }

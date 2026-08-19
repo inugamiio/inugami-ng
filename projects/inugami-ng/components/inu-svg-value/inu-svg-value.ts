@@ -13,19 +13,26 @@ import {
   viewChild
 } from '@angular/core';
 import {SVG_BUILDER, SVG_MATH} from 'inugami-ng/services'
-import {BucketTimed, BucketTimedLoader, TimeLineRenderer, TimeLineRendererBuilder} from 'inugami-ng/models'
+import {
+  BucketTimed,
+  BucketTimedLoader,
+  TimeLineRenderer,
+  TimeLineRendererBuilder, ValueRenderer,
+  ValueRendererBuilder
+} from 'inugami-ng/models'
 import {InuIcon} from 'inugami-icons'
 import {InuLabel} from '../inu-label/inu-label'
 import {InuTemplateRegistryService} from 'inugami-ng/directives'
 import {UuidUtils} from 'inugami-ng/utils'
 import {FormField, FormValueControl} from '@angular/forms/signals'
 import {InuSvgTimelineHistogram} from '../inu-svg-timeline/renderer/inu-svg-timeline-histogram'
+import {InuSvgValueSimple} from './renderer/inu-svg-value-simple'
 
 
 @Component({
              selector   : 'inu-svg-value',
              standalone : true,
-             imports: [
+             imports    : [
                InuIcon,
                InuLabel
              ],
@@ -46,7 +53,7 @@ export class InuSvgValue implements FormValueControl<any>, AfterViewInit {
   readonly icon         = input('');
   readonly bottomMargin = input<number>(30);
   readonly lazy         = input<BucketTimedLoader<number> | undefined>(undefined);
-  readonly renderer     = input<TimeLineRendererBuilder>(() => new InuSvgTimelineHistogram());
+  readonly renderer     = input<ValueRendererBuilder>(() => new InuSvgValueSimple());
   readonly resolution   = input<number>(100);
   readonly styleclass   = input<string>('');
   readonly topMargin    = input<number>(20);
@@ -72,16 +79,16 @@ export class InuSvgValue implements FormValueControl<any>, AfterViewInit {
   });
 
   // internal
-  activeRenderer: TimeLineRenderer | null = null;
-  id                                      = computed<string>(() => UuidUtils.buildUid());
-  focus                                   = signal<boolean>(false);
-  parent: HTMLElement | null              = null;
-  locator: SVGElement | null              = null;
-  graph: SVGElement | null                = null;
-  canvas: SVGElement | null               = null;
-  width: number                           = 600;
-  height: number                          = 200;
-  _styleClassLabel                        = computed<string>(() => {
+  activeRenderer: ValueRenderer | null = null;
+  id                                   = computed<string>(() => UuidUtils.buildUid());
+  focus                                = signal<boolean>(false);
+  parent: HTMLElement | null           = null;
+  locator: SVGElement | null           = null;
+  graph: SVGElement | null             = null;
+  canvas: SVGElement | null            = null;
+  width: number                        = 600;
+  height: number                       = 200;
+  _styleClassLabel                     = computed<string>(() => {
     return [
       'inu-svg-value-label',
       this.disabled() ? 'disabled' : '',
@@ -90,7 +97,7 @@ export class InuSvgValue implements FormValueControl<any>, AfterViewInit {
       this.styleclass() ? this.styleclass() : ''
     ].join(' ');
   });
-  _styleClass                             = computed<string>(() => {
+  _styleClass                          = computed<string>(() => {
     return [
       'inu-svg',
       'inu-svg-value',
