@@ -25,7 +25,10 @@
 
             <div class="timeline-container">
               <inu-svg-value label="Value graph"
-                                >
+                             [from]="from()"
+                             [until]="until()"
+                             [lazy]="loadData()"
+                             [renderer]="renderer()">
               </inu-svg-value>
             </div>
           </div>

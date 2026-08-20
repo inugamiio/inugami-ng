@@ -167,11 +167,7 @@ export class InuSvgTimeline implements FormValueControl<Date[]>, AfterViewInit {
   //====================================================================================================================
   // INIT
   //====================================================================================================================
-
-
   constructor() {
-
-
     effect(() => {
       const nextRenderer   = this.renderer()();
       const nextResolution = this.resolution();

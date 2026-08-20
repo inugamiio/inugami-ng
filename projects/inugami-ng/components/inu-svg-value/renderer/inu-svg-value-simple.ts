@@ -1,8 +1,13 @@
-import {BucketTimed, ResourceTimedSelected, TimeLineRendererContext, ValueRenderer} from 'inugami-ng/models';
+import {
+  BucketTimed,
+  ResourceTimedSelected,
+  TimeLineRendererContext,
+  ValueRenderer,
+  ValueRendererContext
+} from 'inugami-ng/models';
 import {Observable} from 'rxjs';
-import {ObservableSubscriber} from 'inugami-ng/utils'
+import {InuFormsUtils, ObservableSubscriber} from 'inugami-ng/utils'
 import {signal} from '@angular/core'
-
 
 
 export class InuSvgValueSimple implements ValueRenderer {
@@ -14,13 +19,22 @@ export class InuSvgValueSimple implements ValueRenderer {
   height: number | undefined;
   width: number | undefined;
   resolution: number | undefined;
-  duration: number = 500;
+  duration: number = 1000;
   data             = signal<BucketTimed<number>[]>([]);
 
   //====================================================================================================================
   // INIT
   //====================================================================================================================
-  init(context: TimeLineRendererContext): void {
+  constructor(duration?: number) {
+    if (duration) {
+      this.duration = duration
+    }
+    InuFormsUtils.onChanged(this.data).subscribe(value => {
+      this.updateValues(value, true);
+    });
+  }
+
+  init(context: ValueRendererContext): void {
     this.graph      = context.graph;
     this.height     = context.height;
     this.width      = context.width;
@@ -39,14 +53,11 @@ export class InuSvgValueSimple implements ValueRenderer {
 
   destroy(): Observable<any> {
     const result = new ObservableSubscriber<any>();
-
-
     return result.observable();
   }
 
   updateValues(data: BucketTimed<number>[], animate?: boolean): void {
     this.data.set(data);
-    this.updateLayout(animate);
   }
 
 
@@ -57,6 +68,7 @@ export class InuSvgValueSimple implements ValueRenderer {
     if (!this.graph) {
       return;
     }
+
 
   }
 

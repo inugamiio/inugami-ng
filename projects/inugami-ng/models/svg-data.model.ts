@@ -1,6 +1,7 @@
 import {Observable} from 'rxjs'
-export const NOT_HOVER = 'not-hover'
-export const HOVER     = 'hover'
+
+export const NOT_HOVER           = 'not-hover'
+export const HOVER               = 'hover'
 export const DATA_TIME           = 'data-date'
 export const DATA_VALUE          = 'data-value'
 export const DATA_BUCKET_INDEX   = 'data-bucket-index'
@@ -8,9 +9,9 @@ export const DATA_RESOURCE_INDEX = 'data-resource-index'
 export const DATA_VALUE_INDEX    = 'data-value-index'
 
 
-export interface BoundedTime{
-  from?:Date;
-  until?:Date;
+export interface BoundedTime {
+  from?: Date;
+  until?: Date;
 }
 
 export interface PointTimed<T = number> {
@@ -25,7 +26,8 @@ export interface ResourceTimed<T = number> {
   unit: string;
   name?: string;
 }
-export interface MouseEventData{
+
+export interface MouseEventData {
   altKey: boolean;
   button: number;
   buttons: number;
@@ -48,11 +50,11 @@ export interface MouseEventData{
   y: number;
 }
 
-export interface ResourceTimedSelected{
-  bucket ?: BucketTimed<number>;
-  resource ?: ResourceTimed;
-  point ?: PointTimed<number>;
-  event ?: MouseEventData;
+export interface ResourceTimedSelected {
+  bucket?: BucketTimed<number>;
+  resource?: ResourceTimed;
+  point?: PointTimed<number>;
+  event?: MouseEventData;
 }
 
 
@@ -82,16 +84,26 @@ export interface TimeLineRenderer {
   updateValues: (data: BucketTimed<number>[], animate?: boolean) => void;
   updateLayout: () => void;
   destroy: () => Observable<any>;
-  isCumulative : ()=> boolean;
-  setMaxValue : (value:number)=> void;
-  hover : ()=> Observable<ResourceTimedSelected>;
-  leave : ()=> Observable<ResourceTimedSelected>;
+  isCumulative: () => boolean;
+  setMaxValue: (value: number) => void;
+  hover: () => Observable<ResourceTimedSelected>;
+  leave: () => Observable<ResourceTimedSelected>;
 }
 
 
+export type ValueRendererAggregator = (values: BucketTimed<number>[]) => BucketTimed<number>[];
+
+export interface ValueRendererContext {
+  graph: SVGElement;
+  height: number;
+  width: number;
+  resolution: number;
+}
+
 export type ValueRendererBuilder = () => ValueRenderer;
+
 export interface ValueRenderer {
-  init: (context: TimeLineRendererContext) => void;
+  init: (context: ValueRendererContext) => void;
   updateContext: (height: number, width: number, resolution: number) => void;
   updateValues: (data: BucketTimed<number>[], animate?: boolean) => void;
   updateLayout: () => void;
